@@ -1,0 +1,1569 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="lab_AssistantName.Text" xml:space="preserve">
+    <value>染助剂名称:</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="lab_SettingConcentration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>356, 27</value>
+  </data>
+  <data name="lab_AdjustValue.Text" xml:space="preserve">
+    <value>当前校正值:</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="txt_CurrentAdjustWeight.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="lab_SettingConcentration.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="$this.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1220, 46</value>
+  </data>
+  <data name="txt_SelfChecking3.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="&gt;&gt;lab_TermOfValidity.Parent" xml:space="preserve">
+    <value>grp_AdjustParameters</value>
+  </data>
+  <data name="&gt;&gt;lab_RealConcentration.ZOrder" xml:space="preserve">
+    <value>24</value>
+  </data>
+  <data name="&gt;&gt;grp_AdjustParameters.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="txt_TermOfValidity.TabIndex" type="System.Int32, mscorlib">
+    <value>27</value>
+  </data>
+  <data name="txt_SelfChecking3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>163, 232</value>
+  </data>
+  <data name="txt_SettingConcentration.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="lab_AllowMaxColoringConcentration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>133, 19</value>
+  </data>
+  <data name="lab_BrewingCode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>356, 97</value>
+  </data>
+  <data name="txt_Intensity.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="&gt;&gt;lb_SelfChecking4.Name" xml:space="preserve">
+    <value>lb_SelfChecking4</value>
+  </data>
+  <data name="lab_AllowMaxWeight.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="lab_LastAdjustWeight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 97</value>
+  </data>
+  <data name="lab_BrewingCode.Text" xml:space="preserve">
+    <value>调液流程代码:</value>
+  </data>
+  <data name="&gt;&gt;txt_SelfChecking3.Name" xml:space="preserve">
+    <value>txt_SelfChecking3</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="lab_SettingConcentration.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="&gt;&gt;txt_SettingConcentration.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="&gt;&gt;txt_Cost.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lb_SelfChecking3.Name" xml:space="preserve">
+    <value>lb_SelfChecking3</value>
+  </data>
+  <data name="&gt;&gt;lab_AssistantCode.Name" xml:space="preserve">
+    <value>lab_AssistantCode</value>
+  </data>
+  <data name="&gt;&gt;lb_SelfChecking4.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="lab_AssistantName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 24</value>
+  </data>
+  <data name="&gt;&gt;txt_SelfChecking3.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="lab_BottleNum.Text" xml:space="preserve">
+    <value>瓶号:</value>
+  </data>
+  <data name="&gt;&gt;txt_BrewingData.Name" xml:space="preserve">
+    <value>txt_BrewingData</value>
+  </data>
+  <data name="lab_BrewingData.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;lb_SelfChecking1.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;txt_CurrentWeight.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="&gt;&gt;lab_BrewingData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txt_Cost.Name" xml:space="preserve">
+    <value>txt_Cost</value>
+  </data>
+  <data name="txt_UnitOfAccount.Size" type="System.Drawing.Size, System.Drawing">
+    <value>155, 34</value>
+  </data>
+  <data name="grp_AdjustParameters.Text" xml:space="preserve">
+    <value>染助剂资料</value>
+  </data>
+  <data name="&gt;&gt;txt_UnitOfAccount.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="lab_AssistantType.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="lab_AllowMaxColoringConcentration.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="&gt;&gt;txt_SelfChecking1.Name" xml:space="preserve">
+    <value>txt_SelfChecking1</value>
+  </data>
+  <data name="lab_Intensity.Text" xml:space="preserve">
+    <value>力度:</value>
+  </data>
+  <data name="lab_RealConcentration.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;txt_AllowMaxColoringConcentration.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;txt_Intensity.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="lab_LastAdjustWeight.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;txt_UnitOfAccount.Name" xml:space="preserve">
+    <value>txt_UnitOfAccount</value>
+  </data>
+  <data name="txt_SelfChecking1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>154, 29</value>
+  </data>
+  <data name="&gt;&gt;txt_BrewingCode.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="label19.Location" type="System.Drawing.Point, System.Drawing">
+    <value>356, 24</value>
+  </data>
+  <data name="&gt;&gt;lab_Intensity.Parent" xml:space="preserve">
+    <value>grp_AdjustParameters</value>
+  </data>
+  <data name="txt_Intensity.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="lab_AssistantName.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="lb_SelfChecking2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>356, 202</value>
+  </data>
+  <data name="lab_AssistantName.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="txt_AllowMinColoringConcentration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>154, 29</value>
+  </data>
+  <data name="lab_RealConcentration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>356, 62</value>
+  </data>
+  <data name="&gt;&gt;lab_SettingConcentration.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="lab_SettingConcentration.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="lab_BrewingData.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;lab_RealConcentration.Name" xml:space="preserve">
+    <value>lab_RealConcentration</value>
+  </data>
+  <data name="lb_SelfChecking4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 19</value>
+  </data>
+  <data name="&gt;&gt;lb_SelfChecking1.Name" xml:space="preserve">
+    <value>lb_SelfChecking1</value>
+  </data>
+  <data name="&gt;&gt;txt_AdjustValue.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="txt_UnitOfAccount.Text" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="lab_AllowMinColoringConcentration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 19</value>
+  </data>
+  <data name="&gt;&gt;lab_AssistantType.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="lb_SelfChecking2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="lb_SelfChecking1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="lab_Intensity.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;lab_CurrentAdjustWeight.Name" xml:space="preserve">
+    <value>lab_CurrentAdjustWeight</value>
+  </data>
+  <data name="txt_BottleNum.Location" type="System.Drawing.Point, System.Drawing">
+    <value>163, 22</value>
+  </data>
+  <data name="&gt;&gt;txt_AssistantType.Parent" xml:space="preserve">
+    <value>grp_AdjustParameters</value>
+  </data>
+  <data name="&gt;&gt;grp_BottleDetails.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="lab_AllowMinColoringConcentration.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="lab_AllowMaxWeight.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;txt_BottleNum.ZOrder" xml:space="preserve">
+    <value>17</value>
+  </data>
+  <data name="&gt;&gt;txt_CurrentWeight.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="lab_CurrentWeight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>133, 19</value>
+  </data>
+  <data name="txt_AllowMaxWeight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>513, 127</value>
+  </data>
+  <data name="txt_BottleNum.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="&gt;&gt;lab_BrewingCode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="txt_Cost.Location" type="System.Drawing.Point, System.Drawing">
+    <value>513, 130</value>
+  </data>
+  <data name="lb_SelfChecking2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lab_AssistantType.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 61</value>
+  </data>
+  <data name="lab_BrewingCode.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="&gt;&gt;lab_TermOfValidity.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="txt_BottleNum.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="lab_AssistantCode.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="&gt;&gt;lab_AssistantType.Parent" xml:space="preserve">
+    <value>grp_AdjustParameters</value>
+  </data>
+  <data name="&gt;&gt;txt_BrewingCode.Name" xml:space="preserve">
+    <value>txt_BrewingCode</value>
+  </data>
+  <data name="lb_SelfChecking3.Text" xml:space="preserve">
+    <value>自检3:</value>
+  </data>
+  <data name="&gt;&gt;lab_AssistantName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txt_SelfChecking4.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="txt_AllowMaxWeight.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>702, 509</value>
+  </data>
+  <data name="&gt;&gt;txt_AllowMinColoringConcentration.Parent" xml:space="preserve">
+    <value>grp_AdjustParameters</value>
+  </data>
+  <data name="&gt;&gt;lab_BottleNum.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="lab_BottleNum.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="txt_UnitOfAccount.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="lab_TermOfValidity.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="txt_RealConcentration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>513, 57</value>
+  </data>
+  <data name="lab_SettingConcentration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 19</value>
+  </data>
+  <data name="label19.TabIndex" type="System.Int32, mscorlib">
+    <value>31</value>
+  </data>
+  <data name="&gt;&gt;label19.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;txt_SelfChecking4.Name" xml:space="preserve">
+    <value>txt_SelfChecking4</value>
+  </data>
+  <data name="&gt;&gt;lab_TermOfValidity.Name" xml:space="preserve">
+    <value>lab_TermOfValidity</value>
+  </data>
+  <data name="txt_SelfChecking2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>513, 197</value>
+  </data>
+  <data name="txt_BrewingCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>154, 29</value>
+  </data>
+  <data name="&gt;&gt;txt_BrewingCode.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="&gt;&gt;label19.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lb_SelfChecking3.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="txt_AllowMaxColoringConcentration.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="&gt;&gt;txt_AllowMaxColoringConcentration.Name" xml:space="preserve">
+    <value>txt_AllowMaxColoringConcentration</value>
+  </data>
+  <data name="&gt;&gt;lab_AssistantName.Name" xml:space="preserve">
+    <value>lab_AssistantName</value>
+  </data>
+  <data name="&gt;&gt;txt_AllowMaxColoringConcentration.Parent" xml:space="preserve">
+    <value>grp_AdjustParameters</value>
+  </data>
+  <data name="lab_AllowMaxWeight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>356, 132</value>
+  </data>
+  <data name="lab_BrewingCode.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;lb_SelfChecking3.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="lab_BrewingData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 272</value>
+  </data>
+  <data name="&gt;&gt;txt_AllowMaxWeight.ZOrder" xml:space="preserve">
+    <value>19</value>
+  </data>
+  <data name="lb_SelfChecking2.Text" xml:space="preserve">
+    <value>自检2:</value>
+  </data>
+  <data name="lab_BrewingData.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="txt_SelfChecking3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>154, 29</value>
+  </data>
+  <data name="txt_AdjustValue.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;txt_RealConcentration.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="txt_AllowMaxWeight.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;lab_LastAdjustWeight.ZOrder" xml:space="preserve">
+    <value>21</value>
+  </data>
+  <data name="txt_AllowMaxColoringConcentration.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="&gt;&gt;txt_SelfChecking3.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="txt_SelfChecking3.TabIndex" type="System.Int32, mscorlib">
+    <value>29</value>
+  </data>
+  <data name="&gt;&gt;lab_AllowMaxColoringConcentration.Name" xml:space="preserve">
+    <value>lab_AllowMaxColoringConcentration</value>
+  </data>
+  <data name="&gt;&gt;txt_BottleNum.Name" xml:space="preserve">
+    <value>txt_BottleNum</value>
+  </data>
+  <data name="txt_AllowMaxColoringConcentration.TabIndex" type="System.Int32, mscorlib">
+    <value>28</value>
+  </data>
+  <data name="txt_RealConcentration.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="txt_AssistantCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>154, 29</value>
+  </data>
+  <data name="&gt;&gt;txt_AllowMaxWeight.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="txt_BottleNum.Size" type="System.Drawing.Size, System.Drawing">
+    <value>154, 29</value>
+  </data>
+  <data name="&gt;&gt;txt_SelfChecking2.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;lab_CurrentWeight.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="lab_BottleNum.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;txt_LastAdjustWeight.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="lab_AllowMaxColoringConcentration.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="txt_AllowMaxColoringConcentration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>184, 130</value>
+  </data>
+  <data name="txt_BrewingData.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="&gt;&gt;lb_SelfChecking2.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="lab_AssistantCode.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;txt_Intensity.Parent" xml:space="preserve">
+    <value>grp_AdjustParameters</value>
+  </data>
+  <data name="&gt;&gt;lab_BottleNum.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="lab_AssistantType.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;txt_AssistantName.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;txt_AssistantType.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="lab_AssistantType.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="txt_LastAdjustWeight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>163, 92</value>
+  </data>
+  <data name="txt_TermOfValidity.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="lb_SelfChecking4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>356, 237</value>
+  </data>
+  <data name="lb_SelfChecking4.TabIndex" type="System.Int32, mscorlib">
+    <value>30</value>
+  </data>
+  <data name="lab_TermOfValidity.Text" xml:space="preserve">
+    <value>有效期限(小时):</value>
+  </data>
+  <data name="lab_AllowMaxWeight.Text" xml:space="preserve">
+    <value>允许最大液量:</value>
+  </data>
+  <data name="lab_BottleNum.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 27</value>
+  </data>
+  <data name="txt_SelfChecking1.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
+  </data>
+  <data name="&gt;&gt;lab_AssistantCode.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="grp_AdjustParameters.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 10.5pt</value>
+  </data>
+  <data name="grp_BottleDetails.Text" xml:space="preserve">
+    <value>母液瓶资料</value>
+  </data>
+  <data name="lb_SelfChecking4.Text" xml:space="preserve">
+    <value>自检4:</value>
+  </data>
+  <data name="lab_AllowMaxColoringConcentration.Text" xml:space="preserve">
+    <value>起始补偿常数:</value>
+  </data>
+  <data name="label19.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="&gt;&gt;label19.Name" xml:space="preserve">
+    <value>label19</value>
+  </data>
+  <data name="lab_Cost.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="lab_Cost.Text" xml:space="preserve">
+    <value>每公斤成本:</value>
+  </data>
+  <data name="&gt;&gt;txt_AssistantType.Name" xml:space="preserve">
+    <value>txt_AssistantType</value>
+  </data>
+  <data name="txt_TermOfValidity.Size" type="System.Drawing.Size, System.Drawing">
+    <value>155, 29</value>
+  </data>
+  <data name="&gt;&gt;txt_AssistantCode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="grp_AdjustParameters.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="txt_SelfChecking4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>512, 232</value>
+  </data>
+  <data name="label19.Text" xml:space="preserve">
+    <value>计算单位:</value>
+  </data>
+  <data name="&gt;&gt;lab_AllowMaxColoringConcentration.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txt_RealConcentration.Name" xml:space="preserve">
+    <value>txt_RealConcentration</value>
+  </data>
+  <data name="lab_AllowMinColoringConcentration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 98</value>
+  </data>
+  <data name="txt_AllowMinColoringConcentration.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
+  <data name="lab_BottleNum.Size" type="System.Drawing.Size, System.Drawing">
+    <value>57, 19</value>
+  </data>
+  <data name="&gt;&gt;txt_SelfChecking2.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="&gt;&gt;lab_AdjustValue.ZOrder" xml:space="preserve">
+    <value>18</value>
+  </data>
+  <data name="label19.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 19</value>
+  </data>
+  <data name="&gt;&gt;txt_SelfChecking4.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;lab_AllowMaxWeight.Name" xml:space="preserve">
+    <value>lab_AllowMaxWeight</value>
+  </data>
+  <data name="txt_SelfChecking2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="lab_BottleNum.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;txt_RealConcentration.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txt_CurrentAdjustWeight.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="lab_CurrentAdjustWeight.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lab_CurrentWeight.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;lab_SettingConcentration.ZOrder" xml:space="preserve">
+    <value>27</value>
+  </data>
+  <data name="lb_SelfChecking3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lab_AllowMaxColoringConcentration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 135</value>
+  </data>
+  <data name="&gt;&gt;lab_CurrentWeight.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="&gt;&gt;txt_AssistantName.Parent" xml:space="preserve">
+    <value>grp_AdjustParameters</value>
+  </data>
+  <data name="lab_AssistantCode.Text" xml:space="preserve">
+    <value>染助剂代码:</value>
+  </data>
+  <data name="lb_SelfChecking4.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;txt_BrewingData.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="&gt;&gt;lab_AllowMaxWeight.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lab_AdjustValue.Name" xml:space="preserve">
+    <value>lab_AdjustValue</value>
+  </data>
+  <data name="&gt;&gt;txt_AssistantCode.Name" xml:space="preserve">
+    <value>txt_AssistantCode</value>
+  </data>
+  <data name="&gt;&gt;lab_BrewingData.ZOrder" xml:space="preserve">
+    <value>23</value>
+  </data>
+  <data name="grp_BottleDetails.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="&gt;&gt;grp_AdjustParameters.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;grp_AdjustParameters.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label19.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="lab_AssistantName.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="txt_SelfChecking2.TabIndex" type="System.Int32, mscorlib">
+    <value>27</value>
+  </data>
+  <data name="txt_UnitOfAccount.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="txt_TermOfValidity.Location" type="System.Drawing.Point, System.Drawing">
+    <value>513, 56</value>
+  </data>
+  <data name="lab_AllowMaxWeight.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lab_TermOfValidity.Location" type="System.Drawing.Point, System.Drawing">
+    <value>356, 61</value>
+  </data>
+  <data name="&gt;&gt;lab_BottleNum.ZOrder" xml:space="preserve">
+    <value>28</value>
+  </data>
+  <data name="lb_SelfChecking1.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="&gt;&gt;lb_SelfChecking1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lab_BrewingData.Name" xml:space="preserve">
+    <value>lab_BrewingData</value>
+  </data>
+  <data name="lab_RealConcentration.Text" xml:space="preserve">
+    <value>实际浓度:</value>
+  </data>
+  <data name="txt_SettingConcentration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>513, 22</value>
+  </data>
+  <data name="lab_CurrentAdjustWeight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>133, 19</value>
+  </data>
+  <data name="&gt;&gt;lab_AllowMaxColoringConcentration.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="lab_AssistantName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>114, 19</value>
+  </data>
+  <data name="lab_AdjustValue.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 167</value>
+  </data>
+  <data name="&gt;&gt;txt_SelfChecking3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lab_AdjustValue.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="lb_SelfChecking3.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="lab_BrewingData.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;lab_AssistantType.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="&gt;&gt;lab_AssistantCode.ZOrder" xml:space="preserve">
+    <value>22</value>
+  </data>
+  <data name="lab_AllowMaxWeight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>133, 19</value>
+  </data>
+  <data name="lab_CurrentAdjustWeight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 132</value>
+  </data>
+  <data name="grp_BottleDetails.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="txt_AssistantName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>154, 29</value>
+  </data>
+  <data name="txt_SelfChecking4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="&gt;&gt;lab_Intensity.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="txt_AdjustValue.Size" type="System.Drawing.Size, System.Drawing">
+    <value>154, 29</value>
+  </data>
+  <data name="&gt;&gt;lab_AllowMinColoringConcentration.Parent" xml:space="preserve">
+    <value>grp_AdjustParameters</value>
+  </data>
+  <data name="grp_BottleDetails.Size" type="System.Drawing.Size, System.Drawing">
+    <value>689, 313</value>
+  </data>
+  <data name="lb_SelfChecking1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="txt_Cost.Size" type="System.Drawing.Size, System.Drawing">
+    <value>155, 29</value>
+  </data>
+  <data name="lb_SelfChecking4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;lab_AssistantName.Parent" xml:space="preserve">
+    <value>grp_AdjustParameters</value>
+  </data>
+  <data name="&gt;&gt;lab_RealConcentration.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="lab_BrewingCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>133, 19</value>
+  </data>
+  <data name="txt_UnitOfAccount.TabIndex" type="System.Int32, mscorlib">
+    <value>33</value>
+  </data>
+  <data name="&gt;&gt;txt_RealConcentration.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="lb_SelfChecking1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 202</value>
+  </data>
+  <data name="&gt;&gt;lb_SelfChecking2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txt_SettingConcentration.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="lb_SelfChecking3.TabIndex" type="System.Int32, mscorlib">
+    <value>28</value>
+  </data>
+  <data name="lab_Intensity.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="&gt;&gt;txt_CurrentAdjustWeight.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lab_Intensity.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="txt_CurrentAdjustWeight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>154, 29</value>
+  </data>
+  <data name="grp_AdjustParameters.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 331</value>
+  </data>
+  <data name="lab_AdjustValue.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="txt_SelfChecking4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>154, 29</value>
+  </data>
+  <data name="grp_BottleDetails.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 10.5pt</value>
+  </data>
+  <data name="lab_RealConcentration.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="lab_Intensity.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;txt_CurrentWeight.Name" xml:space="preserve">
+    <value>txt_CurrentWeight</value>
+  </data>
+  <data name="&gt;&gt;txt_AllowMaxWeight.Name" xml:space="preserve">
+    <value>txt_AllowMaxWeight</value>
+  </data>
+  <data name="lab_TermOfValidity.Size" type="System.Drawing.Size, System.Drawing">
+    <value>153, 19</value>
+  </data>
+  <data name="lab_Intensity.Location" type="System.Drawing.Point, System.Drawing">
+    <value>356, 98</value>
+  </data>
+  <data name="lab_AllowMinColoringConcentration.Text" xml:space="preserve">
+    <value>补偿系数:</value>
+  </data>
+  <data name="txt_SelfChecking4.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="&gt;&gt;txt_SelfChecking2.Name" xml:space="preserve">
+    <value>txt_SelfChecking2</value>
+  </data>
+  <data name="txt_SettingConcentration.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="lab_CurrentWeight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>356, 167</value>
+  </data>
+  <data name="txt_AssistantCode.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="lb_SelfChecking4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="txt_Cost.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="txt_CurrentWeight.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="lab_CurrentWeight.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;txt_AllowMaxColoringConcentration.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txt_UnitOfAccount.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txt_CurrentAdjustWeight.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="&gt;&gt;txt_AllowMinColoringConcentration.Name" xml:space="preserve">
+    <value>txt_AllowMinColoringConcentration</value>
+  </data>
+  <data name="txt_AssistantName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>184, 19</value>
+  </data>
+  <data name="lab_CurrentAdjustWeight.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;grp_AdjustParameters.Name" xml:space="preserve">
+    <value>grp_AdjustParameters</value>
+  </data>
+  <data name="txt_AssistantName.TabIndex" type="System.Int32, mscorlib">
+    <value>22</value>
+  </data>
+  <data name="txt_BrewingData.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="&gt;&gt;lab_AssistantName.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;txt_BrewingData.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="lb_SelfChecking4.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="grp_AdjustParameters.Size" type="System.Drawing.Size, System.Drawing">
+    <value>689, 169</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>BottleDetails</value>
+  </data>
+  <data name="&gt;&gt;grp_BottleDetails.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="lab_BrewingData.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="&gt;&gt;lab_Intensity.Name" xml:space="preserve">
+    <value>lab_Intensity</value>
+  </data>
+  <data name="&gt;&gt;txt_UnitOfAccount.Parent" xml:space="preserve">
+    <value>grp_AdjustParameters</value>
+  </data>
+  <data name="txt_SettingConcentration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>154, 29</value>
+  </data>
+  <data name="&gt;&gt;txt_AllowMinColoringConcentration.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="lab_Cost.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="&gt;&gt;lab_LastAdjustWeight.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="&gt;&gt;lab_Cost.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="lb_SelfChecking3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 19</value>
+  </data>
+  <data name="txt_RealConcentration.TabIndex" type="System.Int32, mscorlib">
+    <value>22</value>
+  </data>
+  <data name="&gt;&gt;txt_AdjustValue.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="lb_SelfChecking2.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
+  <data name="txt_AssistantType.Location" type="System.Drawing.Point, System.Drawing">
+    <value>184, 56</value>
+  </data>
+  <data name="txt_AdjustValue.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="&gt;&gt;lab_Cost.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="lab_CurrentAdjustWeight.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="&gt;&gt;txt_SelfChecking1.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="txt_BrewingCode.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="txt_AllowMinColoringConcentration.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="lab_AdjustValue.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="lab_Cost.Location" type="System.Drawing.Point, System.Drawing">
+    <value>356, 135</value>
+  </data>
+  <data name="lb_SelfChecking1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 19</value>
+  </data>
+  <data name="&gt;&gt;lab_AllowMinColoringConcentration.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="txt_AssistantType.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="&gt;&gt;txt_AdjustValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txt_SelfChecking1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lab_BrewingCode.ZOrder" xml:space="preserve">
+    <value>26</value>
+  </data>
+  <data name="&gt;&gt;txt_CurrentAdjustWeight.Name" xml:space="preserve">
+    <value>txt_CurrentAdjustWeight</value>
+  </data>
+  <data name="lab_BottleNum.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;txt_AssistantName.Name" xml:space="preserve">
+    <value>txt_AssistantName</value>
+  </data>
+  <data name="txt_BrewingCode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>513, 92</value>
+  </data>
+  <data name="txt_BrewingData.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="lab_BottleNum.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="&gt;&gt;lb_SelfChecking2.Name" xml:space="preserve">
+    <value>lb_SelfChecking2</value>
+  </data>
+  <data name="lab_Cost.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="txt_LastAdjustWeight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>154, 29</value>
+  </data>
+  <data name="&gt;&gt;txt_AllowMaxWeight.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="&gt;&gt;lab_AllowMinColoringConcentration.Name" xml:space="preserve">
+    <value>lab_AllowMinColoringConcentration</value>
+  </data>
+  <data name="lab_RealConcentration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 19</value>
+  </data>
+  <data name="lab_AllowMaxWeight.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;lab_BottleNum.Name" xml:space="preserve">
+    <value>lab_BottleNum</value>
+  </data>
+  <data name="&gt;&gt;lab_LastAdjustWeight.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="grp_AdjustParameters.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="txt_AssistantCode.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="label19.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;lab_BrewingCode.Name" xml:space="preserve">
+    <value>lab_BrewingCode</value>
+  </data>
+  <data name="txt_SelfChecking4.TabIndex" type="System.Int32, mscorlib">
+    <value>31</value>
+  </data>
+  <data name="&gt;&gt;lab_AllowMaxColoringConcentration.Parent" xml:space="preserve">
+    <value>grp_AdjustParameters</value>
+  </data>
+  <data name="lab_LastAdjustWeight.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="&gt;&gt;txt_SelfChecking2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="lab_TermOfValidity.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="lab_CurrentAdjustWeight.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="txt_CurrentWeight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>513, 162</value>
+  </data>
+  <data name="&gt;&gt;lab_AllowMaxWeight.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="&gt;&gt;txt_LastAdjustWeight.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="txt_SelfChecking2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>154, 29</value>
+  </data>
+  <data name="&gt;&gt;lab_AllowMinColoringConcentration.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="lab_BrewingCode.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;txt_AssistantCode.ZOrder" xml:space="preserve">
+    <value>16</value>
+  </data>
+  <data name="lab_AssistantName.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="lab_AdjustValue.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;txt_AssistantCode.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="&gt;&gt;txt_SelfChecking4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="txt_CurrentWeight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>154, 29</value>
+  </data>
+  <data name="lab_Intensity.Size" type="System.Drawing.Size, System.Drawing">
+    <value>57, 19</value>
+  </data>
+  <data name="&gt;&gt;lab_CurrentAdjustWeight.ZOrder" xml:space="preserve">
+    <value>20</value>
+  </data>
+  <data name="lab_LastAdjustWeight.Text" xml:space="preserve">
+    <value>上次针检重量:</value>
+  </data>
+  <data name="&gt;&gt;lab_TermOfValidity.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lab_CurrentAdjustWeight.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="lab_AdjustValue.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="lab_AllowMaxColoringConcentration.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;lab_SettingConcentration.Name" xml:space="preserve">
+    <value>lab_SettingConcentration</value>
+  </data>
+  <data name="&gt;&gt;txt_TermOfValidity.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;txt_TermOfValidity.Name" xml:space="preserve">
+    <value>txt_TermOfValidity</value>
+  </data>
+  <data name="lab_CurrentAdjustWeight.Text" xml:space="preserve">
+    <value>当前针检重量:</value>
+  </data>
+  <data name="txt_BottleNum.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="txt_AssistantName.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="&gt;&gt;txt_Intensity.Name" xml:space="preserve">
+    <value>txt_Intensity</value>
+  </data>
+  <data name="lab_SettingConcentration.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="&gt;&gt;lab_AdjustValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="grp_AdjustParameters.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="lab_AssistantCode.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;txt_Cost.Parent" xml:space="preserve">
+    <value>grp_AdjustParameters</value>
+  </data>
+  <data name="lab_AssistantType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>114, 19</value>
+  </data>
+  <data name="&gt;&gt;lab_BrewingCode.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="&gt;&gt;txt_SettingConcentration.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="lab_AssistantCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>114, 19</value>
+  </data>
+  <data name="txt_Cost.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
+  </data>
+  <data name="lab_TermOfValidity.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="txt_LastAdjustWeight.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="txt_AllowMaxWeight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>154, 29</value>
+  </data>
+  <data name="txt_BrewingData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>163, 267</value>
+  </data>
+  <data name="txt_Intensity.Location" type="System.Drawing.Point, System.Drawing">
+    <value>513, 93</value>
+  </data>
+  <data name="&gt;&gt;txt_TermOfValidity.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lab_CurrentWeight.Name" xml:space="preserve">
+    <value>lab_CurrentWeight</value>
+  </data>
+  <data name="txt_AllowMinColoringConcentration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>184, 93</value>
+  </data>
+  <data name="lab_Cost.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="txt_AdjustValue.Location" type="System.Drawing.Point, System.Drawing">
+    <value>163, 162</value>
+  </data>
+  <data name="&gt;&gt;lb_SelfChecking3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="lab_RealConcentration.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>Manual</value>
+  </data>
+  <data name="lab_CurrentWeight.Text" xml:space="preserve">
+    <value>当前剩余库存:</value>
+  </data>
+  <data name="lab_LastAdjustWeight.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;grp_BottleDetails.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="lab_AdjustValue.Size" type="System.Drawing.Size, System.Drawing">
+    <value>114, 19</value>
+  </data>
+  <data name="txt_Intensity.Size" type="System.Drawing.Size, System.Drawing">
+    <value>155, 29</value>
+  </data>
+  <data name="lb_SelfChecking3.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="&gt;&gt;lb_SelfChecking2.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="txt_AssistantType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>154, 29</value>
+  </data>
+  <data name="lab_AssistantCode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 62</value>
+  </data>
+  <data name="&gt;&gt;txt_BottleNum.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lab_SettingConcentration.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="txt_UnitOfAccount.Location" type="System.Drawing.Point, System.Drawing">
+    <value>513, 16</value>
+  </data>
+  <data name="label19.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lab_AllowMinColoringConcentration.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 12</value>
+  </data>
+  <data name="&gt;&gt;lab_BrewingData.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="lab_AllowMaxColoringConcentration.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;lab_CurrentWeight.ZOrder" xml:space="preserve">
+    <value>25</value>
+  </data>
+  <data name="lab_SettingConcentration.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;lb_SelfChecking4.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="txt_BrewingData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>504, 29</value>
+  </data>
+  <data name="&gt;&gt;grp_BottleDetails.Name" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="lab_BrewingData.Text" xml:space="preserve">
+    <value>当前调液日期:</value>
+  </data>
+  <data name="lab_BrewingData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>133, 19</value>
+  </data>
+  <data name="&gt;&gt;txt_BottleNum.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="&gt;&gt;txt_LastAdjustWeight.Name" xml:space="preserve">
+    <value>txt_LastAdjustWeight</value>
+  </data>
+  <data name="&gt;&gt;lab_AssistantCode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="lab_AssistantType.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="txt_AssistantType.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="&gt;&gt;lb_SelfChecking1.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="lb_SelfChecking1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;txt_AllowMinColoringConcentration.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="lab_AssistantType.Text" xml:space="preserve">
+    <value>染助剂种类:</value>
+  </data>
+  <data name="lab_LastAdjustWeight.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="grp_BottleDetails.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 5</value>
+  </data>
+  <data name="&gt;&gt;lab_Cost.Name" xml:space="preserve">
+    <value>lab_Cost</value>
+  </data>
+  <data name="lb_SelfChecking2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 19</value>
+  </data>
+  <data name="grp_BottleDetails.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="txt_RealConcentration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>154, 29</value>
+  </data>
+  <data name="txt_CurrentAdjustWeight.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="&gt;&gt;txt_AdjustValue.Name" xml:space="preserve">
+    <value>txt_AdjustValue</value>
+  </data>
+  <data name="lb_SelfChecking1.Text" xml:space="preserve">
+    <value>自检1:</value>
+  </data>
+  <data name="txt_CurrentWeight.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="lab_Cost.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="txt_UnitOfAccount.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="lab_CurrentWeight.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txt_AssistantName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="txt_CurrentAdjustWeight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>163, 127</value>
+  </data>
+  <data name="&gt;&gt;txt_Cost.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;lab_RealConcentration.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="lab_TermOfValidity.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="&gt;&gt;lab_LastAdjustWeight.Name" xml:space="preserve">
+    <value>lab_LastAdjustWeight</value>
+  </data>
+  <data name="lab_Intensity.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="txt_BrewingCode.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="&gt;&gt;label19.Parent" xml:space="preserve">
+    <value>grp_AdjustParameters</value>
+  </data>
+  <data name="&gt;&gt;lab_AssistantType.Name" xml:space="preserve">
+    <value>lab_AssistantType</value>
+  </data>
+  <data name="&gt;&gt;txt_TermOfValidity.Parent" xml:space="preserve">
+    <value>grp_AdjustParameters</value>
+  </data>
+  <data name="lab_SettingConcentration.Text" xml:space="preserve">
+    <value>设定浓度:</value>
+  </data>
+  <data name="&gt;&gt;txt_BrewingCode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txt_Intensity.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="lab_RealConcentration.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="txt_SelfChecking1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>163, 197</value>
+  </data>
+  <data name="&gt;&gt;lb_SelfChecking4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="lab_LastAdjustWeight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>133, 19</value>
+  </data>
+  <data name="txt_LastAdjustWeight.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="&gt;&gt;txt_SettingConcentration.Name" xml:space="preserve">
+    <value>txt_SettingConcentration</value>
+  </data>
+  <data name="txt_AssistantCode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>163, 57</value>
+  </data>
+  <data name="&gt;&gt;lab_CurrentAdjustWeight.Parent" xml:space="preserve">
+    <value>grp_BottleDetails</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>母液瓶详细资料</value>
+  </data>
+  <data name="lb_SelfChecking2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;txt_AssistantType.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="txt_SelfChecking1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="&gt;&gt;txt_LastAdjustWeight.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="lab_AssistantCode.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;txt_BrewingData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txt_SelfChecking1.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;lab_AllowMaxWeight.ZOrder" xml:space="preserve">
+    <value>29</value>
+  </data>
+  <data name="&gt;&gt;txt_CurrentWeight.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="lab_AllowMinColoringConcentration.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lab_AssistantName.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="txt_AllowMaxColoringConcentration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>154, 29</value>
+  </data>
+  <data name="lb_SelfChecking3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 237</value>
+  </data>
+  <data name="lab_Cost.Size" type="System.Drawing.Size, System.Drawing">
+    <value>114, 19</value>
+  </data>
+  <data name="lab_AllowMinColoringConcentration.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="lab_BrewingCode.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;lab_Cost.Parent" xml:space="preserve">
+    <value>grp_AdjustParameters</value>
+  </data>
+  <data name="txt_SettingConcentration.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="lab_CurrentWeight.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+</root>

@@ -1,0 +1,721 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BtnStop.Text" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1252, 60</value>
+  </data>
+  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 19</value>
+  </data>
+  <data name="label7.Text" xml:space="preserve">
+    <value>ActualLocation</value>
+  </data>
+  <data name="RdoZ.Size" type="System.Drawing.Size, System.Drawing">
+    <value>37, 23</value>
+  </data>
+  <data name="RdoZ.Text" xml:space="preserve">
+    <value>Z</value>
+  </data>
+  <data name="RdoY.Size" type="System.Drawing.Size, System.Drawing">
+    <value>37, 23</value>
+  </data>
+  <data name="RdoY.Text" xml:space="preserve">
+    <value>Y</value>
+  </data>
+  <data name="RdoX.Size" type="System.Drawing.Size, System.Drawing">
+    <value>37, 23</value>
+  </data>
+  <data name="RdoX.Text" xml:space="preserve">
+    <value>X</value>
+  </data>
+  <data name="BtnMove.Text" xml:space="preserve">
+    <value>Linkage</value>
+  </data>
+  <data name="BtnHome.Text" xml:space="preserve">
+    <value>Homing</value>
+  </data>
+  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>892, 60</value>
+  </data>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>129, 19</value>
+  </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>CurrentSpeed</value>
+  </data>
+  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>712, 60</value>
+  </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>119, 19</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>Acc/DecTime</value>
+  </data>
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>532, 60</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>109, 19</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>DriveSpeed</value>
+  </data>
+  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>322, 60</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>159, 19</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>InitialVelocity</value>
+  </data>
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>157, 60</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>119, 19</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>TargetPulse</value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 60</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>119, 19</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>ShaftNumber</value>
+  </data>
+  <data name="grp_move.Text" xml:space="preserve">
+    <value>ExerciseMonitoring</value>
+  </data>
+  <data name="btn_reset_a.Text" xml:space="preserve">
+    <value>Zero</value>
+  </data>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>BalanceMonitoring</value>
+  </data>
+  <data name="ChkInPut_Slow_Mid.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Slow_Mid.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 16</value>
+  </data>
+  <data name="ChkInPut_Slow_Mid.Text" xml:space="preserve">
+    <value>SlowCylinder</value>
+  </data>
+  <data name="ChkInPut_Block.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Block.Size" type="System.Drawing.Size, System.Drawing">
+    <value>114, 16</value>
+  </data>
+  <data name="ChkInPut_Block.Text" xml:space="preserve">
+    <value>CylinderToBlock</value>
+  </data>
+  <data name="ChkInPut_Apocenosis_Up.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Apocenosis_Up.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 16</value>
+  </data>
+  <data name="ChkInPut_Apocenosis_Up.Text" xml:space="preserve">
+    <value>UpperLimitOfDrainage</value>
+  </data>
+  <data name="ChkInPut_Decompression_Up.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Decompression_Up.Size" type="System.Drawing.Size, System.Drawing">
+    <value>114, 16</value>
+  </data>
+  <data name="ChkInPut_Decompression_Up.Text" xml:space="preserve">
+    <value>DecompressionUp</value>
+  </data>
+  <data name="ChkInPut_Block_Out.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Block_Out.Size" type="System.Drawing.Size, System.Drawing">
+    <value>126, 16</value>
+  </data>
+  <data name="ChkInPut_Block_Out.Text" xml:space="preserve">
+    <value>BlockOutIsInPlace</value>
+  </data>
+  <data name="ChkInPut_Block_In.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Block_In.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 16</value>
+  </data>
+  <data name="ChkInPut_Block_In.Text" xml:space="preserve">
+    <value>BlockBackInPlace</value>
+  </data>
+  <data name="ChkInPut_Decompression_Down.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Decompression_Down.Size" type="System.Drawing.Size, System.Drawing">
+    <value>126, 16</value>
+  </data>
+  <data name="ChkInPut_Decompression_Down.Text" xml:space="preserve">
+    <value>DecompressionDown</value>
+  </data>
+  <data name="ChkInPut_Cylinder_Mid.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Cylinder_Mid.Size" type="System.Drawing.Size, System.Drawing">
+    <value>114, 16</value>
+  </data>
+  <data name="ChkInPut_Cylinder_Mid.Text" xml:space="preserve">
+    <value>LimitInCylinder</value>
+  </data>
+  <data name="ChkInPut_Y_Ready.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Y_Ready.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 16</value>
+  </data>
+  <data name="ChkInPut_Y_Ready.Text" xml:space="preserve">
+    <value>Y-axisReady </value>
+  </data>
+  <data name="ChkInPut_Tray_Out.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Tray_Out.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 16</value>
+  </data>
+  <data name="ChkInPut_Tray_Out.Text" xml:space="preserve">
+    <value>LiquidTrayOutInPlace</value>
+  </data>
+  <data name="ChkInPut_Stop.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Stop.Size" type="System.Drawing.Size, System.Drawing">
+    <value>84, 16</value>
+  </data>
+  <data name="ChkInPut_Stop.Text" xml:space="preserve">
+    <value>FrontLight</value>
+  </data>
+  <data name="ChkInPut_Sunx_B.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Sunx_B.Size" type="System.Drawing.Size, System.Drawing">
+    <value>78, 16</value>
+  </data>
+  <data name="ChkInPut_Sunx_B.Text" xml:space="preserve">
+    <value>LeftLight</value>
+  </data>
+  <data name="ChkInPut_Sunx_A.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Sunx_A.Size" type="System.Drawing.Size, System.Drawing">
+    <value>84, 16</value>
+  </data>
+  <data name="ChkInPut_Sunx_A.Text" xml:space="preserve">
+    <value>RightLight</value>
+  </data>
+  <data name="ChkInPut_Syringe.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Syringe.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 16</value>
+  </data>
+  <data name="ChkInPut_Syringe.Text" xml:space="preserve">
+    <value>NeedleSensingPosition</value>
+  </data>
+  <data name="ChkInPut_Tongs_B.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Tongs_B.Size" type="System.Drawing.Size, System.Drawing">
+    <value>138, 16</value>
+  </data>
+  <data name="ChkInPut_Tongs_B.Text" xml:space="preserve">
+    <value>GrabBBackInPosition</value>
+  </data>
+  <data name="ChkInPut_Tongs_A.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Tongs_A.Size" type="System.Drawing.Size, System.Drawing">
+    <value>138, 16</value>
+  </data>
+  <data name="ChkInPut_Tongs_A.Text" xml:space="preserve">
+    <value>GrabABackInPosition</value>
+  </data>
+  <data name="ChkInPut_Tray_In.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Tray_In.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 16</value>
+  </data>
+  <data name="ChkInPut_Tray_In.Text" xml:space="preserve">
+    <value>TheTrayIsBackInPlace</value>
+  </data>
+  <data name="ChkInPut_Cylinder_Down.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Cylinder_Down.Size" type="System.Drawing.Size, System.Drawing">
+    <value>102, 16</value>
+  </data>
+  <data name="ChkInPut_Cylinder_Down.Text" xml:space="preserve">
+    <value>LowerCylinder</value>
+  </data>
+  <data name="ChkInPut_Cylinder_Up.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Cylinder_Up.Size" type="System.Drawing.Size, System.Drawing">
+    <value>102, 16</value>
+  </data>
+  <data name="ChkInPut_Cylinder_Up.Text" xml:space="preserve">
+    <value>CylinderUpper</value>
+  </data>
+  <data name="ChkInPut_Z_Origin.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Z_Origin.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 16</value>
+  </data>
+  <data name="ChkInPut_Z_Origin.Text" xml:space="preserve">
+    <value>Z-axisOrigin</value>
+  </data>
+  <data name="ChkInPut_Z_Corotation.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Z_Corotation.Size" type="System.Drawing.Size, System.Drawing">
+    <value>108, 16</value>
+  </data>
+  <data name="ChkInPut_Z_Corotation.Text" xml:space="preserve">
+    <value>Z-axisPositive</value>
+  </data>
+  <data name="ChkInPut_Y_Origin.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Y_Origin.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 16</value>
+  </data>
+  <data name="ChkInPut_Y_Origin.Text" xml:space="preserve">
+    <value>Y-axisOrigin</value>
+  </data>
+  <data name="ChkInPut_Y_Alarm.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Y_Alarm.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 16</value>
+  </data>
+  <data name="ChkInPut_Y_Alarm.Text" xml:space="preserve">
+    <value>Y-axisAlarm </value>
+  </data>
+  <data name="ChkInPut_Y_Reverse.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Y_Reverse.Size" type="System.Drawing.Size, System.Drawing">
+    <value>102, 16</value>
+  </data>
+  <data name="ChkInPut_Y_Reverse.Text" xml:space="preserve">
+    <value>Y-axisReverse</value>
+  </data>
+  <data name="ChkInPut_Y_Corotation.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Y_Corotation.Size" type="System.Drawing.Size, System.Drawing">
+    <value>108, 16</value>
+  </data>
+  <data name="ChkInPut_Y_Corotation.Text" xml:space="preserve">
+    <value>Y-axisPositive</value>
+  </data>
+  <data name="ChkInPut_X_Origin.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_X_Origin.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 16</value>
+  </data>
+  <data name="ChkInPut_X_Origin.Text" xml:space="preserve">
+    <value>X-axisOrigin</value>
+  </data>
+  <data name="ChkInPut_X_Alarm.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_X_Alarm.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 16</value>
+  </data>
+  <data name="ChkInPut_X_Alarm.Text" xml:space="preserve">
+    <value>X-axisAlarm </value>
+  </data>
+  <data name="ChkInPut_X_Ready.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_X_Ready.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 16</value>
+  </data>
+  <data name="ChkInPut_X_Ready.Text" xml:space="preserve">
+    <value>X-axisReady </value>
+  </data>
+  <data name="ChkInPut_X_Reverse.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_X_Reverse.Size" type="System.Drawing.Size, System.Drawing">
+    <value>102, 16</value>
+  </data>
+  <data name="ChkInPut_X_Reverse.Text" xml:space="preserve">
+    <value>X-axisReverse</value>
+  </data>
+  <data name="ChkInPut_X_Corotation.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_X_Corotation.Size" type="System.Drawing.Size, System.Drawing">
+    <value>108, 16</value>
+  </data>
+  <data name="ChkInPut_X_Corotation.Text" xml:space="preserve">
+    <value>X-axisPositive</value>
+  </data>
+  <data name="grp_in.Text" xml:space="preserve">
+    <value>InputMonitor</value>
+  </data>
+  <data name="BtnOutPut_Block_Cylinder.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 64</value>
+  </data>
+  <data name="BtnOutPut_Block_Cylinder.Text" xml:space="preserve">
+    <value>CylinderToBlockingPosition</value>
+  </data>
+  <data name="BtnOutPut_Slow.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 64</value>
+  </data>
+  <data name="BtnOutPut_Slow.Text" xml:space="preserve">
+    <value>SlowCylinderSpeed</value>
+  </data>
+  <data name="BtnOutPut_ResetY.Location" type="System.Drawing.Point, System.Drawing">
+    <value>514, 303</value>
+  </data>
+  <data name="BtnOutPut_ResetY.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 64</value>
+  </data>
+  <data name="BtnOutPut_ResetY.Text" xml:space="preserve">
+    <value>Y-axisAlarmReset</value>
+  </data>
+  <data name="BtnOutPut_ResetX.Location" type="System.Drawing.Point, System.Drawing">
+    <value>263, 303</value>
+  </data>
+  <data name="BtnOutPut_ResetX.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 64</value>
+  </data>
+  <data name="BtnOutPut_ResetX.Text" xml:space="preserve">
+    <value>X-axisAlarmReset</value>
+  </data>
+  <data name="BtnOutPut_Block.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 64</value>
+  </data>
+  <data name="BtnOutPut_Block.Text" xml:space="preserve">
+    <value>Block</value>
+  </data>
+  <data name="BtnOutPut_Decompression.Location" type="System.Drawing.Point, System.Drawing">
+    <value>263, 169</value>
+  </data>
+  <data name="BtnOutPut_Decompression.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 64</value>
+  </data>
+  <data name="BtnOutPut_Decompression.Text" xml:space="preserve">
+    <value>DecompressionDown</value>
+  </data>
+  <data name="BtnOutPut_Apocenosis.Location" type="System.Drawing.Point, System.Drawing">
+    <value>514, 169</value>
+  </data>
+  <data name="BtnOutPut_Apocenosis.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 64</value>
+  </data>
+  <data name="BtnOutPut_Apocenosis.Text" xml:space="preserve">
+    <value>Drainage</value>
+  </data>
+  <data name="BtnOutPut_Buzzer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 64</value>
+  </data>
+  <data name="BtnOutPut_Buzzer.Text" xml:space="preserve">
+    <value>Buzzer</value>
+  </data>
+  <data name="BtnOutPut_Tray.Location" type="System.Drawing.Point, System.Drawing">
+    <value>263, 102</value>
+  </data>
+  <data name="BtnOutPut_Tray.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 64</value>
+  </data>
+  <data name="BtnOutPut_Tray.Text" xml:space="preserve">
+    <value>TakeTheTray</value>
+  </data>
+  <data name="BtnOutPut_Water.Location" type="System.Drawing.Point, System.Drawing">
+    <value>263, 236</value>
+  </data>
+  <data name="BtnOutPut_Water.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 64</value>
+  </data>
+  <data name="BtnOutPut_Water.Text" xml:space="preserve">
+    <value>Water</value>
+  </data>
+  <data name="BtnOutPut_Waste.Location" type="System.Drawing.Point, System.Drawing">
+    <value>514, 236</value>
+  </data>
+  <data name="BtnOutPut_Waste.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 64</value>
+  </data>
+  <data name="BtnOutPut_Waste.Text" xml:space="preserve">
+    <value>WasteLiquidBack</value>
+  </data>
+  <data name="BtnOutPut_Blender.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 64</value>
+  </data>
+  <data name="BtnOutPut_Blender.Text" xml:space="preserve">
+    <value>StopStirring</value>
+  </data>
+  <data name="BtnOutPut_Cylinder_Down.Location" type="System.Drawing.Point, System.Drawing">
+    <value>514, 35</value>
+  </data>
+  <data name="BtnOutPut_Cylinder_Down.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 64</value>
+  </data>
+  <data name="BtnOutPut_Cylinder_Down.Text" xml:space="preserve">
+    <value>UnderTheCylinder</value>
+  </data>
+  <data name="BtnOutPut_Tongs.Location" type="System.Drawing.Point, System.Drawing">
+    <value>514, 102</value>
+  </data>
+  <data name="BtnOutPut_Tongs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 64</value>
+  </data>
+  <data name="BtnOutPut_Tongs.Text" xml:space="preserve">
+    <value>GrabHands</value>
+  </data>
+  <data name="BtnOutPut_Y_Power.Location" type="System.Drawing.Point, System.Drawing">
+    <value>262, 35</value>
+  </data>
+  <data name="BtnOutPut_Y_Power.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 64</value>
+  </data>
+  <data name="BtnOutPut_Y_Power.Text" xml:space="preserve">
+    <value>YVectorEnergy</value>
+  </data>
+  <data name="BtnOutPut_X_Power.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 64</value>
+  </data>
+  <data name="BtnOutPut_X_Power.Text" xml:space="preserve">
+    <value>XVectorEnergy</value>
+  </data>
+  <data name="grp_out.Text" xml:space="preserve">
+    <value>OutputMonitor</value>
+  </data>
+  <data name="RdoWetClamp.Location" type="System.Drawing.Point, System.Drawing">
+    <value>281, 206</value>
+  </data>
+  <data name="RdoWetClamp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 23</value>
+  </data>
+  <data name="RdoWetClamp.Text" xml:space="preserve">
+    <value>WetClothClip</value>
+  </data>
+  <data name="RdoDryClamp.Location" type="System.Drawing.Point, System.Drawing">
+    <value>29, 206</value>
+  </data>
+  <data name="RdoDryClamp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 23</value>
+  </data>
+  <data name="RdoDryClamp.Text" xml:space="preserve">
+    <value>DryClothClip</value>
+  </data>
+  <data name="RdoWetCloth.Location" type="System.Drawing.Point, System.Drawing">
+    <value>281, 165</value>
+  </data>
+  <data name="RdoWetCloth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>137, 23</value>
+  </data>
+  <data name="RdoWetCloth.Text" xml:space="preserve">
+    <value>WeClothArea</value>
+  </data>
+  <data name="RdoDryCloth.Location" type="System.Drawing.Point, System.Drawing">
+    <value>29, 165</value>
+  </data>
+  <data name="RdoDryCloth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 23</value>
+  </data>
+  <data name="RdoDryCloth.Text" xml:space="preserve">
+    <value>DryClothArea</value>
+  </data>
+  <data name="RdoStress.Location" type="System.Drawing.Point, System.Drawing">
+    <value>29, 247</value>
+  </data>
+  <data name="RdoStress.Size" type="System.Drawing.Size, System.Drawing">
+    <value>207, 23</value>
+  </data>
+  <data name="RdoStress.Text" xml:space="preserve">
+    <value>PressureReliefArea</value>
+  </data>
+  <data name="RdoDecompression.Location" type="System.Drawing.Point, System.Drawing">
+    <value>29, 124</value>
+  </data>
+  <data name="RdoDecompression.Size" type="System.Drawing.Size, System.Drawing">
+    <value>197, 23</value>
+  </data>
+  <data name="RdoDecompression.Text" xml:space="preserve">
+    <value>DecompressionArea</value>
+  </data>
+  <data name="RdoBalance.Location" type="System.Drawing.Point, System.Drawing">
+    <value>281, 124</value>
+  </data>
+  <data name="RdoBalance.Size" type="System.Drawing.Size, System.Drawing">
+    <value>97, 23</value>
+  </data>
+  <data name="RdoBalance.Text" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="RdoCup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>281, 83</value>
+  </data>
+  <data name="RdoCup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>167, 23</value>
+  </data>
+  <data name="RdoCup.Text" xml:space="preserve">
+    <value>DispensingArea</value>
+  </data>
+  <data name="RdoBottle.Location" type="System.Drawing.Point, System.Drawing">
+    <value>29, 83</value>
+  </data>
+  <data name="RdoBottle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>187, 23</value>
+  </data>
+  <data name="RdoBottle.Text" xml:space="preserve">
+    <value>MotherLiquidArea</value>
+  </data>
+  <data name="BtnStartMove.Text" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="TxtNum.Location" type="System.Drawing.Point, System.Drawing">
+    <value>226, 297</value>
+  </data>
+  <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>73, 302</value>
+  </data>
+  <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 19</value>
+  </data>
+  <data name="label12.Text" xml:space="preserve">
+    <value>Bottle/CupNum:</value>
+  </data>
+  <data name="groupBox5.Text" xml:space="preserve">
+    <value>FixedPointMove</value>
+  </data>
+</root>

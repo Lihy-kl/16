@@ -1,0 +1,790 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5099F57A-8452-4C43-AD96-6C56018EBB25}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>SmartDyeing</RootNamespace>
+    <AssemblyName>SmartDyeing</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>未标题-1.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BLECode, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\wisdo\Desktop\Windows(1)\Windows\windows 蓝牙sdk (Bluetooth_Demo)\CHNSpec.Device.Bluetooth.Demo\bin\Debug\BLECode.dll</HintPath>
+    </Reference>
+    <Reference Include="CHNSpec.Bluetooth, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\wisdo\Desktop\Windows(1)\Windows\windows 蓝牙sdk (Bluetooth_Demo)\CHNSpec.Device.Bluetooth.Demo\bin\Debug\CHNSpec.Bluetooth.dll</HintPath>
+    </Reference>
+    <Reference Include="CHNSpec.Device.Bluetooth">
+      <HintPath>C:\Users\wisdo\Desktop\Windows(1)\Windows\windows 蓝牙sdk (Bluetooth_Demo)\CHNSpec.Device.Bluetooth.Demo\bin\Debug\CHNSpec.Device.Bluetooth.dll</HintPath>
+    </Reference>
+    <Reference Include="CHNSpec.Device.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\wisdo\Desktop\Windows(1)\Windows\windows 蓝牙sdk (Bluetooth_Demo)\CHNSpec.Device.Bluetooth.Demo\bin\Debug\CHNSpec.Device.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="CHNSpec.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\wisdo\Desktop\Windows(1)\Windows\windows 蓝牙sdk (Bluetooth_Demo)\CHNSpec.Device.Bluetooth.Demo\bin\Debug\CHNSpec.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="EasyModbus, Version=5.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EasyModbusTCP.5.6.0\lib\net40\EasyModbus.dll</HintPath>
+    </Reference>
+    <Reference Include="HslControls, Version=3.4.0.0, Culture=neutral, PublicKeyToken=a3ad7c5c937ec0c0, processorArchitecture=MSIL">
+      <HintPath>..\packages\HslControls.3.4.0\lib\net45\HslControls.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.CodeDom, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.CodeDom.7.0.0\lib\net462\System.CodeDom.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Speech" />
+    <Reference Include="System.Web.DataVisualization, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Chart.Controls.4.7.2046\lib\net35\System.Web.DataVisualization.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.DataVisualization.Design, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Chart.Controls.4.7.2046\lib\net35\System.Web.DataVisualization.Design.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms.DataVisualization, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Chart.Controls.4.7.2046\lib\net35\System.Windows.Forms.DataVisualization.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms.DataVisualization.Design, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Chart.Controls.4.7.2046\lib\net35\System.Windows.Forms.DataVisualization.Design.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="zxing">
+      <HintPath>D:\my\mymy\zxing.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FADM_Auto\BottleCheck.cs" />
+    <Compile Include="FADM_Auto\BottleSelf.cs" />
+    <Compile Include="FADM_Auto\Drip.cs" />
+    <Compile Include="FADM_Auto\Dye.cs" />
+    <Compile Include="FADM_Auto\MyBrew.cs" />
+    <Compile Include="FADM_Auto\Reset.cs" />
+    <Compile Include="FADM_Auto\Water.cs" />
+    <Compile Include="FADM_Control\Alarm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\Alarm.Designer.cs">
+      <DependentUpon>Alarm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\AllFormulas.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\AllFormulas.Designer.cs">
+      <DependentUpon>AllFormulas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\AssistantDefin.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\AssistantDefin.Designer.cs">
+      <DependentUpon>AssistantDefin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\Balance.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\Balance.Designer.cs">
+      <DependentUpon>Balance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\Beater.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\Beater.Designer.cs">
+      <DependentUpon>Beater.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\Bottle.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\Bottle.Designer.cs">
+      <DependentUpon>Bottle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\BottleDefin.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\BottleDefin.Designer.cs">
+      <DependentUpon>BottleDefin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\BrewingProcess.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\BrewingProcess.Designer.cs">
+      <DependentUpon>BrewingProcess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\BrewRun.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\BrewRun.Designer.cs">
+      <DependentUpon>BrewRun.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\Cup.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\Cup.Designer.cs">
+      <DependentUpon>Cup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\CupDefin.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\CupDefin.Designer.cs">
+      <DependentUpon>CupDefin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\CupInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\CupInfo.Designer.cs">
+      <DependentUpon>CupInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\CupListDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\CupListDetail.Designer.cs">
+      <DependentUpon>CupListDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\Debug.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\Debug.Designer.cs">
+      <DependentUpon>Debug.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\DripBeater.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\DripBeater.Designer.cs">
+      <DependentUpon>DripBeater.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\DyeAndHandleFormulas.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\DyeAndHandleFormulas.Designer.cs">
+      <DependentUpon>DyeAndHandleFormulas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\DyeingAndFixationProcessConfiguration.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\DyeingAndFixationProcessConfiguration.Designer.cs">
+      <DependentUpon>DyeingAndFixationProcessConfiguration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\DyeingConfiguration.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\DyeingConfiguration.Designer.cs">
+      <DependentUpon>DyeingConfiguration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\DyeingProcess.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\DyeingProcess.Designer.cs">
+      <DependentUpon>DyeingProcess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\Formula.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\Formula.Designer.cs">
+      <DependentUpon>Formula.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\Formula_Temp.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\Formula_Temp.Designer.cs">
+      <DependentUpon>Formula_Temp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\FormulaGroup.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\FormulaGroup.Designer.cs">
+      <DependentUpon>FormulaGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\HistoryData.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\HistoryData.Designer.cs">
+      <DependentUpon>HistoryData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\MainBottle.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\MainBottle.Designer.cs">
+      <DependentUpon>MainBottle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\S_MainBottle.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\S_MainBottle.Designer.cs">
+      <DependentUpon>S_MainBottle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\MultipleCups.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\MultipleCups.Designer.cs">
+      <DependentUpon>MultipleCups.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\PostTreatmentConfiguration.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\PostTreatmentConfiguration.Designer.cs">
+      <DependentUpon>PostTreatmentConfiguration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\P_DripBeater.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\P_DripBeater.designer.cs">
+      <DependentUpon>P_DripBeater.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\P_Formula.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\P_Formula.Designer.cs">
+      <DependentUpon>P_Formula.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\P_MainBottle.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\P_MainBottle.designer.cs">
+      <DependentUpon>P_MainBottle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\Run.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\Run.Designer.cs">
+      <DependentUpon>Run.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\TenBeater.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\TenBeater.Designer.cs">
+      <DependentUpon>TenBeater.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\Test.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\Test.Designer.cs">
+      <DependentUpon>Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\Abort.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\Abort.Designer.cs">
+      <DependentUpon>Abort.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\Admin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\Admin.Designer.cs">
+      <DependentUpon>Admin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\BottleDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\BottleDetails.Designer.cs">
+      <DependentUpon>BottleDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\BrewingStep.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\BrewingStep.Designer.cs">
+      <DependentUpon>BrewingStep.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\Check.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\Check.Designer.cs">
+      <DependentUpon>Check.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\Cup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\Cup.Designer.cs">
+      <DependentUpon>Cup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\CupDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\CupDetails.Designer.cs">
+      <DependentUpon>CupDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\DripCupDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\DripCupDetails.Designer.cs">
+      <DependentUpon>DripCupDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\DyeingStep.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\DyeingStep.Designer.cs">
+      <DependentUpon>DyeingStep.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\CustomMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\CustomMessageBox.Designer.cs">
+      <DependentUpon>CustomMessageBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\LimitSet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\LimitSet.Designer.cs">
+      <DependentUpon>LimitSet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\Main.Designer.cs">
+      <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\NeedToDo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\NeedToDo.Designer.cs">
+      <DependentUpon>NeedToDo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\NotDripList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\NotDripList.Designer.cs">
+      <DependentUpon>NotDripList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\Operator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\Operator.Designer.cs">
+      <DependentUpon>Operator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\Register.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\Register.Designer.cs">
+      <DependentUpon>Register.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\ReName.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\ReName.Designer.cs">
+      <DependentUpon>ReName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\Self.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\Self.Designer.cs">
+      <DependentUpon>Self.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\WaitingListInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\WaitingListInfo.Designer.cs">
+      <DependentUpon>WaitingListInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\WaterCheckAndSelf.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\WaterCheckAndSelf.Designer.cs">
+      <DependentUpon>WaterCheckAndSelf.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Object\AddDropList.cs" />
+    <Compile Include="FADM_Object\Communal.cs" />
+    <Compile Include="FADM_Object\DrawingCurve.cs" />
+    <Compile Include="FADM_Object\HMITCPModBus.cs" />
+    <Compile Include="FADM_Object\HttpUtil.cs" />
+    <Compile Include="FADM_Object\IOMapping.cs" />
+    <Compile Include="FADM_Object\myAES.cs" />
+    <Compile Include="FADM_Object\MyAlarm.cs" />
+    <Compile Include="FADM_Object\MyDataGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FADM_Object\MyModbusFun.cs" />
+    <Compile Include="FADM_Object\MyRegister.cs" />
+    <Compile Include="FADM_Object\MyTextBoxCheck.cs" />
+    <Compile Include="FADM_Object\TCPModBus.cs" />
+    <Compile Include="Lib_Card\CardObject.cs" />
+    <Compile Include="Lib_Card\Configure\Parameter.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FADM_Control\Alarm.en.resx">
+      <DependentUpon>Alarm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\Alarm.resx">
+      <DependentUpon>Alarm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\AllFormulas.en.resx">
+      <DependentUpon>AllFormulas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\AllFormulas.resx">
+      <DependentUpon>AllFormulas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\AssistantDefin.en.resx">
+      <DependentUpon>AssistantDefin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\AssistantDefin.resx">
+      <DependentUpon>AssistantDefin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\Balance.resx">
+      <DependentUpon>Balance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\Beater.en.resx">
+      <DependentUpon>Beater.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\Beater.resx">
+      <DependentUpon>Beater.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\Bottle.resx">
+      <DependentUpon>Bottle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\BottleDefin.en.resx">
+      <DependentUpon>BottleDefin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\BottleDefin.resx">
+      <DependentUpon>BottleDefin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\BrewingProcess.en.resx">
+      <DependentUpon>BrewingProcess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\BrewingProcess.resx">
+      <DependentUpon>BrewingProcess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\BrewRun.resx">
+      <DependentUpon>BrewRun.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\CupDefin.en.resx">
+      <DependentUpon>CupDefin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\CupDefin.resx">
+      <DependentUpon>CupDefin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\CupInfo.en.resx">
+      <DependentUpon>CupInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\CupInfo.resx">
+      <DependentUpon>CupInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\CupListDetail.resx">
+      <DependentUpon>CupListDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\Debug.en.resx">
+      <DependentUpon>Debug.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\Debug.resx">
+      <DependentUpon>Debug.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\DripBeater.resx">
+      <DependentUpon>DripBeater.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\DyeAndHandleFormulas.resx">
+      <DependentUpon>DyeAndHandleFormulas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\DyeingAndFixationProcessConfiguration.en.resx">
+      <DependentUpon>DyeingAndFixationProcessConfiguration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\DyeingAndFixationProcessConfiguration.resx">
+      <DependentUpon>DyeingAndFixationProcessConfiguration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\DyeingConfiguration.en.resx">
+      <DependentUpon>DyeingConfiguration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\DyeingConfiguration.resx">
+      <DependentUpon>DyeingConfiguration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\DyeingProcess.resx">
+      <DependentUpon>DyeingProcess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\Formula.en.resx">
+      <DependentUpon>Formula.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\Formula.resx">
+      <DependentUpon>Formula.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\Formula_Temp.en.resx">
+      <DependentUpon>Formula_Temp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\Formula_Temp.resx">
+      <DependentUpon>Formula_Temp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\FormulaGroup.en.resx">
+      <DependentUpon>FormulaGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\FormulaGroup.resx">
+      <DependentUpon>FormulaGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\HistoryData.en.resx">
+      <DependentUpon>HistoryData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\HistoryData.resx">
+      <DependentUpon>HistoryData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\MainBottle.en.resx">
+      <DependentUpon>MainBottle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\MainBottle.resx">
+      <DependentUpon>MainBottle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\S_MainBottle.en.resx">
+      <DependentUpon>S_MainBottle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\S_MainBottle.resx">
+      <DependentUpon>S_MainBottle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\MultipleCups.resx">
+      <DependentUpon>MultipleCups.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\PostTreatmentConfiguration.en.resx">
+      <DependentUpon>PostTreatmentConfiguration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\PostTreatmentConfiguration.resx">
+      <DependentUpon>PostTreatmentConfiguration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\P_DripBeater.resx">
+      <DependentUpon>P_DripBeater.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\P_Formula.en.resx">
+      <DependentUpon>P_Formula.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\P_Formula.resx">
+      <DependentUpon>P_Formula.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\P_MainBottle.en.resx">
+      <DependentUpon>P_MainBottle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\P_MainBottle.resx">
+      <DependentUpon>P_MainBottle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\Run.en.resx">
+      <DependentUpon>Run.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\Run.resx">
+      <DependentUpon>Run.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\TenBeater.resx">
+      <DependentUpon>TenBeater.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\Test.resx">
+      <DependentUpon>Test.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\Abort.en.resx">
+      <DependentUpon>Abort.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\Abort.resx">
+      <DependentUpon>Abort.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\Admin.en.resx">
+      <DependentUpon>Admin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\Admin.resx">
+      <DependentUpon>Admin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\BottleDetails.en.resx">
+      <DependentUpon>BottleDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\BottleDetails.resx">
+      <DependentUpon>BottleDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\BrewingStep.en.resx">
+      <DependentUpon>BrewingStep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\BrewingStep.resx">
+      <DependentUpon>BrewingStep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\Check.en.resx">
+      <DependentUpon>Check.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\Check.resx">
+      <DependentUpon>Check.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\Cup.en.resx">
+      <DependentUpon>Cup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\Cup.resx">
+      <DependentUpon>Cup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\CupDetails.en.resx">
+      <DependentUpon>CupDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\CupDetails.resx">
+      <DependentUpon>CupDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\DripCupDetails.en.resx">
+      <DependentUpon>DripCupDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\DripCupDetails.resx">
+      <DependentUpon>DripCupDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\DyeingStep.en.resx">
+      <DependentUpon>DyeingStep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\DyeingStep.resx">
+      <DependentUpon>DyeingStep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\CustomMessageBox.resx">
+      <DependentUpon>CustomMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\LimitSet.en.resx">
+      <DependentUpon>LimitSet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\LimitSet.resx">
+      <DependentUpon>LimitSet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\Login.en.resx">
+      <DependentUpon>Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\Login.resx">
+      <DependentUpon>Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\Main.en.resx">
+      <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\Main.resx">
+      <DependentUpon>Main.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\NeedToDo.en.resx">
+      <DependentUpon>NeedToDo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\NeedToDo.resx">
+      <DependentUpon>NeedToDo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\NotDripList.en.resx">
+      <DependentUpon>NotDripList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\NotDripList.resx">
+      <DependentUpon>NotDripList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\Operator.en.resx">
+      <DependentUpon>Operator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\Operator.resx">
+      <DependentUpon>Operator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\Register.en.resx">
+      <DependentUpon>Register.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\Register.resx">
+      <DependentUpon>Register.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\ReName.en.resx">
+      <DependentUpon>ReName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\ReName.resx">
+      <DependentUpon>ReName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\Self.en.resx">
+      <DependentUpon>Self.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\Self.resx">
+      <DependentUpon>Self.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\WaitingListInfo.en.resx">
+      <DependentUpon>WaitingListInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\WaitingListInfo.resx">
+      <DependentUpon>WaitingListInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\WaterCheckAndSelf.en.resx">
+      <DependentUpon>WaterCheckAndSelf.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\WaterCheckAndSelf.resx">
+      <DependentUpon>WaterCheckAndSelf.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="img\加载-007.gif" />
+    <Content Include="img\登录背景图.jpg" />
+    <Content Include="未标题-1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lib_DataBank\Lib_DataBank.csproj">
+      <Project>{b7dcc8be-a733-4a44-bc11-3797a4c13cf3}</Project>
+      <Name>Lib_DataBank</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lib_File\Lib_File.csproj">
+      <Project>{569e0863-f1b3-4f53-8586-8f669df86fcf}</Project>
+      <Name>Lib_File</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lib_Log\Lib_Log.csproj">
+      <Project>{cf80d326-cf7f-4736-9841-a63751f7f96a}</Project>
+      <Name>Lib_Log</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

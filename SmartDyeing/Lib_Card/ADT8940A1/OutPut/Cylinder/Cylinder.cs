@@ -1,0 +1,48 @@
+﻿namespace Lib_Card.ADT8940A1.OutPut.Cylinder
+{
+    /// <summary>
+    /// 上下气缸
+    /// </summary>
+    public abstract class Cylinder
+    {
+        /// <summary>
+        /// 气缸上
+        /// 异常：
+        ///     1：气缸上超时
+        ///     2：阻挡气缸收回超时
+        /// </summary>
+        /// <returns>0：正常；-1：异常；</returns>
+        public abstract int CylinderUp();
+
+        /// <summary>
+        /// 气缸下
+        /// 异常：
+        ///     1：X轴正在运行
+        ///     2：Y轴正在运行
+        ///     3：X轴伺服器报警
+        ///     4：Y轴伺服器报警
+        ///     5：接液盘未收回
+        ///     6：气缸下超时
+        ///     7：阻挡气缸收回超时
+        /// </summary>
+        /// <returns>0：正常；-1：异常；</returns>
+        public abstract int CylinderDown();
+
+        /// <summary>
+        /// 气缸中
+        /// 异常：
+        ///     1：X轴正在运行
+        ///     2：Y轴正在运行
+        ///     3：X轴伺服器报警
+        ///     4：Y轴伺服器报警
+        ///     5：接液盘未收回
+        ///     6：气缸下超时
+        ///     7：气缸未在上限位
+        ///     8：阻挡气缸伸出超时
+        ///     
+        /// </summary>
+        /// <returns>0：正常；-1：异常；</returns>
+        public abstract int CylinderMid();
+    
+    }
+}

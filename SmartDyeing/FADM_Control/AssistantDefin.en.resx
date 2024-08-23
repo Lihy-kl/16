@@ -1,0 +1,342 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="grp_Browse.Text" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="btn_Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="btn_Save.Text" xml:space="preserve">
+    <value>Archive</value>
+  </data>
+  <data name="btn_Insert.Text" xml:space="preserve">
+    <value>Added</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="rdo_1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>331, 399</value>
+  </data>
+  <data name="cbo_AssistantType.Items" xml:space="preserve">
+    <value>Acid dyes</value>
+  </data>
+  <data name="cbo_AssistantType.Items1" xml:space="preserve">
+    <value>Reactive dyes</value>
+  </data>
+  <data name="cbo_AssistantType.Items2" xml:space="preserve">
+    <value>Disperse dyes</value>
+  </data>
+  <data name="cbo_AssistantType.Items3" xml:space="preserve">
+    <value>Sulfur dyes</value>
+  </data>
+  <data name="cbo_AssistantType.Items4" xml:space="preserve">
+    <value>Ice Dye</value>
+  </data>
+  <data name="cbo_AssistantType.Items5" xml:space="preserve">
+    <value>Cationic dyes</value>
+  </data>
+  <data name="cbo_AssistantType.Items6" xml:space="preserve">
+    <value>Other dyes</value>
+  </data>
+  <data name="cbo_AssistantType.Items7" xml:space="preserve">
+    <value>Additives</value>
+  </data>
+  <data name="cbo_AssistantType.Location" type="System.Drawing.Point, System.Drawing">
+    <value>331, 318</value>
+  </data>
+  <data name="cbo_AssistantType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>891, 27</value>
+  </data>
+  <data name="txt_AssistantBarCode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>331, 152</value>
+  </data>
+  <data name="txt_AssistantBarCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>891, 29</value>
+  </data>
+  <data name="txt_Cost.Location" type="System.Drawing.Point, System.Drawing">
+    <value>331, 808</value>
+  </data>
+  <data name="txt_Cost.Size" type="System.Drawing.Size, System.Drawing">
+    <value>891, 29</value>
+  </data>
+  <data name="txt_Intensity.Location" type="System.Drawing.Point, System.Drawing">
+    <value>331, 725</value>
+  </data>
+  <data name="txt_Intensity.Size" type="System.Drawing.Size, System.Drawing">
+    <value>891, 29</value>
+  </data>
+  <data name="txt_TermOfValidity.Location" type="System.Drawing.Point, System.Drawing">
+    <value>331, 642</value>
+  </data>
+  <data name="txt_TermOfValidity.Size" type="System.Drawing.Size, System.Drawing">
+    <value>891, 29</value>
+  </data>
+  <data name="txt_AllowMaxColoringConcentration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>331, 559</value>
+  </data>
+  <data name="txt_AllowMaxColoringConcentration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>891, 29</value>
+  </data>
+  <data name="txt_AllowMinColoringConcentration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>331, 476</value>
+  </data>
+  <data name="txt_AllowMinColoringConcentration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>891, 29</value>
+  </data>
+  <data name="txt_AssistantName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>331, 235</value>
+  </data>
+  <data name="txt_AssistantName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>891, 29</value>
+  </data>
+  <data name="txt_AssistantCode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>331, 69</value>
+  </data>
+  <data name="txt_AssistantCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>891, 29</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="lab_Cost.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lab_Cost.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 730</value>
+  </data>
+  <data name="lab_Cost.Size" type="System.Drawing.Size, System.Drawing">
+    <value>169, 19</value>
+  </data>
+  <data name="lab_Cost.Text" xml:space="preserve">
+    <value>CostPerKilogram:</value>
+  </data>
+  <data name="lab_Intensity.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lab_Intensity.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 813</value>
+  </data>
+  <data name="lab_Intensity.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 19</value>
+  </data>
+  <data name="lab_Intensity.Text" xml:space="preserve">
+    <value>Strength:</value>
+  </data>
+  <data name="lab_TermOfValidity.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lab_TermOfValidity.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 647</value>
+  </data>
+  <data name="lab_TermOfValidity.Size" type="System.Drawing.Size, System.Drawing">
+    <value>249, 19</value>
+  </data>
+  <data name="lab_TermOfValidity.Text" xml:space="preserve">
+    <value>ValidityPeriod (Hours) :</value>
+  </data>
+  <data name="lab_AllowMaxColoringConcentration.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lab_AllowMaxColoringConcentration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 564</value>
+  </data>
+  <data name="lab_AllowMaxColoringConcentration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>319, 19</value>
+  </data>
+  <data name="lab_AllowMaxColoringConcentration.Text" xml:space="preserve">
+    <value>TheInitialCompensationConstant:</value>
+  </data>
+  <data name="lab_AllowMinColoringConcentration.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lab_AllowMinColoringConcentration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 481</value>
+  </data>
+  <data name="lab_AllowMinColoringConcentration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>269, 19</value>
+  </data>
+  <data name="lab_AllowMinColoringConcentration.Text" xml:space="preserve">
+    <value>CoefficientOfCompensation:</value>
+  </data>
+  <data name="lab_UnitOfAccount.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lab_UnitOfAccount.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 401</value>
+  </data>
+  <data name="lab_UnitOfAccount.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 19</value>
+  </data>
+  <data name="lab_UnitOfAccount.Text" xml:space="preserve">
+    <value>UnitOfAccount:</value>
+  </data>
+  <data name="lab_AssistantType.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lab_AssistantType.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 322</value>
+  </data>
+  <data name="lab_AssistantType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>189, 19</value>
+  </data>
+  <data name="lab_AssistantType.Text" xml:space="preserve">
+    <value>TypesOfDyeingAids:</value>
+  </data>
+  <data name="lab_AssistantName.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lab_AssistantName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 240</value>
+  </data>
+  <data name="lab_AssistantName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>229, 19</value>
+  </data>
+  <data name="lab_AssistantName.Text" xml:space="preserve">
+    <value>DyeingAuxiliariesName:</value>
+  </data>
+  <data name="lab_AssistantBarCode.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="lab_AssistantBarCode.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lab_AssistantBarCode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 157</value>
+  </data>
+  <data name="lab_AssistantBarCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>259, 19</value>
+  </data>
+  <data name="lab_AssistantBarCode.Text" xml:space="preserve">
+    <value>DyeingAuxiliariesBarCode:</value>
+  </data>
+  <data name="lab_AssistantCode.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lab_AssistantCode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 74</value>
+  </data>
+  <data name="lab_AssistantCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>229, 19</value>
+  </data>
+  <data name="lab_AssistantCode.Text" xml:space="preserve">
+    <value>DyeingAuxiliariesCode:</value>
+  </data>
+  <data name="grp_AssistantDetails.Text" xml:space="preserve">
+    <value>DyeingAidsInformation</value>
+  </data>
+</root>

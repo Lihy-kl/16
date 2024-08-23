@@ -1,0 +1,151 @@
+﻿using Newtonsoft.Json.Linq;
+using SmartDyeing.FADM_Object;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
+
+namespace SmartDyeing.FADM_Form
+{
+    public partial class NeedToDo : Form
+    {
+        public static bool _b_showRun = false;
+        public NeedToDo()
+        {
+            _b_showRun = true;
+            InitializeComponent();
+
+        }
+     
+
+
+        private void InfoUpdate()
+        {
+            try
+            {
+                dataGridView1.Rows.Clear();
+
+                foreach (string i in Lib_Card.CardObject.keyValuePairs.Keys)
+                {
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                    {
+                        if ((!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("放布")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("出布")))
+                            dataGridView1.Rows.Add(i,
+                                 Lib_Card.CardObject.keyValuePairs[i].Type, Lib_Card.CardObject.keyValuePairs[i].Info);
+                    }
+                    else
+                    {
+                        if ((!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("cloth placement")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("cup discharge")))
+                            dataGridView1.Rows.Add(i,
+                                 Lib_Card.CardObject.keyValuePairs[i].Type, Lib_Card.CardObject.keyValuePairs[i].Info);
+                    }
+                }
+            }
+            catch { }
+
+
+        }
+
+        private void NeedToDo_Load(object sender, EventArgs e)
+        {
+            dataGridView1.AllowUserToResizeColumns = false;
+            dataGridView1.AllowUserToResizeRows = false;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGridView1.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            InfoUpdate();
+
+        }
+
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            try
+            {
+
+                timer1.Enabled = false;
+                if (dataGridView1.Rows.Count >= 1)
+                {
+                    int i_col = dataGridView1.CurrentCell.ColumnIndex;
+
+                    if (i_col == 3 || i_col == 4)
+                    {
+                        int row = dataGridView1.CurrentCell.RowIndex;
+                        string s = dataGridView1[0, row].Value.ToString();
+                        Lib_Card.CardObject.prompt prompt = new Lib_Card.CardObject.prompt();
+                        prompt = Lib_Card.CardObject.keyValuePairs[s];
+
+                        if (i_col == 3)
+                        {
+                            //确认
+                            prompt.Choose = 1;
+                            if (FADM_Object.Communal._b_isNetWork)
+                            {
+                                sendState(FADM_Object.Communal._s_machineCode, s, 1);
+                            }
+
+                        }
+                        else if (i_col == 4)
+                        {
+                            //否
+                            prompt.Choose = 2;
+                            if (FADM_Object.Communal._b_isNetWork)
+                            {
+                                sendState(FADM_Object.Communal._s_machineCode, s, 2);
+                            }
+
+                        }
+                        Lib_Card.CardObject.keyValuePairs[s] = prompt;
+
+
+                    }
+                }
+
+            }
+            catch { }
+            finally
+            {
+                timer1.Enabled = true;
+            }
+        }
+        async public void sendState(string machineCode, string time,int choose) {
+            try
+            {
+                Console.WriteLine("发送点击状态到sendState---------------------");
+                IDictionary<string, string> parameters = new Dictionary<string, string>();
+                parameters.Add("machineCode", machineCode);
+                parameters.Add("time", time);
+                parameters.Add("state", Convert.ToString(choose));
+                await Task.Run(() => {
+                    HttpWebResponse response = HttpUtil.CreatePostHttpResponse("https://www.gz-kelian.com/outer/product/updateBroadcastD", parameters, 15000, null, null);
+                });
+            }
+            catch
+            {
+            }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            dataGridView1.AllowUserToResizeColumns = false;
+            dataGridView1.AllowUserToResizeRows = false;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGridView1.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            InfoUpdate();
+
+
+        }
+
+        private void NeedToDo_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            _b_showRun = false;
+        }
+    }
+}

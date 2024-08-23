@@ -1,0 +1,497 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="toolStrip1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="BtnUserSwitching.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="BtnUserSwitching.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 22</value>
+  </data>
+  <data name="BtnUserSwitching.Text" xml:space="preserve">
+    <value>OrdinaryUsers</value>
+  </data>
+  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="MiBrewingProcess.Size" type="System.Drawing.Size, System.Drawing">
+    <value>262, 22</value>
+  </data>
+  <data name="MiBrewingProcess.Text" xml:space="preserve">
+    <value>DyeingAuxiliariesConfigurationProcess</value>
+  </data>
+  <data name="DyeingProcessConfiguration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>268, 22</value>
+  </data>
+  <data name="DyeingProcessConfiguration.Text" xml:space="preserve">
+    <value>DyeingProcessConfiguration</value>
+  </data>
+  <data name="PostTreatmentProcessConfiguration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>268, 22</value>
+  </data>
+  <data name="PostTreatmentProcessConfiguration.Text" xml:space="preserve">
+    <value>PostTreatmentProcessConfiguration</value>
+  </data>
+  <data name="DyeingAndFixationProcessConfiguration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>268, 22</value>
+  </data>
+  <data name="DyeingAndFixationProcessConfiguration.Text" xml:space="preserve">
+    <value>DyeingAndFixationProcessConfiguration</value>
+  </data>
+  <data name="MiDyeingProcess.Size" type="System.Drawing.Size, System.Drawing">
+    <value>262, 22</value>
+  </data>
+  <data name="MiDyeingProcess.Text" xml:space="preserve">
+    <value>DyeingSolidConfigurationProcess</value>
+  </data>
+  <data name="MiAssistant.Size" type="System.Drawing.Size, System.Drawing">
+    <value>262, 22</value>
+  </data>
+  <data name="MiAssistant.Text" xml:space="preserve">
+    <value>BasicInformationOfDyeingAuxiliaries</value>
+  </data>
+  <data name="MiBottle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>262, 22</value>
+  </data>
+  <data name="MiBottle.Text" xml:space="preserve">
+    <value>BasicInformationOfMotherLiquorBottle</value>
+  </data>
+  <data name="MiCup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>262, 22</value>
+  </data>
+  <data name="MiCup.Text" xml:space="preserve">
+    <value>BasicInformationOfDispensingCup</value>
+  </data>
+  <data name="MiLimitSet.Size" type="System.Drawing.Size, System.Drawing">
+    <value>262, 22</value>
+  </data>
+  <data name="MiLimitSet.Text" xml:space="preserve">
+    <value>LimitSettings</value>
+  </data>
+  <data name="MiFormulaGroup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>262, 22</value>
+  </data>
+  <data name="MiFormulaGroup.Text" xml:space="preserve">
+    <value>ACombinationOfRecipes</value>
+  </data>
+  <data name="MiOperator.Size" type="System.Drawing.Size, System.Drawing">
+    <value>262, 22</value>
+  </data>
+  <data name="MiOperator.Text" xml:space="preserve">
+    <value>OperatorInformation</value>
+  </data>
+  <data name="toolStripSplitButton1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="toolStripSplitButton1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>137, 22</value>
+  </data>
+  <data name="toolStripSplitButton1.Text" xml:space="preserve">
+    <value>BasicDataManagement</value>
+  </data>
+  <data name="MiOut1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>129, 22</value>
+  </data>
+  <data name="MiOut1.Text" xml:space="preserve">
+    <value>LifeCheck</value>
+  </data>
+  <data name="MiLow1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>129, 22</value>
+  </data>
+  <data name="MiLow1.Text" xml:space="preserve">
+    <value>StockCheck</value>
+  </data>
+  <data name="MiFullDrip1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>129, 22</value>
+  </data>
+  <data name="MiFullDrip1.Text" xml:space="preserve">
+    <value>FullDrip</value>
+  </data>
+  <data name="toolStripSplitButton6.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="toolStripSplitButton6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>141, 22</value>
+  </data>
+  <data name="toolStripSplitButton6.Text" xml:space="preserve">
+    <value>Parameter management</value>
+  </data>
+  <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="MiDebug.Size" type="System.Drawing.Size, System.Drawing">
+    <value>148, 22</value>
+  </data>
+  <data name="MiDebug.Text" xml:space="preserve">
+    <value>TheDebugPage</value>
+  </data>
+  <data name="MiRun.Size" type="System.Drawing.Size, System.Drawing">
+    <value>148, 22</value>
+  </data>
+  <data name="MiRun.Text" xml:space="preserve">
+    <value>TheRunPage</value>
+  </data>
+  <data name="MiAlarm.Size" type="System.Drawing.Size, System.Drawing">
+    <value>148, 22</value>
+  </data>
+  <data name="MiAlarm.Text" xml:space="preserve">
+    <value>TheAlarmPage</value>
+  </data>
+  <data name="toolStripSplitButton2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="toolStripSplitButton2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>183, 22</value>
+  </data>
+  <data name="toolStripSplitButton2.Text" xml:space="preserve">
+    <value>MachineDebuggingManagement</value>
+  </data>
+  <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="BtnMain.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="BtnMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>185, 22</value>
+  </data>
+  <data name="BtnMain.Text" xml:space="preserve">
+    <value>MotherLiquidBottleInformationPage</value>
+  </data>
+  <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="DetailInfo.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="DetailInfo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>164, 22</value>
+  </data>
+  <data name="DetailInfo.Text" xml:space="preserve">
+    <value>DispensingCupInformationPage</value>
+  </data>
+  <data name="toolStripSeparator9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="toolStripSplitButton5.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="toolStripSplitButton5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>136, 22</value>
+  </data>
+  <data name="toolStripSplitButton5.Text" xml:space="preserve">
+    <value>DropManagementPage</value>
+  </data>
+  <data name="toolStripSeparator8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="MiHistoryPage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
+  </data>
+  <data name="MiHistoryPage.Text" xml:space="preserve">
+    <value>HistoricalQueryPage</value>
+  </data>
+  <data name="MiFormulaPage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
+  </data>
+  <data name="MiFormulaPage.Text" xml:space="preserve">
+    <value>RecipeHistoryPage</value>
+  </data>
+  <data name="MiBrewPage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
+  </data>
+  <data name="MiBrewPage.Text" xml:space="preserve">
+    <value>BrewPage</value>
+  </data>
+  <data name="toolStripSplitButton4.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="toolStripSplitButton4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>159, 22</value>
+  </data>
+  <data name="toolStripSplitButton4.Text" xml:space="preserve">
+    <value>HistoricalDataManagement</value>
+  </data>
+  <data name="toolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="BtnNTD.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="BtnNTD.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
+        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
+        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
+        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
+        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
+        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
+        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
+        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
+        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
+        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="BtnNTD.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 20</value>
+  </data>
+  <data name="BtnNTD.Text" xml:space="preserve">
+    <value>To-doListPage</value>
+  </data>
+  <data name="toolStripSeparator7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="MiAbort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>108, 22</value>
+  </data>
+  <data name="MiAbort.Text" xml:space="preserve">
+    <value>Abort</value>
+  </data>
+  <data name="MiRegister.Size" type="System.Drawing.Size, System.Drawing">
+    <value>108, 22</value>
+  </data>
+  <data name="MiRegister.Text" xml:space="preserve">
+    <value>SignUp</value>
+  </data>
+  <data name="toolStripSplitButton3.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="toolStripSplitButton3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 20</value>
+  </data>
+  <data name="toolStripSplitButton3.Text" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="LabStatus.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="LabStatus.Size" type="System.Drawing.Size, System.Drawing">
+    <value>27, 16</value>
+  </data>
+  <data name="toolStripLabel1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="toolStripLabel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="toolStripSeparator5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="BtnResetBrew.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="BtnResetBrew.Size" type="System.Drawing.Size, System.Drawing">
+    <value>203, 20</value>
+  </data>
+  <data name="BtnResetBrew.Text" xml:space="preserve">
+    <value>RestartTheCommunicationOfTheFeeder</value>
+  </data>
+  <data name="toolStrip1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1283, 25</value>
+  </data>
+  <data name="PnlMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 25</value>
+  </data>
+  <data name="PnlMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1283, 682</value>
+  </data>
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAICAAAAEAIACoEAAAFgAAACgAAAAgAAAAQAAAAAEAIAAAAAAAABAAACMuAAAjLgAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAACzXC8As1wvALNcLwCzXC8As1wvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAACzXC8As1wvALNcLwCzXC8As1wvALNcLwCzXC8As1wvALNcLwAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAA7H83AM5sMwDKajIAuF8wALNcLxmzXC9Ws1wvIbNcLwCzXC8As1wvALNc
+        LwA7Hg8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADygzgA3HU1AMZoMgO1XS9Xs1wvzbNcL/2zXC/Ls1wvbLNc
+        LyOzXC8Bs1wvALNcLwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        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
+        AD+HgAB///AA////AP///wD///8D//////8=
+</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>SmartDyeing</value>
+  </data>
+</root>

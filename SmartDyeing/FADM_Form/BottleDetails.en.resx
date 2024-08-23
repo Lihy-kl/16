@@ -1,0 +1,418 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="lb_SelfChecking4.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="lb_SelfChecking4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>356, 240</value>
+  </data>
+  <data name="lb_SelfChecking4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 12</value>
+  </data>
+  <data name="lb_SelfChecking3.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="lb_SelfChecking3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 240</value>
+  </data>
+  <data name="lb_SelfChecking3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 12</value>
+  </data>
+  <data name="lb_SelfChecking2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="lb_SelfChecking2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>356, 205</value>
+  </data>
+  <data name="lb_SelfChecking2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 12</value>
+  </data>
+  <data name="lb_SelfChecking1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="lb_SelfChecking1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 205</value>
+  </data>
+  <data name="lb_SelfChecking1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 12</value>
+  </data>
+  <data name="lab_AdjustValue.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="lab_AdjustValue.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 170</value>
+  </data>
+  <data name="lab_AdjustValue.Size" type="System.Drawing.Size, System.Drawing">
+    <value>101, 12</value>
+  </data>
+  <data name="lab_AdjustValue.Text" xml:space="preserve">
+    <value>CorrectionValue:</value>
+  </data>
+  <data name="lab_CurrentAdjustWeight.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="lab_CurrentAdjustWeight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 135</value>
+  </data>
+  <data name="lab_CurrentAdjustWeight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>143, 12</value>
+  </data>
+  <data name="lab_CurrentAdjustWeight.Text" xml:space="preserve">
+    <value>CurrentCorrectedWeight:</value>
+  </data>
+  <data name="lab_LastAdjustWeight.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="lab_LastAdjustWeight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 100</value>
+  </data>
+  <data name="lab_LastAdjustWeight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 12</value>
+  </data>
+  <data name="lab_LastAdjustWeight.Text" xml:space="preserve">
+    <value>LastCorrectedWeight:</value>
+  </data>
+  <data name="lab_AssistantCode.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="lab_AssistantCode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 65</value>
+  </data>
+  <data name="lab_AssistantCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>137, 12</value>
+  </data>
+  <data name="lab_AssistantCode.Text" xml:space="preserve">
+    <value>DyeingAuxiliariesCode:</value>
+  </data>
+  <data name="lab_BrewingData.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="lab_BrewingData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 275</value>
+  </data>
+  <data name="lab_BrewingData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>71, 12</value>
+  </data>
+  <data name="lab_BrewingData.Text" xml:space="preserve">
+    <value>MixingDate:</value>
+  </data>
+  <data name="lab_RealConcentration.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="lab_RealConcentration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>356, 65</value>
+  </data>
+  <data name="lab_RealConcentration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 12</value>
+  </data>
+  <data name="lab_RealConcentration.Text" xml:space="preserve">
+    <value>ActualConcentration:</value>
+  </data>
+  <data name="lab_CurrentWeight.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="lab_CurrentWeight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>356, 170</value>
+  </data>
+  <data name="lab_CurrentWeight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 12</value>
+  </data>
+  <data name="lab_CurrentWeight.Text" xml:space="preserve">
+    <value>CurrentStock:</value>
+  </data>
+  <data name="lab_BrewingCode.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="lab_BrewingCode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>356, 100</value>
+  </data>
+  <data name="lab_BrewingCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 12</value>
+  </data>
+  <data name="lab_BrewingCode.Text" xml:space="preserve">
+    <value>LiquidFlowCode:</value>
+  </data>
+  <data name="lab_SettingConcentration.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="lab_SettingConcentration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>356, 30</value>
+  </data>
+  <data name="lab_SettingConcentration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>107, 12</value>
+  </data>
+  <data name="lab_SettingConcentration.Text" xml:space="preserve">
+    <value>SetConcentration:</value>
+  </data>
+  <data name="lab_BottleNum.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="lab_BottleNum.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 30</value>
+  </data>
+  <data name="lab_BottleNum.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 12</value>
+  </data>
+  <data name="lab_BottleNum.Text" xml:space="preserve">
+    <value>BottleNumber:</value>
+  </data>
+  <data name="lab_AllowMaxWeight.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="lab_AllowMaxWeight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>356, 135</value>
+  </data>
+  <data name="lab_AllowMaxWeight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>143, 12</value>
+  </data>
+  <data name="lab_AllowMaxWeight.Text" xml:space="preserve">
+    <value>MaximumAllowableWeight:</value>
+  </data>
+  <data name="grp_BottleDetails.Text" xml:space="preserve">
+    <value>MotherLiquorInformation</value>
+  </data>
+  <data name="label19.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="label19.Location" type="System.Drawing.Point, System.Drawing">
+    <value>356, 27</value>
+  </data>
+  <data name="label19.Size" type="System.Drawing.Size, System.Drawing">
+    <value>89, 12</value>
+  </data>
+  <data name="label19.Text" xml:space="preserve">
+    <value>UnitOfAccount:</value>
+  </data>
+  <data name="txt_AllowMaxColoringConcentration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>205, 130</value>
+  </data>
+  <data name="txt_AllowMaxColoringConcentration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>133, 29</value>
+  </data>
+  <data name="txt_AllowMinColoringConcentration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>205, 93</value>
+  </data>
+  <data name="txt_AllowMinColoringConcentration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>133, 29</value>
+  </data>
+  <data name="txt_AssistantType.Location" type="System.Drawing.Point, System.Drawing">
+    <value>205, 56</value>
+  </data>
+  <data name="txt_AssistantType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>133, 29</value>
+  </data>
+  <data name="txt_AssistantName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>205, 19</value>
+  </data>
+  <data name="txt_AssistantName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>133, 29</value>
+  </data>
+  <data name="lab_AssistantName.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="lab_AssistantName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 27</value>
+  </data>
+  <data name="lab_AssistantName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>137, 12</value>
+  </data>
+  <data name="lab_AssistantName.Text" xml:space="preserve">
+    <value>DyeingAuxiliariesName:</value>
+  </data>
+  <data name="lab_Intensity.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="lab_Intensity.Location" type="System.Drawing.Point, System.Drawing">
+    <value>356, 101</value>
+  </data>
+  <data name="lab_Intensity.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 12</value>
+  </data>
+  <data name="lab_Intensity.Text" xml:space="preserve">
+    <value>Strength:</value>
+  </data>
+  <data name="lab_Cost.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="lab_Cost.Location" type="System.Drawing.Point, System.Drawing">
+    <value>356, 138</value>
+  </data>
+  <data name="lab_Cost.Size" type="System.Drawing.Size, System.Drawing">
+    <value>101, 12</value>
+  </data>
+  <data name="lab_Cost.Text" xml:space="preserve">
+    <value>CostPerKilogram:</value>
+  </data>
+  <data name="lab_AllowMinColoringConcentration.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="lab_AllowMinColoringConcentration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 101</value>
+  </data>
+  <data name="lab_AllowMinColoringConcentration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>161, 12</value>
+  </data>
+  <data name="lab_AllowMinColoringConcentration.Text" xml:space="preserve">
+    <value>CoefficientOfCompensation:</value>
+  </data>
+  <data name="lab_AllowMaxColoringConcentration.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="lab_AllowMaxColoringConcentration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 138</value>
+  </data>
+  <data name="lab_AllowMaxColoringConcentration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>191, 12</value>
+  </data>
+  <data name="lab_AllowMaxColoringConcentration.Text" xml:space="preserve">
+    <value>TheInitialCompensationConstant:</value>
+  </data>
+  <data name="lab_TermOfValidity.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="lab_TermOfValidity.Location" type="System.Drawing.Point, System.Drawing">
+    <value>356, 64</value>
+  </data>
+  <data name="lab_TermOfValidity.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 12</value>
+  </data>
+  <data name="lab_TermOfValidity.Text" xml:space="preserve">
+    <value>ValidityPeriod (Hours) :</value>
+  </data>
+  <data name="lab_AssistantType.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="lab_AssistantType.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 64</value>
+  </data>
+  <data name="lab_AssistantType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>113, 12</value>
+  </data>
+  <data name="lab_AssistantType.Text" xml:space="preserve">
+    <value>TypesOfDyeingAids:</value>
+  </data>
+  <data name="grp_AdjustParameters.Text" xml:space="preserve">
+    <value>DyeingAidsInformation</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>MotherLiquorInformation</value>
+  </data>
+</root>
