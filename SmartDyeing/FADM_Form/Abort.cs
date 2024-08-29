@@ -13,6 +13,7 @@ namespace SmartDyeing.FADM_Form
 {
     public partial class Abort : Form
     {
+        //测试下
         public Abort()
         {
             InitializeComponent();
