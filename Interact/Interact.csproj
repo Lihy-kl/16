@@ -36,20 +36,25 @@
     <ApplicationIcon>未标题-1.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BLECode">
-      <HintPath>C:\Users\wisdo\Desktop\Windows(1)\Windows\windows 蓝牙sdk (Bluetooth_Demo)\CHNSpec.Device.Bluetooth.Demo\bin\Debug\BLECode.dll</HintPath>
+    <Reference Include="BLECode, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SmartDyeing\Libs\BLECode.dll</HintPath>
     </Reference>
-    <Reference Include="CHNSpec.Bluetooth">
-      <HintPath>C:\Users\wisdo\Desktop\Windows(1)\Windows\windows 蓝牙sdk (Bluetooth_Demo)\CHNSpec.Device.Bluetooth.Demo\bin\Debug\CHNSpec.Bluetooth.dll</HintPath>
+    <Reference Include="CHNSpec.Bluetooth, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SmartDyeing\Libs\CHNSpec.Bluetooth.dll</HintPath>
     </Reference>
-    <Reference Include="CHNSpec.Device.Bluetooth">
-      <HintPath>C:\Users\wisdo\Desktop\Windows(1)\Windows\windows 蓝牙sdk (Bluetooth_Demo)\CHNSpec.Device.Bluetooth.Demo\bin\Debug\CHNSpec.Device.Bluetooth.dll</HintPath>
+    <Reference Include="CHNSpec.Device.Bluetooth, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SmartDyeing\Libs\CHNSpec.Device.Bluetooth.dll</HintPath>
     </Reference>
-    <Reference Include="CHNSpec.Device.Models">
-      <HintPath>C:\Users\wisdo\Desktop\Windows(1)\Windows\windows 蓝牙sdk (Bluetooth_Demo)\CHNSpec.Device.Bluetooth.Demo\bin\Debug\CHNSpec.Device.Models.dll</HintPath>
+    <Reference Include="CHNSpec.Device.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SmartDyeing\Libs\CHNSpec.Device.Models.dll</HintPath>
     </Reference>
-    <Reference Include="CHNSpec.Models">
-      <HintPath>C:\Users\wisdo\Desktop\Windows(1)\Windows\windows 蓝牙sdk (Bluetooth_Demo)\CHNSpec.Device.Bluetooth.Demo\bin\Debug\CHNSpec.Models.dll</HintPath>
+    <Reference Include="CHNSpec.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SmartDyeing\Libs\CHNSpec.Models.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
