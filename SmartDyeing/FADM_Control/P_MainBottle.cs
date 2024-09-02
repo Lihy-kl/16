@@ -1612,17 +1612,35 @@ namespace SmartDyeing.FADM_Control
         {
             if (6 == FADM_Object.Communal.ReadMachineStatus())
             {
-                if ("暂 停" == BtnBottleCheckPause.Text)
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
                 {
-                    FADM_Object.Communal._b_pause = true;
-                    BtnBottleCheckPause.Text = "恢 复";
-                    FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "点击针检暂停");
+                    if ("暂 停" == BtnBottleCheckPause.Text)
+                    {
+                        FADM_Object.Communal._b_pause = true;
+                        BtnBottleCheckPause.Text = "恢 复";
+                        FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "点击针检暂停");
+                    }
+                    else
+                    {
+                        FADM_Object.Communal._b_pause = false;
+                        BtnBottleCheckPause.Text = "暂 停";
+                        FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "点击针检恢复");
+                    }
                 }
                 else
                 {
-                    FADM_Object.Communal._b_pause = false;
-                    BtnBottleCheckPause.Text = "暂 停";
-                    FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "点击针检恢复");
+                    if ("Pause" == BtnBottleCheckPause.Text)
+                    {
+                        FADM_Object.Communal._b_pause = true;
+                        BtnBottleCheckPause.Text = "Restore";
+                        FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "点击针检暂停");
+                    }
+                    else
+                    {
+                        FADM_Object.Communal._b_pause = false;
+                        BtnBottleCheckPause.Text = "Pause";
+                        FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "点击针检恢复");
+                    }
                 }
             }
         }
@@ -1661,17 +1679,35 @@ namespace SmartDyeing.FADM_Control
         {
             if (11 == FADM_Object.Communal.ReadMachineStatus())
             {
-                if ("暂 停" == BtnBottleSelfPause.Text)
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
                 {
-                    FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "点击自检暂停");
-                    FADM_Object.Communal._b_pause = true;
-                    BtnBottleSelfPause.Text = "恢 复";
+                    if ("暂 停" == BtnBottleSelfPause.Text)
+                    {
+                        FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "点击自检暂停");
+                        FADM_Object.Communal._b_pause = true;
+                        BtnBottleSelfPause.Text = "恢 复";
+                    }
+                    else
+                    {
+                        FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "点击自检恢复");
+                        FADM_Object.Communal._b_pause = false;
+                        BtnBottleSelfPause.Text = "暂 停";
+                    }
                 }
                 else
                 {
-                    FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "点击自检恢复");
-                    FADM_Object.Communal._b_pause = false;
-                    BtnBottleSelfPause.Text = "暂 停";
+                    if ("Pause" == BtnBottleSelfPause.Text)
+                    {
+                        FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "点击自检暂停");
+                        FADM_Object.Communal._b_pause = true;
+                        BtnBottleSelfPause.Text = "Restore";
+                    }
+                    else
+                    {
+                        FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "点击自检恢复");
+                        FADM_Object.Communal._b_pause = false;
+                        BtnBottleSelfPause.Text = "Pause";
+                    }
                 }
             }
         }

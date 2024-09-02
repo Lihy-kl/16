@@ -614,7 +614,8 @@ namespace SmartDyeing.FADM_Object
             if ("小针筒" == s_syringeType || "Little Syringe" == s_syringeType)
             {
                 iExtractionPulse = (i_pulseT + i_adjust * (Lib_Card.Configure.Parameter.Correcting_S_Weight + 1));
-                if (iExtractionPulse + Lib_Card.Configure.Parameter.Other_Z_BackPulse+ (FADM_Object.Communal._b_isDripReserveFirst? i_adjust:0) > Lib_Card.Configure.Parameter.Other_S_MaxPulse)
+                //FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "脉冲(" + i_pulseT + ")"+ "校正值(" + i_adjust + ")" + "Other_Z_BackPulse(" + Lib_Card.Configure.Parameter.Other_Z_BackPulse + ")" + "Other_S_MaxPulse(" + Lib_Card.Configure.Parameter.Other_S_MaxPulse + ")" + "_b_isFullDrip(" + (Communal._b_isFullDrip?"1":"0") + ")" + "_b_isDripReserveFirst(" + (FADM_Object.Communal._b_isDripReserveFirst ? "1" : "0") + ")");
+                if (iExtractionPulse - Lib_Card.Configure.Parameter.Other_Z_BackPulse > Lib_Card.Configure.Parameter.Other_S_MaxPulse)
                 {
                     if (FADM_Object.Communal._b_isFullDrip)
                     {
@@ -631,7 +632,7 @@ namespace SmartDyeing.FADM_Object
 
                             i_temp = iExtractionPulse;
 
-                            if (i_temp + v1.Value - Lib_Card.Configure.Parameter.Other_Z_BackPulse + (FADM_Object.Communal._b_isDripReserveFirst ? i_adjust : 0) > Lib_Card.Configure.Parameter.Other_S_MaxPulse)
+                            if (i_temp + v1.Value - Lib_Card.Configure.Parameter.Other_Z_BackPulse  > Lib_Card.Configure.Parameter.Other_S_MaxPulse)
                             {
                                 //如果需加量大于10g，直接先加
                                 //if(v1.Value/1.0/ _i_adjust > Lib_Card.Configure.Parameter.Other_SplitValue)
@@ -642,7 +643,7 @@ namespace SmartDyeing.FADM_Object
                                 else
                                 {
                                     //如果一筒抽不完就分2次，一次抽完就留下一次独立抽
-                                    if (v1.Value + i_adjust * (Lib_Card.Configure.Parameter.Correcting_S_Weight + 1) - Lib_Card.Configure.Parameter.Other_Z_BackPulse + (FADM_Object.Communal._b_isDripReserveFirst ? i_adjust : 0) > Lib_Card.Configure.Parameter.Other_S_MaxPulse)
+                                    if (v1.Value + i_adjust * (Lib_Card.Configure.Parameter.Correcting_S_Weight + 1) - Lib_Card.Configure.Parameter.Other_Z_BackPulse  > Lib_Card.Configure.Parameter.Other_S_MaxPulse)
                                     {
                                         iExtractionPulse = Lib_Card.Configure.Parameter.Other_S_MaxPulse + Lib_Card.Configure.Parameter.Other_Z_BackPulse;
                                     }
@@ -683,7 +684,7 @@ namespace SmartDyeing.FADM_Object
             else
             {
                 iExtractionPulse = (i_pulseT + i_adjust * (Lib_Card.Configure.Parameter.Correcting_B_Weight + 1));
-                if (iExtractionPulse - Lib_Card.Configure.Parameter.Other_Z_BackPulse+ (FADM_Object.Communal._b_isDripReserveFirst ? i_adjust : 0) > Lib_Card.Configure.Parameter.Other_B_MaxPulse)
+                if (iExtractionPulse - Lib_Card.Configure.Parameter.Other_Z_BackPulse > Lib_Card.Configure.Parameter.Other_B_MaxPulse)
                 {
                     if (FADM_Object.Communal._b_isFullDrip)
                     {
@@ -700,7 +701,7 @@ namespace SmartDyeing.FADM_Object
 
                             i_temp = iExtractionPulse;
 
-                            if (i_temp + v1.Value - Lib_Card.Configure.Parameter.Other_Z_BackPulse + (FADM_Object.Communal._b_isDripReserveFirst ? i_adjust : 0) > Lib_Card.Configure.Parameter.Other_B_MaxPulse)
+                            if (i_temp + v1.Value - Lib_Card.Configure.Parameter.Other_Z_BackPulse  > Lib_Card.Configure.Parameter.Other_B_MaxPulse)
                             {
                                 ////如果需加量大于10g，直接先加
                                 //if (v1.Value / 1.0 / _i_adjust >= Lib_Card.Configure.Parameter.Other_SplitValue)
@@ -710,7 +711,7 @@ namespace SmartDyeing.FADM_Object
                                 }
                                 else
                                 {
-                                    if (v1.Value + i_adjust * (Lib_Card.Configure.Parameter.Correcting_B_Weight + 1) - Lib_Card.Configure.Parameter.Other_Z_BackPulse+(FADM_Object.Communal._b_isDripReserveFirst ? i_adjust : 0) > Lib_Card.Configure.Parameter.Other_B_MaxPulse)
+                                    if (v1.Value + i_adjust * (Lib_Card.Configure.Parameter.Correcting_B_Weight + 1) - Lib_Card.Configure.Parameter.Other_Z_BackPulse > Lib_Card.Configure.Parameter.Other_B_MaxPulse)
                                     {
                                         iExtractionPulse = Lib_Card.Configure.Parameter.Other_B_MaxPulse + Lib_Card.Configure.Parameter.Other_Z_BackPulse;
                                     }

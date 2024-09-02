@@ -1618,7 +1618,13 @@ namespace SmartDyeing.FADM_Auto
                                                 "UPDATE cup_details SET Cooperate = 4 WHERE CupNum = " + i_cupNo + " And Cooperate !=6;");
                                             Txt.WriteTXTC(i_cupNo, "收到洗杯加水");
 
-                                            _cup_Temps[i_cupNo - 1]._i_addStatus = 1;
+                                            //检查是否已把数据库更新
+                                            DataTable dt_cup = _fadmSqlserver.GetData("Select * from cup_details WHERE CupNum = " + i_cupNo + " ;");
+                                            if (dt_cup.Rows.Count > 0)
+                                            {
+                                                if (dt_cup.Rows[0]["Cooperate"].ToString() == "4")
+                                                    _cup_Temps[i_cupNo - 1]._i_addStatus = 1;
+                                            }
 
                                             continue;
                                         }
@@ -1650,7 +1656,13 @@ namespace SmartDyeing.FADM_Auto
                                             FADM_Object.Communal._fadmSqlserver.ReviseData(
                                               "UPDATE dye_details SET Cooperate = 1,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + i_cupNo + " AND StepNum = " + lis_datas[j]._s_currentStepNum + " AND Cooperate not in (5,6,7,8,9) ;");
 
-                                            _cup_Temps[i_cupNo - 1]._i_addStatus = 1;
+                                            //检查是否已把数据库更新
+                                            DataTable dt_cup = _fadmSqlserver.GetData("Select * from dye_details WHERE CupNum = " + i_cupNo + " AND StepNum = " + lis_datas[j]._s_currentStepNum + " ;");
+                                            if (dt_cup.Rows.Count > 0)
+                                            {
+                                                if (dt_cup.Rows[0]["Cooperate"].ToString() == "1")
+                                                    _cup_Temps[i_cupNo - 1]._i_addStatus = 1;
+                                            }
 
 
 
@@ -1685,7 +1697,13 @@ namespace SmartDyeing.FADM_Auto
                                               "UPDATE dye_details SET Cooperate = 3,ReceptionTime='" + DateTime.Now + "'  WHERE CupNum = " + i_cupNo + " AND StepNum = " + lis_datas[j]._s_currentStepNum + " And Cooperate !=9;");
                                             Txt.WriteTXTC(i_cupNo, "收到流程加水");
 
-                                            _cup_Temps[i_cupNo - 1]._i_addStatus = 1;
+                                            //检查是否已把数据库更新
+                                            DataTable dt_cup = _fadmSqlserver.GetData("Select * from dye_details WHERE CupNum = " + i_cupNo + " AND StepNum = " + lis_datas[j]._s_currentStepNum + " ;");
+                                            if (dt_cup.Rows.Count > 0)
+                                            {
+                                                if (dt_cup.Rows[0]["Cooperate"].ToString() == "3")
+                                                    _cup_Temps[i_cupNo - 1]._i_addStatus = 1;
+                                            }
 
                                             continue;
 
@@ -2827,7 +2845,13 @@ namespace SmartDyeing.FADM_Auto
                                                 "UPDATE cup_details SET Cooperate = 4 WHERE CupNum = " + i_cupNo + " And Cooperate !=6;");
                                             Txt.WriteTXTC(i_cupNo, "收到洗杯加水");
 
-                                            _cup_Temps[i_cupNo - 1]._i_addStatus = 1;
+                                            //检查是否已把数据库更新
+                                            DataTable dt_cup = _fadmSqlserver.GetData("Select * from cup_details WHERE CupNum = " + i_cupNo + " ;");
+                                            if (dt_cup.Rows.Count > 0)
+                                            {
+                                                if (dt_cup.Rows[0]["Cooperate"].ToString() == "4")
+                                                    _cup_Temps[i_cupNo - 1]._i_addStatus = 1;
+                                            }
 
                                             continue;
                                         }
@@ -2858,7 +2882,13 @@ namespace SmartDyeing.FADM_Auto
                                             FADM_Object.Communal._fadmSqlserver.ReviseData(
                                               "UPDATE dye_details SET Cooperate = 1,ReceptionTime='" + DateTime.Now + "'  WHERE CupNum = " + i_cupNo + " AND StepNum = " + lis_datas[j]._s_currentStepNum + " AND Cooperate not in (5,6,7,8,9) ;");
 
-                                            _cup_Temps[i_cupNo - 1]._i_addStatus = 1;
+                                            //检查是否已把数据库更新
+                                            DataTable dt_cup = _fadmSqlserver.GetData("Select * from dye_details WHERE CupNum = " + i_cupNo + " AND StepNum = " + lis_datas[j]._s_currentStepNum + " ;");
+                                            if (dt_cup.Rows.Count > 0)
+                                            {
+                                                if (dt_cup.Rows[0]["Cooperate"].ToString() == "1")
+                                                    _cup_Temps[i_cupNo - 1]._i_addStatus = 1;
+                                            }
 
                                             continue;
 
@@ -2891,7 +2921,13 @@ namespace SmartDyeing.FADM_Auto
                                               "UPDATE dye_details SET Cooperate = 3,ReceptionTime='" + DateTime.Now + "'  WHERE CupNum = " + i_cupNo + " AND StepNum = " + lis_datas[j]._s_currentStepNum + " And Cooperate !=9;");
                                             Txt.WriteTXTC(i_cupNo, "收到流程加水");
 
-                                            _cup_Temps[i_cupNo - 1]._i_addStatus = 1;
+                                            //检查是否已把数据库更新
+                                            DataTable dt_cup = _fadmSqlserver.GetData("Select * from dye_details WHERE CupNum = " + i_cupNo + " AND StepNum = " + lis_datas[j]._s_currentStepNum + " ;");
+                                            if (dt_cup.Rows.Count > 0)
+                                            {
+                                                if (dt_cup.Rows[0]["Cooperate"].ToString() == "3")
+                                                    _cup_Temps[i_cupNo - 1]._i_addStatus = 1;
+                                            }
 
                                             continue;
 
@@ -4373,20 +4409,19 @@ namespace SmartDyeing.FADM_Auto
                            
                             return;
                         }
-                        //else if ("关盖失败" == ex.Message)
-                        //{
+                        else if ("放盖失败" == ex.Message)
+                        {
 
-                        //    FADM_Object.MyAlarm myAlarm;
-                        //    FADM_Object.Communal._fadmSqlserver.ReviseData(
-                        //       "UPDATE cup_details SET  Cooperate = 6 WHERE  CupNum = " + i_cupNo + " ;");
-                        //    if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                        //        myAlarm = new FADM_Object.MyAlarm(i_cupNo + "号关盖失败，是否继续执行?(继续执行请点是)", "SwitchCover", i_cupNo, 2, 2);
-                        //    else
-                        //        myAlarm = new FADM_Object.MyAlarm(i_cupNo + " Closing failure, do you want to continue? " +
-                        //            "( Continue to perform please click Yes)", "SwitchCover", i_cupNo, 2, 2);
+                            FADM_Object.MyAlarm myAlarm;
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                myAlarm = new FADM_Object.MyAlarm(i_cupNo + "号放盖到杯盖区失败，是否继续执行?(继续执行请点是)", "SwitchCover", i_cupNo, 2, 22);
+                            else
+                                myAlarm = new FADM_Object.MyAlarm(i_cupNo + " Failed to place lid into lid area, do you want to continue? " +
+                                    "( Continue to perform please click Yes)", "SwitchCover", i_cupNo, 2, 22);
 
-                        //    return;
-                        //}
+                            //认为开盖完成
+                            goto label2;
+                        }
                         //else if ("放盖区取盖失败" == ex.Message)
                         //{
 
@@ -4875,20 +4910,19 @@ namespace SmartDyeing.FADM_Auto
 
                                 return;
                             }
-                            //else if ("关盖失败" == ex.Message)
-                            //{
+                            else if ("放盖失败" == ex.Message)
+                            {
 
-                            //    FADM_Object.MyAlarm myAlarm;
-                            //    FADM_Object.Communal._fadmSqlserver.ReviseData(
-                            //       "UPDATE cup_details SET  Cooperate = 6 WHERE  CupNum = " + i_cupNo + " ;");
-                            //    if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                            //        myAlarm = new FADM_Object.MyAlarm(i_cupNo + "号关盖失败，是否继续执行?(继续执行请点是)", "SwitchCover", i_cupNo, 2, 9);
-                            //    else
-                            //        myAlarm = new FADM_Object.MyAlarm(i_cupNo + " Closing failure, do you want to continue? " +
-                            //            "( Continue to perform please click Yes)", "SwitchCover", i_cupNo, 2, 9);
+                                FADM_Object.MyAlarm myAlarm;
+                                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                    myAlarm = new FADM_Object.MyAlarm(i_cupNo + "号放盖到杯盖区失败，是否继续执行?(继续执行请点是)", "SwitchCover", i_cupNo, 2, 22);
+                                else
+                                    myAlarm = new FADM_Object.MyAlarm(i_cupNo + " Failed to place lid into lid area, do you want to continue? " +
+                                        "( Continue to perform please click Yes)", "SwitchCover", i_cupNo, 2, 22);
 
-                            //    return;
-                            //}
+                                //认为开盖完成
+                                goto label2;
+                            }
                             //else if ("放盖区取盖失败" == ex.Message)
                             //{
 
@@ -5475,20 +5509,19 @@ namespace SmartDyeing.FADM_Auto
 
                                     return;
                                 }
-                                //else if ("关盖失败" == ex.Message)
-                                //{
+                                else if ("放盖失败" == ex.Message)
+                                {
 
-                                //    FADM_Object.MyAlarm myAlarm;
-                                //    FADM_Object.Communal._fadmSqlserver.ReviseData(
-                                //       "UPDATE cup_details SET  Cooperate = 6 WHERE  CupNum = " + i_cupNo + " ;");
-                                //    if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                //        myAlarm = new FADM_Object.MyAlarm(i_cupNo + "号关盖失败，是否继续执行?(继续执行请点是)", "SwitchCover", i_cupNo, 2, 4);
-                                //    else
-                                //        myAlarm = new FADM_Object.MyAlarm(i_cupNo + " Closing failure, do you want to continue? " +
-                                //            "( Continue to perform please click Yes)", "SwitchCover", i_cupNo, 2, 4);
+                                    FADM_Object.MyAlarm myAlarm;
+                                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                        myAlarm = new FADM_Object.MyAlarm(i_cupNo + "号放盖到杯盖区失败，是否继续执行?(继续执行请点是)", "SwitchCover", i_cupNo, 2, 22);
+                                    else
+                                        myAlarm = new FADM_Object.MyAlarm(i_cupNo + " Failed to place lid into lid area, do you want to continue? " +
+                                            "( Continue to perform please click Yes)", "SwitchCover", i_cupNo, 2, 22);
 
-                                //    return;
-                                //}
+                                    //认为开盖完成
+                                    goto labelP2;
+                                }
                                 //else if ("放盖区取盖失败" == ex.Message)
                                 //{
 
@@ -6189,33 +6222,19 @@ namespace SmartDyeing.FADM_Auto
                                 }
                                 return;
                             }
-                            //else if ("关盖失败" == ex.Message)
-                            //{
-                            //    FADM_Object.MyAlarm myAlarm;
-                            //    if (i_wType == 0)
-                            //    {
+                            else if ("放盖失败" == ex.Message)
+                            {
 
-                            //        FADM_Object.Communal._fadmSqlserver.ReviseData(
-                            //               "UPDATE dye_details SET  Cooperate = 9 WHERE  Cooperate = 1 AND  CupNum = " + i_cupNo + " ;");
-                            //        if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                            //            myAlarm = new FADM_Object.MyAlarm(i_cupNo + "号关盖失败，是否继续执行?(继续执行请点是)", "SwitchCover", i_cupNo, 2, 5);
-                            //        else
-                            //            myAlarm = new FADM_Object.MyAlarm(i_cupNo + " Closing failure, do you want to continue? " +
-                            //                "( Continue to perform please click Yes)", "SwitchCover", i_cupNo, 2, 5);
-                            //    }
-                            //    //洗杯加水
-                            //    else
-                            //    {
-                            //        FADM_Object.Communal._fadmSqlserver.ReviseData(
-                            //                  "UPDATE cup_details SET  Cooperate = 6 WHERE  CupNum = " + i_cupNo + " ;");
-                            //        if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                            //            myAlarm = new FADM_Object.MyAlarm(i_cupNo + "号关盖失败，是否继续执行?(继续执行请点是)", "SwitchCover", i_cupNo, 2, 6);
-                            //        else
-                            //            myAlarm = new FADM_Object.MyAlarm(i_cupNo + " Closing failure, do you want to continue? " +
-                            //                "( Continue to perform please click Yes)", "SwitchCover", i_cupNo, 2, 6);
-                            //    }
-                            //    return;
-                            //}
+                                FADM_Object.MyAlarm myAlarm;
+                                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                    myAlarm = new FADM_Object.MyAlarm(i_cupNo + "号放盖到杯盖区失败，是否继续执行?(继续执行请点是)", "SwitchCover", i_cupNo, 2, 22);
+                                else
+                                    myAlarm = new FADM_Object.MyAlarm(i_cupNo + " Failed to place lid into lid area, do you want to continue? " +
+                                        "( Continue to perform please click Yes)", "SwitchCover", i_cupNo, 2, 22);
+
+                                //认为开盖完成
+                                goto label2;
+                            }
                             //else if ("放盖区取盖失败" == ex.Message)
                             //{
 

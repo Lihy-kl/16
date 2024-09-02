@@ -180,12 +180,14 @@ namespace SmartDyeing.FADM_Form
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(2703, "配液杯取盖失败");
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(2704, "放盖区取盖失败");
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(2705, "关盖失败");
+                SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(2706, "放盖失败");
 
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(3301, "天平通讯异常");
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(3302, "天平开机未拿走废液桶");
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(3303, "天平超下限");
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(3304, "天平超上限");
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(3305, "请先清空废液桶");
+                SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(3306, "天平开机断线，请重置废液桶");
 
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(1101, "阻挡回限位已通");
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(1102, "阻挡伸出超时");
@@ -248,6 +250,7 @@ namespace SmartDyeing.FADM_Form
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(13303, "天平超下限");
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(13304, "天平超上限");
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(13305, "请先清空废液桶");
+                SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(13306, "天平开机断线，请重置废液桶");
 
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(11101, "阻挡回限位已通,请检查，排除异常请点是，退出运行请点否");
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(11102, "阻挡伸出超时,请检查，排除异常请点是，退出运行请点否");
@@ -357,12 +360,14 @@ namespace SmartDyeing.FADM_Form
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(2703, "Failed to remove cap from dispensing cup");
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(2704, "Failed to remove the cover from the cover placement area");
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(2705, "Closing failure");
+                SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(2706, "Failed to place lid into lid area");
 
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(3301, "Abnormal communication on the balance");
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(3302, "The balance was turned on but the waste liquid tank was not taken away");
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(3303, "Balance exceeds the lower limit");
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(3304, "The balance exceeds the upper limit");
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(3305, "Please empty the waste liquid tank first");
+                SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(3306, "Balance power off line, please reset waste liquid bucket");
 
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(1101, "Blocking back limit has been activated");
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(1102, "Blocking extension timeout");
@@ -425,6 +430,7 @@ namespace SmartDyeing.FADM_Form
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(13303, "Balance exceeds the lower limit");
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(13304, "The balance exceeds the upper limit");
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(13305, "Please empty the waste liquid tank first");
+                SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(13306, "Balance power off line, please reset waste liquid bucket");
 
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(11101, "Blocking back limit has been activated,Please check and rule out any abnormalities. Click Yes. Click No to exit the operation");
                 SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.Add(11102, "Blocking extension timeout,Please check and rule out any abnormalities. Click Yes. Click No to exit the operation");

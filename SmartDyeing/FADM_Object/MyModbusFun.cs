@@ -3040,6 +3040,10 @@ namespace SmartDyeing.FADM_Object
                         {
                             throw new Exception("关盖失败");
                         }
+                        else if (ia_errArray[i] == 2706)
+                        {
+                            throw new Exception("放盖失败");
+                        }
 
                     }
                     throw e;

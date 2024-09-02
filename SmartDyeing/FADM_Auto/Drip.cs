@@ -511,8 +511,9 @@ namespace SmartDyeing.FADM_Auto
                                     }
                                 }
                                 bool b_open = true;
+                                s_cupExclude = s_cupExclude == "" ? "0" : s_cupExclude;
                                 dt_drop_head = FADM_Object.Communal._fadmSqlserver.GetData(
-                           "SELECT * FROM drop_head WHERE BatchName = '" + o_BatchName + "' AND CupFinish = 0  AND CupNum in (" + s_cup + ") AND  CupNum not in ("+ s_cupExclude==""?"0": s_cupExclude + ") ORDER BY CupNum;");
+                           "SELECT * FROM drop_head WHERE BatchName = '" + o_BatchName + "' AND CupFinish = 0  AND CupNum in (" + s_cup + ") AND  CupNum not in (" + s_cupExclude + ") ORDER BY CupNum;");
                                 foreach (DataRow dataRow in dt_drop_head.Rows)
                                 {
                                     int iCupNum = Convert.ToInt16(dataRow["CupNum"]);
@@ -746,8 +747,9 @@ namespace SmartDyeing.FADM_Auto
                                         }
                                     }
                                     bool b_open = true;
+                                    s_cupExclude = s_cupExclude == "" ? "0" : s_cupExclude;
                                     dt_drop_head = FADM_Object.Communal._fadmSqlserver.GetData(
-           "SELECT * FROM drop_head WHERE BatchName = '" + o_BatchName + "' AND CupFinish = 0 AND CupNum >= " + i_cupMin + " AND CupNum <= " + i_cupMax + " AND  CupNum not in ("+ s_cupExclude==""?"0": s_cupExclude + ")  ORDER BY CupNum;");
+           "SELECT * FROM drop_head WHERE BatchName = '" + o_BatchName + "' AND CupFinish = 0 AND CupNum >= " + i_cupMin + " AND CupNum <= " + i_cupMax + " AND  CupNum not in ("+  s_cupExclude + ")  ORDER BY CupNum;");
                                     foreach (DataRow dataRow in dt_drop_head.Rows)
                                     {
                                         int i_cupNum = Convert.ToInt16(dataRow["CupNum"]);

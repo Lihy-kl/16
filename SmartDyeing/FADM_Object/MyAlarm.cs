@@ -303,6 +303,10 @@ namespace SmartDyeing.FADM_Object
                                 _i_alarm_Repeat = 1;
                                 return;
                             }
+                            else if (i_type == 22)
+                            {
+                                //什么都不需要做，只是提示
+                            }
                             else
                             {
                                 FADM_Auto.Dye._cup_Temps[i_cupNum - 1]._i_cover = 0;
@@ -404,6 +408,10 @@ namespace SmartDyeing.FADM_Object
                                     //Communal._fadmSqlserver.ReviseData("Update  cup_details set Cooperate=0 where Cooperate = 5 and CupNum = " + i_cupNo);
 
                                     FADM_Auto.Dye._cup_Temps[i_cupNo - 1]._i_cupCover = 1;
+                                }
+                                else if (i_type == 22)
+                                {
+                                    //什么都不需要做，只是提示
                                 }
                                 else
                                 {
@@ -523,6 +531,10 @@ namespace SmartDyeing.FADM_Object
                                     //Communal._fadmSqlserver.ReviseData("Update  cup_details set Cooperate=0 where Cooperate = 5 and CupNum = " + i_cupNo);
 
                                     FADM_Auto.Dye._cup_Temps[i_cupNo - 1]._i_cupCover = 1;
+                                }
+                                else if (i_type == 22)
+                                {
+                                    //什么都不需要做，只是提示
                                 }
                                 //7滴液过程加水在外边处理
 
