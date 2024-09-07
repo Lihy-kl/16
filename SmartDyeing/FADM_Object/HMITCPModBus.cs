@@ -146,11 +146,11 @@ namespace SmartDyeing.FADM_Object
 
                         for (int i = 0; i < 6; i++)
                         {
-                            int[] ia_values = new int[19];
+                            int[] ia_values = new int[20];
                             int i_ret = -1;
                             //if (i_type == 0)
                             {
-                                i_ret = Read(500 + 64 * i, 19, ref ia_values);
+                                i_ret = Read(500 + 64 * i, 20, ref ia_values);
                                 if (i_ret == 0)
                                 {
                                     //解析数据
@@ -168,6 +168,7 @@ namespace SmartDyeing.FADM_Object
                                     d._s_dripFail = (ia_values[10]).ToString();
                                     d._s_history = (ia_values[11]).ToString();
                                     d._s_lockUp = (ia_values[17]).ToString();
+                                    d._s_Warm = (ia_values[19]).ToString();
                                     int[] ia_values1 = new int[1];
                                     lis_l.Add(d);
                                     _b_Connect = true;
@@ -352,6 +353,11 @@ namespace SmartDyeing.FADM_Object
         ///  锁止上状态0=无信号 1=锁止上信号
         /// </summary>
         public string _s_lockUp;
+
+        /// <summary>
+        ///  报警提示 0=超极限温度 1=电机电流过大 2=高于安全温度进入冷行 3=回原点超时
+        /// </summary>
+        public string _s_Warm;
 
 
     }

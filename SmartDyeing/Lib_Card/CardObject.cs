@@ -162,7 +162,7 @@ namespace Lib_Card
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                goto label;
+                goto label2;
             }
 
         }

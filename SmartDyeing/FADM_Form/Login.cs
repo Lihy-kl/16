@@ -1946,6 +1946,16 @@ namespace SmartDyeing.FADM_Form
                 {
                     Communal._fadmSqlserver.ReviseData("ALTER TABLE dye_details ADD NeedPulse int null ");
                 }
+                dt_head = Communal._fadmSqlserver.GetData("SELECT *FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'dye_details' AND COLUMN_NAME = 'WaterFinish'");
+                if (dt_head.Rows.Count == 0)
+                {
+                    Communal._fadmSqlserver.ReviseData("ALTER TABLE dye_details ADD WaterFinish int null ");
+                }
+                dt_head = Communal._fadmSqlserver.GetData("SELECT *FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'dye_details' AND COLUMN_NAME = 'Choose'");
+                if (dt_head.Rows.Count == 0)
+                {
+                    Communal._fadmSqlserver.ReviseData("ALTER TABLE dye_details ADD Choose int null ");
+                }
             }
             catch { }
 

@@ -202,6 +202,16 @@ namespace SmartDyeing.FADM_Object
         public static int[] _ia_alarmNum = { 0,0,0,0,0,0 };
 
         /// <summary>
+        /// 报警(翻转缸)
+        /// </summary>
+        public static int[] _ia_alarmNum1 = new int[Lib_Card.Configure.Parameter.Machine_Cup_Total];
+
+        /// <summary>
+        /// 报警(翻转缸)
+        /// </summary>
+        public static string[] _sa_dyeAlarm1 = new string[Lib_Card.Configure.Parameter.Machine_Cup_Total];
+
+        /// <summary>
         /// 染色机对象
         /// </summary>
         //public static Lib_SerialPort.HMI.HMI DyeHMI { get; set; } = null;
@@ -466,10 +476,17 @@ namespace SmartDyeing.FADM_Object
         public static int _i_needPulse = 0;//当前母液瓶第一杯虚假脉冲
         public static int _i_needPulseCupNumber = 0;//当前母液瓶第一杯杯号
 
+        public static List<int> _lis_warmBottle = new List<int>();//记录一轮循环预滴液时判断液量低
+
         /// <summary>
         /// 抛出异常中英文对接
         /// </summary>
         public static Dictionary<string, string> _dic_warning = new Dictionary<string, string>();
+
+        /// <summary>
+        /// 后处理加药处理
+        /// </summary>
+        public static Dictionary<int, List<int>> _dic_cup_bottle = new Dictionary<int, List<int>>();
 
 
 
@@ -766,7 +783,7 @@ namespace SmartDyeing.FADM_Object
 
             if (FADM_Object.Communal._b_isDripReserveFirst)
             {
-                double d_blBalanceValueStart = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", FADM_Object.Communal._s_balanceValue)) : Convert.ToDouble(string.Format("{0:F3}", FADM_Object.Communal._s_balanceValue));
+                
 
 
                 //移动到天平位，先滴预留量
@@ -778,7 +795,9 @@ namespace SmartDyeing.FADM_Object
                 //判断是否异常
 
                 FADM_Object.Communal.BalanceState("滴液");
-             
+
+                double d_blBalanceValueStart = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", FADM_Object.Communal._s_balanceValue)) : Convert.ToDouble(string.Format("{0:F3}", FADM_Object.Communal._s_balanceValue));
+
 
                 i_mRes = MyModbusFun.TargetMove(2, 0, 0);
                 if (-2 == i_mRes)

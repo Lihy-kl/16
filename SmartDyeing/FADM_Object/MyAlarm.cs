@@ -403,7 +403,7 @@ namespace SmartDyeing.FADM_Object
                                     FADM_Auto.Dye.DyeOpenOrCloseCover(i_cupNo, 1);
 
                                     FADM_Auto.Dye._cup_Temps[i_cupNo - 1]._i_cover = 2;
-                                    Thread.Sleep(2000);
+                                    //Thread.Sleep(2000);
                                     Communal._fadmSqlserver.ReviseData("Update  cup_details set CoverStatus = 1,Cooperate=0 where CupNum = " + i_cupNo);
                                     //Communal._fadmSqlserver.ReviseData("Update  cup_details set Cooperate=0 where Cooperate = 5 and CupNum = " + i_cupNo);
 
@@ -436,7 +436,7 @@ namespace SmartDyeing.FADM_Object
                                     FADM_Auto.Dye.DyeOpenOrCloseCover(i_cupNo,1);
 
                                     FADM_Auto.Dye._cup_Temps[i_cupNo - 1]._i_cover = 2;
-                                    Thread.Sleep(2000);
+                                    //Thread.Sleep(2000);
                                     Communal._fadmSqlserver.ReviseData("Update  cup_details set CoverStatus = 1,Cooperate=0 where CupNum = " + i_cupNo);
                                     //Communal._fadmSqlserver.ReviseData("Update  cup_details set Cooperate=0 where Cooperate = 5 and CupNum = " + i_cupNo);
 
@@ -455,7 +455,7 @@ namespace SmartDyeing.FADM_Object
                                     FADM_Auto.Dye.DyeOpenOrCloseCover(iCupNo, 2);
 
                                     FADM_Auto.Dye._cup_Temps[iCupNo - 1]._i_cover = 2;
-                                    Thread.Sleep(2000);
+                                    //Thread.Sleep(2000);
                                     Communal._fadmSqlserver.ReviseData("Update  cup_details set CoverStatus = 2,Cooperate=0 where CupNum = " + iCupNo);
 
                                     FADM_Auto.Dye._cup_Temps[iCupNo - 1]._i_cupCover = 2;
@@ -526,7 +526,7 @@ namespace SmartDyeing.FADM_Object
                                     FADM_Auto.Dye.DyeOpenOrCloseCover(i_cupNo, 1);
 
                                     FADM_Auto.Dye._cup_Temps[i_cupNo - 1]._i_cover = 2;
-                                    Thread.Sleep(2000);
+                                    //Thread.Sleep(2000);
                                     Communal._fadmSqlserver.ReviseData("Update  cup_details set CoverStatus = 1,Cooperate=0 where CupNum = " + i_cupNo);
                                     //Communal._fadmSqlserver.ReviseData("Update  cup_details set Cooperate=0 where Cooperate = 5 and CupNum = " + i_cupNo);
 
@@ -741,6 +741,9 @@ namespace SmartDyeing.FADM_Object
                         {
                             FADM_Object.Communal._fadmSqlserver.ReviseData(
                                "UPDATE dye_details SET  Cooperate = 1 WHERE  Cooperate = " + i_oldSign + " AND BottleNum = " + i_bottleNo + " ;");
+
+                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                               "UPDATE dye_details SET  Choose = 0 WHERE  Choose = 2 AND BottleNum = " + i_bottleNo + " ;");
                             return;
                         }
 
@@ -784,9 +787,34 @@ namespace SmartDyeing.FADM_Object
                                 }
                             }
                         }
-
-                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                        if (Lib_Card.CardObject.keyValuePairs[s_insert].Choose == 1)
+                        {
+                            FADM_Object.Communal._fadmSqlserver.ReviseData(
                                "UPDATE dye_details SET  Cooperate = 1 WHERE  Cooperate = " + i_oldSign + " AND BottleNum = " + i_bottleNo + " ;");
+
+                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                   "UPDATE dye_details SET  Choose = 0 WHERE  Choose = 2 AND BottleNum = " + i_bottleNo + " ;");
+                        }
+                        else
+                        {
+                            //忽略过期等，直接操作
+                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                               "UPDATE dye_details SET  Cooperate = 1,Choose = 1 WHERE  Cooperate = " + i_oldSign + " AND BottleNum = " + i_bottleNo + " ;");
+
+                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                   "UPDATE dye_details SET  Choose = 1 WHERE  Choose = 2 AND BottleNum = " + i_bottleNo + " ;");
+                        }
+                        lock (Communal._dic_cup_bottle)
+                        {
+                            foreach (KeyValuePair<int, List<int>> kv in Communal._dic_cup_bottle)
+                            {
+                                if(kv.Value.Contains(i_bottleNo))
+                                {
+                                    kv.Value.Remove(i_bottleNo);
+                                }
+                            }
+                        }
+
                         if (messageBoxButtons == MessageBoxButtons.YesNo)
                         {
                             //写进数据库
