@@ -999,7 +999,7 @@ namespace SmartDyeing.FADM_Auto
                 "CupNum =" + row["CupNum"].ToString() + ";";
                 DataTable dt_drop_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
 
-                if (dt_drop_details.Rows.Count == 0)
+                if (dt_drop_details.Rows.Count == 0 && row["AddWaterChoose"].ToString() != "1")
                 {
                     int P_int_cup = Convert.ToInt32(row["CupNum"].ToString());
 
@@ -1477,7 +1477,7 @@ namespace SmartDyeing.FADM_Auto
                                 {
                                     s_describe = "滴液成功!目标加水:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_objWater) : string.Format("{0:F3}", d_objWater)) +
                                               ",实际加水:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_realWater) : string.Format("{0:F3}", d_realWater));
-                                    s_describe_EN = "Drip Fail !ObjectAddWaterWeight:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_objWater) : string.Format("{0:F3}", d_objWater)) +
+                                    s_describe_EN = "Drip Success !ObjectAddWaterWeight:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_objWater) : string.Format("{0:F3}", d_objWater)) +
                                                      ",RealAddWaterWeight:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_realWater) : string.Format("{0:F3}", d_realWater));
                                     if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(ic))
                                     {
@@ -2106,7 +2106,7 @@ namespace SmartDyeing.FADM_Auto
                                 {
                                     s_describe = "滴液成功!目标加水:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_objWater) : string.Format("{0:F3}", d_objWater)) +
                                               ",实际加水:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_realWater) : string.Format("{0:F3}", d_realWater));
-                                    s_describe_EN = "Drip Fail !ObjectAddWaterWeight:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_objWater) : string.Format("{0:F3}", d_objWater)) +
+                                    s_describe_EN = "Drip Success !ObjectAddWaterWeight:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_objWater) : string.Format("{0:F3}", d_objWater)) +
                                                      ",RealAddWaterWeight:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_realWater) : string.Format("{0:F3}", d_realWater));
                                     if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(kvp.Key))
                                     {
@@ -2285,7 +2285,7 @@ namespace SmartDyeing.FADM_Auto
                                 {
                                     s_describe = "滴液成功!目标加水:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_objWater) : string.Format("{0:F3}", d_objWater)) +
                                               ",实际加水:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_realWater) : string.Format("{0:F3}", d_realWater));
-                                    s_describe_EN = "Drip Fail !ObjectAddWaterWeight:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_objWater) : string.Format("{0:F3}", d_objWater)) +
+                                    s_describe_EN = "Drip Success !ObjectAddWaterWeight:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_objWater) : string.Format("{0:F3}", d_objWater)) +
                                                      ",RealAddWaterWeight:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_realWater) : string.Format("{0:F3}", d_realWater));
                                     if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(kvp.Key))
                                     {
@@ -2600,6 +2600,23 @@ namespace SmartDyeing.FADM_Auto
                     {
                         if (dataRow["IsDrop"].ToString() == "1" && dataRow["MinWeight"].ToString() != "4")
                         {
+                            //获取机械手
+                            if (null != FADM_Object.Communal.ReadDyeThread())
+                            {
+                                FADM_Object.Communal.WriteDripWait(true);
+
+                                while (true)
+                                {
+                                    if (false == FADM_Object.Communal.ReadDripWait())
+                                        break;
+                                    Thread.Sleep(1);
+                                }
+                            }
+                            else
+                            {
+                                FADM_Object.Communal.WriteDripWait(false);
+                            }
+
                             goto lab_again;
                         }
                     }
@@ -5652,7 +5669,7 @@ namespace SmartDyeing.FADM_Auto
                 "CupNum =" + row["CupNum"].ToString()+ " And BottleNum <= " + Lib_Card.Configure.Parameter.Machine_Bottle_Total + ";";
                 DataTable dt_drop_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
 
-                if(dt_drop_details.Rows.Count ==0)
+                if(dt_drop_details.Rows.Count ==0  && row["AddWaterChoose"].ToString() !="1")
                 {
                     int i_cup = Convert.ToInt32(row["CupNum"].ToString());
 
@@ -6132,7 +6149,7 @@ namespace SmartDyeing.FADM_Auto
                                 {
                                     s_describe = "滴液成功!目标加水:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_objWater) : string.Format("{0:F3}", d_objWater)) +
                                               ",实际加水:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_realWater) : string.Format("{0:F3}", d_realWater));
-                                    s_describe_EN = "Drip Fail !ObjectAddWaterWeight:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_objWater) : string.Format("{0:F3}", d_objWater)) +
+                                    s_describe_EN = "Drip Success !ObjectAddWaterWeight:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_objWater) : string.Format("{0:F3}", d_objWater)) +
                                                      ",RealAddWaterWeight:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_realWater) : string.Format("{0:F3}", d_realWater));
                                     if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(ic))
                                     {
@@ -6750,7 +6767,7 @@ namespace SmartDyeing.FADM_Auto
                                 {
                                     s_describe = "滴液成功!目标加水:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_objWater) : string.Format("{0:F3}", d_objWater)) +
                                               ",实际加水:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_realWater) : string.Format("{0:F3}", d_realWater));
-                                    s_describe_EN = "Drip Fail !ObjectAddWaterWeight:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_objWater) : string.Format("{0:F3}", d_objWater)) +
+                                    s_describe_EN = "Drip Success !ObjectAddWaterWeight:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_objWater) : string.Format("{0:F3}", d_objWater)) +
                                                      ",RealAddWaterWeight:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_realWater) : string.Format("{0:F3}", d_realWater));
                                     if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(kvp.Key))
                                     {
@@ -6929,7 +6946,7 @@ namespace SmartDyeing.FADM_Auto
                                 {
                                     s_describe = "滴液成功!目标加水:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_objWater) : string.Format("{0:F3}", d_objWater)) +
                                               ",实际加水:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_realWater) : string.Format("{0:F3}", d_realWater));
-                                    s_describe_EN = "Drip Fail !ObjectAddWaterWeight:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_objWater) : string.Format("{0:F3}", d_objWater)) +
+                                    s_describe_EN = "Drip Success !ObjectAddWaterWeight:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_objWater) : string.Format("{0:F3}", d_objWater)) +
                                                      ",RealAddWaterWeight:" + (Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", d_realWater) : string.Format("{0:F3}", d_realWater));
                                     if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(kvp.Key))
                                     {
@@ -7791,6 +7808,22 @@ namespace SmartDyeing.FADM_Auto
                     {
                         if (dataRow["IsDrop"].ToString() == "1" && dataRow["MinWeight"].ToString() != "4")
                         {
+                            //获取机械手
+                            if (null != FADM_Object.Communal.ReadDyeThread())
+                            {
+                                FADM_Object.Communal.WriteDripWait(true);
+
+                                while (true)
+                                {
+                                    if (false == FADM_Object.Communal.ReadDripWait())
+                                        break;
+                                    Thread.Sleep(1);
+                                }
+                            }
+                            else
+                            {
+                                FADM_Object.Communal.WriteDripWait(false);
+                            }
                             goto lab_again;
                         }
                     }

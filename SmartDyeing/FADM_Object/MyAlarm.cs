@@ -443,7 +443,7 @@ namespace SmartDyeing.FADM_Object
                                     FADM_Auto.Dye._cup_Temps[i_cupNo - 1]._i_cupCover = 1;
                                 }
                                 //开盖完成
-                                else if (i_type == 2 || i_type == 5 || i_type == 4 || i_type == 6 || i_type == 8 || i_type == 9)
+                                else if (i_type == 2 || i_type == 5 || i_type == 4 || i_type == 6 || i_type == 8 || i_type == 9 || i_type == 10)
                                 {
                                     //复位加药启动信号
                                     int[] ia_zero = new int[1];
