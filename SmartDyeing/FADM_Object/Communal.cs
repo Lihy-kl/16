@@ -478,8 +478,6 @@ namespace SmartDyeing.FADM_Object
 
         public static List<int> _lis_warmBottle = new List<int>();//记录一轮循环预滴液时判断液量低
 
-        public static bool _b_getFile = true;//是否开始拿文件
-
         /// <summary>
         /// 抛出异常中英文对接
         /// </summary>
@@ -883,12 +881,6 @@ namespace SmartDyeing.FADM_Object
 
             }
 
-            if(dic_pulse.Count==0)
-            {
-                //如果已经没有要添加的杯，就直接进去
-                goto label13;
-            }
-
             FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找" + dic_pulse.First().Key + "号配液杯");
             FADM_Object.Communal._i_OptCupNum = dic_pulse.First().Key;
             i_mRes = MyModbusFun.TargetMove(1, dic_pulse.First().Key, 0);
@@ -1049,7 +1041,7 @@ namespace SmartDyeing.FADM_Object
                 iInfusionPulse = i_adjust;
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "验证启动(" + iInfusionPulse + ")");
                 i_mRes = MyModbusFun.Shove(iInfusionPulse);
-                if ( -1== i_mRes)
+                if (0 != i_mRes)
                     throw new Exception("驱动异常");
                 else if (-2 == i_mRes)
                     throw new Exception("收到退出消息");

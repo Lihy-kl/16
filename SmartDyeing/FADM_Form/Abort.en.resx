@@ -139,6 +139,9 @@
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
     <value>602, 33</value>
   </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>V20240914</value>
+  </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
     <value>7, 55</value>
   </data>

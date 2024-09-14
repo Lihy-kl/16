@@ -952,9 +952,8 @@ namespace SmartDyeing.FADM_Auto
                 if (0 >= iRPulse)
                     iRPulse = 0;
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "验证启动(" + iRPulse + ")");
-                i_mRes = MyModbusFun.Shove(iRPulse);
-                if (-2 == i_mRes)
-                    throw new Exception("收到退出消息");
+                if (0 != MyModbusFun.Shove(iRPulse))
+                    throw new Exception("驱动异常");
             }
 
             FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "验证完成");

@@ -370,18 +370,6 @@ namespace SmartDyeing.FADM_Auto
                                         _cup_Temps[i_cupNo - 1]._i_cover = 1;
                                     }
                                 }
-                                else if(lis_datas[j]._s_openInplace == "1" || lis_datas[j]._s_openInplace == "2")
-                                {
-                                    DataTable dt_cup_details1 = FADM_Object.Communal._fadmSqlserver.GetData("Select * from cup_details where  CupNum = " + i_cupNo);
-                                    if(dt_cup_details1.Rows.Count >0)
-                                    {
-                                        if (dt_cup_details1.Rows[0]["Cooperate"].ToString() == "0")
-                                        {
-                                            //判断Cooperate字段是否为0，如果为0就
-                                            _cup_Temps[i_cupNo - 1]._i_cover = 0;
-                                        }
-                                    }
-                                }
 
                                 //同步数据库杯盖状态到打板机
                                 if (i == 0)
@@ -3703,17 +3691,6 @@ namespace SmartDyeing.FADM_Auto
 
                     if (_cup_Temps[i_cupNo - 1]._i_requesCupCover == 2)
                     {
-                        //判断现有杯盖状态，如果已关盖就不执行
-                        if (_cup_Temps[i_cupNo - 1]._i_cupCover == 1)
-                        {
-                            FADM_Auto.Dye.DyeOpenOrCloseCover(i_cupNo, 1);
-                            _cup_Temps[i_cupNo - 1]._i_cover = 2;
-                            //Thread.Sleep(1000);
-
-                            Communal._fadmSqlserver.ReviseData("Update  cup_details set CoverStatus = 1,Cooperate=0 where CupNum = " + i_cupNo);
-                            goto labTop;
-                        }
-
                         //再一次确定锁止再开始
                         if (_cup_Temps[i_cupNo - 1]._i_lockUp == 1)
                         {
@@ -3782,16 +3759,6 @@ namespace SmartDyeing.FADM_Auto
                     int iCupNo = Convert.ToInt16(dt_cupordye_details.Rows[0]["CupNum"]);
                     if (_cup_Temps[iCupNo - 1]._i_requesCupCover == 1)
                     {
-                        //判断现有杯盖状态，如果已开盖就不执行
-                        if (_cup_Temps[iCupNo - 1]._i_cupCover == 2)
-                        {
-                            FADM_Auto.Dye.DyeOpenOrCloseCover(iCupNo, 2);
-                            _cup_Temps[iCupNo - 1]._i_cover = 2;
-                            //Thread.Sleep(1000);
-
-                            Communal._fadmSqlserver.ReviseData("Update  cup_details set CoverStatus = 2,Cooperate=0 where CupNum = " + iCupNo);
-                            goto labTop;
-                        }
                         //再一次确定锁止再开始
                         if (_cup_Temps[iCupNo - 1]._i_lockUp == 1)
                         {
@@ -8176,8 +8143,7 @@ namespace SmartDyeing.FADM_Auto
                     string s_columnDetails = null;
                     foreach (DataRow row in dt_Temp.Rows)
                     {
-                        if (Convert.ToString(row[0]) != "Cooperate"&& Convert.ToString(row[0]) != "NeedPulse" && Convert.ToString(row[0]) != "Choose" 
-                            && Convert.ToString(row[0]) != "WaterFinish")
+                        if (Convert.ToString(row[0]) != "Cooperate"&& Convert.ToString(row[0]) != "NeedPulse" && Convert.ToString(row[0]) != "Choose")
                             s_columnDetails += Convert.ToString(row[0]) + ", ";
                     }
                     s_columnDetails = s_columnDetails.Remove(s_columnDetails.Length - 2);

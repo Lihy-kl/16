@@ -2086,16 +2086,9 @@ namespace SmartDyeing.FADM_Control
                                 "SELECT SUM(CAST(ISNULL(RealDropWeight,0.00) as numeric(18,2))) FROM drop_details WHERE CupNum = '" + cup.NO + "';");
 
                             double d_bl_weight_1 = 0;
-                            if (dt_weight.Rows[0][0] is DBNull)
+                            if (dt_weight.Rows[0][0].ToString() != "")
                             {
-
-                            }
-                            else
-                            {
-                                if (dt_weight.Rows[0][0].ToString() != "")
-                                {
-                                    d_bl_weight_1 = Convert.ToDouble(dt_weight.Rows[0][0]);
-                                }
+                                d_bl_weight_1 = Convert.ToDouble(dt_weight.Rows[0][0]);
                             }
                             double d_bl_weight_2 = 0;
 
