@@ -60,13 +60,7 @@ namespace Lib_Card.ADT8940D1.OutPut.Turntable
                     else if (1 == iTurntableDown)
                         break;
                     if (bDelay)
-                    {
-                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                            s = CardObject.InsertD("转盘下超时", "Turntable_Down");
-                        else
-                            s = CardObject.InsertD("Turntable Down timeout", "Turntable_Down");
-
-                    }
+                        s = CardObject.InsertD("转盘下超时", "Turntable_Down");
                 }
 
                 if (bDelay)
@@ -136,13 +130,7 @@ namespace Lib_Card.ADT8940D1.OutPut.Turntable
                     else if (1 == iTurntableUp)
                         break;
                     if (bDelay)
-                    {
-                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                            s = CardObject.InsertD("转盘上超时", "Turntable_Up");
-                        else
-                            s = CardObject.InsertD("Turntable Up timeout", "Turntable_Up");
-
-                    }
+                        s = CardObject.InsertD("转盘上超时", "Turntable_Up");
 
                 }
                 if (bDelay)

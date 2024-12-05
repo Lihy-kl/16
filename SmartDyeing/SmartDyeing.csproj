@@ -64,6 +64,24 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\HslControls.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1652.0\lib\net40\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.DataVisualization, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1652.0\lib\net40\Microsoft.ReportViewer.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Design, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1652.0\lib\net40\Microsoft.ReportViewer.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1652.0\lib\net40\Microsoft.ReportViewer.ProcessingObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1652.0\lib\net40\Microsoft.ReportViewer.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Types.14.0.314.76\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -106,9 +124,16 @@
     <Compile Include="FADM_Auto\BottleSelf.cs" />
     <Compile Include="FADM_Auto\Drip.cs" />
     <Compile Include="FADM_Auto\Dye.cs" />
+    <Compile Include="FADM_Auto\MyAbsorbance.cs" />
     <Compile Include="FADM_Auto\MyBrew.cs" />
     <Compile Include="FADM_Auto\Reset.cs" />
     <Compile Include="FADM_Auto\Water.cs" />
+    <Compile Include="FADM_Control\AbsBeater.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\AbsBeater.Designer.cs">
+      <DependentUpon>AbsBeater.cs</DependentUpon>
+    </Compile>
     <Compile Include="FADM_Control\Alarm.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -138,6 +163,18 @@
     </Compile>
     <Compile Include="FADM_Control\Beater.Designer.cs">
       <DependentUpon>Beater.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\CurveControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\CurveControl.Designer.cs">
+      <DependentUpon>CurveControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\FourBeater.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\FourBeater.Designer.cs">
+      <DependentUpon>FourBeater.cs</DependentUpon>
     </Compile>
     <Compile Include="FADM_Control\Bottle.cs">
       <SubType>UserControl</SubType>
@@ -224,7 +261,7 @@
       <DependentUpon>DyeingProcess.cs</DependentUpon>
     </Compile>
     <Compile Include="FADM_Control\Formula.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="FADM_Control\Formula.Designer.cs">
       <DependentUpon>Formula.cs</DependentUpon>
@@ -241,6 +278,12 @@
     <Compile Include="FADM_Control\FormulaGroup.Designer.cs">
       <DependentUpon>FormulaGroup.cs</DependentUpon>
     </Compile>
+    <Compile Include="FADM_Control\HistoryAbsData.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\HistoryAbsData.Designer.cs">
+      <DependentUpon>HistoryAbsData.cs</DependentUpon>
+    </Compile>
     <Compile Include="FADM_Control\HistoryData.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -252,6 +295,18 @@
     </Compile>
     <Compile Include="FADM_Control\MainBottle.Designer.cs">
       <DependentUpon>MainBottle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\myDyeingConfiguration.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\myDyeingConfiguration.Designer.cs">
+      <DependentUpon>myDyeingConfiguration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\myDyeSelect.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\myDyeSelect.Designer.cs">
+      <DependentUpon>myDyeSelect.cs</DependentUpon>
     </Compile>
     <Compile Include="FADM_Control\S_MainBottle.cs">
       <SubType>UserControl</SubType>
@@ -307,11 +362,23 @@
     <Compile Include="FADM_Control\Test.Designer.cs">
       <DependentUpon>Test.cs</DependentUpon>
     </Compile>
+    <Compile Include="FADM_Control\TwelveBeater.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\TwelveBeater.Designer.cs">
+      <DependentUpon>TwelveBeater.cs</DependentUpon>
+    </Compile>
     <Compile Include="FADM_Form\Abort.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FADM_Form\Abort.Designer.cs">
       <DependentUpon>Abort.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\AbsCheck.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\AbsCheck.Designer.cs">
+      <DependentUpon>AbsCheck.cs</DependentUpon>
     </Compile>
     <Compile Include="FADM_Form\Admin.cs">
       <SubType>Form</SubType>
@@ -349,6 +416,11 @@
     <Compile Include="FADM_Form\CupDetails.Designer.cs">
       <DependentUpon>CupDetails.cs</DependentUpon>
     </Compile>
+    <Compile Include="FADM_Form\Details.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Details.xsd</DependentUpon>
+    </Compile>
     <Compile Include="FADM_Form\DripCupDetails.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -366,6 +438,29 @@
     </Compile>
     <Compile Include="FADM_Form\CustomMessageBox.Designer.cs">
       <DependentUpon>CustomMessageBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\FormulaPre.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\FormulaPre.Designer.cs">
+      <DependentUpon>FormulaPre.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\Head.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Head.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\InsertAbs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\InsertAbs.Designer.cs">
+      <DependentUpon>InsertAbs.cs</DependentUpon>
     </Compile>
     <Compile Include="FADM_Form\LimitSet.cs">
       <SubType>Form</SubType>
@@ -415,6 +510,18 @@
     <Compile Include="FADM_Form\ReName.Designer.cs">
       <DependentUpon>ReName.cs</DependentUpon>
     </Compile>
+    <Compile Include="FADM_Form\ReportPrint.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\ReportPrint.Designer.cs">
+      <DependentUpon>ReportPrint.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\ReportTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\ReportTest.Designer.cs">
+      <DependentUpon>ReportTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="FADM_Form\Self.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -448,10 +555,84 @@
     <Compile Include="FADM_Object\MyRegister.cs" />
     <Compile Include="FADM_Object\MyTextBoxCheck.cs" />
     <Compile Include="FADM_Object\TCPModBus.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\ADT8940A1_Card.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\ADT8940A1_IO.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\Axis\Axis.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\Axis\Axis_Condition.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\Cadt8940a1m.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\InPut\InPut.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\InPut\InPut_Basic.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\Module\Cover\GetOrPutCover.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\Module\Extraction\Extraction.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\Module\Extraction\Extraction_Check.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\Module\Extraction\Extraction_Drip.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\Module\Home\Home.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\Module\Home\Home_Condition.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\Module\Infusion\Infusion.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\Module\Infusion\Infusion_Mid.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\Module\Infusion\Infusion_Up.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\Module\Move\Move.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\Module\Move\Move_Balance.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\Module\Move\Move_Bottle.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\Module\Move\Move_Cup.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\Module\Move\Move_Decompression.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\Module\Move\Move_Standby.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\Module\Move\TargeMove.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\Module\Put\Put.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\Module\Put\Put_Condition.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Apocenosis\Apocenosis.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Apocenosis\Apocenosis_Basic.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Blender\Blender.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Blender\Blender_Basic.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Block\Block.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Block\Block_Basic.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Block\Block_Condition.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Buzzer\Buzzer.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Buzzer\Buzzer_Basic.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Cylinder\Cylinder.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Cylinder\DualControl\Cylinder_Basic.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Cylinder\DualControl\Cylinder_Condition.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Cylinder\SingleControl\Cylinder_Basic.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Cylinder\SingleControl\Cylinder_Condition.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Decompression\Decompression.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Decompression\Decompression_Basic.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Decompression\Decompression_Condition.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Tongs\Tongs.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Tongs\Tongs_Basic.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Tongs\Tongs_Condition.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Tray\Tray.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Tray\Tray_Basic.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Tray\Tray_Condition.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Waste\Waste.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Waste\Waste_Basic.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Water\Water.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Water\Water_Basic.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Water\Water_Condition.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\X_Power\X_Power.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\X_Power\X_Power_Basic.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\X_Power\X_Power_Condition.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Y_Power\Y_Power.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Y_Power\Y_Power_Basic.cs" />
+    <Compile Include="Lib_Card\ADT8940A1\OutPut\Y_Power\Y_Power_Condition.cs" />
+    <Compile Include="Lib_Card\ADT8940D1\ADT8940D1_Card.cs" />
+    <Compile Include="Lib_Card\ADT8940D1\ADT8940D1_IO.cs" />
+    <Compile Include="Lib_Card\ADT8940D1\InPut\InPut.cs" />
+    <Compile Include="Lib_Card\ADT8940D1\InPut\InPut_Basic.cs" />
+    <Compile Include="Lib_Card\ADT8940D1\OutPut\Turntable\Turntable.cs" />
+    <Compile Include="Lib_Card\ADT8940D1\OutPut\Turntable\Turntable_Basic.cs" />
+    <Compile Include="Lib_Card\ADT8940D1\OutPut\Turntable\Turntable_Condition.cs" />
+    <Compile Include="Lib_Card\ADT8940D1\OutPut\Water\Water.cs" />
+    <Compile Include="Lib_Card\ADT8940D1\OutPut\Water\Water_Basic.cs" />
+    <Compile Include="Lib_Card\ADT8940D1\OutPut\Water\Water_Condition.cs" />
+    <Compile Include="Lib_Card\Base\Card.cs" />
     <Compile Include="Lib_Card\CardObject.cs" />
     <Compile Include="Lib_Card\Configure\Parameter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlServerTypes\Loader.cs" />
+    <EmbeddedResource Include="FADM_Control\AbsBeater.resx">
+      <DependentUpon>AbsBeater.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FADM_Control\Alarm.en.resx">
       <DependentUpon>Alarm.cs</DependentUpon>
     </EmbeddedResource>
@@ -478,6 +659,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FADM_Control\Beater.resx">
       <DependentUpon>Beater.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\CurveControl.resx">
+      <DependentUpon>CurveControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\FourBeater.en.resx">
+      <DependentUpon>FourBeater.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\FourBeater.resx">
+      <DependentUpon>FourBeater.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FADM_Control\Bottle.resx">
       <DependentUpon>Bottle.cs</DependentUpon>
@@ -558,6 +748,12 @@
     <EmbeddedResource Include="FADM_Control\FormulaGroup.resx">
       <DependentUpon>FormulaGroup.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\HistoryAbsData.en.resx">
+      <DependentUpon>HistoryAbsData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\HistoryAbsData.resx">
+      <DependentUpon>HistoryAbsData.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FADM_Control\HistoryData.en.resx">
       <DependentUpon>HistoryData.cs</DependentUpon>
     </EmbeddedResource>
@@ -569,6 +765,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FADM_Control\MainBottle.resx">
       <DependentUpon>MainBottle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\myDyeingConfiguration.resx">
+      <DependentUpon>myDyeingConfiguration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\myDyeSelect.resx">
+      <DependentUpon>myDyeSelect.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FADM_Control\S_MainBottle.en.resx">
       <DependentUpon>S_MainBottle.cs</DependentUpon>
@@ -612,11 +814,17 @@
     <EmbeddedResource Include="FADM_Control\Test.resx">
       <DependentUpon>Test.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\TwelveBeater.resx">
+      <DependentUpon>TwelveBeater.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FADM_Form\Abort.en.resx">
       <DependentUpon>Abort.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FADM_Form\Abort.resx">
       <DependentUpon>Abort.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\AbsCheck.resx">
+      <DependentUpon>AbsCheck.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FADM_Form\Admin.en.resx">
       <DependentUpon>Admin.cs</DependentUpon>
@@ -669,6 +877,15 @@
     <EmbeddedResource Include="FADM_Form\CustomMessageBox.resx">
       <DependentUpon>CustomMessageBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\FormulaPre.resx">
+      <DependentUpon>FormulaPre.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\InsertAbs.resx">
+      <DependentUpon>InsertAbs.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FADM_Form\LimitSet.en.resx">
       <DependentUpon>LimitSet.cs</DependentUpon>
     </EmbeddedResource>
@@ -718,6 +935,14 @@
     <EmbeddedResource Include="FADM_Form\ReName.resx">
       <DependentUpon>ReName.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\Report1.rdlc" />
+    <EmbeddedResource Include="FADM_Form\Report2.rdlc" />
+    <EmbeddedResource Include="FADM_Form\ReportPrint.resx">
+      <DependentUpon>ReportPrint.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\ReportTest.resx">
+      <DependentUpon>ReportTest.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FADM_Form\Self.en.resx">
       <DependentUpon>Self.cs</DependentUpon>
     </EmbeddedResource>
@@ -746,6 +971,37 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="Config\ADT8940A1_IO.ini" />
+    <None Include="Config\Config.ini" />
+    <None Include="Config\DataBase.ini" />
+    <None Include="Config\DataBase.ini.bak" />
+    <None Include="Config\IO_Mapping 测试机.ini" />
+    <None Include="Config\IO_Mapping.ini" />
+    <None Include="Config\Parameter - 副本.ini" />
+    <None Include="Config\Parameter 测试机.ini" />
+    <None Include="Config\Parameter.ini" />
+    <None Include="FADM_Form\Details.xsc">
+      <DependentUpon>Details.xsd</DependentUpon>
+    </None>
+    <None Include="FADM_Form\Details.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Details.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="FADM_Form\Details.xss">
+      <DependentUpon>Details.xsd</DependentUpon>
+    </None>
+    <None Include="FADM_Form\Head.xsc">
+      <DependentUpon>Head.xsd</DependentUpon>
+    </None>
+    <None Include="FADM_Form\Head.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Head.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="FADM_Form\Head.xss">
+      <DependentUpon>Head.xsd</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -761,8 +1017,22 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Config\kl_zh.txt" />
     <Content Include="img\加载-007.gif" />
     <Content Include="img\登录背景图.jpg" />
+    <Content Include="SqlServerTypes\readme.htm" />
+    <Content Include="SqlServerTypes\x64\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x64\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="未标题-1.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -777,6 +1047,10 @@
     <ProjectReference Include="..\Lib_Log\Lib_Log.csproj">
       <Project>{cf80d326-cf7f-4736-9841-a63751f7f96a}</Project>
       <Name>Lib_Log</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lib_SerialPort\Lib_SerialPort.csproj">
+      <Project>{da975bbc-bd34-45ce-906e-74fa32ad4d92}</Project>
+      <Name>Lib_SerialPort</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

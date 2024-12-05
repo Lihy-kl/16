@@ -28,101 +28,109 @@ namespace SmartDyeing.FADM_Control
 
         public void Update(CupData cupData)
         {
-            lab_CupNum.Text = cupData._s_cupNum + "：";
-            _s_cupNum = cupData._s_cupNum;
-            txt_FoumulaCode.Text = cupData._s_formulaCode;
-            txt_DyeCode.Text = cupData._s_dyeingCode;
-            if (cupData._s_startTime != "")
+            try
             {
-                //计算运行时间
-                DateTime dateTime1 = Convert.ToDateTime(cupData._s_startTime);
-                DateTime dateTime2 = DateTime.Now;
-                TimeSpan ts = dateTime2 - dateTime1;
-                string s_temp;
-                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                lab_CupNum.Text = cupData._s_cupNum + "：";
+                _s_cupNum = cupData._s_cupNum;
+                txt_FoumulaCode.Text = cupData._s_formulaCode;
+                txt_DyeCode.Text = cupData._s_dyeingCode;
+                if (cupData._s_startTime != "")
                 {
-                    s_temp = Convert.ToInt32(ts.TotalSeconds) / 60 / 60 + "时" +
-                    Convert.ToInt32(ts.TotalSeconds) % (60 * 60) / 60 + "分" +
-                    Convert.ToInt32(ts.TotalSeconds) % (60 * 60) % 60 + "秒";
+                    //计算运行时间
+                    DateTime dateTime1 = Convert.ToDateTime(cupData._s_startTime);
+                    DateTime dateTime2 = DateTime.Now;
+                    TimeSpan ts = dateTime2 - dateTime1;
+                    string s_temp;
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                    {
+                        s_temp = Convert.ToInt32(ts.TotalSeconds) / 60 / 60 + "时" +
+                        Convert.ToInt32(ts.TotalSeconds) % (60 * 60) / 60 + "分" +
+                        Convert.ToInt32(ts.TotalSeconds) % (60 * 60) % 60 + "秒";
+                    }
+                    else
+                    {
+                        s_temp = Convert.ToInt32(ts.TotalSeconds) / 60 / 60 + "H" +
+                        Convert.ToInt32(ts.TotalSeconds) % (60 * 60) / 60 + "M" +
+                        Convert.ToInt32(ts.TotalSeconds) % (60 * 60) % 60 + "S";
+                    }
+                    txt_TotalTime.Text = s_temp;
+                }
+
+                if (cupData._s_stepStartTime != "")
+                {
+                    //计算运行时间
+                    DateTime dateTime1 = Convert.ToDateTime(cupData._s_stepStartTime);
+                    DateTime dateTime2 = DateTime.Now;
+                    TimeSpan ts = dateTime2 - dateTime1;
+                    string s_temp;
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                    {
+                        s_temp = Convert.ToInt32(ts.TotalSeconds) / 60 / 60 + "时" +
+                        Convert.ToInt32(ts.TotalSeconds) % (60 * 60) / 60 + "分" +
+                        Convert.ToInt32(ts.TotalSeconds) % (60 * 60) % 60 + "秒";
+                    }
+                    else
+                    {
+                        s_temp = Convert.ToInt32(ts.TotalSeconds) / 60 / 60 + "H" +
+                        Convert.ToInt32(ts.TotalSeconds) % (60 * 60) / 60 + "M" +
+                        Convert.ToInt32(ts.TotalSeconds) % (60 * 60) % 60 + "S";
+                    }
+                    txt_CurrentStepTime.Text = s_temp;
+                }
+
+                txt_RealTemp.Text = cupData._s_realTemp;
+                txt_SetTemp.Text = cupData._s_setTemp;
+                txt_Weight.Text = cupData._s_totalWeight;
+                txt_StepTotal.Text = cupData._s_totalStep;
+                txt_StepNum.Text = cupData._s_stepNum;
+                txt_Statues.Text = cupData._s_state;
+                txt_TechnologyName.Text = cupData._s_technologyName;
+                txt_SetTime.Text = cupData._s_setTime;
+
+
+                if (cupData._s_state == "下线")
+                {
+                    lab_OffLine.Visible = true;
+
+                    //把显示值全部清空
+                    txt_FoumulaCode.Text = "";
+                    txt_DyeCode.Text = "";
+                    txt_TotalTime.Text = "";
+                    txt_CurrentStepTime.Text = "";
+                    txt_RealTemp.Text = "";
+                    txt_Weight.Text = "";
+                    txt_StepTotal.Text = "";
+                    txt_StepNum.Text = "";
+                    txt_TechnologyName.Text = "";
+                    txt_SetTemp.Text = "";
+                    txt_SetTime.Text = "";
+                }
+                else if (cupData._s_state == "待机")
+                {
+                    lab_OffLine.Visible = false;
+
+                    ////把显示值全部清空
+                    txt_FoumulaCode.Text = "";
+                    txt_DyeCode.Text = "";
+                    txt_TotalTime.Text = "";
+                    txt_CurrentStepTime.Text = "";
+                    //txt_RealTemp.Text = "";
+                    txt_Weight.Text = "";
+                    txt_StepTotal.Text = "";
+                    txt_StepNum.Text = "";
+                    txt_TechnologyName.Text = "";
+                    txt_SetTemp.Text = "";
+                    txt_SetTime.Text = "";
                 }
                 else
                 {
-                    s_temp = Convert.ToInt32(ts.TotalSeconds) / 60 / 60 + "H" +
-                    Convert.ToInt32(ts.TotalSeconds) % (60 * 60) / 60 + "M" +
-                    Convert.ToInt32(ts.TotalSeconds) % (60 * 60) % 60 + "S";
+                    lab_OffLine.Visible = false;
                 }
-                txt_TotalTime.Text = s_temp;
             }
-
-            if (cupData._s_stepStartTime != "")
+            catch (Exception ex)
             {
-                //计算运行时间
-                DateTime dateTime1 = Convert.ToDateTime(cupData._s_stepStartTime);
-                DateTime dateTime2 = DateTime.Now;
-                TimeSpan ts = dateTime2 - dateTime1;
-                string s_temp;
-                if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                {
-                    s_temp = Convert.ToInt32(ts.TotalSeconds) / 60 / 60 + "时" +
-                    Convert.ToInt32(ts.TotalSeconds) % (60 * 60) / 60 + "分" +
-                    Convert.ToInt32(ts.TotalSeconds) % (60 * 60) % 60 + "秒";
-                }
-                else
-                {
-                    s_temp = Convert.ToInt32(ts.TotalSeconds) / 60 / 60 + "H" +
-                    Convert.ToInt32(ts.TotalSeconds) % (60 * 60) / 60 + "M" +
-                    Convert.ToInt32(ts.TotalSeconds) % (60 * 60) % 60 + "S";
-                }
-                txt_CurrentStepTime.Text = s_temp;
-            }
-
-            txt_RealTemp.Text = cupData._s_realTemp;
-            txt_SetTemp.Text = cupData._s_setTemp;
-            txt_Weight.Text = cupData._s_totalWeight;
-            txt_StepTotal.Text = cupData._s_totalStep;
-            txt_StepNum.Text = cupData._s_stepNum;
-            txt_Statues.Text = cupData._s_state;
-            txt_TechnologyName.Text = cupData._s_technologyName;
-            txt_SetTime.Text = cupData._s_setTime;
-
-
-            if (cupData._s_state == "下线")
-            {
-                lab_OffLine.Visible = true;
-
-                //把显示值全部清空
-                txt_FoumulaCode.Text = "";
-                txt_DyeCode.Text = "";
-                txt_TotalTime.Text = "";
-                txt_CurrentStepTime.Text = "";
-                txt_RealTemp.Text = "";
-                txt_Weight.Text = "";
-                txt_StepTotal.Text = "";
-                txt_StepNum.Text = "";
-                txt_TechnologyName.Text = "";
-                txt_SetTemp.Text = "";
-                txt_SetTime.Text = "";
-            }
-            else if (cupData._s_state == "待机")
-            {
-                lab_OffLine.Visible = false;
-
-                ////把显示值全部清空
-                txt_FoumulaCode.Text = "";
-                txt_DyeCode.Text = "";
-                txt_TotalTime.Text = "";
-                txt_CurrentStepTime.Text = "";
-                //txt_RealTemp.Text = "";
-                txt_Weight.Text = "";
-                txt_StepTotal.Text = "";
-                txt_StepNum.Text = "";
-                txt_TechnologyName.Text = "";
-                txt_SetTemp.Text = "";
-                txt_SetTime.Text = "";
-            }
-            else
-            {
-                lab_OffLine.Visible = false;
+                //MessageBox.Show(ex.Message);
+                Lib_Log.Log.writeLogException("配液杯状态Update：" + ex.ToString());
             }
         }
 

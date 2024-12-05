@@ -19,7 +19,7 @@ namespace Lib_Card.ADT8940A1.OutPut.Block
 
 
 
-
+            lable:
             int iRes = CardObject.OA1.WriteOutPut(ADT8940A1_IO.OutPut_Block, 0);
             if (-1 == iRes)
                 return -1;
@@ -56,17 +56,32 @@ namespace Lib_Card.ADT8940A1.OutPut.Block
                     break;
                 if (bDelay)
                 {
-                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                        s = CardObject.InsertD("阻挡气缸收回超时", "Block_In");
+                    //s = CardObject.InsertD("阻挡气缸收回超时", "Block_In");
+                    s = CardObject.InsertD("阻挡气缸收回超时，请检查，排除异常请点是，退出运行请点否", " Block_In");
+                    while (true)
+                    {
+                        Thread.Sleep(1);
+                        if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
+                            break;
+
+                    }
+                    int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                    CardObject.DeleteD(s);
+                    if (Alarm_Choose == 1)
+                    {
+                        goto lable;
+                    }
                     else
-                        s = CardObject.InsertD("Blocking cylinder retraction timeout", "Block_In");
+                    {
+                        throw new Exception("阻挡气缸收回超时");
+                    }
                 }
 
 
             }
 
-            if (bDelay)
-                Lib_Card.CardObject.DeleteD(s);
+            //if (bDelay)
+            //    Lib_Card.CardObject.DeleteD(s);
 
             return 0;
 
@@ -125,16 +140,31 @@ namespace Lib_Card.ADT8940A1.OutPut.Block
                         break;
                     if (bDelay)
                     {
-                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                            s = CardObject.InsertD("阻挡气缸伸出超时", "Block_Out");
+                        //s = CardObject.InsertD("阻挡气缸伸出超时", "Block_Out");
+                        s = CardObject.InsertD("阻挡气缸伸出超时，请检查，排除异常请点是，退出运行请点否", " Block_Out");
+                        while (true)
+                        {
+                            Thread.Sleep(1);
+                            if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
+                                break;
+
+                        }
+                        int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                        CardObject.DeleteD(s);
+                        if (Alarm_Choose == 1)
+                        {
+                            goto lable;
+                        }
                         else
-                            s = CardObject.InsertD("Blocking cylinder extension timeout", "Block_Out");
+                        {
+                            throw new Exception("阻挡气缸伸出超时");
+                        }
                     }
 
                 }
 
-                if (bDelay)
-                    Lib_Card.CardObject.DeleteD(s);
+                //if (bDelay)
+                //    Lib_Card.CardObject.DeleteD(s);
 
                 return 0;
 
@@ -149,11 +179,7 @@ namespace Lib_Card.ADT8940A1.OutPut.Block
                 }
                 else
                 {
-                    string s;
-                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                        s = CardObject.InsertD("气缸未在上限位，请检查，确定到位请点是，退出运行请点否", " Block_Out");
-                    else
-                        s = CardObject.InsertD("The cylinder is not in the upper limit position, please check. If it is in place, please click Yes. If it is out of operation, please click No", " Block_Out");
+                    string s = CardObject.InsertD("气缸未在上限位，请检查，确定到位请点是，退出运行请点否", " Block_Out");
                     while (true)
                     {
                         Thread.Sleep(1);
@@ -161,8 +187,8 @@ namespace Lib_Card.ADT8940A1.OutPut.Block
                             break;
 
                     }
-                    CardObject.DeleteD(s);
                     int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                    CardObject.DeleteD(s);
                     if (Alarm_Choose == 1)
                     {
                         bReset = false;

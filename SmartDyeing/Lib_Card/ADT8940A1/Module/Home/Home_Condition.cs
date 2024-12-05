@@ -17,6 +17,10 @@ namespace Lib_Card.ADT8940A1.Module.Home
 
            
             int iSyringe = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Syringe);
+            if (Lib_Card.Configure.Parameter.Machine_isSyringe==1)
+            {
+                iSyringe = 0;
+            }
             if (-1 == iSyringe)
                 return -1;
             else if (1 == iSyringe)
@@ -25,13 +29,13 @@ namespace Lib_Card.ADT8940A1.Module.Home
             if (0 == iCylinderVersion)
             {
                 OutPut.Cylinder.Cylinder cylinder = new OutPut.Cylinder.SingleControl.Cylinder_Condition();
-                if (-1 == cylinder.CylinderUp())
+                if (-1 == cylinder.CylinderUp(0))
                     return -1;
             }
             else
             {
                 OutPut.Cylinder.Cylinder cylinder = new OutPut.Cylinder.DualControl.Cylinder_Condition();
-                if (-1 == cylinder.CylinderUp())
+                if (-1 == cylinder.CylinderUp(0))
                     return -1;
             }
 
@@ -105,14 +109,16 @@ namespace Lib_Card.ADT8940A1.Module.Home
 
             if (-1 == tongs.Tongs_Off())
                 return -1;
+            if (Lib_Card.Configure.Parameter.Other_ActualPosition == 1)
+            {
+                OutPut.X_Power.X_Power x_Power = new OutPut.X_Power.X_Power_Condition();
+                if (-1 == x_Power.X_Power_Off())
+                    return -1;
 
-            OutPut.X_Power.X_Power x_Power = new OutPut.X_Power.X_Power_Condition();
-            if (-1 == x_Power.X_Power_Off())
-                return -1;
-
-            OutPut.Y_Power.Y_Power y_Power = new OutPut.Y_Power.Y_Power_Condition();
-            if (-1 == y_Power.Y_Power_Off())
-                return -1;
+                OutPut.Y_Power.Y_Power y_Power = new OutPut.Y_Power.Y_Power_Condition();
+                if (-1 == y_Power.Y_Power_Off())
+                    return -1;
+            }
 
             Thread.Sleep(500);
             if (-1 == CardObject.OA1.SetAxisActualPosition(ADT8940A1_IO.Axis_X))
@@ -120,10 +126,9 @@ namespace Lib_Card.ADT8940A1.Module.Home
             if (-1 == CardObject.OA1.SetAxisActualPosition(ADT8940A1_IO.Axis_Y))
                 return -1;
 
-
-         
-
             Home_XYZFinish = true;
+
+
             return 0;
 
         }

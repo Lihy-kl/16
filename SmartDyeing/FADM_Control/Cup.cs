@@ -157,99 +157,117 @@ namespace SmartDyeing.FADM_Control
 
         private void ResetWorkingRect()
         {
-            var g = this.CreateGraphics();
-            g.MeasureString(title, Font);
-            m_workingRect = new Rectangle(0, 10, this.Width, this.Height - 15);
+            try
+            {
+                var g = this.CreateGraphics();
+                g.MeasureString(title, Font);
+                m_workingRect = new Rectangle(0, 10, this.Width, this.Height - 15);
+                g.Dispose();
+            }
+            catch (Exception ex)
+            {
+                Lib_Log.Log.writeLogException("Cup ResetWorkingRect：" + ex.ToString());
+            }
         }
 
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            base.OnPaint(e);
-            var g = e.Graphics;
+            try
+            {
+                base.OnPaint(e);
+                var g = e.Graphics;
 
-            //画空杯子
-            GraphicsPath pathPS = new GraphicsPath();
-            Pen myPen = new Pen(cupColor, 1);
-            Point[] psPS = new Point[]
-                {
+                //画空杯子
+                GraphicsPath pathPS = new GraphicsPath();
+                Pen myPen = new Pen(cupColor, 1);
+                Point[] psPS = new Point[]
+                    {
                     new Point(m_workingRect.Left , m_workingRect.Top),
                     new Point(m_workingRect.Right -1, m_workingRect.Top),
                     new Point(m_workingRect.Right -1, m_workingRect.Bottom),
                     new Point(m_workingRect.Left , m_workingRect.Bottom),
-                };
-            pathPS.AddLines(psPS);
-            pathPS.CloseAllFigures();
-            g.DrawPolygon(myPen, psPS);
+                    };
+                pathPS.AddLines(psPS);
+                pathPS.CloseAllFigures();
+                g.DrawPolygon(myPen, psPS);
 
-            //画液体
-            decimal decYTHeight = (m_value / maxValue) * m_workingRect.Height;
-            GraphicsPath pathYT = new GraphicsPath();
-            PointF[] psYT = new PointF[]
-                    {
+                //画液体
+                decimal decYTHeight = (m_value / maxValue) * m_workingRect.Height;
+                GraphicsPath pathYT = new GraphicsPath();
+                PointF[] psYT = new PointF[]
+                        {
                         new PointF(m_workingRect.Left+1,(float)(m_workingRect.Bottom-decYTHeight)),
                         new PointF(m_workingRect.Right-1,(float)(m_workingRect.Bottom-decYTHeight)),
                         new PointF(m_workingRect.Right-1,m_workingRect.Bottom),
                         new PointF(m_workingRect.Left+1,m_workingRect.Bottom),
-                    };
-            pathYT.AddLines(psYT);
-            pathYT.CloseAllFigures();
-            new Rectangle(m_workingRect.Left, m_workingRect.Bottom - (int)decYTHeight - 5, m_workingRect.Width, 10);
+                        };
+                pathYT.AddLines(psYT);
+                pathYT.CloseAllFigures();
+                new Rectangle(m_workingRect.Left, m_workingRect.Bottom - (int)decYTHeight - 5, m_workingRect.Width, 10);
 
 
-            g.FillPath(new SolidBrush(liquidColor), pathYT);
-            g.FillPath(new SolidBrush(Color.FromArgb(50, liquidColor)), pathYT);
+                g.FillPath(new SolidBrush(liquidColor), pathYT);
+                g.FillPath(new SolidBrush(Color.FromArgb(50, liquidColor)), pathYT);
 
-            //画瓶口
-            GraphicsPath pathBM = new GraphicsPath();
-            Point[] psBM = new Point[]
-                {
+                //画瓶口
+                GraphicsPath pathBM = new GraphicsPath();
+                Point[] psBM = new Point[]
+                    {
                     new Point(m_workingRect.Left ,  m_workingRect.Top - 8 + 1),
                     new Point(m_workingRect.Right-1 , m_workingRect.Top - 8 + 1),
                     new Point(m_workingRect.Right-1, m_workingRect.Top ),
                     new Point(m_workingRect.Left ,  m_workingRect.Top ),
 
-                };
-            pathBM.AddLines(psBM);
-            pathBM.CloseAllFigures();
-            g.DrawPolygon(myPen, psBM);
+                    };
+                pathBM.AddLines(psBM);
+                pathBM.CloseAllFigures();
+                g.DrawPolygon(myPen, psBM);
 
-            //写编号
-            if (!string.IsNullOrEmpty(m_NO))
-            {
-                var nosize = g.MeasureString(m_NO, Font);
-                g.DrawString(m_NO, Font, new SolidBrush(ForeColor), new PointF((this.Width - nosize.Width) / 2, m_workingRect.Top + 10));
-            }
-            //写文字
-            var size = g.MeasureString(title, Font);
-            string s = null;
-            if (size.Width > this.Width)
-            {
-                string s1 = null;
-                foreach (char c in title)
+                //写编号
+                if (!string.IsNullOrEmpty(m_NO))
                 {
-                    s1 += c;
-                    var sz = g.MeasureString(s1, Font);
-                    if (sz.Width > this.Width)
-                    {
-                        s1 = s1.Remove(s1.Length - 1);
-                        s += (s1 + "\n");
-                        s1 = null;
-                        s1 += c;
-                    }
-
+                    var nosize = g.MeasureString(m_NO, Font);
+                    g.DrawString(m_NO, Font, new SolidBrush(ForeColor), new PointF((this.Width - nosize.Width) / 2, m_workingRect.Top + 10));
                 }
-                s += s1;
+                //写文字
+                var size = g.MeasureString(title, Font);
+                string s = null;
+                if (size.Width > this.Width)
+                {
+                    string s1 = null;
+                    foreach (char c in title)
+                    {
+                        s1 += c;
+                        var sz = g.MeasureString(s1, Font);
+                        if (sz.Width > this.Width)
+                        {
+                            s1 = s1.Remove(s1.Length - 1);
+                            s += (s1 + "\n");
+                            s1 = null;
+                            s1 += c;
+                        }
+
+                    }
+                    s += s1;
+                }
+                else
+                {
+                    s = title;
+                }
+                size = g.MeasureString(s, Font);
+                var nosize1 = g.MeasureString(m_NO, Font);
+                g.DrawString(s, Font, new SolidBrush(ForeColor), new PointF((this.Width - size.Width) / 2, m_workingRect.Top + nosize1.Height + 15));
+
+                //g.Dispose();
+
             }
-            else
+            catch (Exception ex)
             {
-                s = title;
+                Lib_Log.Log.writeLogException("Cup OnPaint：" + ex.ToString());
             }
-            size = g.MeasureString(s, Font);
-            var nosize1 = g.MeasureString(m_NO, Font);
-            g.DrawString(s, Font, new SolidBrush(ForeColor), new PointF((this.Width - size.Width) / 2, m_workingRect.Top + nosize1.Height + 15));
-
         }
+            
 
-    }
+}
 }

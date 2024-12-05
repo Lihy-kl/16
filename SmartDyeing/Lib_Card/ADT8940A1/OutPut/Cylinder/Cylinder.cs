@@ -12,7 +12,7 @@
         ///     2：阻挡气缸收回超时
         /// </summary>
         /// <returns>0：正常；-1：异常；</returns>
-        public abstract int CylinderUp();
+        public abstract int CylinderUp(int i_judge);
 
         /// <summary>
         /// 气缸下
@@ -26,7 +26,7 @@
         ///     7：阻挡气缸收回超时
         /// </summary>
         /// <returns>0：正常；-1：异常；</returns>
-        public abstract int CylinderDown();
+        public abstract int CylinderDown(int i_judge);
 
         /// <summary>
         /// 气缸中

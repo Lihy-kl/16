@@ -1,4 +1,5 @@
 ﻿using Lib_Card;
+using Lib_Card.ADT8940A1.Module.Put;
 using SmartDyeing.FADM_Auto;
 using SmartDyeing.FADM_Control;
 using System;
@@ -209,49 +210,6 @@ namespace SmartDyeing.FADM_Object
             return 0;
         }
 
-        /// <summary>
-        /// 操作
-        /// </summary>
-        /// <returns></returns>
-        public static int Do()
-        {
-            try
-            {
-                bool b_istrue = false;
-                FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询 
-                if (!FADM_Object.Communal._b_auto)
-                {
-                    for (int i = 0; i < Communal._ia_d900.Length; i++) { Communal._ia_d900[i] = 0; }
-                    Communal._b_isUpdateNewData = false;
-                    //等待调试页面停止刷新
-                    Thread.Sleep(200);
-                }
-
-                //判断错误返回值
-                if (GetReturn(1) == -2)
-                {
-                    return -2;
-                }
-                return 0;
-            }
-            catch (Exception e)
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
-                if (e.Message.Equals("-2"))
-                {
-                    throw e;
-                }
-                else
-                {
-                    MessageBox.Show(e.ToString());
-                    throw new Exception("-1");
-                }
-            }
-            finally
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
-            }
-        }
 
 
         /// <summary>
@@ -260,68 +218,79 @@ namespace SmartDyeing.FADM_Object
         /// <returns></returns>
         public static int goHome()
         {
-            try
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
             {
-                Lib_Log.Log.writeLogException("执行回零方法");
+                Lib_Card.ADT8940A1.Module.Home.Home home = new Lib_Card.ADT8940A1.Module.Home.Home_Condition();
+                if (-1 == home.Home_XYZ(Lib_Card.Configure.Parameter.Machine_CylinderVersion))
+                    return -1;
 
-                bool b_istrue = false;
-                FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询 
-                if (!FADM_Object.Communal._b_auto)
+                return 0;
+            }
+            else
+            {
+                try
                 {
-                    for (int i = 0; i < Communal._ia_d900.Length; i++) { Communal._ia_d900[i] = 0; }
-                    Communal._b_isUpdateNewData = false;
-                    //等待调试页面停止刷新
-                    Thread.Sleep(200);
-                }
-                ClearSuccessState();//先清除标志位
-                Lib_Log.Log.writeLogException("清除标志位结束");
+                    Lib_Log.Log.writeLogException("执行回零方法");
 
-            lableTop:
-                int[] ia_array = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
-                int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
-                if (i_state != -1)
-                {
-                    //判断错误返回值
-                    if (GetReturn(1) == -2)
+                    bool b_istrue = false;
+                    FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询 
+                    if (!FADM_Object.Communal._b_auto)
                     {
-                        return -2;
+                        for (int i = 0; i < Communal._ia_d900.Length; i++) { Communal._ia_d900[i] = 0; }
+                        Communal._b_isUpdateNewData = false;
+                        //等待调试页面停止刷新
+                        Thread.Sleep(200);
+                    }
+                    ClearSuccessState();//先清除标志位
+                    Lib_Log.Log.writeLogException("清除标志位结束");
+
+                lableTop:
+                    int[] ia_array = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
+                    int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
+                    if (i_state != -1)
+                    {
+                        //判断错误返回值
+                        if (GetReturn(1) == -2)
+                        {
+                            return -2;
+                        }
+                        else
+                        {
+
+                        }
                     }
                     else
                     {
-
-                    }
-                }
-                else
-                {
-                    Lib_Log.Log.writeLogException("写入回零动作编号返回失败,继续写入");
-                    Console.WriteLine("写入回零动作编号返回失败,继续写入");
-                    if (b_istrue)
-                    {
-                        b_istrue = false;
-                        FADM_Object.Communal._tcpModBus.ReConnect();
+                        Lib_Log.Log.writeLogException("写入回零动作编号返回失败,继续写入");
+                        Console.WriteLine("写入回零动作编号返回失败,继续写入");
+                        if (b_istrue)
+                        {
+                            b_istrue = false;
+                            FADM_Object.Communal._tcpModBus.ReConnect();
+                            goto lableTop;
+                        }
+                        b_istrue = true;
                         goto lableTop;
                     }
-                    b_istrue = true;
-                    goto lableTop;
+                    return 0;
                 }
-                return 0;
-            }
-            catch (Exception e)
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
-                if (e.Message.Equals("-2"))
+                catch (Exception e)
                 {
-                    throw e;
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                    if (e.Message.Equals("-2"))
+                    {
+                        throw e;
+                    }
+                    else
+                    {
+                        MessageBox.Show(e.ToString());
+                        throw new Exception("-1");
+                    }
                 }
-                else
+                finally
                 {
-                    MessageBox.Show(e.ToString());
-                    throw new Exception("-1");
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
                 }
-            }
-            finally
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
             }
         }
 
@@ -348,10 +317,20 @@ namespace SmartDyeing.FADM_Object
                         }
                         if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1 || (!Communal._b_isBalanceInDrip))
                         {
-                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
-                            Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (i_no - 1) /
+                            if (FADM_Object.Communal._b_isNewSet)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
                                 Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (i_no - 1) /
+                                    Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                            }
+                            else
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
+                                Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y - (i_no - 1) /
+                                    Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                            }
                         }
                         else
                         {
@@ -405,7 +384,7 @@ namespace SmartDyeing.FADM_Object
                         }
                         else
                         {
-                            if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(i_no) && SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 1)
+                            if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(i_no) && (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 3))
                             {
                                 if (i_no == 1)
                                 {
@@ -933,7 +912,7 @@ namespace SmartDyeing.FADM_Object
                         }
                         else
                         {
-                            if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(i_no) && SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 1)
+                            if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(i_no) && (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 3))
                             {
                                 if (i_no == 1)
                                 {
@@ -1268,9 +1247,9 @@ namespace SmartDyeing.FADM_Object
                             throw new Exception("4");
                         }
                         i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_X - (i_no - 1) %
-                        Lib_Card.Configure.Parameter.Machine_AreaWetCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalX;
+                        Lib_Card.Configure.Parameter.Machine_AreaWetCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalX - ((i_no - 1) / 2) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalX_S;
                         i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_Y + (i_no - 1) /
-                            Lib_Card.Configure.Parameter.Machine_AreaWetCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalY;
+                            Lib_Card.Configure.Parameter.Machine_AreaWetCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalY + ((i_no - 1) / 2) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalY_S;
 
                         break;
                     case 8:
@@ -1280,6 +1259,18 @@ namespace SmartDyeing.FADM_Object
                     case 9:
                         i_xPules = Lib_Card.Configure.Parameter.Coordinate_WetClamp_X;
                         i_yPules = Lib_Card.Configure.Parameter.Coordinate_WetClamp_Y;
+                        break;
+                    case 10:
+                        if (i_no == 1)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Abs1_X;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Abs1_Y;
+                        }
+                        else
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Abs2_X;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Abs2_Y;
+                        }
                         break;
                     default:
                         throw new Exception("5");
@@ -1331,28 +1322,13 @@ namespace SmartDyeing.FADM_Object
         /// <returns></returns>
         public static int TargetMove(int i_move_Type, int i_no, int i_type)
         {
-            try
+            if (!Communal._b_isMove)
             {
-                Lib_Log.Log.writeLogException("开始定点移动");
-                Console.WriteLine("开始定点移动");
-                bool b_istrue = false;
-                FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
-                if (!FADM_Object.Communal._b_auto)
-                {
-                    for (int i = 0; i < Communal._ia_d900.Length; i++) { Communal._ia_d900[i] = 0; }
-                    Communal._b_isUpdateNewData = false;
-                    //等待调试页面停止刷新
-                    Thread.Sleep(200);
-                }
-                ClearSuccessState();//先清除标志位
+                Communal._b_isMove = true;
+            }
 
-                Console.WriteLine("清除完标志位");
-                Lib_Log.Log.writeLogException("清除标志位结束");
-            lableTop:
-            Label1:
-                /*if (!FADM_Object.Communal._b_auto) {//在手动页面 等待手动页面退出
-                    goto Label1;
-                }*/
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
+            {
                 int i_xPules = 0;
                 int i_yPules = 0;
                 switch (i_move_Type)
@@ -1364,10 +1340,20 @@ namespace SmartDyeing.FADM_Object
                         }
                         if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1 || (!Communal._b_isBalanceInDrip))
                         {
-                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
-                            Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (i_no - 1) /
+                            if (FADM_Object.Communal._b_isNewSet)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
                                 Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (i_no - 1) /
+                                    Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                            }
+                            else
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
+                                Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y - (i_no - 1) /
+                                    Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                            }
                         }
                         else
                         {
@@ -1421,7 +1407,7 @@ namespace SmartDyeing.FADM_Object
                         }
                         else
                         {
-                            if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(i_no) && SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 1)
+                            if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(i_no) && (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 3))
                             {
                                 if (i_no == 1)
                                 {
@@ -1949,7 +1935,7 @@ namespace SmartDyeing.FADM_Object
                         }
                         else
                         {
-                            if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(i_no) && SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 1)
+                            if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(i_no) && (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 3))
                             {
                                 if (i_no == 1)
                                 {
@@ -2284,9 +2270,9 @@ namespace SmartDyeing.FADM_Object
                             throw new Exception("4");
                         }
                         i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_X - (i_no - 1) %
-                        Lib_Card.Configure.Parameter.Machine_AreaWetCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalX;
+                        Lib_Card.Configure.Parameter.Machine_AreaWetCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalX - ((i_no - 1) / 2) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalX_S;
                         i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_Y + (i_no - 1) /
-                            Lib_Card.Configure.Parameter.Machine_AreaWetCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalY;
+                            Lib_Card.Configure.Parameter.Machine_AreaWetCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalY + ((i_no - 1) / 2) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalY_S;
 
                         break;
                     case 8:
@@ -2297,71 +2283,1077 @@ namespace SmartDyeing.FADM_Object
                         i_xPules = Lib_Card.Configure.Parameter.Coordinate_WetClamp_X;
                         i_yPules = Lib_Card.Configure.Parameter.Coordinate_WetClamp_Y;
                         break;
+                    case 10:
+                        if (i_no == 1)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Abs1_X;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Abs1_Y;
+                        }
+                        else
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Abs2_X;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Abs2_Y;
+                        }
+                        break;
                     default:
                         throw new Exception("5");
                 }
                 Lib_Log.Log.writeLogException("脉冲是iXPules=" + i_xPules.ToString() + "iYPules=" + i_yPules.ToString());
-                int d1 = 0;
-                if (i_xPules > 65536)
-                {
-                    d1 = i_xPules / 65536;
-                    i_xPules = i_xPules % 65536;
-                }
-                int d2 = 0;
-                if (i_yPules > 65536)
-                {
-                    d2 = i_yPules / 65536;
-                    i_yPules = i_yPules % 65536;
-                }
-                int[] ia_array = { 2, i_xPules, d1, i_yPules, d2, 0, 0, 0, 0, i_type, 1 };
-                Lib_Log.Log.writeLogException("发送坐标");
-                Console.WriteLine("发送坐标");
-                int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
-                if (i_state != -1)
-                {
-                    //判断错误返回值
-                    if (GetReturn(1) == -2)
-                    {
-                        return -2;
-                    }
-                }
-                else
-                {
-                    Lib_Log.Log.writeLogException("写入定点移动编号返回失败,继续写入");
-                    Console.WriteLine("写入定点移动编号返回失败,继续写入");
-                    if (b_istrue)
-                    {
-                        b_istrue = false;
-                        FADM_Object.Communal._tcpModBus.ReConnect();
-                        goto lableTop;
-                    }
-                    b_istrue = true;
-                    goto lableTop;
-                    //throw new Exception("6");
-                }
-                if (i_move_Type == 3)
-                {
-                    //失能关闭
-                    Power(2);
-                }
+                Lib_Card.ADT8940A1.Module.Move.Move move = new Lib_Card.ADT8940A1.Module.Move.TargeMove();
+                int iMove = move.TargetMove(Lib_Card.Configure.Parameter.Machine_CylinderVersion, i_no, i_xPules,i_yPules,i_move_Type);
+                if (-1 == iMove)
+                    throw new Exception("驱动异常");
+                else if (-2 == iMove)
+                    throw new Exception("收到退出消息");
                 return 0;
             }
-            catch (Exception e)
+            else
             {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
-                if (e.Message.Equals("4") || e.Message.Equals("5") || e.Message.Equals("-2") || e.Message.Equals("6"))
+                try
                 {
-                    throw e;
+                    
+                    Lib_Log.Log.writeLogException("开始定点移动");
+                    Console.WriteLine("开始定点移动");
+                    bool b_istrue = false;
+                    FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
+                    if (!FADM_Object.Communal._b_auto)
+                    {
+                        for (int i = 0; i < Communal._ia_d900.Length; i++) { Communal._ia_d900[i] = 0; }
+                        Communal._b_isUpdateNewData = false;
+                        //等待调试页面停止刷新
+                        Thread.Sleep(200);
+                    }
+                    ClearSuccessState();//先清除标志位
+
+                    Console.WriteLine("清除完标志位");
+                    Lib_Log.Log.writeLogException("清除标志位结束");
+                lableTop:
+                Label1:
+                    /*if (!FADM_Object.Communal._b_auto) {//在手动页面 等待手动页面退出
+                        goto Label1;
+                    }*/
+                    int i_xPules = 0;
+                    int i_yPules = 0;
+                    switch (i_move_Type)
+                    {
+                        case 0:
+                            if (0 >= i_no || i_no > Lib_Card.Configure.Parameter.Machine_Bottle_Total)
+                            {
+                                throw new Exception("4");
+                            }
+                            if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1 || (!Communal._b_isBalanceInDrip))
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
+                                Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (i_no - 1) /
+                                    Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                            }
+                            else
+                            {
+                                int iNo = i_no;
+                                if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14 >= iNo)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (iNo - 1) %
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (iNo - 1) /
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                }
+                                else if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - 7 >= iNo)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
+                                        ((iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 2)
+                                        * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
+                                        ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14) /
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column +
+                                        (iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
+                                        * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+
+
+                                }
+                                else
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
+                                       ((iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 3)
+                                       * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
+                                        ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14) /
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column +
+                                        (iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
+                                        * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                }
+                            }
+                            break;
+                        case 1:
+                            if (0 >= i_no || i_no > Lib_Card.Configure.Parameter.Machine_Cup_Total)
+                            {
+                                throw new Exception("4");
+                            }
+                            if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1)
+                            {
+                                //在区域1
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area1_X -
+                                    ((i_no - Lib_Card.Configure.Parameter.Machine_Area1_CupMin) % Lib_Card.Configure.Parameter.Machine_Area1_Row) * Lib_Card.Configure.Parameter.Coordinate_Area1_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area1_Y -
+                                    ((i_no - Lib_Card.Configure.Parameter.Machine_Area1_CupMin) / Lib_Card.Configure.Parameter.Machine_Area1_Row) * Lib_Card.Configure.Parameter.Coordinate_Area1_IntervalY;
+
+                            }
+                            else
+                            {
+                                if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(i_no) && (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 3))
+                                {
+                                    if (i_no == 1)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup1_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup1_IntervalY;
+                                    }
+                                    else if (i_no == 2)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup2_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup2_IntervalY;
+                                    }
+                                    else if (i_no == 3)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup3_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup3_IntervalY;
+                                    }
+                                    else if (i_no == 4)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup4_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup4_IntervalY;
+                                    }
+                                    else if (i_no == 5)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup5_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup5_IntervalY;
+                                    }
+                                    else if (i_no == 6)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup6_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup6_IntervalY;
+                                    }
+                                    else if (i_no == 7)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup7_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup7_IntervalY;
+                                    }
+                                    else if (i_no == 8)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup8_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup8_IntervalY;
+                                    }
+                                    else if (i_no == 9)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup9_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup9_IntervalY;
+                                    }
+                                    else if (i_no == 10)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup10_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup10_IntervalY;
+                                    }
+                                    else if (i_no == 11)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup11_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup11_IntervalY;
+                                    }
+                                    else if (i_no == 12)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup12_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup12_IntervalY;
+                                    }
+                                    else if (i_no == 13)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup13_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup13_IntervalY;
+                                    }
+                                    else if (i_no == 14)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup14_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup14_IntervalY;
+                                    }
+                                    else if (i_no == 15)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup15_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup15_IntervalY;
+                                    }
+                                    else if (i_no == 16)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup16_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup16_IntervalY;
+                                    }
+                                    else if (i_no == 17)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup17_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup17_IntervalY;
+                                    }
+                                    else if (i_no == 18)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup18_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup18_IntervalY;
+                                    }
+                                    else if (i_no == 19)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup19_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup19_IntervalY;
+                                    }
+                                    else if (i_no == 20)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup20_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup20_IntervalY;
+                                    }
+                                    else if (i_no == 21)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup21_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup21_IntervalY;
+                                    }
+                                    else if (i_no == 22)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup22_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup22_IntervalY;
+                                    }
+                                    else if (i_no == 23)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup23_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup23_IntervalY;
+                                    }
+                                    else if (i_no == 24)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup24_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup24_IntervalY;
+                                    }
+                                    else if (i_no == 25)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup25_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup25_IntervalY;
+                                    }
+                                    else if (i_no == 26)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup26_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup26_IntervalY;
+                                    }
+                                    else if (i_no == 27)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup27_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup27_IntervalY;
+                                    }
+                                    else if (i_no == 28)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup28_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup28_IntervalY;
+                                    }
+                                    else if (i_no == 29)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup29_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup29_IntervalY;
+                                    }
+                                    else if (i_no == 30)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup30_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup30_IntervalY;
+                                    }
+                                    else if (i_no == 31)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup31_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup31_IntervalY;
+                                    }
+                                    else if (i_no == 32)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup32_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup32_IntervalY;
+                                    }
+                                    else if (i_no == 33)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup33_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup33_IntervalY;
+                                    }
+                                    else if (i_no == 34)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup34_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup34_IntervalY;
+                                    }
+                                    else if (i_no == 35)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup35_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup35_IntervalY;
+                                    }
+                                    else if (i_no == 36)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup36_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup36_IntervalY;
+                                    }
+                                }
+                                else
+                                {
+                                    if (i_no >= Lib_Card.Configure.Parameter.Machine_Area1_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_Area1_CupMax)
+                                    {
+                                        if (Lib_Card.Configure.Parameter.Machine_Area1_Layout == 1)
+                                        {
+                                            //在区域1
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area1_X -
+                                                ((i_no - Lib_Card.Configure.Parameter.Machine_Area1_CupMin) / Lib_Card.Configure.Parameter.Machine_Area1_Row) * Lib_Card.Configure.Parameter.Coordinate_Area1_IntervalX;
+
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area1_Y +
+                                                ((i_no - Lib_Card.Configure.Parameter.Machine_Area1_CupMin) % Lib_Card.Configure.Parameter.Machine_Area1_Row) * Lib_Card.Configure.Parameter.Coordinate_Area1_IntervalY;
+
+                                        }
+                                        else
+                                        {
+                                            //在区域1
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area1_X -
+                                                ((i_no - Lib_Card.Configure.Parameter.Machine_Area1_CupMin) % Lib_Card.Configure.Parameter.Machine_Area1_Col) * Lib_Card.Configure.Parameter.Coordinate_Area1_IntervalX;
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area1_Y -
+                                                ((i_no - Lib_Card.Configure.Parameter.Machine_Area1_CupMin) / Lib_Card.Configure.Parameter.Machine_Area1_Col) * Lib_Card.Configure.Parameter.Coordinate_Area1_IntervalY;
+                                        }
+                                    }
+                                    else if (i_no >= Lib_Card.Configure.Parameter.Machine_Area2_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_Area2_CupMax)
+                                    {
+                                        if (Lib_Card.Configure.Parameter.Machine_Area2_Layout == 1)
+                                        {
+                                            //在区域2
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area2_X -
+                                          ((i_no - Lib_Card.Configure.Parameter.Machine_Area2_CupMin) / Lib_Card.Configure.Parameter.Machine_Area2_Row) * Lib_Card.Configure.Parameter.Coordinate_Area2_IntervalX;
+
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area2_Y +
+                                            ((i_no - Lib_Card.Configure.Parameter.Machine_Area2_CupMin) % Lib_Card.Configure.Parameter.Machine_Area2_Row) * Lib_Card.Configure.Parameter.Coordinate_Area2_IntervalY;
+
+                                        }
+                                        else
+                                        {
+                                            //在区域2
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area2_X -
+                                              ((i_no - Lib_Card.Configure.Parameter.Machine_Area2_CupMin) % Lib_Card.Configure.Parameter.Machine_Area2_Col) * Lib_Card.Configure.Parameter.Coordinate_Area2_IntervalX;
+
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area2_Y -
+                                            ((i_no - Lib_Card.Configure.Parameter.Machine_Area2_CupMin) / Lib_Card.Configure.Parameter.Machine_Area2_Col) * Lib_Card.Configure.Parameter.Coordinate_Area2_IntervalY;
+                                        }
+                                    }
+                                    else if (i_no >= Lib_Card.Configure.Parameter.Machine_Area3_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_Area3_CupMax)
+                                    {
+                                        if (Lib_Card.Configure.Parameter.Machine_Area3_Layout == 1)
+                                        {
+                                            //在区域3
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area3_X -
+                                        ((i_no - Lib_Card.Configure.Parameter.Machine_Area3_CupMin) / Lib_Card.Configure.Parameter.Machine_Area3_Row) * Lib_Card.Configure.Parameter.Coordinate_Area3_IntervalX;
+
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area3_Y +
+                                            ((i_no - Lib_Card.Configure.Parameter.Machine_Area3_CupMin) % Lib_Card.Configure.Parameter.Machine_Area3_Row) * Lib_Card.Configure.Parameter.Coordinate_Area3_IntervalY;
+
+                                        }
+                                        else
+                                        {
+                                            //在区域3
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area3_X -
+                                              ((i_no - Lib_Card.Configure.Parameter.Machine_Area3_CupMin) % Lib_Card.Configure.Parameter.Machine_Area3_Col) * Lib_Card.Configure.Parameter.Coordinate_Area3_IntervalX;
+
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area3_Y -
+                                            ((i_no - Lib_Card.Configure.Parameter.Machine_Area3_CupMin) / Lib_Card.Configure.Parameter.Machine_Area3_Col) * Lib_Card.Configure.Parameter.Coordinate_Area3_IntervalY;
+                                        }
+                                    }
+                                    else if (i_no >= Lib_Card.Configure.Parameter.Machine_Area4_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_Area4_CupMax)
+                                    {
+                                        if (Lib_Card.Configure.Parameter.Machine_Area4_Layout == 1)
+                                        {
+                                            //在区域4
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area4_X -
+                                        ((i_no - Lib_Card.Configure.Parameter.Machine_Area4_CupMin) / Lib_Card.Configure.Parameter.Machine_Area4_Row) * Lib_Card.Configure.Parameter.Coordinate_Area4_IntervalX;
+
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area4_Y +
+                                            ((i_no - Lib_Card.Configure.Parameter.Machine_Area4_CupMin) % Lib_Card.Configure.Parameter.Machine_Area4_Row) * Lib_Card.Configure.Parameter.Coordinate_Area4_IntervalY;
+
+                                        }
+                                        else
+                                        {
+                                            //在区域4
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area4_X +
+                                              ((i_no - Lib_Card.Configure.Parameter.Machine_Area4_CupMin) % Lib_Card.Configure.Parameter.Machine_Area4_Col) * Lib_Card.Configure.Parameter.Coordinate_Area4_IntervalX;
+
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area4_Y +
+                                            ((i_no - Lib_Card.Configure.Parameter.Machine_Area4_CupMin) / Lib_Card.Configure.Parameter.Machine_Area4_Col) * Lib_Card.Configure.Parameter.Coordinate_Area4_IntervalY;
+                                        }
+                                    }
+                                    else if (i_no >= Lib_Card.Configure.Parameter.Machine_Area5_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_Area5_CupMax)
+                                    {
+                                        if (Lib_Card.Configure.Parameter.Machine_Area5_Layout == 1)
+                                        {
+                                            //在区域5
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area5_X -
+                                        ((i_no - Lib_Card.Configure.Parameter.Machine_Area5_CupMin) / Lib_Card.Configure.Parameter.Machine_Area5_Row) * Lib_Card.Configure.Parameter.Coordinate_Area5_IntervalX;
+
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area5_Y +
+                                            ((i_no - Lib_Card.Configure.Parameter.Machine_Area5_CupMin) % Lib_Card.Configure.Parameter.Machine_Area5_Row) * Lib_Card.Configure.Parameter.Coordinate_Area5_IntervalY;
+                                        }
+                                        else
+                                        {
+                                            //在区域5
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area5_X +
+                                          ((i_no - Lib_Card.Configure.Parameter.Machine_Area5_CupMin) % Lib_Card.Configure.Parameter.Machine_Area5_Col) * Lib_Card.Configure.Parameter.Coordinate_Area5_IntervalX;
+
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area5_Y +
+                                            ((i_no - Lib_Card.Configure.Parameter.Machine_Area5_CupMin) / Lib_Card.Configure.Parameter.Machine_Area5_Col) * Lib_Card.Configure.Parameter.Coordinate_Area5_IntervalY;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (Lib_Card.Configure.Parameter.Machine_Area6_Layout == 1)
+                                        {
+                                            //在区域6
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area6_X -
+                                        ((i_no - Lib_Card.Configure.Parameter.Machine_Area6_CupMin) / Lib_Card.Configure.Parameter.Machine_Area6_Row) * Lib_Card.Configure.Parameter.Coordinate_Area6_IntervalX;
+
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area6_Y +
+                                            ((i_no - Lib_Card.Configure.Parameter.Machine_Area6_CupMin) % Lib_Card.Configure.Parameter.Machine_Area6_Row) * Lib_Card.Configure.Parameter.Coordinate_Area6_IntervalY;
+                                        }
+                                        else
+                                        {
+                                            //在区域6
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area6_X +
+                                         ((i_no - Lib_Card.Configure.Parameter.Machine_Area6_CupMin) % Lib_Card.Configure.Parameter.Machine_Area6_Col) * Lib_Card.Configure.Parameter.Coordinate_Area6_IntervalX;
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area6_Y +
+                                            ((i_no - Lib_Card.Configure.Parameter.Machine_Area6_CupMin) / Lib_Card.Configure.Parameter.Machine_Area6_Col) * Lib_Card.Configure.Parameter.Coordinate_Area6_IntervalY;
+                                        }
+
+                                    }
+                                }
+                            }
+                            break;
+
+                        case 2:
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Balance_X;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Balance_Y;
+                            break;
+                        case 3:
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Standby_X;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Standby_Y;
+                            break;
+                        case 4:
+                            if (0 >= i_no || i_no > Lib_Card.Configure.Parameter.Machine_Cup_Total)
+                            {
+                                throw new Exception("4");
+                            }
+                            if (i_no == 1)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover1_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover1_IntervalY;
+                            }
+                            else if (i_no == 2)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover2_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover2_IntervalY;
+                            }
+                            else if (i_no == 3)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover3_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover3_IntervalY;
+                            }
+                            else if (i_no == 4)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover4_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover4_IntervalY;
+                            }
+                            else if (i_no == 5)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover5_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover5_IntervalY;
+                            }
+                            else if (i_no == 6)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover6_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover6_IntervalY;
+                            }
+                            else if (i_no == 7)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover7_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover7_IntervalY;
+                            }
+                            else if (i_no == 8)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover8_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover8_IntervalY;
+                            }
+                            else if (i_no == 9)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover9_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover9_IntervalY;
+                            }
+                            else if (i_no == 10)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover10_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover10_IntervalY;
+                            }
+                            else if (i_no == 11)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover11_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover11_IntervalY;
+                            }
+                            else if (i_no == 12)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover12_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover12_IntervalY;
+                            }
+                            else if (i_no == 13)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover13_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover13_IntervalY;
+                            }
+                            else if (i_no == 14)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover14_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover14_IntervalY;
+                            }
+                            else if (i_no == 15)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover15_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover15_IntervalY;
+                            }
+                            else if (i_no == 16)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover16_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover16_IntervalY;
+                            }
+                            else if (i_no == 17)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover17_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover17_IntervalY;
+                            }
+                            else if (i_no == 18)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover18_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover18_IntervalY;
+                            }
+                            else if (i_no == 19)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover19_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover19_IntervalY;
+                            }
+                            else if (i_no == 20)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover20_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover20_IntervalY;
+                            }
+                            else if (i_no == 21)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover21_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover21_IntervalY;
+                            }
+                            else if (i_no == 22)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover22_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover22_IntervalY;
+                            }
+                            else if (i_no == 23)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover23_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover23_IntervalY;
+                            }
+                            else if (i_no == 24)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover24_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover24_IntervalY;
+                            }
+                            else if (i_no == 25)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover25_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover25_IntervalY;
+                            }
+                            else if (i_no == 26)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover26_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover26_IntervalY;
+                            }
+                            else if (i_no == 27)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover27_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover27_IntervalY;
+                            }
+                            else if (i_no == 28)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover28_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover28_IntervalY;
+                            }
+                            else if (i_no == 29)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover29_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover29_IntervalY;
+                            }
+                            else if (i_no == 30)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover30_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover30_IntervalY;
+                            }
+                            else if (i_no == 31)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover31_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover31_IntervalY;
+                            }
+                            else if (i_no == 32)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover32_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover32_IntervalY;
+                            }
+                            else if (i_no == 33)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover33_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover33_IntervalY;
+                            }
+                            else if (i_no == 34)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover34_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover34_IntervalY;
+                            }
+                            else if (i_no == 35)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover35_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover35_IntervalY;
+                            }
+                            else if (i_no == 36)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover36_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover36_IntervalY;
+                            }
+                            break;
+                        case 5:
+                            if (0 >= i_no || i_no > Lib_Card.Configure.Parameter.Machine_Cup_Total)
+                            {
+                                throw new Exception("4");
+                            }
+                            if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1)
+                            {
+                                //在区域1
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area1_X -
+                                    ((i_no - Lib_Card.Configure.Parameter.Machine_Area1_CupMin) % Lib_Card.Configure.Parameter.Machine_Area1_Row) * Lib_Card.Configure.Parameter.Coordinate_Area1_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area1_Y -
+                                    ((i_no - Lib_Card.Configure.Parameter.Machine_Area1_CupMin) / Lib_Card.Configure.Parameter.Machine_Area1_Row) * Lib_Card.Configure.Parameter.Coordinate_Area1_IntervalY;
+
+                            }
+                            else
+                            {
+                                if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(i_no) && (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 3))
+                                {
+                                    if (i_no == 1)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup1_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup1_IntervalY;
+                                    }
+                                    else if (i_no == 2)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup2_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup2_IntervalY;
+                                    }
+                                    else if (i_no == 3)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup3_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup3_IntervalY;
+                                    }
+                                    else if (i_no == 4)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup4_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup4_IntervalY;
+                                    }
+                                    else if (i_no == 5)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup5_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup5_IntervalY;
+                                    }
+                                    else if (i_no == 6)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup6_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup6_IntervalY;
+                                    }
+                                    else if (i_no == 7)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup7_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup7_IntervalY;
+                                    }
+                                    else if (i_no == 8)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup8_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup8_IntervalY;
+                                    }
+                                    else if (i_no == 9)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup9_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup9_IntervalY;
+                                    }
+                                    else if (i_no == 10)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup10_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup10_IntervalY;
+                                    }
+                                    else if (i_no == 11)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup11_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup11_IntervalY;
+                                    }
+                                    else if (i_no == 12)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup12_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup12_IntervalY;
+                                    }
+                                    else if (i_no == 13)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup13_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup13_IntervalY;
+                                    }
+                                    else if (i_no == 14)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup14_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup14_IntervalY;
+                                    }
+                                    else if (i_no == 15)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup15_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup15_IntervalY;
+                                    }
+                                    else if (i_no == 16)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup16_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup16_IntervalY;
+                                    }
+                                    else if (i_no == 17)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup17_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup17_IntervalY;
+                                    }
+                                    else if (i_no == 18)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup18_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup18_IntervalY;
+                                    }
+                                    else if (i_no == 19)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup19_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup19_IntervalY;
+                                    }
+                                    else if (i_no == 20)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup20_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup20_IntervalY;
+                                    }
+                                    else if (i_no == 21)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup21_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup21_IntervalY;
+                                    }
+                                    else if (i_no == 22)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup22_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup22_IntervalY;
+                                    }
+                                    else if (i_no == 23)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup23_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup23_IntervalY;
+                                    }
+                                    else if (i_no == 24)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup24_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup24_IntervalY;
+                                    }
+                                    else if (i_no == 25)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup25_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup25_IntervalY;
+                                    }
+                                    else if (i_no == 26)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup26_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup26_IntervalY;
+                                    }
+                                    else if (i_no == 27)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup27_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup27_IntervalY;
+                                    }
+                                    else if (i_no == 28)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup28_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup28_IntervalY;
+                                    }
+                                    else if (i_no == 29)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup29_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup29_IntervalY;
+                                    }
+                                    else if (i_no == 30)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup30_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup30_IntervalY;
+                                    }
+                                    else if (i_no == 31)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup31_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup31_IntervalY;
+                                    }
+                                    else if (i_no == 32)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup32_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup32_IntervalY;
+                                    }
+                                    else if (i_no == 33)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup33_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup33_IntervalY;
+                                    }
+                                    else if (i_no == 34)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup34_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup34_IntervalY;
+                                    }
+                                    else if (i_no == 35)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup35_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup35_IntervalY;
+                                    }
+                                    else if (i_no == 36)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup36_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup36_IntervalY;
+                                    }
+                                }
+                                else
+                                {
+                                    if (i_no >= Lib_Card.Configure.Parameter.Machine_Area1_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_Area1_CupMax)
+                                    {
+                                        if (Lib_Card.Configure.Parameter.Machine_Area1_Layout == 1)
+                                        {
+                                            //在区域1
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area1_X -
+                                                ((i_no - Lib_Card.Configure.Parameter.Machine_Area1_CupMin) / Lib_Card.Configure.Parameter.Machine_Area1_Row) * Lib_Card.Configure.Parameter.Coordinate_Area1_IntervalX;
+
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area1_Y +
+                                                ((i_no - Lib_Card.Configure.Parameter.Machine_Area1_CupMin) % Lib_Card.Configure.Parameter.Machine_Area1_Row) * Lib_Card.Configure.Parameter.Coordinate_Area1_IntervalY;
+
+                                        }
+                                        else
+                                        {
+                                            //在区域1
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area1_X -
+                                                ((i_no - Lib_Card.Configure.Parameter.Machine_Area1_CupMin) % Lib_Card.Configure.Parameter.Machine_Area1_Col) * Lib_Card.Configure.Parameter.Coordinate_Area1_IntervalX;
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area1_Y -
+                                                ((i_no - Lib_Card.Configure.Parameter.Machine_Area1_CupMin) / Lib_Card.Configure.Parameter.Machine_Area1_Col) * Lib_Card.Configure.Parameter.Coordinate_Area1_IntervalY;
+                                        }
+                                    }
+                                    else if (i_no >= Lib_Card.Configure.Parameter.Machine_Area2_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_Area2_CupMax)
+                                    {
+                                        if (Lib_Card.Configure.Parameter.Machine_Area2_Layout == 1)
+                                        {
+                                            //在区域2
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area2_X -
+                                          ((i_no - Lib_Card.Configure.Parameter.Machine_Area2_CupMin) / Lib_Card.Configure.Parameter.Machine_Area2_Row) * Lib_Card.Configure.Parameter.Coordinate_Area2_IntervalX;
+
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area2_Y +
+                                            ((i_no - Lib_Card.Configure.Parameter.Machine_Area2_CupMin) % Lib_Card.Configure.Parameter.Machine_Area2_Row) * Lib_Card.Configure.Parameter.Coordinate_Area2_IntervalY;
+
+                                        }
+                                        else
+                                        {
+                                            //在区域2
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area2_X -
+                                              ((i_no - Lib_Card.Configure.Parameter.Machine_Area2_CupMin) % Lib_Card.Configure.Parameter.Machine_Area2_Col) * Lib_Card.Configure.Parameter.Coordinate_Area2_IntervalX;
+
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area2_Y -
+                                            ((i_no - Lib_Card.Configure.Parameter.Machine_Area2_CupMin) / Lib_Card.Configure.Parameter.Machine_Area2_Col) * Lib_Card.Configure.Parameter.Coordinate_Area2_IntervalY;
+                                        }
+                                    }
+                                    else if (i_no >= Lib_Card.Configure.Parameter.Machine_Area3_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_Area3_CupMax)
+                                    {
+                                        if (Lib_Card.Configure.Parameter.Machine_Area3_Layout == 1)
+                                        {
+                                            //在区域3
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area3_X -
+                                        ((i_no - Lib_Card.Configure.Parameter.Machine_Area3_CupMin) / Lib_Card.Configure.Parameter.Machine_Area3_Row) * Lib_Card.Configure.Parameter.Coordinate_Area3_IntervalX;
+
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area3_Y +
+                                            ((i_no - Lib_Card.Configure.Parameter.Machine_Area3_CupMin) % Lib_Card.Configure.Parameter.Machine_Area3_Row) * Lib_Card.Configure.Parameter.Coordinate_Area3_IntervalY;
+
+                                        }
+                                        else
+                                        {
+                                            //在区域3
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area3_X -
+                                              ((i_no - Lib_Card.Configure.Parameter.Machine_Area3_CupMin) % Lib_Card.Configure.Parameter.Machine_Area3_Col) * Lib_Card.Configure.Parameter.Coordinate_Area3_IntervalX;
+
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area3_Y -
+                                            ((i_no - Lib_Card.Configure.Parameter.Machine_Area3_CupMin) / Lib_Card.Configure.Parameter.Machine_Area3_Col) * Lib_Card.Configure.Parameter.Coordinate_Area3_IntervalY;
+                                        }
+                                    }
+                                    else if (i_no >= Lib_Card.Configure.Parameter.Machine_Area4_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_Area4_CupMax)
+                                    {
+                                        if (Lib_Card.Configure.Parameter.Machine_Area4_Layout == 1)
+                                        {
+                                            //在区域4
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area4_X -
+                                        ((i_no - Lib_Card.Configure.Parameter.Machine_Area4_CupMin) / Lib_Card.Configure.Parameter.Machine_Area4_Row) * Lib_Card.Configure.Parameter.Coordinate_Area4_IntervalX;
+
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area4_Y +
+                                            ((i_no - Lib_Card.Configure.Parameter.Machine_Area4_CupMin) % Lib_Card.Configure.Parameter.Machine_Area4_Row) * Lib_Card.Configure.Parameter.Coordinate_Area4_IntervalY;
+
+                                        }
+                                        else
+                                        {
+                                            //在区域4
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area4_X +
+                                              ((i_no - Lib_Card.Configure.Parameter.Machine_Area4_CupMin) % Lib_Card.Configure.Parameter.Machine_Area4_Col) * Lib_Card.Configure.Parameter.Coordinate_Area4_IntervalX;
+
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area4_Y +
+                                            ((i_no - Lib_Card.Configure.Parameter.Machine_Area4_CupMin) / Lib_Card.Configure.Parameter.Machine_Area4_Col) * Lib_Card.Configure.Parameter.Coordinate_Area4_IntervalY;
+                                        }
+                                    }
+                                    else if (i_no >= Lib_Card.Configure.Parameter.Machine_Area5_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_Area5_CupMax)
+                                    {
+                                        if (Lib_Card.Configure.Parameter.Machine_Area5_Layout == 1)
+                                        {
+                                            //在区域5
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area5_X -
+                                        ((i_no - Lib_Card.Configure.Parameter.Machine_Area5_CupMin) / Lib_Card.Configure.Parameter.Machine_Area5_Row) * Lib_Card.Configure.Parameter.Coordinate_Area5_IntervalX;
+
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area5_Y +
+                                            ((i_no - Lib_Card.Configure.Parameter.Machine_Area5_CupMin) % Lib_Card.Configure.Parameter.Machine_Area5_Row) * Lib_Card.Configure.Parameter.Coordinate_Area5_IntervalY;
+                                        }
+                                        else
+                                        {
+                                            //在区域5
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area5_X +
+                                          ((i_no - Lib_Card.Configure.Parameter.Machine_Area5_CupMin) % Lib_Card.Configure.Parameter.Machine_Area5_Col) * Lib_Card.Configure.Parameter.Coordinate_Area5_IntervalX;
+
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area5_Y +
+                                            ((i_no - Lib_Card.Configure.Parameter.Machine_Area5_CupMin) / Lib_Card.Configure.Parameter.Machine_Area5_Col) * Lib_Card.Configure.Parameter.Coordinate_Area5_IntervalY;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (Lib_Card.Configure.Parameter.Machine_Area6_Layout == 1)
+                                        {
+                                            //在区域6
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area6_X -
+                                        ((i_no - Lib_Card.Configure.Parameter.Machine_Area6_CupMin) / Lib_Card.Configure.Parameter.Machine_Area6_Row) * Lib_Card.Configure.Parameter.Coordinate_Area6_IntervalX;
+
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area6_Y +
+                                            ((i_no - Lib_Card.Configure.Parameter.Machine_Area6_CupMin) % Lib_Card.Configure.Parameter.Machine_Area6_Row) * Lib_Card.Configure.Parameter.Coordinate_Area6_IntervalY;
+                                        }
+                                        else
+                                        {
+                                            //在区域6
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Area6_X +
+                                         ((i_no - Lib_Card.Configure.Parameter.Machine_Area6_CupMin) % Lib_Card.Configure.Parameter.Machine_Area6_Col) * Lib_Card.Configure.Parameter.Coordinate_Area6_IntervalX;
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Area6_Y +
+                                            ((i_no - Lib_Card.Configure.Parameter.Machine_Area6_CupMin) / Lib_Card.Configure.Parameter.Machine_Area6_Col) * Lib_Card.Configure.Parameter.Coordinate_Area6_IntervalY;
+                                        }
+
+                                    }
+                                }
+                            }
+                            i_xPules -= Lib_Card.Configure.Parameter.Coordinate_Cup_Decompression;
+                            break;
+                        case 6:
+                            if (0 >= i_no || i_no > Lib_Card.Configure.Parameter.Machine_Cup_Total)
+                            {
+                                throw new Exception("4");
+                            }
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth_X - (i_no - 1) %
+                            Lib_Card.Configure.Parameter.Machine_AreaDryCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth_Y + (i_no - 1) /
+                                Lib_Card.Configure.Parameter.Machine_AreaDryCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth_IntervalY;
+
+                            break;
+                        case 7:
+                            if (0 >= i_no || i_no > Lib_Card.Configure.Parameter.Machine_Cup_Total)
+                            {
+                                throw new Exception("4");
+                            }
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_X - (i_no - 1) %
+                            Lib_Card.Configure.Parameter.Machine_AreaWetCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalX - ((i_no - 1) / 2) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalX_S;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_Y + (i_no - 1) /
+                                Lib_Card.Configure.Parameter.Machine_AreaWetCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalY + ((i_no - 1) / 2) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalY_S;
+
+                            break;
+                        case 8:
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_DryClamp_X;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_DryClamp_Y;
+                            break;
+                        case 9:
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_WetClamp_X;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_WetClamp_Y;
+                            break;
+                        case 10:
+                            if (i_no == 1)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_Abs1_X;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_Abs1_Y;
+                            }
+                            else
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_Abs2_X;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_Abs2_Y;
+                            }
+                            break;
+                        default:
+                            throw new Exception("5");
+                    }
+                    Lib_Log.Log.writeLogException("脉冲是iXPules=" + i_xPules.ToString() + "iYPules=" + i_yPules.ToString());
+                    int d1 = 0;
+                    if (i_xPules > 65536)
+                    {
+                        d1 = i_xPules / 65536;
+                        i_xPules = i_xPules % 65536;
+                    }
+                    int d2 = 0;
+                    if (i_yPules > 65536)
+                    {
+                        d2 = i_yPules / 65536;
+                        i_yPules = i_yPules % 65536;
+                    }
+                    int[] ia_array = { 2, i_xPules, d1, i_yPules, d2, 0, 0, 0, 0, i_type, 1 };
+                    Lib_Log.Log.writeLogException("发送坐标");
+                    Console.WriteLine("发送坐标");
+                    int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
+                    if (i_state != -1)
+                    {
+                        //判断错误返回值
+                        if (GetReturn(1) == -2)
+                        {
+                            return -2;
+                        }
+                    }
+                    else
+                    {
+                        Lib_Log.Log.writeLogException("写入定点移动编号返回失败,继续写入");
+                        Console.WriteLine("写入定点移动编号返回失败,继续写入");
+                        if (b_istrue)
+                        {
+                            b_istrue = false;
+                            FADM_Object.Communal._tcpModBus.ReConnect();
+                            goto lableTop;
+                        }
+                        b_istrue = true;
+                        goto lableTop;
+                        //throw new Exception("6");
+                    }
+                    if (i_move_Type == 3)
+                    {
+                        //失能关闭
+                        Power(2);
+                    }
+                    return 0;
                 }
-                else
+                catch (Exception e)
                 {
-                    MessageBox.Show(e.ToString());
-                    throw new Exception("-1");
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                    if (e.Message.Equals("4") || e.Message.Equals("5") || e.Message.Equals("-2") || e.Message.Equals("6"))
+                    {
+                        throw e;
+                    }
+                    else
+                    {
+                        MessageBox.Show(e.ToString());
+                        throw new Exception("-1");
+                    }
                 }
-            }
-            finally
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                finally
+                {
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                }
             }
         }
 
@@ -2376,103 +3368,125 @@ namespace SmartDyeing.FADM_Object
         /// <returns></returns>
         public static int Extract(int i_extract_Pulse, bool b_isTrue, int i_syringeType)
         {
-            try
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
             {
-
-            Label1:
-                if (!FADM_Object.Communal._b_auto)
-                {//在手动页面 等待手动页面退出
-                    goto Label1;
-                }
-
-                Lib_Log.Log.writeLogException("执行抽液方法Extract_Pulse=" + i_extract_Pulse.ToString());
-
-                Console.WriteLine("开始抽液Extract_Pulse=" + i_extract_Pulse.ToString());
-                bool b_istrue = false;
-                FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
-                ClearSuccessState();//先清除标志位
-                Console.WriteLine("清除完标志位");
-                Lib_Log.Log.writeLogException("清除标志位结束");
-
-
-
-            lableTop:
-                int d_1 = 0;
-                d_1 = i_extract_Pulse / 65536;
-                if (i_extract_Pulse < 0) //负数脉冲
+                int iMRes = 0;
+                Lib_Card.ADT8940A1.Module.Extraction.Extraction extraction = new Lib_Card.ADT8940A1.Module.Extraction.Extraction_Drip();
+                if (b_isTrue)
                 {
-                    if (d_1 == 0)
+                    iMRes = extraction.FluidExtraction(Lib_Card.Configure.Parameter.Machine_CylinderVersion, i_syringeType, i_extract_Pulse, 1);
+                }
+                else
+                {
+                    iMRes = extraction.FluidExtraction(Lib_Card.Configure.Parameter.Machine_CylinderVersion, i_syringeType, i_extract_Pulse, 0);
+                }
+                if (-1 == iMRes)
+                    throw new Exception("驱动异常");
+                else if (-2 == iMRes)
+                    throw new Exception("收到退出消息");
+
+                return 0;
+            }
+            else
+            {
+                try
+                {
+
+                Label1:
+                    if (!FADM_Object.Communal._b_auto)
+                    {//在手动页面 等待手动页面退出
+                        goto Label1;
+                    }
+
+                    Lib_Log.Log.writeLogException("执行抽液方法Extract_Pulse=" + i_extract_Pulse.ToString());
+
+                    Console.WriteLine("开始抽液Extract_Pulse=" + i_extract_Pulse.ToString());
+                    bool b_istrue = false;
+                    FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
+                    ClearSuccessState();//先清除标志位
+                    Console.WriteLine("清除完标志位");
+                    Lib_Log.Log.writeLogException("清除标志位结束");
+
+
+
+                lableTop:
+                    int d_1 = 0;
+                    d_1 = i_extract_Pulse / 65536;
+                    if (i_extract_Pulse < 0) //负数脉冲
                     {
-                        d_1 = -1;
+                        if (d_1 == 0)
+                        {
+                            d_1 = -1;
+                        }
+                        else
+                        {
+                            if (Math.Abs(i_extract_Pulse) > 65536)
+                            {
+                                d_1 = d_1 + -1;
+                            }
+                        }
+                    }
+                    else
+                    {  //正数脉冲
+                        d_1 = i_extract_Pulse / 65536;
+                    }
+                    i_extract_Pulse = i_extract_Pulse % 65536;
+                    int[] ia_array = { 3, 0, 0, 0, 0, i_extract_Pulse, d_1, 0, 0, 0, 1, 0, b_isTrue ? 1 : 0, i_syringeType };
+                    int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
+                    if (i_state != -1)
+                    {
+                        //判断错误返回值
+                        if (GetReturn(1) == -2)
+                        {
+                            return -2;
+                        }
                     }
                     else
                     {
-                        if (Math.Abs(i_extract_Pulse) > 65536)
+                        Lib_Log.Log.writeLogException("写入抽液编号返回失败,继续写入");
+                        Console.WriteLine("写入抽液编号返回失败,继续写入");
+                        if (b_istrue)
                         {
-                            d_1 = d_1 + -1;
+                            b_istrue = false;
+                            FADM_Object.Communal._tcpModBus.ReConnect();
+                            goto lableTop;
                         }
-                    }
-                }
-                else
-                {  //正数脉冲
-                    d_1 = i_extract_Pulse / 65536;
-                }
-                i_extract_Pulse = i_extract_Pulse % 65536;
-                int[] ia_array = { 3, 0, 0, 0, 0, i_extract_Pulse, d_1, 0, 0, 0, 1, 0, b_isTrue ? 1 : 0, i_syringeType };
-                int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
-                if (i_state != -1)
-                {
-                    //判断错误返回值
-                    if (GetReturn(1) == -2)
-                    {
-                        return -2;
-                    }
-                }
-                else
-                {
-                    Lib_Log.Log.writeLogException("写入抽液编号返回失败,继续写入");
-                    Console.WriteLine("写入抽液编号返回失败,继续写入");
-                    if (b_istrue)
-                    {
-                        b_istrue = false;
-                        FADM_Object.Communal._tcpModBus.ReConnect();
+                        b_istrue = true;
                         goto lableTop;
+                        //throw new Exception("7");
                     }
-                    b_istrue = true;
-                    goto lableTop;
-                    //throw new Exception("7");
+                    return 0;
                 }
-                return 0;
-            }
-            catch (Exception e)
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
-                if (e.Message.Equals("3") || e.Message.Equals("7") || e.Message.Equals("-2") || e.Message.Equals("未发现针筒"))
+                catch (Exception e)
                 {
-                    string msg = "";
-                    int[] ia_errArray = new int[100];
-                Label123:
-                    int i_state1 = MyModbusFun.GetErrMsgNew(ref ia_errArray);
-                    if (i_state1 == -1)
-                        goto Label123;
-                    for (int i = 0; i < ia_errArray.Length; i++)
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                    if (e.Message.Equals("3") || e.Message.Equals("7") || e.Message.Equals("-2") || e.Message.Equals("未发现针筒"))
                     {
-                        if (ia_errArray[i] == 2101)
+                        string msg = "";
+                        int[] ia_errArray = new int[100];
+                    Label123:
+                        int i_state1 = MyModbusFun.GetErrMsgNew(ref ia_errArray);
+                        if (i_state1 == -1)
+                            goto Label123;
+                        for (int i = 0; i < ia_errArray.Length; i++)
                         {
-                            throw new Exception("未发现针筒");
-                        }
+                            if (ia_errArray[i] == 2101)
+                            {
+                                throw new Exception("未发现针筒");
+                            }
 
+                        }
+                        throw e;
                     }
-                    throw e;
+                    else
+                    {
+                        throw new Exception("-1");
+                    }
                 }
-                else
+                finally
                 {
-                    throw new Exception("-1");
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
                 }
-            }
-            finally
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
             }
         }
 
@@ -2480,90 +3494,215 @@ namespace SmartDyeing.FADM_Object
         /// 注液
         /// </summary>
         /// <param name="i_extract_Pulse">脉冲数</param>
+        /// <param name="i_syringeType">大小针筒 0 小针筒 1 大针筒</param>
         /// <returns></returns>
-        public static int Shove(int i_extract_Pulse)
+        public static int Shove(int i_extract_Pulse, int i_syringeType)
         {
-            try
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
             {
-            Label1:
-                if (!FADM_Object.Communal._b_auto)
-                {//在手动页面 等待手动页面退出
-                    goto Label1;
-                }
-                Lib_Log.Log.writeLogException("执行注液方法Extract_Pulse=" + i_extract_Pulse.ToString());
 
-                bool b_istrue = false;
-                FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
-                ClearSuccessState();//先清除标志位
-                Lib_Log.Log.writeLogException("清除标志位结束");
+                Lib_Card.ADT8940A1.Module.Infusion.Infusion infusion;
+                infusion = new Lib_Card.ADT8940A1.Module.Infusion.Infusion_Up();
+                int iMRes = infusion.LiquidInfusion(i_syringeType, i_extract_Pulse);
+                if (-1 == iMRes)
+                    throw new Exception("驱动异常");
+                else if (-2 == iMRes)
+                    throw new Exception("收到退出消息");
 
-            lableTop:
-                int d_1 = 0;
-                d_1 = i_extract_Pulse / 65536;
-                if (i_extract_Pulse < 0) //负数脉冲
-                {
-                    if (d_1 == 0)
-                    {
-                        d_1 = -1;
-                    }
-                    else
-                    {
-                        if (Math.Abs(i_extract_Pulse) > 65536)
-                        {
-                            d_1 = d_1 + -1;
-                        }
-                    }
-                }
-                else
-                {  //正数脉冲
-                    d_1 = i_extract_Pulse / 65536;
-                }
-
-                int[] ia_array = { 4, 0, 0, 0, 0, i_extract_Pulse, d_1, 0, 0, 0, 1 };
-                int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
-                if (i_state != -1)
-                {
-                    //判断错误返回值
-                    if (GetReturn(1) == -2)
-                    {
-                        return -2;
-                    }
-                    else
-                    {
-
-                    }
-                }
-                else
-                {
-                    Lib_Log.Log.writeLogException("写入注液编号返回失败,继续写入");
-                    Console.WriteLine("写入注液编号返回失败,继续写入");
-                    if (b_istrue)
-                    {
-                        b_istrue = false;
-                        FADM_Object.Communal._tcpModBus.ReConnect();
-                        goto lableTop;
-                    }
-                    b_istrue = true;
-                    goto lableTop;
-                    //throw new Exception("8");
-                }
                 return 0;
             }
-            catch (Exception e)
+            else
             {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
-                if (e.Message.Equals("-2") || e.Message.Equals("8"))
+                try
                 {
-                    throw e;
+                Label1:
+                    if (!FADM_Object.Communal._b_auto)
+                    {//在手动页面 等待手动页面退出
+                        goto Label1;
+                    }
+                    Lib_Log.Log.writeLogException("执行注液方法Extract_Pulse=" + i_extract_Pulse.ToString());
+
+                    bool b_istrue = false;
+                    FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
+                    ClearSuccessState();//先清除标志位
+                    Lib_Log.Log.writeLogException("清除标志位结束");
+
+                lableTop:
+                    int d_1 = 0;
+                    d_1 = i_extract_Pulse / 65536;
+                    if (i_extract_Pulse < 0) //负数脉冲
+                    {
+                        if (d_1 == 0)
+                        {
+                            d_1 = -1;
+                        }
+                        else
+                        {
+                            if (Math.Abs(i_extract_Pulse) > 65536)
+                            {
+                                d_1 = d_1 + -1;
+                            }
+                        }
+                    }
+                    else
+                    {  //正数脉冲
+                        d_1 = i_extract_Pulse / 65536;
+                    }
+
+                    int[] ia_array = { 4, 0, 0, 0, 0, i_extract_Pulse, d_1, 0, 0, 0, 1 };
+                    int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
+                    if (i_state != -1)
+                    {
+                        //判断错误返回值
+                        if (GetReturn(1) == -2)
+                        {
+                            return -2;
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                    else
+                    {
+                        Lib_Log.Log.writeLogException("写入注液编号返回失败,继续写入");
+                        Console.WriteLine("写入注液编号返回失败,继续写入");
+                        if (b_istrue)
+                        {
+                            b_istrue = false;
+                            FADM_Object.Communal._tcpModBus.ReConnect();
+                            goto lableTop;
+                        }
+                        b_istrue = true;
+                        goto lableTop;
+                        //throw new Exception("8");
+                    }
+                    return 0;
                 }
-                else
+                catch (Exception e)
                 {
-                    throw new Exception("-1");
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                    if (e.Message.Equals("-2") || e.Message.Equals("8"))
+                    {
+                        throw e;
+                    }
+                    else
+                    {
+                        throw new Exception("-1");
+                    }
+                }
+                finally
+                {
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
                 }
             }
-            finally
+        }
+
+        /// <summary>
+        /// 吸光度注液
+        /// </summary>
+        /// <param name="i_extract_Pulse">脉冲数</param>
+        /// <param name="i_syringeType">大小针筒 0 小针筒 1 大针筒</param>
+        /// <returns></returns>
+        public static int AbsShove(int i_extract_Pulse,int i_syringeType)
+        {
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
             {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
+
+                Lib_Card.ADT8940A1.Module.Infusion.Infusion infusion;
+                infusion = new Lib_Card.ADT8940A1.Module.Infusion.Infusion_Up();
+                int iMRes = infusion.LiquidInfusion(i_syringeType, i_extract_Pulse);
+                if (-1 == iMRes)
+                    throw new Exception("驱动异常");
+                else if (-2 == iMRes)
+                    throw new Exception("收到退出消息");
+
+                return 0;
+            }
+            else
+            {
+                try
+                {
+                Label1:
+                    if (!FADM_Object.Communal._b_auto)
+                    {//在手动页面 等待手动页面退出
+                        goto Label1;
+                    }
+                    Lib_Log.Log.writeLogException("执行注液方法Extract_Pulse=" + i_extract_Pulse.ToString());
+
+                    bool b_istrue = false;
+                    FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
+                    ClearSuccessState();//先清除标志位
+                    Lib_Log.Log.writeLogException("清除标志位结束");
+
+                lableTop:
+                    int d_1 = 0;
+                    d_1 = i_extract_Pulse / 65536;
+                    if (i_extract_Pulse < 0) //负数脉冲
+                    {
+                        if (d_1 == 0)
+                        {
+                            d_1 = -1;
+                        }
+                        else
+                        {
+                            if (Math.Abs(i_extract_Pulse) > 65536)
+                            {
+                                d_1 = d_1 + -1;
+                            }
+                        }
+                    }
+                    else
+                    {  //正数脉冲
+                        d_1 = i_extract_Pulse / 65536;
+                    }
+
+                    int[] ia_array = { 4, 0, 0, 0, 0, i_extract_Pulse, d_1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
+                    int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
+                    if (i_state != -1)
+                    {
+                        //判断错误返回值
+                        if (GetReturn(1) == -2)
+                        {
+                            return -2;
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                    else
+                    {
+                        Lib_Log.Log.writeLogException("写入Abs注液编号返回失败,继续写入");
+                        Console.WriteLine("写入Abs注液编号返回失败,继续写入");
+                        if (b_istrue)
+                        {
+                            b_istrue = false;
+                            FADM_Object.Communal._tcpModBus.ReConnect();
+                            goto lableTop;
+                        }
+                        b_istrue = true;
+                        goto lableTop;
+                        //throw new Exception("8");
+                    }
+                    return 0;
+                }
+                catch (Exception e)
+                {
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                    if (e.Message.Equals("-2") || e.Message.Equals("8"))
+                    {
+                        throw e;
+                    }
+                    else
+                    {
+                        throw new Exception("-1");
+                    }
+                }
+                finally
+                {
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                }
             }
         }
 
@@ -2573,68 +3712,133 @@ namespace SmartDyeing.FADM_Object
         /// <returns></returns>
         public static int CheckBalance()
         {
-            try
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
             {
-                //Label1:
-                //    if (!FADM_Object.Communal._b_auto)
-                //    {//在手动页面 等待手动页面退出
-                //        goto Label1;
-                //    }
-                Lib_Log.Log.writeLogException("执行天平检查CheckBalance");
-
-                bool b_istrue = false;
-                FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
-                ClearSuccessState();//先清除标志位
-                Lib_Log.Log.writeLogException("清除标志位结束");
-
-            lableTop:
-
-
-                int[] ia_array = { 13 };
-                int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
-                if (i_state != -1)
+            label4:
+                if (6666 == FADM_Object.Communal.dBalanceValue)
                 {
-                    //判断错误返回值
-                    if (GetReturn(1) == -2)
+                    Lib_Card.ADT8940A1.OutPut.X_Power.X_Power xpower = new Lib_Card.ADT8940A1.OutPut.X_Power.X_Power_Basic();
+                    xpower.X_Power_Off();
+                    Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power ypower = new Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power_Basic();
+                    ypower.Y_Power_Off();
+                    new FADM_Object.MyAlarm("天平通讯异常,检查恢复后请点是", "滴液", false, 1);
+                    xpower.X_Power_On();
+                    ypower.Y_Power_On();
+
+                    goto label4;
+                }
+                else if (7777 == FADM_Object.Communal.dBalanceValue)
+                {
+                    Lib_Card.ADT8940A1.OutPut.X_Power.X_Power xpower = new Lib_Card.ADT8940A1.OutPut.X_Power.X_Power_Basic();
+                    xpower.X_Power_Off();
+                    Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power ypower = new Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power_Basic();
+                    ypower.Y_Power_Off();
+                    new FADM_Object.MyAlarm("开机未拿走废液桶,请先拿走废液桶，等待天平清零后重新放置废液桶，然后点确定", "滴液", false, 1);
+                    xpower.X_Power_On();
+                    ypower.Y_Power_On();
+                    goto label4;
+                }
+                else if (8888 == FADM_Object.Communal.dBalanceValue)
+                {
+                    Lib_Card.ADT8940A1.OutPut.X_Power.X_Power xpower = new Lib_Card.ADT8940A1.OutPut.X_Power.X_Power_Basic();
+                    xpower.X_Power_Off();
+                    Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power ypower = new Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power_Basic();
+                    ypower.Y_Power_Off();
+                    new FADM_Object.MyAlarm("天平超下限,检查恢复后请点是", "滴液", false, 1);
+                    xpower.X_Power_On();
+                    ypower.Y_Power_On();
+                    goto label4;
+                }
+                else if (9999 == FADM_Object.Communal.dBalanceValue)
+                {
+                    Lib_Card.ADT8940A1.OutPut.X_Power.X_Power xpower = new Lib_Card.ADT8940A1.OutPut.X_Power.X_Power_Basic();
+                    xpower.X_Power_Off();
+                    Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power ypower = new Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power_Basic();
+                    ypower.Y_Power_Off();
+                    new FADM_Object.MyAlarm("天平超上限,检查恢复后请点是", "滴液", false, 1);
+                    xpower.X_Power_On();
+                    ypower.Y_Power_On();
+                    goto label4;
+                }
+                else if (FADM_Object.Communal._b_balanceAlarm)
+                {
+                    Lib_Card.ADT8940A1.OutPut.X_Power.X_Power xpower = new Lib_Card.ADT8940A1.OutPut.X_Power.X_Power_Basic();
+                    xpower.X_Power_Off();
+                    Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power ypower = new Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power_Basic();
+                    ypower.Y_Power_Off();
+                    new FADM_Object.MyAlarm("请先清空废液桶，然后点确定?", "滴液", false, 1);
+                    xpower.X_Power_On();
+                    ypower.Y_Power_On();
+                    goto label4;
+                }
+
+                return 0;
+            }
+            else
+            {
+                try
+                {
+                    //Label1:
+                    //    if (!FADM_Object.Communal._b_auto)
+                    //    {//在手动页面 等待手动页面退出
+                    //        goto Label1;
+                    //    }
+                    Lib_Log.Log.writeLogException("执行天平检查CheckBalance");
+
+                    bool b_istrue = false;
+                    FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
+                    ClearSuccessState();//先清除标志位
+                    Lib_Log.Log.writeLogException("清除标志位结束");
+
+                lableTop:
+
+
+                    int[] ia_array = { 13 };
+                    int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
+                    if (i_state != -1)
                     {
-                        return -2;
+                        //判断错误返回值
+                        if (GetReturn(1) == -2)
+                        {
+                            return -2;
+                        }
+                        else
+                        {
+
+                        }
                     }
                     else
                     {
-
-                    }
-                }
-                else
-                {
-                    Lib_Log.Log.writeLogException("写入天平检查编号返回失败,继续写入");
-                    Console.WriteLine("写入天平检查编号返回失败,继续写入");
-                    if (b_istrue)
-                    {
-                        b_istrue = false;
-                        FADM_Object.Communal._tcpModBus.ReConnect();
+                        Lib_Log.Log.writeLogException("写入天平检查编号返回失败,继续写入");
+                        Console.WriteLine("写入天平检查编号返回失败,继续写入");
+                        if (b_istrue)
+                        {
+                            b_istrue = false;
+                            FADM_Object.Communal._tcpModBus.ReConnect();
+                            goto lableTop;
+                        }
+                        b_istrue = true;
                         goto lableTop;
+                        //throw new Exception("8");
                     }
-                    b_istrue = true;
-                    goto lableTop;
-                    //throw new Exception("8");
+                    return 0;
                 }
-                return 0;
-            }
-            catch (Exception e)
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
-                if (e.Message.Equals("-2") || e.Message.Equals("8"))
+                catch (Exception e)
                 {
-                    throw e;
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                    if (e.Message.Equals("-2") || e.Message.Equals("8"))
+                    {
+                        throw e;
+                    }
+                    else
+                    {
+                        throw new Exception("-1");
+                    }
                 }
-                else
+                finally
                 {
-                    throw new Exception("-1");
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
                 }
-            }
-            finally
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
             }
         }
 
@@ -2645,216 +3849,376 @@ namespace SmartDyeing.FADM_Object
         /// <returns></returns>
         public static int AddWater(double d_addWaterTime)
         {
-            try
-            {
-            Label1:
-                if (!FADM_Object.Communal._b_auto)
-                {//在手动页面 等待手动页面退出
-                    goto Label1;
-                }
-                Lib_Log.Log.writeLogException("执行加水方法addWaterTime = " + d_addWaterTime.ToString());
-                bool b_istrue = false;
-                FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
-                ClearSuccessState();//先清除标志位
-                Lib_Log.Log.writeLogException("清除标志位结束");
-
-
-            lableTop:
-                int[] ia_array = { 5, 0, 0, 0, 0, 0, 0, (int)(d_addWaterTime * 1000), 0, 0, 1 };
-                int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
-                if (i_state != -1)
-                {
-                    //判断错误返回值
-                    if (GetReturn(1) == -2)
-                    {
-                        return -2;
-                    }
-                }
-                else
-                {
-                    Lib_Log.Log.writeLogException("写入加水编号返回失败,继续写入");
-                    Console.WriteLine("写入加水编号返回失败,继续写入");
-                    if (b_istrue)
-                    {
-                        b_istrue = false;
-                        FADM_Object.Communal._tcpModBus.ReConnect();
-                        goto lableTop;
-                    }
-                    b_istrue = true;
-                    goto lableTop;
-                    //throw new Exception("9");
-                }
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
+            { 
+                new Water().Add(d_addWaterTime, "RobotHand");
                 return 0;
             }
-            catch (Exception e)
+            else
             {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
-                if (e.Message.Equals("-2") || e.Message.Equals("9"))
+                try
                 {
-                    throw e;
+                Label1:
+                    if (!FADM_Object.Communal._b_auto)
+                    {//在手动页面 等待手动页面退出
+                        goto Label1;
+                    }
+                    Lib_Log.Log.writeLogException("执行加水方法addWaterTime = " + d_addWaterTime.ToString());
+                    bool b_istrue = false;
+                    FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
+                    ClearSuccessState();//先清除标志位
+                    Lib_Log.Log.writeLogException("清除标志位结束");
+
+
+                lableTop:
+                    int[] ia_array = { 5, 0, 0, 0, 0, 0, 0, (int)(d_addWaterTime * 1000), 0, 0, 1 };
+                    int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
+                    if (i_state != -1)
+                    {
+                        //判断错误返回值
+                        if (GetReturn(1) == -2)
+                        {
+                            return -2;
+                        }
+                    }
+                    else
+                    {
+                        Lib_Log.Log.writeLogException("写入加水编号返回失败,继续写入");
+                        Console.WriteLine("写入加水编号返回失败,继续写入");
+                        if (b_istrue)
+                        {
+                            b_istrue = false;
+                            FADM_Object.Communal._tcpModBus.ReConnect();
+                            goto lableTop;
+                        }
+                        b_istrue = true;
+                        goto lableTop;
+                        //throw new Exception("9");
+                    }
+                    return 0;
                 }
-                else
+                catch (Exception e)
                 {
-                    throw new Exception("-1");
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                    if (e.Message.Equals("-2") || e.Message.Equals("9"))
+                    {
+                        throw e;
+                    }
+                    else
+                    {
+                        throw new Exception("-1");
+                    }
                 }
-            }
-            finally
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                finally
+                {
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                }
             }
         }
-        
+
 
         /// <summary>
         /// 泄压
         /// </summary>
         /// <param name="i_xStartPules">开始X坐标</param>
         /// <param name="i_yStartPules">开始Y坐标</param>
+        /// <param name="i_cupNum">杯号</param>
         /// <returns></returns>
-        public static int Stressrelief(int i_xStartPules, int i_yStartPules)
+        public static int Stressrelief(int i_xStartPules, int i_yStartPules,int i_cupNum)
         {
-            try
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
             {
-            Label1:
-                if (!FADM_Object.Communal._b_auto)
-                {//在手动页面 等待手动页面退出
-                    goto Label1;
-                }
-
-                Lib_Log.Log.writeLogException("执行泄压方法");
-
-                bool b_istrue = false;
-                FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
-                ClearSuccessState();//先清除标志位
-                Lib_Log.Log.writeLogException("清除标志位结束");
-
-            lableTop:
-                int d_1 = 0;
-                if (i_xStartPules > 65536)
+                try
                 {
-                    d_1 = i_xStartPules / 65536;
-                    i_xStartPules = i_xStartPules % 65536;
-                }
-                int d_2 = 0;
-                if (i_yStartPules > 65536)
-                {
-                    d_2 = i_yStartPules / 65536;
-                    i_yStartPules = i_yStartPules % 65536;
-                }
-                int[] ia_array = { 7, i_xStartPules, d_1, i_yStartPules, d_2, 0, 0, 0, 0, 0, 1 };
-                int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
-                if (i_state != -1)
-                {
-                    //判断错误返回值
-                    if (GetReturn(1) == -2)
+
+                    //等待机械手状态
+                    while (true)
                     {
-                        return -2;
+                        //判断当前机台状态
+                        //滴液过程，可抢占线程
+                        if (7 == FADM_Object.Communal.ReadMachineStatus())
+                        {
+                            if (FADM_Object.Communal.ReadDripWait())
+                                break;
+                        }
+                        //待机状态下直接进入
+                        else if (0 == FADM_Object.Communal.ReadMachineStatus())
+                            break;
+                        //其他状态下直接等待完成后再进行
+
+
+                        Thread.Sleep(1);
+                    }
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", i_cupNum + "号配液杯泄压启动");
+
+                    //寻找泄压位
+                    //Lib_Card.ADT8940A1.Module.Move.Move move = new Lib_Card.ADT8940A1.Module.Move.Move_Decompression();
+                    //int iMRes = move.TargetMove(Lib_Card.Configure.Parameter.Machine_CylinderVersion, i_cupNum);
+                    //if (-1 == iMRes)
+                    //    throw new Exception("驱动异常");
+                    //else if (-2 == iMRes)
+                    //    throw new Exception("收到退出消息");
+
+                    int i_mRes1 = MyModbusFun.TargetMove(5, FADM_Object.Communal._i_optBottleNum, 0);
+                    if (-2 == i_mRes1)
+                        throw new Exception("收到退出消息");
+
+                    //伸出接液盘
+                    Lib_Card.ADT8940A1.OutPut.Tray.Tray tray = new Lib_Card.ADT8940A1.OutPut.Tray.Tray_Condition();
+                    if (-1 == tray.Tray_On())
+                        throw new Exception("驱动异常");
+                    if (Lib_Card.Configure.Parameter.Machine_Decompression == 1)
+                    {
+                        //泄压下
+                        Lib_Card.ADT8940A1.OutPut.Decompression.Decompression decompression = new Lib_Card.ADT8940A1.OutPut.Decompression.Decompression_Condition();
+                        if (-1 == decompression.Decompression_Down())
+                            throw new Exception("驱动异常");
+
+                        //泄压
+                        Thread.Sleep(Convert.ToInt32(Lib_Card.Configure.Parameter.Delay_DecoTime * 1000.00));
+
+                        //泄压上
+                        if (-1 == decompression.Decompression_Up())
+                            throw new Exception("驱动异常");
                     }
                     else
                     {
+                        //区域4有布局时
+                        if (Lib_Card.Configure.Parameter.Machine_Area4_Type != 0)
+                        {
+                            //使用原来的
+                            if (i_cupNum >= Lib_Card.Configure.Parameter.Machine_Area4_CupMin)
+                            {
+                                //泄压下
+                                Lib_Card.ADT8940A1.OutPut.Decompression.Decompression decompression = new Lib_Card.ADT8940A1.OutPut.Decompression.Decompression_Condition();
+                                if (-1 == decompression.Decompression_Down())
+                                    throw new Exception("驱动异常");
 
+                                //泄压
+                                Thread.Sleep(Convert.ToInt32(Lib_Card.Configure.Parameter.Delay_DecoTime * 1000.00));
+
+                                //泄压上
+                                if (-1 == decompression.Decompression_Up())
+                                    throw new Exception("驱动异常");
+                            }
+                            //使用新增泄压位
+                            else
+                            {
+                                //泄压下
+                                Lib_Card.ADT8940A1.OutPut.Decompression.Decompression decompression = new Lib_Card.ADT8940A1.OutPut.Decompression.Decompression_Condition();
+                                if (-1 == decompression.Decompression_Down_Right())
+                                    throw new Exception("驱动异常");
+
+                                //泄压
+                                Thread.Sleep(Convert.ToInt32(Lib_Card.Configure.Parameter.Delay_DecoTime * 1000.00));
+
+                                //泄压上
+                                if (-1 == decompression.Decompression_Up_Right())
+                                    throw new Exception("驱动异常");
+                            }
+                        }
+                        //区域4没布局，直接用原有的
+                        else
+                        {
+                            //泄压下
+                            Lib_Card.ADT8940A1.OutPut.Decompression.Decompression decompression = new Lib_Card.ADT8940A1.OutPut.Decompression.Decompression_Condition();
+                            if (-1 == decompression.Decompression_Down())
+                                throw new Exception("驱动异常");
+
+                            //泄压
+                            Thread.Sleep(Convert.ToInt32(Lib_Card.Configure.Parameter.Delay_DecoTime * 1000.00));
+
+                            //泄压上
+                            if (-1 == decompression.Decompression_Up())
+                                throw new Exception("驱动异常");
+                        }
                     }
+
+                    
+
+                    //复位占用标志位
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", i_cupNum + "号配液杯泄压完成");
+
+                    
+
                 }
-                else
+                catch (Exception ex)
                 {
-                    Lib_Log.Log.writeLogException("写入泄压动作编号返回失败,继续写入");
-                    Console.WriteLine("泄压编号返回失败,继续写入");
-                    if (b_istrue)
+
+                    if ("收到退出消息" == ex.Message)
                     {
-                        b_istrue = false;
-                        FADM_Object.Communal._tcpModBus.ReConnect();
-                        goto lableTop;
+                        FADM_Object.Communal._b_stop = false;
+                        new Reset().MachineReset();
                     }
-                    b_istrue = true;
-                    goto lableTop;
-                    //throw new Exception("10");
+
+                    else
+                    {
+                        FADM_Object.Communal.WriteMachineStatus(8);
+                        FADM_Form.CustomMessageBox.Show(ex.Message, "Stressrelief", MessageBoxButtons.OK, true);
+                    }
                 }
+
                 return 0;
             }
-            catch (Exception e)
+            else
             {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
-                if (e.Message.Equals("-2") || e.Message.Equals("10"))
+                try
                 {
-                    throw e;
+                Label1:
+                    if (!FADM_Object.Communal._b_auto)
+                    {//在手动页面 等待手动页面退出
+                        goto Label1;
+                    }
+
+                    Lib_Log.Log.writeLogException("执行泄压方法");
+
+                    bool b_istrue = false;
+                    FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
+                    ClearSuccessState();//先清除标志位
+                    Lib_Log.Log.writeLogException("清除标志位结束");
+
+                lableTop:
+                    int d_1 = 0;
+                    if (i_xStartPules > 65536)
+                    {
+                        d_1 = i_xStartPules / 65536;
+                        i_xStartPules = i_xStartPules % 65536;
+                    }
+                    int d_2 = 0;
+                    if (i_yStartPules > 65536)
+                    {
+                        d_2 = i_yStartPules / 65536;
+                        i_yStartPules = i_yStartPules % 65536;
+                    }
+                    int[] ia_array = { 7, i_xStartPules, d_1, i_yStartPules, d_2, 0, 0, 0, 0, 0, 1 };
+                    int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
+                    if (i_state != -1)
+                    {
+                        //判断错误返回值
+                        if (GetReturn(1) == -2)
+                        {
+                            return -2;
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                    else
+                    {
+                        Lib_Log.Log.writeLogException("写入泄压动作编号返回失败,继续写入");
+                        Console.WriteLine("泄压编号返回失败,继续写入");
+                        if (b_istrue)
+                        {
+                            b_istrue = false;
+                            FADM_Object.Communal._tcpModBus.ReConnect();
+                            goto lableTop;
+                        }
+                        b_istrue = true;
+                        goto lableTop;
+                        //throw new Exception("10");
+                    }
+                    return 0;
                 }
-                else
+                catch (Exception e)
                 {
-                    throw new Exception("-1");
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                    if (e.Message.Equals("-2") || e.Message.Equals("10"))
+                    {
+                        throw e;
+                    }
+                    else
+                    {
+                        throw new Exception("-1");
+                    }
                 }
-            }
-            finally
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                finally
+                {
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                }
             }
         }
 
         /// <summary>
         /// 放针
         /// </summary>
+        /// <param name="i_syringeType">大小针筒 0 小针筒 1 大针筒</param>
         /// <returns></returns>
-        public static int Put()
+        public static int Put(int i_syringeType)
         {
-            try
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
             {
-            Label1:
-                if (!FADM_Object.Communal._b_auto)
-                {//在手动页面 等待手动页面退出
-                    goto Label1;
-                }
-                Lib_Log.Log.writeLogException("执行放针方法");
-
-                bool b_istrue = false;
-                FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
-                ClearSuccessState();//先清除标志位
-                Lib_Log.Log.writeLogException("清除标志位结束");
-
-            lableTop:
-                int[] ia_array = { 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
-                int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
-                if (i_state != -1)
+                Lib_Card.ADT8940A1.Module.Put.Put put = new Lib_Card.ADT8940A1.Module.Put.Put_Condition();
+                int iMRes = put.PutSyringe(Lib_Card.Configure.Parameter.Machine_CylinderVersion, i_syringeType);
+                if (-1 == iMRes)
+                    throw new Exception("驱动异常");
+                else if (-2 == iMRes)
+                    throw new Exception("收到退出消息");
+                return 0;
+            }
+            else
+            {
+                try
                 {
-                    //判断错误返回值
-                    if (GetReturn(1) == -2)
+                Label1:
+                    if (!FADM_Object.Communal._b_auto)
+                    {//在手动页面 等待手动页面退出
+                        goto Label1;
+                    }
+                    Lib_Log.Log.writeLogException("执行放针方法");
+
+                    bool b_istrue = false;
+                    FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
+                    ClearSuccessState();//先清除标志位
+                    Lib_Log.Log.writeLogException("清除标志位结束");
+
+                lableTop:
+                    int[] ia_array = { 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
+                    int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
+                    if (i_state != -1)
                     {
-                        return -2;
+                        //判断错误返回值
+                        if (GetReturn(1) == -2)
+                        {
+                            return -2;
+                        }
+                        else
+                        {
+
+                        }
                     }
                     else
                     {
-
-                    }
-                }
-                else
-                {
-                    Lib_Log.Log.writeLogException("写入放针动作编号返回失败,继续写入");
-                    Console.WriteLine("放针编号返回失败,继续写入");
-                    if (b_istrue)
-                    {
-                        b_istrue = false;
-                        FADM_Object.Communal._tcpModBus.ReConnect();
+                        Lib_Log.Log.writeLogException("写入放针动作编号返回失败,继续写入");
+                        Console.WriteLine("放针编号返回失败,继续写入");
+                        if (b_istrue)
+                        {
+                            b_istrue = false;
+                            FADM_Object.Communal._tcpModBus.ReConnect();
+                            goto lableTop;
+                        }
+                        b_istrue = true;
                         goto lableTop;
+                        //throw new Exception("10");
                     }
-                    b_istrue = true;
-                    goto lableTop;
-                    //throw new Exception("10");
+                    return 0;
                 }
-                return 0;
-            }
-            catch (Exception e)
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
-                if (e.Message.Equals("-2") || e.Message.Equals("10"))
+                catch (Exception e)
                 {
-                    throw e;
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                    if (e.Message.Equals("-2") || e.Message.Equals("10"))
+                    {
+                        throw e;
+                    }
+                    else
+                    {
+                        throw new Exception("-1");
+                    }
                 }
-                else
+                finally
                 {
-                    throw new Exception("-1");
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
                 }
-            }
-            finally
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
             }
         }
 
@@ -2939,123 +4303,185 @@ namespace SmartDyeing.FADM_Object
         /// <returns></returns>
         public static int OpenOrPutCover(int i_xStartPules, int i_yStartPules, int i_xEndPules, int i_yEndPules, int i_type)
         {
-            try
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
             {
-            Label1:
-                if (!FADM_Object.Communal._b_auto)
-                {//在手动页面 等待手动页面退出
-                    goto Label1;
-                }
-                Lib_Log.Log.writeLogException("执行放关盖方法");
-
-                bool b_istrue = false;
-                FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
-                ClearSuccessState();//先清除标志位
-                Lib_Log.Log.writeLogException("清除标志位结束");
-
-            lableTop:
-                int d_1 = 0;
-                if (i_xStartPules > 65536)
+                int iRes = Lib_Card.CardObject.OA1Input.InPutStatus(Lib_Card.ADT8940A1.ADT8940A1_IO.InPut_Syringe);
+                if (1 == iRes)
                 {
-                    d_1 = i_xStartPules / 65536;
-                    i_xStartPules = i_xStartPules % 65536;
+                    throw new Exception("发现杯盖或针筒");
                 }
-                int d_2 = 0;
-                if (i_yStartPules > 65536)
+                //移动到拿盖位置
+                Lib_Card.ADT8940A1.Module.Move.Move move = new Lib_Card.ADT8940A1.Module.Move.TargeMove();
+                int iMove = move.TargetMove(Lib_Card.Configure.Parameter.Machine_CylinderVersion, 0, i_xStartPules, i_yStartPules, 0);
+                if (-1 == iMove)
+                    throw new Exception("驱动异常");
+                else if (-2 == iMove)
+                    throw new Exception("收到退出消息");
+                try
                 {
-                    d_2 = i_yStartPules / 65536;
-                    i_yStartPules = i_yStartPules % 65536;
+                    Lib_Card.ADT8940A1.Module.GetOrPutCover getOrPutCover = new Lib_Card.ADT8940A1.Module.GetOrPutCover();
+                    getOrPutCover.GetCover(Lib_Card.Configure.Parameter.Machine_CylinderVersion, i_type);
                 }
-                int d_3 = 0;
-                if (i_xEndPules > 65536)
+                catch (Exception ex)
                 {
-                    d_3 = i_xEndPules / 65536;
-                    i_xEndPules = i_xEndPules % 65536;
-                }
-                int d_4 = 0;
-                if (i_yEndPules > 65536)
-                {
-                    d_4 = i_yEndPules / 65536;
-                    i_yEndPules = i_yEndPules % 65536;
-                }
-                int[] ia_array = { 11, i_xStartPules, d_1, i_yStartPules, d_2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, i_xEndPules, d_3, i_yEndPules, d_4, 0, 0, i_type };
-                int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
-                if (i_state != -1)
-                {
-                    //判断错误返回值
-                    if (GetReturn(1) == -2)
+                    if ("收到退出消息" == ex.Message)
                     {
-                        return -2;
+                        FADM_Object.Communal._b_stop = false;
+                        new Reset().MachineReset();
                     }
                     else
                     {
+                        throw ex;
+                    }
+                }
 
-                    }
-                }
-                else
+                iMove = move.TargetMove(Lib_Card.Configure.Parameter.Machine_CylinderVersion, 0, i_xEndPules, i_yEndPules, 0);
+                if (-1 == iMove)
+                    throw new Exception("驱动异常");
+                else if (-2 == iMove)
+                    throw new Exception("收到退出消息");
+
+                try
                 {
-                    Lib_Log.Log.writeLogException("写入开关盖动作编号返回失败,继续写入");
-                    Console.WriteLine("开关盖编号返回失败,继续写入");
-                    if (b_istrue)
-                    {
-                        b_istrue = false;
-                        FADM_Object.Communal._tcpModBus.ReConnect();
-                        goto lableTop;
-                    }
-                    b_istrue = true;
-                    goto lableTop;
-                    //throw new Exception("10");
+                    Lib_Card.ADT8940A1.Module.GetOrPutCover getOrPutCover = new Lib_Card.ADT8940A1.Module.GetOrPutCover();
+                    getOrPutCover.PutCover(Lib_Card.Configure.Parameter.Machine_CylinderVersion, i_type);
                 }
+                catch (Exception ex)
+                {
+                    if ("收到退出消息" == ex.Message)
+                    {
+                        FADM_Object.Communal._b_stop = false;
+                        new Reset().MachineReset();
+                    }
+                    else
+                    {
+                        throw ex;
+                    }
+                }
+
+
                 return 0;
             }
-            catch (Exception e)
+            else
             {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
-                if (e.Message.Equals("-2") || e.Message.Equals("10") || e.Message.Equals("未发现杯盖") || e.Message.Equals("发现杯盖或针筒") || e.Message.Equals("抓手A夹紧异常") || e.Message.Equals("抓手B夹紧异常"))
+                try
                 {
-                    int[] ia_errArray = new int[100];
-                Label123:
-                    int i_state1 = MyModbusFun.GetErrMsgNew(ref ia_errArray);
-                    if (i_state1 == -1)
-                        goto Label123;
-                    for (int i = 0; i < ia_errArray.Length; i++)
-                    {
-                        if (ia_errArray[i] == 2702)
-                        {
-                            throw new Exception("未发现杯盖");
-                        }
-                        else if (ia_errArray[i] == 2701)
-                        {
-                            throw new Exception("发现杯盖或针筒");
-                        }
-                        else if (ia_errArray[i] == 2703)
-                        {
-                            throw new Exception("配液杯取盖失败");
-                        }
-                        else if (ia_errArray[i] == 2704)
-                        {
-                            throw new Exception("放盖区取盖失败");
-                        }
-                        else if (ia_errArray[i] == 2705)
-                        {
-                            throw new Exception("关盖失败");
-                        }
-                        else if (ia_errArray[i] == 2706)
-                        {
-                            throw new Exception("放盖失败");
-                        }
-
+                Label1:
+                    if (!FADM_Object.Communal._b_auto)
+                    {//在手动页面 等待手动页面退出
+                        goto Label1;
                     }
-                    throw e;
+                    Lib_Log.Log.writeLogException("执行放关盖方法");
+
+                    bool b_istrue = false;
+                    FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
+                    ClearSuccessState();//先清除标志位
+                    Lib_Log.Log.writeLogException("清除标志位结束");
+
+                lableTop:
+                    int d_1 = 0;
+                    if (i_xStartPules > 65536)
+                    {
+                        d_1 = i_xStartPules / 65536;
+                        i_xStartPules = i_xStartPules % 65536;
+                    }
+                    int d_2 = 0;
+                    if (i_yStartPules > 65536)
+                    {
+                        d_2 = i_yStartPules / 65536;
+                        i_yStartPules = i_yStartPules % 65536;
+                    }
+                    int d_3 = 0;
+                    if (i_xEndPules > 65536)
+                    {
+                        d_3 = i_xEndPules / 65536;
+                        i_xEndPules = i_xEndPules % 65536;
+                    }
+                    int d_4 = 0;
+                    if (i_yEndPules > 65536)
+                    {
+                        d_4 = i_yEndPules / 65536;
+                        i_yEndPules = i_yEndPules % 65536;
+                    }
+                    int[] ia_array = { 11, i_xStartPules, d_1, i_yStartPules, d_2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, i_xEndPules, d_3, i_yEndPules, d_4, 0, 0, i_type };
+                    int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
+                    if (i_state != -1)
+                    {
+                        //判断错误返回值
+                        if (GetReturn(1) == -2)
+                        {
+                            return -2;
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                    else
+                    {
+                        Lib_Log.Log.writeLogException("写入开关盖动作编号返回失败,继续写入");
+                        Console.WriteLine("开关盖编号返回失败,继续写入");
+                        if (b_istrue)
+                        {
+                            b_istrue = false;
+                            FADM_Object.Communal._tcpModBus.ReConnect();
+                            goto lableTop;
+                        }
+                        b_istrue = true;
+                        goto lableTop;
+                        //throw new Exception("10");
+                    }
+                    return 0;
                 }
-                else
+                catch (Exception e)
                 {
-                    throw new Exception("-1");
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                    if (e.Message.Equals("-2") || e.Message.Equals("10") || e.Message.Equals("未发现杯盖") || e.Message.Equals("发现杯盖或针筒") || e.Message.Equals("抓手A夹紧异常") || e.Message.Equals("抓手B夹紧异常"))
+                    {
+                        int[] ia_errArray = new int[100];
+                    Label123:
+                        int i_state1 = MyModbusFun.GetErrMsgNew(ref ia_errArray);
+                        if (i_state1 == -1)
+                            goto Label123;
+                        for (int i = 0; i < ia_errArray.Length; i++)
+                        {
+                            if (ia_errArray[i] == 2702)
+                            {
+                                throw new Exception("未发现杯盖");
+                            }
+                            else if (ia_errArray[i] == 2701)
+                            {
+                                throw new Exception("发现杯盖或针筒");
+                            }
+                            else if (ia_errArray[i] == 2703)
+                            {
+                                throw new Exception("配液杯取盖失败");
+                            }
+                            else if (ia_errArray[i] == 2704)
+                            {
+                                throw new Exception("放盖区取盖失败");
+                            }
+                            else if (ia_errArray[i] == 2705)
+                            {
+                                throw new Exception("关盖失败");
+                            }
+                            else if (ia_errArray[i] == 2706)
+                            {
+                                throw new Exception("放盖失败");
+                            }
+
+                        }
+                        throw e;
+                    }
+                    else
+                    {
+                        throw new Exception("-1");
+                    }
                 }
-            }
-            finally
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                finally
+                {
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                }
             }
         }
 
@@ -3071,108 +4497,115 @@ namespace SmartDyeing.FADM_Object
         /// <returns></returns>
         public static int PutOrGetCloth(int i_xStartPules, int i_yStartPules, int i_xEndPules, int i_yEndPules, int i_getCloth, int i_putCloth)
         {
-            try
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
             {
-            Label1:
-                if (!FADM_Object.Communal._b_auto)
-                {//在手动页面 等待手动页面退出
-                    goto Label1;
-                }
-                Lib_Log.Log.writeLogException("执行出布/放布方法");
+                return 0;
+            }
+            else
+            {
+                try
+                {
+                Label1:
+                    if (!FADM_Object.Communal._b_auto)
+                    {//在手动页面 等待手动页面退出
+                        goto Label1;
+                    }
+                    Lib_Log.Log.writeLogException("执行出布/放布方法");
 
-                bool b_istrue = false;
-                FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
-                ClearSuccessState();//先清除标志位
-                Lib_Log.Log.writeLogException("清除标志位结束");
+                    bool b_istrue = false;
+                    FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
+                    ClearSuccessState();//先清除标志位
+                    Lib_Log.Log.writeLogException("清除标志位结束");
 
-            lableTop:
-                int d_1 = 0;
-                if (i_xStartPules > 65536)
-                {
-                    d_1 = i_xStartPules / 65536;
-                    i_xStartPules = i_xStartPules % 65536;
-                }
-                int d_2 = 0;
-                if (i_yStartPules > 65536)
-                {
-                    d_2 = i_yStartPules / 65536;
-                    i_yStartPules = i_yStartPules % 65536;
-                }
-                int d_3 = 0;
-                if (i_xEndPules > 65536)
-                {
-                    d_3 = i_xEndPules / 65536;
-                    i_xEndPules = i_xEndPules % 65536;
-                }
-                int d_4 = 0;
-                if (i_yEndPules > 65536)
-                {
-                    d_4 = i_yEndPules / 65536;
-                    i_yEndPules = i_yEndPules % 65536;
-                }
-                int[] ia_array = { 16, i_xStartPules, d_1, i_yStartPules, d_2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, i_xEndPules, d_3, i_yEndPules, d_4, 0, 0, 0,0,0, i_getCloth, i_putCloth };
-                int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
-                if (i_state != -1)
-                {
-                    //判断错误返回值
-                    if (GetReturn(1) == -2)
+                lableTop:
+                    int d_1 = 0;
+                    if (i_xStartPules > 65536)
                     {
-                        return -2;
+                        d_1 = i_xStartPules / 65536;
+                        i_xStartPules = i_xStartPules % 65536;
+                    }
+                    int d_2 = 0;
+                    if (i_yStartPules > 65536)
+                    {
+                        d_2 = i_yStartPules / 65536;
+                        i_yStartPules = i_yStartPules % 65536;
+                    }
+                    int d_3 = 0;
+                    if (i_xEndPules > 65536)
+                    {
+                        d_3 = i_xEndPules / 65536;
+                        i_xEndPules = i_xEndPules % 65536;
+                    }
+                    int d_4 = 0;
+                    if (i_yEndPules > 65536)
+                    {
+                        d_4 = i_yEndPules / 65536;
+                        i_yEndPules = i_yEndPules % 65536;
+                    }
+                    int[] ia_array = { 16, i_xStartPules, d_1, i_yStartPules, d_2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, i_xEndPules, d_3, i_yEndPules, d_4, 0, 0, 0, 0, 0, i_getCloth, i_putCloth };
+                    int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
+                    if (i_state != -1)
+                    {
+                        //判断错误返回值
+                        if (GetReturn(1) == -2)
+                        {
+                            return -2;
+                        }
+                        else
+                        {
+
+                        }
                     }
                     else
                     {
-
-                    }
-                }
-                else
-                {
-                    Lib_Log.Log.writeLogException("写入出布/放布动作编号返回失败,继续写入");
-                    Console.WriteLine("出布/放布编号返回失败,继续写入");
-                    if (b_istrue)
-                    {
-                        b_istrue = false;
-                        FADM_Object.Communal._tcpModBus.ReConnect();
+                        Lib_Log.Log.writeLogException("写入出布/放布动作编号返回失败,继续写入");
+                        Console.WriteLine("出布/放布编号返回失败,继续写入");
+                        if (b_istrue)
+                        {
+                            b_istrue = false;
+                            FADM_Object.Communal._tcpModBus.ReConnect();
+                            goto lableTop;
+                        }
+                        b_istrue = true;
                         goto lableTop;
+                        //throw new Exception("10");
                     }
-                    b_istrue = true;
-                    goto lableTop;
-                    //throw new Exception("10");
+                    return 0;
                 }
-                return 0;
-            }
-            catch (Exception e)
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
-                if (e.Message.Equals("-2") || e.Message.Equals("10") || e.Message.Equals("未发现杯盖") || e.Message.Equals("发现杯盖或针筒") || e.Message.Equals("抓手A夹紧异常") || e.Message.Equals("抓手B夹紧异常"))
+                catch (Exception e)
                 {
-                //    string msg = "";
-                //    int[] ia_errArray = new int[100];
-                //Label123:
-                //    int i_state1 = MyModbusFun.GetErrMsgNew(ref ia_errArray);
-                //    if (i_state1 == -1)
-                //        goto Label123;
-                //    for (int i = 0; i < ia_errArray.Length; i++)
-                //    {
-                //        if (ia_errArray[i] == 2702)
-                //        {
-                //            throw new Exception("未发现杯盖");
-                //        }
-                //        else if (ia_errArray[i] == 2701)
-                //        {
-                //            throw new Exception("发现杯盖或针筒");
-                //        }
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                    if (e.Message.Equals("-2") || e.Message.Equals("10") || e.Message.Equals("未发现杯盖") || e.Message.Equals("发现杯盖或针筒") || e.Message.Equals("抓手A夹紧异常") || e.Message.Equals("抓手B夹紧异常"))
+                    {
+                        //    string msg = "";
+                        //    int[] ia_errArray = new int[100];
+                        //Label123:
+                        //    int i_state1 = MyModbusFun.GetErrMsgNew(ref ia_errArray);
+                        //    if (i_state1 == -1)
+                        //        goto Label123;
+                        //    for (int i = 0; i < ia_errArray.Length; i++)
+                        //    {
+                        //        if (ia_errArray[i] == 2702)
+                        //        {
+                        //            throw new Exception("未发现杯盖");
+                        //        }
+                        //        else if (ia_errArray[i] == 2701)
+                        //        {
+                        //            throw new Exception("发现杯盖或针筒");
+                        //        }
 
-                //    }
-                    throw e;
+                        //    }
+                        throw e;
+                    }
+                    else
+                    {
+                        throw new Exception("-1");
+                    }
                 }
-                else
+                finally
                 {
-                    throw new Exception("-1");
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
                 }
-            }
-            finally
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
             }
         }
 
@@ -3182,57 +4615,64 @@ namespace SmartDyeing.FADM_Object
         /// <returns></returns>
         public static int Power(int i_type)
         {
-            try
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
             {
-            Label1:
-                if (!FADM_Object.Communal._b_auto)
-                {//在手动页面 等待手动页面退出
-                    goto Label1;
-                }
-                Lib_Log.Log.writeLogException("失能" + i_type);
-
-                bool b_istrue = false;
-                FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
-
-            lableTop:
-                int[] ia_array = new int[1];
-                ia_array[0] = i_type;
-                int i_state = FADM_Object.Communal._tcpModBus.Write(808, ia_array);
-                if (i_state != -1)
-                {
-                    //写入成功  
-                }
-                else
-                {
-                    Lib_Log.Log.writeLogException("失能" + i_type + "写入失败");
-                    Console.WriteLine("失能" + i_type + "写入失败继续写入");
-                    if (b_istrue)
-                    {
-                        b_istrue = false;
-                        FADM_Object.Communal._tcpModBus.ReConnect();
-                        goto lableTop;
-                    }
-                    b_istrue = true;
-                    goto lableTop;
-                    //throw new Exception("10");
-                }
                 return 0;
             }
-            catch (Exception e)
+            else
             {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
-                if (e.Message.Equals("-2") || e.Message.Equals("10") || e.Message.Equals("未发现杯盖") || e.Message.Equals("发现杯盖或针筒") || e.Message.Equals("抓手A夹紧异常") || e.Message.Equals("抓手B夹紧异常"))
+                try
                 {
-                    throw e;
+                Label1:
+                    if (!FADM_Object.Communal._b_auto)
+                    {//在手动页面 等待手动页面退出
+                        goto Label1;
+                    }
+                    Lib_Log.Log.writeLogException("失能" + i_type);
+
+                    bool b_istrue = false;
+                    FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
+
+                lableTop:
+                    int[] ia_array = new int[1];
+                    ia_array[0] = i_type;
+                    int i_state = FADM_Object.Communal._tcpModBus.Write(808, ia_array);
+                    if (i_state != -1)
+                    {
+                        //写入成功  
+                    }
+                    else
+                    {
+                        Lib_Log.Log.writeLogException("失能" + i_type + "写入失败");
+                        Console.WriteLine("失能" + i_type + "写入失败继续写入");
+                        if (b_istrue)
+                        {
+                            b_istrue = false;
+                            FADM_Object.Communal._tcpModBus.ReConnect();
+                            goto lableTop;
+                        }
+                        b_istrue = true;
+                        goto lableTop;
+                        //throw new Exception("10");
+                    }
+                    return 0;
                 }
-                else
+                catch (Exception e)
                 {
-                    throw new Exception("-1");
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                    if (e.Message.Equals("-2") || e.Message.Equals("10") || e.Message.Equals("未发现杯盖") || e.Message.Equals("发现杯盖或针筒") || e.Message.Equals("抓手A夹紧异常") || e.Message.Equals("抓手B夹紧异常"))
+                    {
+                        throw e;
+                    }
+                    else
+                    {
+                        throw new Exception("-1");
+                    }
                 }
-            }
-            finally
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                finally
+                {
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                }
             }
         }
 
@@ -3328,107 +4768,114 @@ namespace SmartDyeing.FADM_Object
         /// <returns></returns>
         public static int GetClamp( int i_xStartPules, int i_yStartPules,int i_type)
         {
-            try
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
             {
-            Label1:
-                if (!FADM_Object.Communal._b_auto)
-                {//在手动页面 等待手动页面退出
-                    goto Label1;
-                }
-                Lib_Log.Log.writeLogException("执行拿夹子方法");
-
-                bool b_istrue = false;
-                FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
-                ClearSuccessState();//先清除标志位
-                Lib_Log.Log.writeLogException("清除标志位结束");
-
-            lableTop:
-                int d_1 = 0;
-                if (i_xStartPules > 65536)
+                return 0;
+            }
+            else
+            {
+                try
                 {
-                    d_1 = i_xStartPules / 65536;
-                    i_xStartPules = i_xStartPules % 65536;
-                }
-                int d_2 = 0;
-                if (i_yStartPules > 65536)
-                {
-                    d_2 = i_yStartPules / 65536;
-                    i_yStartPules = i_yStartPules % 65536;
-                }
+                Label1:
+                    if (!FADM_Object.Communal._b_auto)
+                    {//在手动页面 等待手动页面退出
+                        goto Label1;
+                    }
+                    Lib_Log.Log.writeLogException("执行拿夹子方法");
 
-                int[] ia_array = { 14, i_xStartPules, d_1, i_yStartPules, d_2, 0, 0, 0, 0, 0, 1 };
-                int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
-                if (i_state != -1)
-                {
-                    //判断错误返回值
-                    if (GetReturn(1) == -2)
+                    bool b_istrue = false;
+                    FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
+                    ClearSuccessState();//先清除标志位
+                    Lib_Log.Log.writeLogException("清除标志位结束");
+
+                lableTop:
+                    int d_1 = 0;
+                    if (i_xStartPules > 65536)
                     {
-                        return -2;
+                        d_1 = i_xStartPules / 65536;
+                        i_xStartPules = i_xStartPules % 65536;
+                    }
+                    int d_2 = 0;
+                    if (i_yStartPules > 65536)
+                    {
+                        d_2 = i_yStartPules / 65536;
+                        i_yStartPules = i_yStartPules % 65536;
+                    }
+
+                    int[] ia_array = { 14, i_xStartPules, d_1, i_yStartPules, d_2, 0, 0, 0, 0, 0, 1 };
+                    int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
+                    if (i_state != -1)
+                    {
+                        //判断错误返回值
+                        if (GetReturn(1) == -2)
+                        {
+                            return -2;
+                        }
+                        else
+                        {
+
+                        }
                     }
                     else
                     {
-
-                    }
-                }
-                else
-                {
-                    Lib_Log.Log.writeLogException("写入拿夹子动作编号返回失败,继续写入");
-                    Console.WriteLine("拿夹子编号返回失败,继续写入");
-                    if (b_istrue)
-                    {
-                        b_istrue = false;
-                        FADM_Object.Communal._tcpModBus.ReConnect();
+                        Lib_Log.Log.writeLogException("写入拿夹子动作编号返回失败,继续写入");
+                        Console.WriteLine("拿夹子编号返回失败,继续写入");
+                        if (b_istrue)
+                        {
+                            b_istrue = false;
+                            FADM_Object.Communal._tcpModBus.ReConnect();
+                            goto lableTop;
+                        }
+                        b_istrue = true;
                         goto lableTop;
+                        //throw new Exception("10");
                     }
-                    b_istrue = true;
-                    goto lableTop;
-                    //throw new Exception("10");
-                }
 
-                if(i_type ==1)
-                {
-                    FADM_Object.Communal._b_isGetDryClamp = true;
-                    FADM_Object.Communal._b_isGetWetClamp = false;
-                }
-                else
-                {
-                    FADM_Object.Communal._b_isGetWetClamp = true;
-                    FADM_Object.Communal._b_isGetDryClamp = false;
-                }
-                return 0;
-            }
-            catch (Exception e)
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
-                if (e.Message.Equals("-2") || e.Message.Equals("10") || e.Message.Equals("未发现杯盖") || e.Message.Equals("发现杯盖或针筒") || e.Message.Equals("抓手A夹紧异常") || e.Message.Equals("抓手B夹紧异常"))
-                {
-                    int[] ia_errArray = new int[100];
-                Label123:
-                    int i_state1 = MyModbusFun.GetErrMsgNew(ref ia_errArray);
-                    if (i_state1 == -1)
-                        goto Label123;
-                    for (int i = 0; i < ia_errArray.Length; i++)
+                    if (i_type == 1)
                     {
-                        if (ia_errArray[i] == 4501)
-                        {
-                            throw new Exception("未发现抓手");
-                        }
-                        else if (ia_errArray[i] == 2701)
-                        {
-                            throw new Exception("发现杯盖或针筒");
-                        }
-
+                        FADM_Object.Communal._b_isGetDryClamp = true;
+                        FADM_Object.Communal._b_isGetWetClamp = false;
                     }
-                    throw e;
+                    else
+                    {
+                        FADM_Object.Communal._b_isGetWetClamp = true;
+                        FADM_Object.Communal._b_isGetDryClamp = false;
+                    }
+                    return 0;
                 }
-                else
+                catch (Exception e)
                 {
-                    throw new Exception("-1");
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                    if (e.Message.Equals("-2") || e.Message.Equals("10") || e.Message.Equals("未发现杯盖") || e.Message.Equals("发现杯盖或针筒") || e.Message.Equals("抓手A夹紧异常") || e.Message.Equals("抓手B夹紧异常"))
+                    {
+                        int[] ia_errArray = new int[100];
+                    Label123:
+                        int i_state1 = MyModbusFun.GetErrMsgNew(ref ia_errArray);
+                        if (i_state1 == -1)
+                            goto Label123;
+                        for (int i = 0; i < ia_errArray.Length; i++)
+                        {
+                            if (ia_errArray[i] == 4501)
+                            {
+                                throw new Exception("未发现抓手");
+                            }
+                            else if (ia_errArray[i] == 2701)
+                            {
+                                throw new Exception("发现杯盖或针筒");
+                            }
+
+                        }
+                        throw e;
+                    }
+                    else
+                    {
+                        throw new Exception("-1");
+                    }
                 }
-            }
-            finally
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                finally
+                {
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                }
             }
         }
 
@@ -3438,81 +4885,88 @@ namespace SmartDyeing.FADM_Object
         /// <returns></returns>
         public static int PutClamp(int i_xStartPules, int i_yStartPules)
         {
-            try
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
             {
-            Label1:
-                if (!FADM_Object.Communal._b_auto)
-                {//在手动页面 等待手动页面退出
-                    goto Label1;
-                }
-                Lib_Log.Log.writeLogException("执行放盖方法");
+                return 0;
+            }
+            else
+            {
+                try
+                {
+                Label1:
+                    if (!FADM_Object.Communal._b_auto)
+                    {//在手动页面 等待手动页面退出
+                        goto Label1;
+                    }
+                    Lib_Log.Log.writeLogException("执行放盖方法");
 
-                bool b_istrue = false;
-                FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
-                ClearSuccessState();//先清除标志位
-                Lib_Log.Log.writeLogException("清除标志位结束");
+                    bool b_istrue = false;
+                    FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
+                    ClearSuccessState();//先清除标志位
+                    Lib_Log.Log.writeLogException("清除标志位结束");
 
-            lableTop:
-                int d_1 = 0;
-                if (i_xStartPules > 65536)
-                {
-                    d_1 = i_xStartPules / 65536;
-                    i_xStartPules = i_xStartPules % 65536;
-                }
-                int d_2 = 0;
-                if (i_yStartPules > 65536)
-                {
-                    d_2 = i_yStartPules / 65536;
-                    i_yStartPules = i_yStartPules % 65536;
-                }
-                int[] ia_array = { 15, i_xStartPules, d_1, i_yStartPules, d_2, 0, 0, 0, 0, 0, 1 };
-                int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
-                if (i_state != -1)
-                {
-                    //判断错误返回值
-                    if (GetReturn(1) == -2)
+                lableTop:
+                    int d_1 = 0;
+                    if (i_xStartPules > 65536)
                     {
-                        return -2;
+                        d_1 = i_xStartPules / 65536;
+                        i_xStartPules = i_xStartPules % 65536;
+                    }
+                    int d_2 = 0;
+                    if (i_yStartPules > 65536)
+                    {
+                        d_2 = i_yStartPules / 65536;
+                        i_yStartPules = i_yStartPules % 65536;
+                    }
+                    int[] ia_array = { 15, i_xStartPules, d_1, i_yStartPules, d_2, 0, 0, 0, 0, 0, 1 };
+                    int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
+                    if (i_state != -1)
+                    {
+                        //判断错误返回值
+                        if (GetReturn(1) == -2)
+                        {
+                            return -2;
+                        }
+                        else
+                        {
+
+                        }
                     }
                     else
                     {
-
-                    }
-                }
-                else
-                {
-                    Lib_Log.Log.writeLogException("写入放盖动作编号返回失败,继续写入");
-                    Console.WriteLine("放盖编号返回失败,继续写入");
-                    if (b_istrue)
-                    {
-                        b_istrue = false;
-                        FADM_Object.Communal._tcpModBus.ReConnect();
+                        Lib_Log.Log.writeLogException("写入放盖动作编号返回失败,继续写入");
+                        Console.WriteLine("放盖编号返回失败,继续写入");
+                        if (b_istrue)
+                        {
+                            b_istrue = false;
+                            FADM_Object.Communal._tcpModBus.ReConnect();
+                            goto lableTop;
+                        }
+                        b_istrue = true;
                         goto lableTop;
+                        //throw new Exception("10");
                     }
-                    b_istrue = true;
-                    goto lableTop;
-                    //throw new Exception("10");
+                    //把抓夹子状态置为false
+                    FADM_Object.Communal._b_isGetDryClamp = false;
+                    FADM_Object.Communal._b_isGetWetClamp = false;
+                    return 0;
                 }
-                //把抓夹子状态置为false
-                FADM_Object.Communal._b_isGetDryClamp = false;
-                FADM_Object.Communal._b_isGetWetClamp = false;
-                return 0;
-            }
-            catch (Exception e)
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
-                if (e.Message.Equals("-2") || e.Message.Equals("10") || e.Message.Equals("未发现杯盖") || e.Message.Equals("发现杯盖或针筒") || e.Message.Equals("抓手A夹紧异常") || e.Message.Equals("抓手B夹紧异常"))
+                catch (Exception e)
                 {
-                    throw e;
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                    if (e.Message.Equals("-2") || e.Message.Equals("10") || e.Message.Equals("未发现杯盖") || e.Message.Equals("发现杯盖或针筒") || e.Message.Equals("抓手A夹紧异常") || e.Message.Equals("抓手B夹紧异常"))
+                    {
+                        throw e;
+                    }
+                    else
+                    {
+                        throw new Exception("-1");
+                    }
                 }
-                else
+                finally
                 {
-                    throw new Exception("-1");
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
                 }
-            }
-            finally
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
             }
         }
 
@@ -3642,62 +5096,75 @@ namespace SmartDyeing.FADM_Object
         /// <returns></returns>
         public static int GetZPosition(ref int i_position)
         {
-            try
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
+
             {
-            Label1:
-                if (!FADM_Object.Communal._b_auto)
-                {//在手动页面 等待手动页面退出
-                    goto Label1;
-                }
-                Lib_Log.Log.writeLogException("读取Z轴逻辑位置");
+                int iZPulse = 0;
 
-                bool b_istrue = false;
-                FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
-                double d_value = 0.0;
-
-            lableTop:
-                int[] ia_array = { 0, 0 };
-                int i_state = FADM_Object.Communal._tcpModBus.Read(913, 2, ref ia_array);
-                if (i_state != -1)
+                if (-1 == Lib_Card.CardObject.OA1.ReadAxisCommandPosition(Lib_Card.ADT8940A1.ADT8940A1_IO.Axis_Z, ref iZPulse))
+                    throw new Exception("驱动异常");
+                i_position = iZPulse;
+                return 0;
+            }
+            else
+            {
+                try
                 {
-                    int i_a13 = ia_array[0];
-                    int i_a14 = ia_array[1];
-                    if (i_a13 < 0)
+                Label1:
+                    if (!FADM_Object.Communal._b_auto)
+                    {//在手动页面 等待手动页面退出
+                        goto Label1;
+                    }
+                    Lib_Log.Log.writeLogException("读取Z轴逻辑位置");
+
+                    bool b_istrue = false;
+                    FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
+                    double d_value = 0.0;
+
+                lableTop:
+                    int[] ia_array = { 0, 0 };
+                    int i_state = FADM_Object.Communal._tcpModBus.Read(913, 2, ref ia_array);
+                    if (i_state != -1)
                     {
-                        d_value = (((i_a14 + 1) * 65536 + i_a13));
+                        int i_a13 = ia_array[0];
+                        int i_a14 = ia_array[1];
+                        if (i_a13 < 0)
+                        {
+                            d_value = (((i_a14 + 1) * 65536 + i_a13));
+                        }
+                        else
+                        {
+                            d_value = ((i_a14 * 65536 + i_a13));
+                        }
+                        Console.WriteLine("读取Z轴位置是" + d_value.ToString());
+                        //i_position = d_value < 0 ? Convert.ToInt32(Math.Floor(d_value)) : Convert.ToInt32(Math.Ceiling(d_value));
+                        i_position = Convert.ToInt32(d_value);
+                        Console.WriteLine("读取Z轴位置是" + i_position.ToString());
+                        Lib_Log.Log.writeLogException("读取Z轴位置是" + i_position.ToString());
                     }
                     else
                     {
-                        d_value = ((i_a14 * 65536 + i_a13));
-                    }
-                    Console.WriteLine("读取Z轴位置是" + d_value.ToString());
-                    //i_position = d_value < 0 ? Convert.ToInt32(Math.Floor(d_value)) : Convert.ToInt32(Math.Ceiling(d_value));
-                    i_position = Convert.ToInt32(d_value);
-                    Console.WriteLine("读取Z轴位置是" + i_position.ToString());
-                    Lib_Log.Log.writeLogException("读取Z轴位置是" + i_position.ToString());
-                }
-                else
-                {
-                    if (b_istrue)
-                    {
-                        b_istrue = false;
-                        FADM_Object.Communal._tcpModBus.ReConnect();
+                        if (b_istrue)
+                        {
+                            b_istrue = false;
+                            FADM_Object.Communal._tcpModBus.ReConnect();
+                            goto lableTop;
+                        }
+                        b_istrue = true;
                         goto lableTop;
                     }
-                    b_istrue = true;
-                    goto lableTop;
+                    Lib_Log.Log.writeLogException("读取Z轴位置结束!");
+                    return 0;
                 }
-                Lib_Log.Log.writeLogException("读取Z轴位置结束!");
-                return 0;
-            }
-            catch (Exception e)
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
-                return -1;
-            }
-            finally
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                catch (Exception e)
+                {
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                    return -1;
+                }
+                finally
+                {
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                }
             }
 
         }
@@ -3828,7 +5295,7 @@ namespace SmartDyeing.FADM_Object
 
                 //光幕信号 这上面的MyAlarm不要等待
                 int i_a2 = ia_array[3];
-                char[] ca_cc = Convert.ToString(i_a2, 2).PadLeft(3, '0').ToArray();
+                char[] ca_cc = Convert.ToString(i_a2, 2).PadLeft(4, '0').ToArray();
                 if (ca_cc[ca_cc.Length - 1].Equals('0'))
                 {
                     if (Lib_Card.Configure.Parameter.Machine_IsStopOrFront == 0)
@@ -3862,6 +5329,19 @@ namespace SmartDyeing.FADM_Object
                     Lib_Card.CardObject.bLeft = false;
                 }
 
+
+                if (Lib_Card.Configure.Parameter.Machine_UseBack == 1)
+                {
+                    if (ca_cc[ca_cc.Length - 4].Equals('0'))
+                    {
+                        Lib_Card.CardObject.bBack = true;
+                    }
+                    else
+                    {
+                        Lib_Card.CardObject.bBack = false;
+                    }
+                }
+
             }
             else
             {
@@ -3884,36 +5364,41 @@ namespace SmartDyeing.FADM_Object
         /// </summary>
         public static void SetBatchStart()
         {
-            bool b_istrue = false;
-            FADM_Object.Communal.WriteTcpStatus(false); //恢复
-        //清掉执行完成 标志位
-        label2:
-            int[] ia_array3 = { 1 };
-            int i_state = FADM_Object.Communal._tcpModBus.Write(808, ia_array3);
-            if (i_state != -1)
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
+            { }
+            else
             {
-                //清除标志位成功 重新读一下
-                i_state = FADM_Object.Communal._tcpModBus.Read(808, 1, ref ia_array3);
-                if (i_state != -1 && ia_array3[0] == 1)
+                bool b_istrue = false;
+                FADM_Object.Communal.WriteTcpStatus(false); //恢复
+                                                            //清掉执行完成 标志位
+            label2:
+                int[] ia_array3 = { 1 };
+                int i_state = FADM_Object.Communal._tcpModBus.Write(808, ia_array3);
+                if (i_state != -1)
                 {
-                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
-                    return;
+                    //清除标志位成功 重新读一下
+                    i_state = FADM_Object.Communal._tcpModBus.Read(808, 1, ref ia_array3);
+                    if (i_state != -1 && ia_array3[0] == 1)
+                    {
+                        FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                        return;
+                    }
+                    else
+                    {
+                        goto label2;
+                    }
                 }
                 else
                 {
+                    if (b_istrue)
+                    {
+                        b_istrue = false;
+                        FADM_Object.Communal._tcpModBus.ReConnect();
+                        goto label2;
+                    }
+                    b_istrue = true;
                     goto label2;
                 }
-            }
-            else
-            {
-                if (b_istrue)
-                {
-                    b_istrue = false;
-                    FADM_Object.Communal._tcpModBus.ReConnect();
-                    goto label2;
-                }
-                b_istrue = true;
-                goto label2;
             }
         }
         /// <summary>
@@ -3921,36 +5406,41 @@ namespace SmartDyeing.FADM_Object
         /// </summary>
         public static void SetBatchClose()
         {
-            bool b_istrue = false;
-            FADM_Object.Communal.WriteTcpStatus(false); //恢复
-        //清掉执行完成 标志位
-        label2:
-            int[] ia_array3 = { 2 };
-            int i_state = FADM_Object.Communal._tcpModBus.Write(808, ia_array3);
-            if (i_state != -1)
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
+            { }
+            else
             {
-                //清除标志位成功 重新读一下
-                i_state = FADM_Object.Communal._tcpModBus.Read(808, 1, ref ia_array3);
-                if (i_state != -1 && ia_array3[0] == 2)
+                bool b_istrue = false;
+                FADM_Object.Communal.WriteTcpStatus(false); //恢复
+                                                            //清掉执行完成 标志位
+            label2:
+                int[] ia_array3 = { 2 };
+                int i_state = FADM_Object.Communal._tcpModBus.Write(808, ia_array3);
+                if (i_state != -1)
                 {
-                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
-                    return;
+                    //清除标志位成功 重新读一下
+                    i_state = FADM_Object.Communal._tcpModBus.Read(808, 1, ref ia_array3);
+                    if (i_state != -1 && ia_array3[0] == 2)
+                    {
+                        FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                        return;
+                    }
+                    else
+                    {
+                        goto label2;
+                    }
                 }
                 else
                 {
+                    if (b_istrue)
+                    {
+                        b_istrue = false;
+                        FADM_Object.Communal._tcpModBus.ReConnect();
+                        goto label2;
+                    }
+                    b_istrue = true;
                     goto label2;
                 }
-            }
-            else
-            {
-                if (b_istrue)
-                {
-                    b_istrue = false;
-                    FADM_Object.Communal._tcpModBus.ReConnect();
-                    goto label2;
-                }
-                b_istrue = true;
-                goto label2;
             }
         }
 
@@ -3960,131 +5450,149 @@ namespace SmartDyeing.FADM_Object
         /// </summary>
         public static int MyMachineReset()
         {
-            try
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
             {
-            Label1:
-                if (!FADM_Object.Communal._b_auto)
-                {//在手动页面 等待手动页面退出
-                    goto Label1;
-                }
-                Lib_Log.Log.writeLogException("执行复位");
-                bool b_istrue = false;
-                FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
-                ClearSuccessState();//先清除标志位
-
-            lableTop:
-
-                int i_xPules = 0;
-                int i_yPules = 0;
-
-                if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1 || (!Communal._b_isBalanceInDrip))
+                new Reset().MachineReset();
+                return 0;
+            }
+            else
+            {
+                try
                 {
-                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (FADM_Object.Communal._i_optBottleNum - 1) %
-                    Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (FADM_Object.Communal._i_optBottleNum - 1) /
-                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                }
-                else
-                {
-                    int iNo = FADM_Object.Communal._i_optBottleNum;
-                    if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14 >= iNo)
-                    {
-                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (iNo - 1) %
-                            Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (iNo - 1) /
-                            Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                Label1:
+                    if (!FADM_Object.Communal._b_auto)
+                    {//在手动页面 等待手动页面退出
+                        goto Label1;
                     }
-                    else if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - 7 >= iNo)
+                    Lib_Log.Log.writeLogException("执行复位");
+                    bool b_istrue = false;
+                    FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
+                    ClearSuccessState();//先清除标志位
+
+                lableTop:
+
+                    int i_xPules = 0;
+                    int i_yPules = 0;
+
+                    if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1 || (!Communal._b_isBalanceInDrip))
                     {
-                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
-                            ((iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 2)
-                            * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
-                            ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14) /
-                            Lib_Card.Configure.Parameter.Machine_Bottle_Column +
-                            (iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
-                            * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-
-
+                        if (FADM_Object.Communal._b_isNewSet)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (FADM_Object.Communal._i_optBottleNum - 1) %
+                            Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (FADM_Object.Communal._i_optBottleNum - 1) /
+                                Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                        }
+                        else
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (FADM_Object.Communal._i_optBottleNum - 1) %
+                            Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y - (FADM_Object.Communal._i_optBottleNum - 1) /
+                                Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                        }
                     }
                     else
                     {
-                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
-                           ((iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 3)
-                           * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
-                            ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14) /
-                            Lib_Card.Configure.Parameter.Machine_Bottle_Column +
-                            (iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
-                            * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                    }
-                }
-                if (FADM_Object.Communal._i_optBottleNum == 0)
-                {
-                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "复位完成");
-                    FADM_Object.Communal.WriteMachineStatus(0);
-                    FADM_Object.Communal.WriteTcpStatus(true); //天平先不要轮询
-                    return 0;
-                }
-                int d_1 = 0;
-                if (i_xPules > 65536)
-                {
-                    d_1 = i_xPules / 65536;
-                    i_xPules = i_xPules % 65536;
-                }
-                int d_2 = 0;
-                if (i_yPules > 65536)
-                {
-                    d_2 = i_yPules / 65536;
-                    i_yPules = i_yPules % 65536;
-                }
-                int[] ia_array = { 9, i_xPules, d_1, i_yPules, d_2, 0, 0, 0, 0, 0, 1 };
-                int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
-                if (i_state != -1)
-                {
+                        int iNo = FADM_Object.Communal._i_optBottleNum;
+                        if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14 >= iNo)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (iNo - 1) %
+                                Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (iNo - 1) /
+                                Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                        }
+                        else if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - 7 >= iNo)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
+                                ((iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 2)
+                                * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
+                                ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14) /
+                                Lib_Card.Configure.Parameter.Machine_Bottle_Column +
+                                (iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
+                                * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
 
-                    //判断错误返回值
-                    if (GetReturn(0) == -2)
-                    {
-                        return -2;
+
+                        }
+                        else
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
+                               ((iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 3)
+                               * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
+                                ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14) /
+                                Lib_Card.Configure.Parameter.Machine_Bottle_Column +
+                                (iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
+                                * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                        }
                     }
-                    else
+                    if (FADM_Object.Communal._i_optBottleNum == 0)
                     {
                         FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "复位完成");
                         FADM_Object.Communal.WriteMachineStatus(0);
+                        FADM_Object.Communal.WriteTcpStatus(true); //天平先不要轮询
+                        return 0;
                     }
-
-                }
-                else
-                {
-                    Console.WriteLine("复位编号返回失败,继续写入");
-                    if (b_istrue)
+                    int d_1 = 0;
+                    if (i_xPules > 65536)
                     {
-                        b_istrue = false;
-                        FADM_Object.Communal._tcpModBus.ReConnect();
-                        goto lableTop;
+                        d_1 = i_xPules / 65536;
+                        i_xPules = i_xPules % 65536;
                     }
-                    b_istrue = true;
-                    goto lableTop;
-                    //throw new Exception("10");
+                    int d_2 = 0;
+                    if (i_yPules > 65536)
+                    {
+                        d_2 = i_yPules / 65536;
+                        i_yPules = i_yPules % 65536;
+                    }
+                    int[] ia_array = { 9, i_xPules, d_1, i_yPules, d_2, 0, 0, 0, 0, 0, 1 };
+                    int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
+                    if (i_state != -1)
+                    {
+
+                        //判断错误返回值
+                        if (GetReturn(0) == -2)
+                        {
+                            return -2;
+                        }
+                        else
+                        {
+                            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "复位完成");
+                            FADM_Object.Communal.WriteMachineStatus(0);
+                        }
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("复位编号返回失败,继续写入");
+                        if (b_istrue)
+                        {
+                            b_istrue = false;
+                            FADM_Object.Communal._tcpModBus.ReConnect();
+                            goto lableTop;
+                        }
+                        b_istrue = true;
+                        goto lableTop;
+                        //throw new Exception("10");
+                    }
+                    return 0;
                 }
-                return 0;
-            }
-            catch (Exception e)
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
-                if (e.Message.Equals("-2") || e.Message.Equals("10"))
+                catch (Exception e)
                 {
-                    throw e;
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                    if (e.Message.Equals("-2") || e.Message.Equals("10"))
+                    {
+                        throw e;
+                    }
+                    else
+                    {
+                        throw new Exception("-1");
+                    }
                 }
-                else
+                finally
                 {
-                    throw new Exception("-1");
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
                 }
-            }
-            finally
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
             }
 
 
@@ -4095,133 +5603,150 @@ namespace SmartDyeing.FADM_Object
         /// </summary>
         public static int MyMachineReset1()
         {
-            try
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
             {
-            Label1:
-                if (!FADM_Object.Communal._b_auto)
-                {//在手动页面 等待手动页面退出
-                    goto Label1;
-                }
-                Lib_Log.Log.writeLogException("执行复位");
-                bool b_istrue = false;
-                FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
-                ClearSuccessState();//先清除标志位
-
-            lableTop:
-
-                int i_xPules = 0;
-                int i_yPules = 0;
-
-                if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1 || (!Communal._b_isBalanceInDrip))
+                new Reset().MachineReset1();
+                return 0;
+            }
+            else
+            {
+                try
                 {
-                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (FADM_Object.Communal._i_optBottleNum - 1) %
-                    Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (FADM_Object.Communal._i_optBottleNum - 1) /
-                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                }
-                else
-                {
-                    int iNo = FADM_Object.Communal._i_optBottleNum;
-                    if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14 >= iNo)
-                    {
-                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (iNo - 1) %
-                            Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (iNo - 1) /
-                            Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                Label1:
+                    if (!FADM_Object.Communal._b_auto)
+                    {//在手动页面 等待手动页面退出
+                        goto Label1;
                     }
-                    else if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - 7 >= iNo)
+                    Lib_Log.Log.writeLogException("执行复位");
+                    bool b_istrue = false;
+                    FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
+                    ClearSuccessState();//先清除标志位
+
+                lableTop:
+
+                    int i_xPules = 0;
+                    int i_yPules = 0;
+
+                    if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1 || (!Communal._b_isBalanceInDrip))
                     {
-                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
-                            ((iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 2)
-                            * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
-                            ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14) /
-                            Lib_Card.Configure.Parameter.Machine_Bottle_Column +
-                            (iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
-                            * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-
-
+                        if (FADM_Object.Communal._b_isNewSet)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (FADM_Object.Communal._i_optBottleNum - 1) %
+                            Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (FADM_Object.Communal._i_optBottleNum - 1) /
+                                Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                        }
+                        else
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (FADM_Object.Communal._i_optBottleNum - 1) %
+                            Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y - (FADM_Object.Communal._i_optBottleNum - 1) /
+                                Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                        }
                     }
                     else
                     {
-                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
-                           ((iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 3)
-                           * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
-                            ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14) /
-                            Lib_Card.Configure.Parameter.Machine_Bottle_Column +
-                            (iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
-                            * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                    }
-                }
-                if (FADM_Object.Communal._i_optBottleNum == 0)
-                {
-                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "复位完成");
-                    //FADM_Object.Communal.WriteMachineStatus(0);
-                    FADM_Object.Communal.WriteTcpStatus(true); //天平先不要轮询
-                    return 0;
-                }
-                int d_1 = 0;
-                if (i_xPules > 65536)
-                {
-                    d_1 = i_xPules / 65536;
-                    i_xPules = i_xPules % 65536;
-                }
-                int d_2 = 0;
-                if (i_yPules > 65536)
-                {
-                    d_2 = i_yPules / 65536;
-                    i_yPules = i_yPules % 65536;
-                }
-                int[] ia_array = { 9, i_xPules, d_1, i_yPules, d_2, 0, 0, 0, 0, 0, 1 };
-                int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
-                if (i_state != -1)
-                {
+                        int iNo = FADM_Object.Communal._i_optBottleNum;
+                        if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14 >= iNo)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (iNo - 1) %
+                                Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (iNo - 1) /
+                                Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                        }
+                        else if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - 7 >= iNo)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
+                                ((iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 2)
+                                * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
+                                ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14) /
+                                Lib_Card.Configure.Parameter.Machine_Bottle_Column +
+                                (iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
+                                * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
 
-                    //判断错误返回值
-                    if (GetReturn(0) == -2)
-                    {
-                        return -2;
+
+                        }
+                        else
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
+                               ((iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 3)
+                               * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
+                                ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14) /
+                                Lib_Card.Configure.Parameter.Machine_Bottle_Column +
+                                (iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
+                                * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                        }
                     }
-                    else
+                    if (FADM_Object.Communal._i_optBottleNum == 0)
                     {
                         FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "复位完成");
                         //FADM_Object.Communal.WriteMachineStatus(0);
+                        FADM_Object.Communal.WriteTcpStatus(true); //天平先不要轮询
+                        return 0;
                     }
-
-                }
-                else
-                {
-                    Console.WriteLine("复位编号返回失败,继续写入");
-                    if (b_istrue)
+                    int d_1 = 0;
+                    if (i_xPules > 65536)
                     {
-                        b_istrue = false;
-                        FADM_Object.Communal._tcpModBus.ReConnect();
-                        goto lableTop;
+                        d_1 = i_xPules / 65536;
+                        i_xPules = i_xPules % 65536;
                     }
-                    b_istrue = true;
-                    goto lableTop;
-                    //throw new Exception("10");
-                }
-                return 0;
-            }
-            catch (Exception e)
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
-                if (e.Message.Equals("-2") || e.Message.Equals("10"))
-                {
-                    throw e;
-                }
-                else
-                {
-                    throw new Exception("-1");
-                }
-            }
-            finally
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
-            }
+                    int d_2 = 0;
+                    if (i_yPules > 65536)
+                    {
+                        d_2 = i_yPules / 65536;
+                        i_yPules = i_yPules % 65536;
+                    }
+                    int[] ia_array = { 9, i_xPules, d_1, i_yPules, d_2, 0, 0, 0, 0, 0, 1 };
+                    int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
+                    if (i_state != -1)
+                    {
 
+                        //判断错误返回值
+                        if (GetReturn(0) == -2)
+                        {
+                            return -2;
+                        }
+                        else
+                        {
+                            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "复位完成");
+                            //FADM_Object.Communal.WriteMachineStatus(0);
+                        }
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("复位编号返回失败,继续写入");
+                        if (b_istrue)
+                        {
+                            b_istrue = false;
+                            FADM_Object.Communal._tcpModBus.ReConnect();
+                            goto lableTop;
+                        }
+                        b_istrue = true;
+                        goto lableTop;
+                        //throw new Exception("10");
+                    }
+                    return 0;
+                }
+                catch (Exception e)
+                {
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                    if (e.Message.Equals("-2") || e.Message.Equals("10"))
+                    {
+                        throw e;
+                    }
+                    else
+                    {
+                        throw new Exception("-1");
+                    }
+                }
+                finally
+                {
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                }
+            }
 
         }
 
@@ -4233,120 +5758,163 @@ namespace SmartDyeing.FADM_Object
         /// <param name="i_axis">轴 1.X轴 2.Y轴 3.Z轴</param>
         /// <param name="iPosition">脉冲</param>
         /// <returns></returns>
-        public static int TargetMoveRelative(int i_axis, int i_pules, int i_hSpeed, int i_uTime)
+        public static int TargetMoveRelative(int i_axis, int i_pules, int i_hSpeed, int i_uTime, int i_lSpeed)
         {
-            try
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
             {
-                Console.WriteLine("开始相对移动");
-                bool b_istrue = false;
-                FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
-                if (!FADM_Object.Communal._b_auto)
+                if(i_axis== 1)
                 {
-                    for (int i = 0; i < Communal._ia_d900.Length; i++) { Communal._ia_d900[i] = 0; }
-                    Communal._b_isUpdateNewData = false;
-                    //等待调试页面停止刷新
-                    Thread.Sleep(200);
-                }
-                ClearSuccessState();//先清除标志位
-                Console.WriteLine("清除完标志位");
-            lableTop:
-                /*if (!FADM_Object.Communal._b_auto) {//在手动页面 等待手动页面退出
-                    goto Label1;
-                }*/
-                int[] ia_array;
-
-                int d_1 = 0;
-                d_1 = i_pules / 65536;
-                if (i_pules < 0) //负数脉冲
-                {
-                    if (d_1 == 0)
+                    Lib_Card.Base.Card.MoveArg s_MoveArg = new Lib_Card.Base.Card.MoveArg()
                     {
-                        d_1 = -1;
-                    }
-                    else
-                    {
-                        if (Math.Abs(i_pules) > 65536)
-                        {
-                            d_1 = d_1 + -1;
-                        }
-                    }
-                }
-                else
-                {  //正数脉冲
-                    d_1 = i_pules / 65536;
-                }
-                i_pules = i_pules % 65536;
-
-
-                int d_2 = 0;
-                if (i_hSpeed > 65536)
-                {
-                    d_2 = i_hSpeed / 65536;
-                    i_hSpeed = i_hSpeed % 65536;
-                }
-                int d_3 = 0;
-                if (i_uTime > 65536)
-                {
-                    d_3 = i_uTime / 65536;
-                    i_uTime = i_uTime % 65536;
-                }
-
-
-                if (i_axis == 1)
-                {
-                    ia_array = new int[] { 8, i_pules, d_1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, i_hSpeed, d_2, i_uTime, d_3 };
+                        Pulse = i_pules,
+                        LSpeed = i_lSpeed,
+                        HSpeed = i_hSpeed,
+                        Time = i_uTime
+                    };
+                    if (-1 == Lib_Card.CardObject.OA1Axis.Relative_X(Lib_Card.Configure.Parameter.Machine_CylinderVersion, s_MoveArg, 0))
+                        throw new Exception("驱动异常");
                 }
                 else if (i_axis == 2)
                 {
-                    ia_array = new int[] { 8, 0, 0, i_pules, d_1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, i_hSpeed, d_2, i_uTime, d_3 };
-                }
-                else
-                {
-                    ia_array = new int[] { 8, 0, 0, 0, 0, i_pules, d_1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, i_hSpeed, d_2, i_uTime, d_3 };
-                }
-                int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
-                if (i_state != -1)
-                {
-                    //判断错误返回值
-                    if (GetReturn(1) == -2)
+                    Lib_Card.Base.Card.MoveArg s_MoveArg = new Lib_Card.Base.Card.MoveArg()
                     {
-                        return -2;
-                    }
-                    else
-                    {
-
-                    }
+                        Pulse = i_pules,
+                        LSpeed = i_lSpeed,
+                        HSpeed = i_hSpeed,
+                        Time = i_uTime
+                    };
+                    if (-1 == Lib_Card.CardObject.OA1Axis.Relative_Y(Lib_Card.Configure.Parameter.Machine_CylinderVersion, s_MoveArg, 0))
+                        throw new Exception("驱动异常");
                 }
-                else
+                else if (i_axis == 3)
                 {
-                    Console.WriteLine("写入相对移动编号返回失败,继续写入");
-                    if (b_istrue)
+                    Lib_Card.Base.Card.MoveArg s_MoveArg = new Lib_Card.Base.Card.MoveArg()
                     {
-                        b_istrue = false;
-                        FADM_Object.Communal._tcpModBus.ReConnect();
-                        goto lableTop;
-                    }
-                    b_istrue = true;
-                    goto lableTop;
+                        Pulse = i_pules,
+                        LSpeed = i_lSpeed,
+                        HSpeed = i_hSpeed,
+                        Time = i_uTime
+                    };
+                    if (-1 == Lib_Card.CardObject.OA1Axis.Relative_Z( s_MoveArg, 0))
+                        throw new Exception("驱动异常");
                 }
                 return 0;
             }
-            catch (Exception e)
+            else
             {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
-                if (e.Message.Equals("-2"))
+                try
                 {
-                    throw e;
+                    Console.WriteLine("开始相对移动");
+                    bool b_istrue = false;
+                    FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
+                    if (!FADM_Object.Communal._b_auto)
+                    {
+                        for (int i = 0; i < Communal._ia_d900.Length; i++) { Communal._ia_d900[i] = 0; }
+                        Communal._b_isUpdateNewData = false;
+                        //等待调试页面停止刷新
+                        Thread.Sleep(200);
+                    }
+                    ClearSuccessState();//先清除标志位
+                    Console.WriteLine("清除完标志位");
+                lableTop:
+                    /*if (!FADM_Object.Communal._b_auto) {//在手动页面 等待手动页面退出
+                        goto Label1;
+                    }*/
+                    int[] ia_array;
+
+                    int d_1 = 0;
+                    d_1 = i_pules / 65536;
+                    if (i_pules < 0) //负数脉冲
+                    {
+                        if (d_1 == 0)
+                        {
+                            d_1 = -1;
+                        }
+                        else
+                        {
+                            if (Math.Abs(i_pules) > 65536)
+                            {
+                                d_1 = d_1 + -1;
+                            }
+                        }
+                    }
+                    else
+                    {  //正数脉冲
+                        d_1 = i_pules / 65536;
+                    }
+                    i_pules = i_pules % 65536;
+
+
+                    int d_2 = 0;
+                    if (i_hSpeed > 65536)
+                    {
+                        d_2 = i_hSpeed / 65536;
+                        i_hSpeed = i_hSpeed % 65536;
+                    }
+                    int d_3 = 0;
+                    if (i_uTime > 65536)
+                    {
+                        d_3 = i_uTime / 65536;
+                        i_uTime = i_uTime % 65536;
+                    }
+
+
+                    if (i_axis == 1)
+                    {
+                        ia_array = new int[] { 8, i_pules, d_1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, i_hSpeed, d_2, i_uTime, d_3 };
+                    }
+                    else if (i_axis == 2)
+                    {
+                        ia_array = new int[] { 8, 0, 0, i_pules, d_1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, i_hSpeed, d_2, i_uTime, d_3 };
+                    }
+                    else
+                    {
+                        ia_array = new int[] { 8, 0, 0, 0, 0, i_pules, d_1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, i_hSpeed, d_2, i_uTime, d_3 };
+                    }
+                    int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
+                    if (i_state != -1)
+                    {
+                        //判断错误返回值
+                        if (GetReturn(1) == -2)
+                        {
+                            return -2;
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("写入相对移动编号返回失败,继续写入");
+                        if (b_istrue)
+                        {
+                            b_istrue = false;
+                            FADM_Object.Communal._tcpModBus.ReConnect();
+                            goto lableTop;
+                        }
+                        b_istrue = true;
+                        goto lableTop;
+                    }
+                    return 0;
                 }
-                else
+                catch (Exception e)
                 {
-                    MessageBox.Show(e.ToString());
-                    throw new Exception("-1");
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                    if (e.Message.Equals("-2"))
+                    {
+                        throw e;
+                    }
+                    else
+                    {
+                        MessageBox.Show(e.ToString());
+                        throw new Exception("-1");
+                    }
                 }
-            }
-            finally
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                finally
+                {
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                }
             }
         }
 
@@ -4359,60 +5927,68 @@ namespace SmartDyeing.FADM_Object
         /// <returns></returns>
         public static int Reset()
         {
-            try
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
             {
-                Lib_Log.Log.writeLogException("检查针筒方法");
-
-                bool b_istrue = false;
-                FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询 
-                ClearSuccessState();//先清除标志位
-                Lib_Log.Log.writeLogException("清除标志位结束");
-
-            lableTop:
-                int[] ia_array = { 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
-                int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
-                if (i_state != -1)
+                FADM_Auto.Reset.IOReset();
+                return 0; 
+            }
+            else
+            {
+                try
                 {
-                    //判断错误返回值
-                    if (GetReturn(1) == -2)
+                    Lib_Log.Log.writeLogException("检查针筒方法");
+
+                    bool b_istrue = false;
+                    FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询 
+                    ClearSuccessState();//先清除标志位
+                    Lib_Log.Log.writeLogException("清除标志位结束");
+
+                lableTop:
+                    int[] ia_array = { 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
+                    int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
+                    if (i_state != -1)
                     {
-                        return -2;
+                        //判断错误返回值
+                        if (GetReturn(1) == -2)
+                        {
+                            return -2;
+                        }
+                        else
+                        {
+
+                        }
                     }
                     else
                     {
-
-                    }
-                }
-                else
-                {
-                    Lib_Log.Log.writeLogException("写入检查复位动作编号返回失败,继续写入");
-                    Console.WriteLine("写入检查复位动作编号返回失败,继续写入");
-                    if (b_istrue)
-                    {
-                        b_istrue = false;
-                        FADM_Object.Communal._tcpModBus.ReConnect();
+                        Lib_Log.Log.writeLogException("写入检查复位动作编号返回失败,继续写入");
+                        Console.WriteLine("写入检查复位动作编号返回失败,继续写入");
+                        if (b_istrue)
+                        {
+                            b_istrue = false;
+                            FADM_Object.Communal._tcpModBus.ReConnect();
+                            goto lableTop;
+                        }
+                        b_istrue = true;
                         goto lableTop;
                     }
-                    b_istrue = true;
-                    goto lableTop;
+                    return 0;
                 }
-                return 0;
-            }
-            catch (Exception e)
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
-                if (e.Message.Equals("-2"))
+                catch (Exception e)
                 {
-                    throw e;
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                    if (e.Message.Equals("-2"))
+                    {
+                        throw e;
+                    }
+                    else
+                    {
+                        throw new Exception("-1");
+                    }
                 }
-                else
+                finally
                 {
-                    throw new Exception("-1");
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
                 }
-            }
-            finally
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
             }
         }
 
@@ -4422,53 +5998,61 @@ namespace SmartDyeing.FADM_Object
         /// <returns></returns>
         public static int ResetClosing()
         {
-            try
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
             {
-                Lib_Log.Log.writeLogException("检查针筒方法");
-
-                bool istrue = false;
-                FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询 
-                ClearSuccessState();//先清除标志位
-                Lib_Log.Log.writeLogException("清除标志位结束");
-
-            lableTop:
-                int[] ia_array = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-                int i_state = 0;
-                i_state = FADM_Object.Communal._tcpModBus.Read(900, 26, ref ia_array);
-                if (i_state != -1)
-                {
-                    int a5 = ia_array[5]; //输入点(双字)
-                    string str2 = Convert.ToString(a5, 2).PadLeft(15, '0');
-                    if (!str2.Equals("0"))
-                    {
-                        char[]cc = str2.ToArray();//急停
-                        if(cc[cc.Length - 6].Equals('1') ? true : false) //针筒传感器
-                        {
-                            throw new Exception("发现针筒或杯盖");
-                        }
-                    }
-                }
-                else
-                {
-                    goto lableTop;
-                }
+                FADM_Auto.Reset.IOReset();
                 return 0;
             }
-            catch (Exception e)
+            else
             {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
-                if (e.Message.Equals("-2")|| e.Message.Equals("发现针筒或杯盖"))
+                try
                 {
-                    throw e;
+                    Lib_Log.Log.writeLogException("检查针筒方法");
+
+                    bool istrue = false;
+                    FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询 
+                    ClearSuccessState();//先清除标志位
+                    Lib_Log.Log.writeLogException("清除标志位结束");
+
+                lableTop:
+                    int[] ia_array = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+                    int i_state = 0;
+                    i_state = FADM_Object.Communal._tcpModBus.Read(900, 26, ref ia_array);
+                    if (i_state != -1)
+                    {
+                        int a5 = ia_array[5]; //输入点(双字)
+                        string str2 = Convert.ToString(a5, 2).PadLeft(15, '0');
+                        if (!str2.Equals("0"))
+                        {
+                            char[] cc = str2.ToArray();//急停
+                            if (cc[cc.Length - 6].Equals('1') ? true : false) //针筒传感器
+                            {
+                                throw new Exception("发现针筒或杯盖");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        goto lableTop;
+                    }
+                    return 0;
                 }
-                else
+                catch (Exception e)
                 {
-                    throw new Exception("-1");
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                    if (e.Message.Equals("-2") || e.Message.Equals("发现针筒或杯盖"))
+                    {
+                        throw e;
+                    }
+                    else
+                    {
+                        throw new Exception("-1");
+                    }
                 }
-            }
-            finally
-            {
-                FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                finally
+                {
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                }
             }
         }
 
@@ -4522,36 +6106,41 @@ namespace SmartDyeing.FADM_Object
         /// <returns></returns>
         public static void ClearBalance()
         {
-            bool b_istrue = false;
-            FADM_Object.Communal.WriteTcpStatus(false);
-        //清掉执行完成 标志位
-        label2:
-            int[] ia_array3 = { 29 };
-            int i_state = FADM_Object.Communal._tcpModBus.Write(811, ia_array3);
-            if (i_state != -1)
-            {
-                FADM_Object.Communal.WriteTcpStatus(true);//恢复
-                /*FADM_Object.Communal.WriteTcpStatus(true); //恢复
-              //读天平数据看下是否等于0
-            lable3:
-                if (Convert.ToDouble(FADM_Object.Communal._s_balanceValue) == 0.00)
-                {
-                    return;
-                }
-                else {
-                    goto lable3;
-                }*/
-            }
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
+            { }
             else
             {
-                if (b_istrue)
+                bool b_istrue = false;
+                FADM_Object.Communal.WriteTcpStatus(false);
+            //清掉执行完成 标志位
+            label2:
+                int[] ia_array3 = { 29 };
+                int i_state = FADM_Object.Communal._tcpModBus.Write(811, ia_array3);
+                if (i_state != -1)
                 {
-                    b_istrue = false;
-                    FADM_Object.Communal._tcpModBus.ReConnect();
+                    FADM_Object.Communal.WriteTcpStatus(true);//恢复
+                    /*FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                  //读天平数据看下是否等于0
+                lable3:
+                    if (Convert.ToDouble(FADM_Object.Communal._s_balanceValue) == 0.00)
+                    {
+                        return;
+                    }
+                    else {
+                        goto lable3;
+                    }*/
+                }
+                else
+                {
+                    if (b_istrue)
+                    {
+                        b_istrue = false;
+                        FADM_Object.Communal._tcpModBus.ReConnect();
+                        goto label2;
+                    }
+                    b_istrue = true;
                     goto label2;
                 }
-                b_istrue = true;
-                goto label2;
             }
         }
 
@@ -4563,36 +6152,43 @@ namespace SmartDyeing.FADM_Object
         /// <returns></returns>
         public static void ResetBalance()
         {
-            bool b_istrue = false;
-            FADM_Object.Communal.WriteTcpStatus(false);
-        //清掉执行完成 标志位
-        label2:
-            int[] ia_array3 = { 30 };
-            int i_state = FADM_Object.Communal._tcpModBus.Write(811, ia_array3);
-            if (i_state != -1)
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
             {
-                FADM_Object.Communal.WriteTcpStatus(true);//恢复
-                /*FADM_Object.Communal.WriteTcpStatus(true); //恢复
-              //读天平数据看下是否等于0
-            lable3:
-                if (Convert.ToDouble(FADM_Object.Communal._s_balanceValue) == 0.00)
-                {
-                    return;
-                }
-                else {
-                    goto lable3;
-                }*/
+                return;
             }
             else
             {
-                if (b_istrue)
+                bool b_istrue = false;
+                FADM_Object.Communal.WriteTcpStatus(false);
+            //清掉执行完成 标志位
+            label2:
+                int[] ia_array3 = { 30 };
+                int i_state = FADM_Object.Communal._tcpModBus.Write(811, ia_array3);
+                if (i_state != -1)
                 {
-                    b_istrue = false;
-                    FADM_Object.Communal._tcpModBus.ReConnect();
+                    FADM_Object.Communal.WriteTcpStatus(true);//恢复
+                    /*FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                  //读天平数据看下是否等于0
+                lable3:
+                    if (Convert.ToDouble(FADM_Object.Communal._s_balanceValue) == 0.00)
+                    {
+                        return;
+                    }
+                    else {
+                        goto lable3;
+                    }*/
+                }
+                else
+                {
+                    if (b_istrue)
+                    {
+                        b_istrue = false;
+                        FADM_Object.Communal._tcpModBus.ReConnect();
+                        goto label2;
+                    }
+                    b_istrue = true;
                     goto label2;
                 }
-                b_istrue = true;
-                goto label2;
             }
         }
 

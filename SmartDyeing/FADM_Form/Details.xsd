@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Details" targetNamespace="http://tempuri.org/Details.xsd" xmlns:mstns="http://tempuri.org/Details.xsd" xmlns="http://tempuri.org/Details.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="Details" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_UserDSName="Details" msprop:Generator_DataSetName="Details">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_UserTableName="DataTable1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="AssistantCode" msprop:Generator_ColumnPropNameInRow="AssistantCode" msprop:Generator_ColumnPropNameInTable="AssistantCodeColumn" msprop:Generator_ColumnVarNameInTable="columnAssistantCode" msprop:Generator_UserColumnName="AssistantCode" type="xs:string" minOccurs="0" />
+              <xs:element name="AssistantName" msprop:Generator_ColumnPropNameInRow="AssistantName" msprop:Generator_ColumnPropNameInTable="AssistantNameColumn" msprop:Generator_ColumnVarNameInTable="columnAssistantName" msprop:Generator_UserColumnName="AssistantName" type="xs:string" minOccurs="0" />
+              <xs:element name="UnitOfAccount" msprop:Generator_ColumnPropNameInRow="UnitOfAccount" msprop:Generator_ColumnPropNameInTable="UnitOfAccountColumn" msprop:Generator_ColumnVarNameInTable="columnUnitOfAccount" msprop:Generator_UserColumnName="UnitOfAccount" type="xs:string" minOccurs="0" />
+              <xs:element name="SettingConcentration" msprop:Generator_ColumnPropNameInRow="SettingConcentration" msprop:Generator_ColumnPropNameInTable="SettingConcentrationColumn" msprop:Generator_ColumnVarNameInTable="columnSettingConcentration" msprop:Generator_UserColumnName="SettingConcentration" type="xs:string" minOccurs="0" />
+              <xs:element name="RealConcentration" msprop:Generator_ColumnPropNameInRow="RealConcentration" msprop:Generator_ColumnPropNameInTable="RealConcentrationColumn" msprop:Generator_ColumnVarNameInTable="columnRealConcentration" msprop:Generator_UserColumnName="RealConcentration" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

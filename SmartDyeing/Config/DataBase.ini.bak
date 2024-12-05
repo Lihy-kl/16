@@ -1,0 +1,6 @@
+[FADM]
+Server=(local)\SQLEXPRESS
+Port=1433
+Database=drop_system_EN
+UserName=sa
+Password=123456

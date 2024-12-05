@@ -1,4 +1,5 @@
 ﻿using HslControls;
+using SmartDyeing.FADM_Control;
 using SmartDyeing.FADM_Object;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Xml.Linq;
+using static SmartDyeing.FADM_Control.CurveControl;
 
 namespace SmartDyeing.FADM_Form
 {
@@ -20,330 +23,620 @@ namespace SmartDyeing.FADM_Form
         private int _i_cupNo;
         public CupDetails(int CupNo)
         {
-            InitializeComponent();
-            //this.Text = CupNo + "号杯详细资料";
-            txt_CupNum.Text = CupNo.ToString();
-            this._i_cupNo = CupNo;
-            Curve2D cuv2D = new Curve2D();
-            List<float> list_values = new List<float>();
-            //string s = Lib_File.Txt.ReadTXT(CupNo);
-            //if (s != "" && s != null)
-            //{
-            //    s = s.Substring(0, s.Length - 1);
-            //    string[] arr = s.Split('@');
-
-            //    float[] temp = new float[arr.Count()];
-            //    DateTime[] times = new DateTime[arr.Count()];
-
-            //    for (int i = 0; i < arr.Count(); i++)
-            //    {
-            //        temp[i] = Convert.ToSingle(arr[i]);
-            //        times[i] = DateTime.Now.AddSeconds((i - arr.Count()) * 30);
-            //    }
-
-            //    // 显示出数据信息来
-
-            //    // 设置曲线属性，名称，数据，颜色，是否平滑，格式化显示文本
-            //    hslCurveHistory1.SetLeftCurve("温度", temp, Color.Blue, HslControls.CurveStyle.Curve, "{0:F1} ℃");
-            //    hslCurveHistory1.SetDateTimes(times);
-            //    hslCurveHistory1.RenderCurveUI(true);
-
-            //}
-
-            //string sMarkStep = Lib_File.Txt.ReadMarkTXT(CupNo);
-            //if (sMarkStep != "" && sMarkStep != null)
-            //{
-            //    bool b = true;
-            //    sMarkStep = sMarkStep.Substring(0, sMarkStep.Length - 1);
-            //    string[] arr = sMarkStep.Split('@');
-            //    for (int i = 0; i < arr.Count(); i++)
-            //    {
-            //        string sName = arr[i].Substring(0, arr[i].IndexOf(","));
-            //        string sNum = arr[i].Substring(arr[i].IndexOf(",") + 1, arr[i].Count() - arr[i].IndexOf(",") - 1);
-
-            //        hslCurveHistory1.AddMarkText(new HslControls.HslMarkText()
-            //        {
-            //            Index = Convert.ToInt32(sNum) - 1,
-            //            CurveKey = "温度",
-            //            MarkText = sName,
-            //            PositionStyle = b ? MarkTextPositionStyle.Up : MarkTextPositionStyle.Down,
-            //            CircleBrush = Brushes.Red,
-            //            TextBrush = Brushes.Red
-            //        }); ; ;
-            //        b = !b;
-            //    }
-            //}
-
-            string s_cupno = Lib_File.Txt.ReadTXT(CupNo);
-            if (s_cupno != "" && s_cupno != null)
+            try
             {
-                s_cupno = s_cupno.Substring(0, s_cupno.Length - 1);
-                string[] sa_arr = s_cupno.Split('@');
+                InitializeComponent();
+                //this.Text = CupNo + "号杯详细资料";
+                txt_CupNum.Text = CupNo.ToString();
+                this._i_cupNo = CupNo;
+                Curve2D cuv2D = new Curve2D();
+                List<float> list_values = new List<float>();
+                //string s = Lib_File.Txt.ReadTXT(CupNo);
+                //if (s != "" && s != null)
+                //{
+                //    s = s.Substring(0, s.Length - 1);
+                //    string[] arr = s.Split('@');
 
-                InitChart();
+                //    float[] temp = new float[arr.Count()];
+                //    DateTime[] times = new DateTime[arr.Count()];
 
-                _times = new DateTime[sa_arr.Count()];
+                //    for (int i = 0; i < arr.Count(); i++)
+                //    {
+                //        temp[i] = Convert.ToSingle(arr[i]);
+                //        times[i] = DateTime.Now.AddSeconds((i - arr.Count()) * 30);
+                //    }
 
-                for (int i = 0; i < sa_arr.Count(); i++)
+                //    // 显示出数据信息来
+
+                //    // 设置曲线属性，名称，数据，颜色，是否平滑，格式化显示文本
+                //    hslCurveHistory1.SetLeftCurve("温度", temp, Color.Blue, HslControls.CurveStyle.Curve, "{0:F1} ℃");
+                //    hslCurveHistory1.SetDateTimes(times);
+                //    hslCurveHistory1.RenderCurveUI(true);
+
+                //}
+
+                //string sMarkStep = Lib_File.Txt.ReadMarkTXT(CupNo);
+                //if (sMarkStep != "" && sMarkStep != null)
+                //{
+                //    bool b = true;
+                //    sMarkStep = sMarkStep.Substring(0, sMarkStep.Length - 1);
+                //    string[] arr = sMarkStep.Split('@');
+                //    for (int i = 0; i < arr.Count(); i++)
+                //    {
+                //        string sName = arr[i].Substring(0, arr[i].IndexOf(","));
+                //        string sNum = arr[i].Substring(arr[i].IndexOf(",") + 1, arr[i].Count() - arr[i].IndexOf(",") - 1);
+
+                //        hslCurveHistory1.AddMarkText(new HslControls.HslMarkText()
+                //        {
+                //            Index = Convert.ToInt32(sNum) - 1,
+                //            CurveKey = "温度",
+                //            MarkText = sName,
+                //            PositionStyle = b ? MarkTextPositionStyle.Up : MarkTextPositionStyle.Down,
+                //            CircleBrush = Brushes.Red,
+                //            TextBrush = Brushes.Red
+                //        }); ; ;
+                //        b = !b;
+                //    }
+                //}
+
+                string s_cupno = Lib_File.Txt.ReadTXT(CupNo);
+                if (s_cupno != "" && s_cupno != null)
                 {
-                    _times[i] = DateTime.Now.AddSeconds((i - sa_arr.Count()) * 30);
-                }
+                    s_cupno = s_cupno.Substring(0, s_cupno.Length - 1);
+                    string[] sa_arr = s_cupno.Split('@');
 
+                    InitChart();
 
-                AddSeries("温度", Color.Red);
+                    _times = new DateTime[sa_arr.Count()];
 
-
-                Series series = chart.Series[0];
-
-                for (int i = 0; i < sa_arr.Count(); i++)
-                {
-                    series.Points.AddXY(Convert.ToDouble(i + 1), Convert.ToDouble(sa_arr[i]));
-                }
-
-
-                chart.MouseMove += new MouseEventHandler(chart1_MouseMove);
-                chart.MouseWheel += new System.Windows.Forms.MouseEventHandler(chart1_Mouselheel);
-            }
-
-            string s_markStep = Lib_File.Txt.ReadMarkTXT(CupNo);
-            if (s_markStep != "" && s_markStep != null)
-            {
-                s_markStep = s_markStep.Substring(0, s_markStep.Length - 1);
-                string[] sa_arr = s_markStep.Split('@');
-                for (int i = 0; i < sa_arr.Count(); i++)
-                {
-                    string s_name = sa_arr[i].Substring(0, sa_arr[i].IndexOf(","));
-                    string s_num = sa_arr[i].Substring(sa_arr[i].IndexOf(",") + 1, sa_arr[i].Count() - sa_arr[i].IndexOf(",") - 1);
-
-                    if (Convert.ToInt32(s_num) <= chart.Series[0].Points.Count)
+                    for (int i = 0; i < sa_arr.Count(); i++)
                     {
-                        chart.Series[0].Points[Convert.ToInt32(s_num) - 1].MarkerColor = Color.Blue;
-                        chart.Series[0].Points[Convert.ToInt32(s_num) - 1].MarkerSize = 10;
-                        chart.Series[0].Points[Convert.ToInt32(s_num) - 1].MarkerStyle = MarkerStyle.Triangle;
-                        chart.Series[0].Points[Convert.ToInt32(s_num) - 1].Label = s_name;
-                        chart.Series[0].Points[Convert.ToInt32(s_num) - 1].Font = new Font("Consolas", 12f);
-                        chart.Series[0].Points[Convert.ToInt32(s_num) - 1].LabelForeColor = Color.Blue;
+                        _times[i] = DateTime.Now.AddSeconds((i - sa_arr.Count()) * 30);
+                    }
+
+
+                    AddSeries("实际", Color.Red);
+
+
+                    Series series = chart.Series[0];
+
+                    for (int i = 0; i < sa_arr.Count(); i++)
+                    {
+                        series.Points.AddXY(Convert.ToDouble(i + 1), Convert.ToDouble(sa_arr[i]));
+                    }
+                    double totalTimeInSeconds = 0; // 每条曲线的总计用时（秒）
+                    totalTimeInSeconds = sa_arr.Length * 30; // 每个点代表30秒
+                                                             // 将总计用时转换为时分秒
+                    TimeSpan totalTime = TimeSpan.FromSeconds(totalTimeInSeconds);
+                    string totalTimeFormatted = $"{totalTime.Hours:D2}小时 {totalTime.Minutes:D2}分钟 {totalTime.Seconds:D2}秒";
+                    // 在图例中显示每条曲线的总计用时
+                    LegendItem legendItem = new LegendItem
+                    {
+                        Name = series.Name,
+                        Color = series.Color,
+                        BorderColor = series.BorderColor,
+                        BorderWidth = series.BorderWidth,
+                        MarkerStyle = series.MarkerStyle,
+                        MarkerSize = series.MarkerSize,
+                        MarkerColor = series.MarkerColor,
+                        MarkerBorderColor = series.MarkerBorderColor,
+                        MarkerBorderWidth = series.MarkerBorderWidth,
+                        ShadowColor = series.ShadowColor,
+                        ShadowOffset = series.ShadowOffset,
+                        Tag = series.Tag,
+                        ToolTip = series.ToolTip
+                    };
+                    // 使用 LegendItem.Cells 设置文本
+                    legendItem.Cells.Add(LegendCellType.Text, $"{series.Name} - 总计: {totalTimeFormatted}", ContentAlignment.MiddleLeft);
+                    chart.Legends[0].CustomItems.Add(legendItem);
+
+                    /*if (_maxTimes.Length < _times.Length)
+                    {
+                        _maxTimes = _times;
+                    }*/
+
+                    chart.MouseMove += new MouseEventHandler(chart1_MouseMove);
+                    chart.MouseWheel += new System.Windows.Forms.MouseEventHandler(chart1_Mouselheel);
+                }
+
+                string s_markStep = Lib_File.Txt.ReadMarkTXT(CupNo);
+                if (s_markStep != "" && s_markStep != null)
+                {
+                    s_markStep = s_markStep.Substring(0, s_markStep.Length - 1);
+                    string[] sa_arr = s_markStep.Split('@');
+                    for (int i = 0; i < sa_arr.Count(); i++)
+                    {
+                        string s_name = sa_arr[i].Substring(0, sa_arr[i].IndexOf(","));
+                        string s_num = sa_arr[i].Substring(sa_arr[i].IndexOf(",") + 1, sa_arr[i].Count() - sa_arr[i].IndexOf(",") - 1);
+
+                        if (Convert.ToInt32(s_num) <= chart.Series[0].Points.Count)
+                        {
+                            chart.Series[0].Points[Convert.ToInt32(s_num) - 1].MarkerColor = Color.Red;
+                            chart.Series[0].Points[Convert.ToInt32(s_num) - 1].MarkerSize = 10;
+                            chart.Series[0].Points[Convert.ToInt32(s_num) - 1].MarkerStyle = MarkerStyle.Triangle;
+                            chart.Series[0].Points[Convert.ToInt32(s_num) - 1].Label = s_name;
+                            chart.Series[0].Points[Convert.ToInt32(s_num) - 1].Font = new Font("Consolas", 12f);
+                            chart.Series[0].Points[Convert.ToInt32(s_num) - 1].LabelForeColor = Color.Red;
+                        }
                     }
                 }
+                //显示下预览曲线
+                //获取批次资料表头
+                string s_sql = "SELECT CupNum, FormulaCode, VersionNum" +
+                                   " FROM drop_head where CupNum = "+ CupNo + " ;";
+                DataTable dt_formula = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                List<ProcessStep> list = new List<ProcessStep>();
+
+                if (dt_formula.Rows.Count > 0) {
+                    string FormulaCode = dt_formula.Rows[0]["FormulaCode"].ToString();
+                    string VersionNum = dt_formula.Rows[0]["VersionNum"].ToString();
+                    s_sql = "SELECT FormulaCode,VersionNum,StepNum,TechnologyName,Temp,TempSpeed,Time,RotorSpeed,Code, DyeType,AssistantCode,FormulaDosage,UnitOfAccount,BottleNum,SettingConcentration,RealConcentration,AssistantName,ObjectDropWeight,RealDropWeight,BottleSelection FROM dyeing_details where FormulaCode = '" + FormulaCode + "' and VersionNum = '" + VersionNum + "' order by StepNum asc ;";
+                    DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                    foreach (DataRow dr in dt_data.Rows)
+                    {
+                        ProcessStep processSte = new ProcessStep();
+
+                        processSte.StepName = dr["TechnologyName"].ToString();
+
+                        if (dr["TechnologyName"].ToString().Trim().Equals("加A") || dr["TechnologyName"].ToString().Trim().Equals("加B") || dr["TechnologyName"].ToString().Trim().Equals("加C") || dr["TechnologyName"].ToString().Trim().Equals("加D") || dr["TechnologyName"].ToString().Trim().Equals("加E") || dr["TechnologyName"].ToString().Trim().Equals("加F") || dr["TechnologyName"].ToString().Trim().Equals("加G") || dr["TechnologyName"].ToString().Trim().Equals("加H") || dr["TechnologyName"].ToString().Trim().Equals("加I") || dr["TechnologyName"].ToString().Trim().Equals("加J") || dr["TechnologyName"].ToString().Trim().Equals("加K") || dr["TechnologyName"].ToString().Trim().Equals("加L") || dr["TechnologyName"].ToString().Trim().Equals("加M") || dr["TechnologyName"].ToString().Trim().Equals("加N"))
+                        {
+                            //processSte.Duration = 5;
+                            list.Add(processSte);
+                            continue;
+                        }
+                        if (dr["TechnologyName"].ToString().Trim().Equals("加水"))
+                        {
+                            list.Add(processSte);
+                            continue;
+                        }
+
+                        if (dr["Temp"].ToString() != null && dr["Temp"].ToString().Length > 0)
+                        {
+                            processSte.TargetTemperature = Convert.ToDouble(dr["Temp"].ToString());
+                        }
+                        if (dr["TempSpeed"].ToString() != null && dr["TempSpeed"].ToString().Length > 0)
+                        {
+                            processSte.HeatingRate = Convert.ToDouble(dr["TempSpeed"].ToString());
+                        }
+                        if (dr["Time"].ToString() != null && dr["Time"].ToString().Length > 0)
+                        {
+                            processSte.Duration = Convert.ToDouble(dr["Time"].ToString());
+                        }
+                        list.Add(processSte);
+                    }
+
+                    ProcessStep[] processSteps = list.ToArray();
+                    // 生成chartData
+                    CurveControl.chartData chartData = GenerateChartData(processSteps);
+                    string temperature = chartData.temperature;
+                    string craft = chartData.craft;
+
+                    string[] sa_arr = temperature.Split('@');
+                    _times = new DateTime[sa_arr.Count()];
+                    for (int i = 0; i < sa_arr.Count(); i++)
+                    {
+                        _times[i] = DateTime.Now.AddSeconds((i - sa_arr.Count()) * 30);
+                    }
+
+
+                    AddSeries("理论", Color.Blue);
+
+                    Series series = chart.Series[1];
+
+                    for (int i = 0; i < sa_arr.Count(); i++)
+                    {
+                        series.Points.AddXY(Convert.ToDouble(i + 1), Convert.ToDouble(sa_arr[i]));
+                    }
+
+                    double totalTimeInSeconds = 0; // 每条曲线的总计用时（秒）
+                    totalTimeInSeconds = sa_arr.Length * 30; // 每个点代表30秒
+                                                             // 将总计用时转换为时分秒
+                    TimeSpan totalTime = TimeSpan.FromSeconds(totalTimeInSeconds);
+                    string totalTimeFormatted = $"{totalTime.Hours:D2}小时 {totalTime.Minutes:D2}分钟 {totalTime.Seconds:D2}秒";
+                    // 在图例中显示每条曲线的总计用时
+                    LegendItem legendItem = new LegendItem
+                    {
+                        Name = series.Name,
+                        Color = series.Color,
+                        BorderColor = series.BorderColor,
+                        BorderWidth = series.BorderWidth,
+                        MarkerStyle = series.MarkerStyle,
+                        MarkerSize = series.MarkerSize,
+                        MarkerColor = series.MarkerColor,
+                        MarkerBorderColor = series.MarkerBorderColor,
+                        MarkerBorderWidth = series.MarkerBorderWidth,
+                        ShadowColor = series.ShadowColor,
+                        ShadowOffset = series.ShadowOffset,
+                        Tag = series.Tag,
+                        ToolTip = series.ToolTip
+                    };
+                    // 使用 LegendItem.Cells 设置文本
+                    legendItem.Cells.Add(LegendCellType.Text, $"{series.Name} - 总计: {totalTimeFormatted}", ContentAlignment.MiddleLeft);
+                    chart.Legends[0].CustomItems.Add(legendItem);
+
+                    sa_arr = craft.Split('@');
+                    for (int i = 0; i < sa_arr.Count(); i++)
+                    {
+                        string s_name = sa_arr[i].Substring(0, sa_arr[i].IndexOf(","));
+                        string s_num = sa_arr[i].Substring(sa_arr[i].IndexOf(",") + 1, sa_arr[i].Count() - sa_arr[i].IndexOf(",") - 1);
+
+                        if (Convert.ToInt32(s_num) <= chart.Series[1].Points.Count)
+                        {
+                            chart.Series[1].Points[Convert.ToInt32(s_num) - 1].MarkerColor = Color.Blue;
+                            chart.Series[1].Points[Convert.ToInt32(s_num) - 1].MarkerSize = 10;
+                            chart.Series[1].Points[Convert.ToInt32(s_num) - 1].MarkerStyle = MarkerStyle.Triangle;
+                            chart.Series[1].Points[Convert.ToInt32(s_num) - 1].Label = s_name;
+                            chart.Series[1].Points[Convert.ToInt32(s_num) - 1].Font = new Font("Consolas", 12f);
+                            chart.Series[1].Points[Convert.ToInt32(s_num) - 1].LabelForeColor = Color.Blue;
+                        }
+                    }
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Lib_Log.Log.writeLogException("CupDetails：" + ex.ToString());
             }
         }
+        public chartData GenerateChartData(ProcessStep[] processSteps)
+        {
+            StringBuilder temperatureBuilder = new StringBuilder();
+            StringBuilder craftBuilder = new StringBuilder();
+            double currentTemperature = 25.0; // 常温起步
+            int timePoint = 0; // 从第0个点开始
+            double ambientTemperature = 25.0; // 常温
+            double coolingConstant = 0.1; // 冷却常数
 
+            foreach (var step in processSteps)
+            {
+                double fixedDuration = 0;
+                double duration = 0;
+                // 在每个步骤开始时记录工艺步骤和当前时间点
+                if (timePoint == 0)
+                    craftBuilder.Append($"{step.StepName},{1}@");
+                else
+                    craftBuilder.Append($"{step.StepName},{timePoint}@");
+
+                switch (step.StepName)
+                {
+                    case "放布":
+                    case "出布":
+                        // 固定时间设定为3分钟
+                        fixedDuration = step.Duration ?? 3;
+                        for (int i = 0; i < fixedDuration * 2; i++) // 每分钟记录两个温度值
+                        {
+                            currentTemperature -= coolingConstant * (currentTemperature - ambientTemperature) / 2; // 根据牛顿冷却定律降温
+                            temperatureBuilder.Append($"{currentTemperature}@");
+                            timePoint++;
+                        }
+                        break;
+                    case "加A":
+                    case "加B":
+                    case "加C":
+                    case "加D":
+                        // 固定时间设定为0.5分钟
+                        fixedDuration = step.Duration ?? 0.5;
+                        for (int i = 0; i < fixedDuration * 2; i++) // 每分钟记录两个温度值
+                        {
+                            currentTemperature -= coolingConstant * (currentTemperature - ambientTemperature) / 2; // 根据牛顿冷却定律降温
+                            temperatureBuilder.Append($"{currentTemperature}@");
+                            timePoint++;
+                        }
+                        break;
+
+                    case "洗杯":
+                        // 固定时间设定为10分钟
+                        fixedDuration = step.Duration ?? 10;
+                        for (int i = 0; i < fixedDuration * 2; i++) // 每分钟记录两个温度值
+                        {
+                            currentTemperature -= coolingConstant * (currentTemperature - ambientTemperature) / 2; // 根据牛顿冷却定律降温
+                            temperatureBuilder.Append($"{currentTemperature}@");
+                            timePoint++;
+                        }
+                        break;
+
+                    case "排液":
+                        // 使用结构体中的时间参数，默认0.25分钟
+                        duration = step.Duration ?? 0.25;
+                        for (int i = 0; i < duration * 2; i++) // 每分钟记录两个温度值
+                        {
+                            currentTemperature -= coolingConstant * (currentTemperature - ambientTemperature) / 2; // 根据牛顿冷却定律降温
+                            temperatureBuilder.Append($"{currentTemperature}@");
+                            timePoint++;
+                        }
+                        break;
+                    case "加水":
+                        // 使用结构体中的时间参数，默认1分钟
+                        duration = step.Duration ?? 1;
+                        for (int i = 0; i < duration * 2; i++) // 每分钟记录两个温度值
+                        {
+                            currentTemperature -= coolingConstant * (currentTemperature - ambientTemperature) / 2; // 根据牛顿冷却定律降温
+                            temperatureBuilder.Append($"{currentTemperature}@");
+                            timePoint++;
+                        }
+                        break;
+                    case "冷行":
+                        // 使用结构体中的时间参数，默认5分钟
+                        duration = step.Duration ?? 5;
+                        for (int i = 0; i < duration * 2; i++) // 每分钟记录两个温度值
+                        {
+                            currentTemperature -= coolingConstant * (currentTemperature - ambientTemperature) / 2; // 根据牛顿冷却定律降温
+                            temperatureBuilder.Append($"{currentTemperature}@");
+                            timePoint++;
+                        }
+                        break;
+                    case "搅拌":
+                        // 使用结构体中的时间参数，默认5分钟
+                        duration = step.Duration ?? 5;
+                        for (int i = 0; i < duration * 2; i++) // 每分钟记录两个温度值
+                        {
+                            currentTemperature -= coolingConstant * (currentTemperature - ambientTemperature) / 2; // 根据牛顿冷却定律降温
+                            temperatureBuilder.Append($"{currentTemperature}@");
+                            timePoint++;
+                        }
+                        break;
+                    case "温控":
+                        // 使用结构体中的目标温度，保温时间，升温速率
+                        double targetTemperature = step.TargetTemperature ?? 100;
+                        double holdTime = step.Duration ?? 120;
+                        double heatingRate = step.HeatingRate ?? 1;
+
+                        // 升温或降温阶段
+                        double temperatureDifference = targetTemperature - currentTemperature;
+                        double heatingTime = Math.Abs(temperatureDifference) / heatingRate; // 转换为分钟
+                        int heatingPoints = (int)(heatingTime * 2); // 每分钟记录两个温度值
+                        for (int i = 0; i < heatingPoints; i++)
+                        {
+                            currentTemperature += (temperatureDifference > 0 ? heatingRate : -heatingRate) / 2; // 每分钟升温或降温
+                            temperatureBuilder.Append($"{currentTemperature}@");
+                            timePoint++;
+                        }
+
+                        // 保温阶段
+                        int holdPoints = (int)(holdTime * 2); // 每分钟记录两个温度值
+                        for (int i = 0; i < holdPoints; i++)
+                        {
+                            temperatureBuilder.Append($"{currentTemperature}@");
+                            timePoint++;
+                        }
+                        break;
+
+                    default:
+                        throw new ArgumentException($"未知的工艺步骤: {step.StepName}");
+                }
+            }
+
+            return new chartData
+            {
+                temperature = temperatureBuilder.ToString().TrimEnd('@'),
+                craft = craftBuilder.ToString().TrimEnd('@')
+            };
+        }
         private void CupDetails_Load(object sender, EventArgs e)
         {
-            DataTable dt_data = new DataTable();
-            DataRow dr;
-            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+            try
             {
-                //建立Column例，可以指明例的类型,这里用的是默认的string
-                dt_data.Columns.Add(new DataColumn("类型"));
-                dt_data.Columns.Add(new DataColumn("瓶号"));
-                dt_data.Columns.Add(new DataColumn("配方用量"));
-                dt_data.Columns.Add(new DataColumn("需加重量"));
-                dt_data.Columns.Add(new DataColumn("实加重量"));
-
-                //设置标题字体
-                dgv_CupDetails.ColumnHeadersDefaultCellStyle.Font = new Font("宋体", 14.25F);
-
-                //设置内容字体
-                dgv_CupDetails.RowsDefaultCellStyle.Font = new Font("宋体", 14.25F);
-
-            }
-            else
-            {
-                dt_data.Columns.Add(new DataColumn("Type"));
-                dt_data.Columns.Add(new DataColumn("BottleNum"));
-                dt_data.Columns.Add(new DataColumn("DosageOfFormula"));
-                dt_data.Columns.Add(new DataColumn("TargetVolume"));
-                dt_data.Columns.Add(new DataColumn("ActualVolume"));
-
-                //设置标题字体
-                dgv_CupDetails.ColumnHeadersDefaultCellStyle.Font = new Font("宋体", 10.5F);
-
-                //设置内容字体
-                dgv_CupDetails.RowsDefaultCellStyle.Font = new Font("宋体", 10.5F);
-            }
-            //获取要显示的行数
-
-            //设置标题居中显示
-            dgv_CupDetails.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-          
-
-            //设置内容居中显示
-            dgv_CupDetails.RowsDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-           
-
-            //设置行高
-            dgv_CupDetails.RowTemplate.Height = 30;
-
-            ////获取当前批次号
-            //string P_str_sql = "SELECT BatchName FROM enabled_set" +
-            //                  " WHERE MyID = 1 ";
-
-            //DataTable _dt_data = FADM_Object.Communal._fadmSqlserver.GetData(P_str_sql);
-
-            //string P_str_batch = Convert.ToString(_dt_data.Rows[0][_dt_data.Columns[0]]);
-
-            //P_str_sql = "SELECT * FROM machine_parameters" +
-            //            " WHERE MyID = 1 ";
-            //_dt_data = FADM_Object.Communal._fadmSqlserver.GetData(P_str_sql);
-            int i_maxcup = Lib_Card.Configure.Parameter.Machine_Cup_Total;
-            int i_maxbottle = Lib_Card.Configure.Parameter.Machine_Bottle_Total;
-
-            //获取当前批次当前杯号信息
-            string s_sql = "SELECT * FROM drop_details WHERE" +
-                        " CupNum = '" + this._i_cupNo +
-                        "' AND BottleNum > 0 AND ( BottleNum <= " + i_maxbottle + "" +
-                        " ) ORDER BY BottleNum;";
-
-            DataTable dt_data1 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-
-            int i_line = dt_data1.Rows.Count;
-            for (int i = 1; i <= i_line; i++)
-            {
+                DataTable dt_data = new DataTable();
+                DataRow dr;
                 if (Lib_Card.Configure.Parameter.Other_Language == 0)
                 {
-                    dr = dt_data.NewRow();
-                    dr[0] = "滴液";
-                    dr[1] = dt_data1.Rows[i - 1]["BottleNum"];
-                    dr[2] = dt_data1.Rows[i - 1]["FormulaDosage"];
-                    dr[3] = dt_data1.Rows[i - 1]["ObjectDropWeight"];
-                    dr[4] = dt_data1.Rows[i - 1]["RealDropWeight"];
-                    dt_data.Rows.Add(dr);
+                    //建立Column例，可以指明例的类型,这里用的是默认的string
+                    dt_data.Columns.Add(new DataColumn("类型"));
+                    dt_data.Columns.Add(new DataColumn("瓶号"));
+                    dt_data.Columns.Add(new DataColumn("配方用量"));
+                    dt_data.Columns.Add(new DataColumn("需加重量"));
+                    dt_data.Columns.Add(new DataColumn("实加重量"));
+
+                    //设置标题字体
+                    dgv_CupDetails.ColumnHeadersDefaultCellStyle.Font = new Font("宋体", 14.25F);
+
+                    //设置内容字体
+                    dgv_CupDetails.RowsDefaultCellStyle.Font = new Font("宋体", 14.25F);
+
                 }
                 else
                 {
-                    dr = dt_data.NewRow();
-                    dr[0] = "Drip";
-                    dr[1] = dt_data1.Rows[i - 1]["BottleNum"];
-                    dr[2] = dt_data1.Rows[i - 1]["FormulaDosage"];
-                    dr[3] = dt_data1.Rows[i - 1]["ObjectDropWeight"];
-                    dr[4] = dt_data1.Rows[i - 1]["RealDropWeight"];
-                    dt_data.Rows.Add(dr);
+                    dt_data.Columns.Add(new DataColumn("Type"));
+                    dt_data.Columns.Add(new DataColumn("BottleNum"));
+                    dt_data.Columns.Add(new DataColumn("DosageOfFormula"));
+                    dt_data.Columns.Add(new DataColumn("TargetVolume"));
+                    dt_data.Columns.Add(new DataColumn("ActualVolume"));
+
+                    //设置标题字体
+                    dgv_CupDetails.ColumnHeadersDefaultCellStyle.Font = new Font("宋体", 10.5F);
+
+                    //设置内容字体
+                    dgv_CupDetails.RowsDefaultCellStyle.Font = new Font("宋体", 10.5F);
                 }
-            }
+                //获取要显示的行数
 
-            //获取当前批次当前杯号信息
-            s_sql = "SELECT * FROM dye_details WHERE" +
-                        " CupNum = '" + this._i_cupNo +
-                        "' AND BottleNum > 0 AND ( BottleNum <= " + i_maxbottle + "" +
-                        " ) ORDER BY StepNum;";
-
-            dt_data1 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-
-            int i_line1 = dt_data1.Rows.Count;
-            for (int i = 1; i <= i_line1; i++)
-            {
-                double d = 0.0;
-                if (dt_data1.Rows[i - 1]["Compensation"] is   DBNull)
-                {
-                }
-                else
-                {
-                    d = Convert.ToDouble(dt_data1.Rows[i - 1]["Compensation"].ToString());
-                }
-                dr = dt_data.NewRow();
-                dr[0] = dt_data1.Rows[i - 1]["Code"];
-                dr[1] = dt_data1.Rows[i - 1]["BottleNum"];
-                dr[2] = dt_data1.Rows[i - 1]["FormulaDosage"];
-                dr[3] = (Convert.ToDouble(dt_data1.Rows[i - 1]["ObjectDropWeight"].ToString()) + d).ToString("F2");
-                dr[4] = dt_data1.Rows[i - 1]["RealDropWeight"];
-                dt_data.Rows.Add(dr);
-            }
-
-            //捆绑
-            dgv_CupDetails.DataSource = new DataView(dt_data);
-            //预留滚动条空间
-            int i_headspace = 1;
-            if (i_line > 11)
-            {
-                i_headspace = 5;
-            }
-            for (int i = 0; i < 5; i++)
-            {
-                dgv_CupDetails.Columns[i].Width = dgv_CupDetails.Width / 5 - i_headspace;
-            }
-            dgv_CupDetails.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgv_CupDetails.RowsDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                //设置标题居中显示
+                dgv_CupDetails.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
 
-            s_sql = "SELECT * FROM drop_head WHERE" +
-                        " CupNum = '" + this._i_cupNo + "' ;";
 
-            dt_data1 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-
-            if (dt_data1.Rows.Count > 0)
-            {
-
-                txt_FormulaCode.Text = Convert.ToString(dt_data1.Rows[0][dt_data1.Columns["FormulaCode"]]);
-
-                txt_VersionNum.Text = Convert.ToString(dt_data1.Rows[0][dt_data1.Columns["VersionNum"]]);
-
-                txt_objectWater.Text = Convert.ToString(dt_data1.Rows[0][dt_data1.Columns["ObjectAddWaterWeight"]]);
-
-                txt_realWater.Text = Convert.ToString(dt_data1.Rows[0][dt_data1.Columns["RealAddWaterWeight"]]);
+                //设置内容居中显示
+                dgv_CupDetails.RowsDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
 
-                s_sql = "SELECT SUM(CAST(ISNULL(ObjectDropWeight,0.00) as numeric(18,2))) FROM drop_details WHERE" +
+
+                //设置行高
+                dgv_CupDetails.RowTemplate.Height = 30;
+
+                ////获取当前批次号
+                //string P_str_sql = "SELECT BatchName FROM enabled_set" +
+                //                  " WHERE MyID = 1 ";
+
+                //DataTable _dt_data = FADM_Object.Communal._fadmSqlserver.GetData(P_str_sql);
+
+                //string P_str_batch = Convert.ToString(_dt_data.Rows[0][_dt_data.Columns[0]]);
+
+                //P_str_sql = "SELECT * FROM machine_parameters" +
+                //            " WHERE MyID = 1 ";
+                //_dt_data = FADM_Object.Communal._fadmSqlserver.GetData(P_str_sql);
+                int i_maxcup = Lib_Card.Configure.Parameter.Machine_Cup_Total;
+                int i_maxbottle = Lib_Card.Configure.Parameter.Machine_Bottle_Total;
+
+                //获取当前批次当前杯号信息
+                string s_sql = "SELECT * FROM drop_details WHERE" +
                             " CupNum = '" + this._i_cupNo +
-                            "' AND BottleNum > " + i_maxbottle + ";";
+                            "' AND BottleNum > 0 AND ( BottleNum <= " + i_maxbottle + "" +
+                            " ) ORDER BY BottleNum;";
+
+                DataTable dt_data1 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                int i_line = dt_data1.Rows.Count;
+                for (int i = 1; i <= i_line; i++)
+                {
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                    {
+                        dr = dt_data.NewRow();
+                        dr[0] = "滴液";
+                        dr[1] = dt_data1.Rows[i - 1]["BottleNum"];
+                        dr[2] = dt_data1.Rows[i - 1]["FormulaDosage"];
+                        dr[3] = dt_data1.Rows[i - 1]["ObjectDropWeight"];
+                        dr[4] = dt_data1.Rows[i - 1]["RealDropWeight"];
+                        dt_data.Rows.Add(dr);
+                    }
+                    else
+                    {
+                        dr = dt_data.NewRow();
+                        dr[0] = "Drip";
+                        dr[1] = dt_data1.Rows[i - 1]["BottleNum"];
+                        dr[2] = dt_data1.Rows[i - 1]["FormulaDosage"];
+                        dr[3] = dt_data1.Rows[i - 1]["ObjectDropWeight"];
+                        dr[4] = dt_data1.Rows[i - 1]["RealDropWeight"];
+                        dt_data.Rows.Add(dr);
+                    }
+                }
+
+                //获取当前批次当前杯号信息
+                s_sql = "SELECT * FROM dye_details WHERE" +
+                            " CupNum = '" + this._i_cupNo +
+                            "' AND BottleNum > 0 AND ( BottleNum <= " + i_maxbottle + "" +
+                            " ) ORDER BY StepNum;";
 
                 dt_data1 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
 
+                int i_line1 = dt_data1.Rows.Count;
+                for (int i = 1; i <= i_line1; i++)
+                {
+                    double d = 0.0;
+                    if (dt_data1.Rows[i - 1]["Compensation"] is DBNull)
+                    {
+                    }
+                    else
+                    {
+                        d = Convert.ToDouble(dt_data1.Rows[i - 1]["Compensation"].ToString());
+                    }
+                    dr = dt_data.NewRow();
+                    dr[0] = dt_data1.Rows[i - 1]["Code"];
+                    dr[1] = dt_data1.Rows[i - 1]["BottleNum"];
+                    dr[2] = dt_data1.Rows[i - 1]["FormulaDosage"];
+                    dr[3] = (Convert.ToDouble(dt_data1.Rows[i - 1]["ObjectDropWeight"].ToString()) + d).ToString("F2");
+                    dr[4] = dt_data1.Rows[i - 1]["RealDropWeight"];
+                    dt_data.Rows.Add(dr);
+                }
+
+                //捆绑
+                dgv_CupDetails.DataSource = new DataView(dt_data);
+                //预留滚动条空间
+                int i_headspace = 1;
+                if (i_line > 11)
+                {
+                    i_headspace = 5;
+                }
+                for (int i = 0; i < 5; i++)
+                {
+                    dgv_CupDetails.Columns[i].Width = dgv_CupDetails.Width / 5 - i_headspace;
+                }
+                dgv_CupDetails.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgv_CupDetails.RowsDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+
+                s_sql = "SELECT * FROM drop_head WHERE" +
+                            " CupNum = '" + this._i_cupNo + "' ;";
+
+                dt_data1 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                if (dt_data1.Rows.Count > 0)
+                {
+
+                    txt_FormulaCode.Text = Convert.ToString(dt_data1.Rows[0][dt_data1.Columns["FormulaCode"]]);
+
+                    txt_VersionNum.Text = Convert.ToString(dt_data1.Rows[0][dt_data1.Columns["VersionNum"]]);
+
+                    txt_objectWater.Text = Convert.ToString(dt_data1.Rows[0][dt_data1.Columns["ObjectAddWaterWeight"]]);
+
+                    txt_realWater.Text = Convert.ToString(dt_data1.Rows[0][dt_data1.Columns["RealAddWaterWeight"]]);
+
+
+                    s_sql = "SELECT SUM(CAST(ISNULL(ObjectDropWeight,0.00) as numeric(18,2))) FROM drop_details WHERE" +
+                                " CupNum = '" + this._i_cupNo +
+                                "' AND BottleNum > " + i_maxbottle + ";";
+
+                    dt_data1 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                }
+
+                //string s = Lib_File.Txt.ReadTXT(this.iCupNo);
+                //if (s != "" && s != null)
+                //{
+                //    s = s.Substring(0, s.Length - 1);
+                //    string[] arr = s.Split('@');
+
+                //    float[] temp = new float[arr.Count()];
+                //    DateTime[] times = new DateTime[arr.Count()];
+
+                //    for (int i = 0; i < arr.Count(); i++)
+                //    {
+                //        temp[i] = Convert.ToSingle(arr[i]);
+                //        times[i] = DateTime.Now.AddSeconds((i - arr.Count()) * 30);
+                //    }
+
+                //    // 显示出数据信息来
+
+                //    // 显示出数据信息来
+                //    Invoke(new Action(() =>
+                //    {
+                //        // 设置曲线属性，名称，数据，颜色，是否平滑，格式化显示文本
+                //        hslCurveHistory1.SetLeftCurve("温度", temp, Color.Blue, HslControls.CurveStyle.Curve, "{0:F1} ℃");
+                //        hslCurveHistory1.SetDateTimes(times);
+                //        hslCurveHistory1.RenderCurveUI(true);
+                //    }));
+
+                //}
+
+                //string sMarkStep = Lib_File.Txt.ReadMarkTXT(this.iCupNo);
+                //if (sMarkStep != "" && sMarkStep != null)
+                //{
+                //    bool b = true;
+                //    sMarkStep = sMarkStep.Substring(0, sMarkStep.Length - 1);
+                //    string[] arr = sMarkStep.Split('@');
+                //    for (int i = 0; i < arr.Count(); i++)
+                //    {
+                //        string sName = arr[i].Substring(0, arr[i].IndexOf(","));
+                //        string sNum = arr[i].Substring(arr[i].IndexOf(",") + 1, arr[i].Count() - arr[i].IndexOf(",") - 1);
+
+                //        hslCurveHistory1.AddMarkText(new HslControls.HslMarkText()
+                //        {
+                //            Index = Convert.ToInt32(sNum) - 1,
+                //            CurveKey = "温度",
+                //            MarkText = sName,
+                //            PositionStyle = b ? MarkTextPositionStyle.Up : MarkTextPositionStyle.Down,
+                //            CircleBrush = Brushes.Red,
+                //            TextBrush = Brushes.Red
+                //        }); ; ;
+                //        b = !b;
+                //    }
+                //}
             }
-
-            //string s = Lib_File.Txt.ReadTXT(this.iCupNo);
-            //if (s != "" && s != null)
-            //{
-            //    s = s.Substring(0, s.Length - 1);
-            //    string[] arr = s.Split('@');
-
-            //    float[] temp = new float[arr.Count()];
-            //    DateTime[] times = new DateTime[arr.Count()];
-
-            //    for (int i = 0; i < arr.Count(); i++)
-            //    {
-            //        temp[i] = Convert.ToSingle(arr[i]);
-            //        times[i] = DateTime.Now.AddSeconds((i - arr.Count()) * 30);
-            //    }
-
-            //    // 显示出数据信息来
-
-            //    // 显示出数据信息来
-            //    Invoke(new Action(() =>
-            //    {
-            //        // 设置曲线属性，名称，数据，颜色，是否平滑，格式化显示文本
-            //        hslCurveHistory1.SetLeftCurve("温度", temp, Color.Blue, HslControls.CurveStyle.Curve, "{0:F1} ℃");
-            //        hslCurveHistory1.SetDateTimes(times);
-            //        hslCurveHistory1.RenderCurveUI(true);
-            //    }));
-
-            //}
-
-            //string sMarkStep = Lib_File.Txt.ReadMarkTXT(this.iCupNo);
-            //if (sMarkStep != "" && sMarkStep != null)
-            //{
-            //    bool b = true;
-            //    sMarkStep = sMarkStep.Substring(0, sMarkStep.Length - 1);
-            //    string[] arr = sMarkStep.Split('@');
-            //    for (int i = 0; i < arr.Count(); i++)
-            //    {
-            //        string sName = arr[i].Substring(0, arr[i].IndexOf(","));
-            //        string sNum = arr[i].Substring(arr[i].IndexOf(",") + 1, arr[i].Count() - arr[i].IndexOf(",") - 1);
-
-            //        hslCurveHistory1.AddMarkText(new HslControls.HslMarkText()
-            //        {
-            //            Index = Convert.ToInt32(sNum) - 1,
-            //            CurveKey = "温度",
-            //            MarkText = sName,
-            //            PositionStyle = b ? MarkTextPositionStyle.Up : MarkTextPositionStyle.Down,
-            //            CircleBrush = Brushes.Red,
-            //            TextBrush = Brushes.Red
-            //        }); ; ;
-            //        b = !b;
-            //    }
-            //}
+            catch (Exception ex)
+            {
+                Lib_Log.Log.writeLogException("CupDetails_Load：" + ex.ToString());
+            }
 
         }
 
@@ -447,8 +740,9 @@ namespace SmartDyeing.FADM_Form
             series.CustomProperties = "PointWidth=2";
             series.IsValueShownAsLabel = false;//是否显示点的值
 
-
             chart.Series.Add(series);
+            series.Legend = chart.Legends[0].Name;
+
         }
 
 
@@ -548,6 +842,19 @@ namespace SmartDyeing.FADM_Form
 
             chart.ChartAreas[0].AxisX.ScaleView.Zoomable = true;
             chart.ChartAreas[0].AxisY.ScaleView.Zoomable = true;
+
+
+            // 添加图例
+            Legend legend = new Legend
+            {
+                Docking = Docking.Top,
+                Alignment = StringAlignment.Far,
+                LegendStyle = LegendStyle.Row,
+                BorderColor = Color.Black,
+                BorderWidth = 1,
+                BorderDashStyle = ChartDashStyle.Solid
+            };
+            chart.Legends.Add(legend);
         }
 
         private void InitChart()

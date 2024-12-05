@@ -117,21 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="dgv_BatchData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 28</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="dgv_BatchData.RowHeadersWidth" type="System.Int32, mscorlib">
+    <value>62</value>
+  </data>
+  <data name="dgv_BatchData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>298, 891</value>
+  </data>
   <data name="grp_BatchData.Text" xml:space="preserve">
     <value>BatchData</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="txt_Operator.Location" type="System.Drawing.Point, System.Drawing">
     <value>283, 92</value>
   </data>
   <data name="txt_Operator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 29</value>
+    <value>186, 40</value>
   </data>
   <data name="txt_FormulaGroup.Location" type="System.Drawing.Point, System.Drawing">
     <value>669, 21</value>
   </data>
   <data name="txt_FormulaGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>134, 27</value>
+    <value>134, 37</value>
   </data>
   <data name="lab_FormulaGroup.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 12pt</value>
@@ -140,7 +150,7 @@
     <value>486, 26</value>
   </data>
   <data name="lab_FormulaGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 16</value>
+    <value>262, 24</value>
   </data>
   <data name="lab_FormulaGroup.Text" xml:space="preserve">
     <value>CombinationOfRecipes:</value>
@@ -149,7 +159,7 @@
     <value>1259, 56</value>
   </data>
   <data name="txt_AnhydrationWR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 29</value>
+    <value>46, 40</value>
   </data>
   <data name="lab_AnhydrationWR.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 12pt</value>
@@ -158,7 +168,7 @@
     <value>1066, 62</value>
   </data>
   <data name="lab_AnhydrationWR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 16</value>
+    <value>298, 24</value>
   </data>
   <data name="lab_AnhydrationWR.Text" xml:space="preserve">
     <value>DehydrationToWaterRatio:</value>
@@ -167,7 +177,7 @@
     <value>1022, 56</value>
   </data>
   <data name="txt_Non_AnhydrationWR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 29</value>
+    <value>46, 40</value>
   </data>
   <data name="lab_Non_AnhydrationWR.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 12pt</value>
@@ -176,7 +186,7 @@
     <value>818, 62</value>
   </data>
   <data name="lab_Non_AnhydrationWR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 16</value>
+    <value>310, 24</value>
   </data>
   <data name="lab_Non_AnhydrationWR.Text" xml:space="preserve">
     <value>Non-dehydratedWaterRatio:</value>
@@ -185,13 +195,13 @@
     <value>557, 93</value>
   </data>
   <data name="txt_DyeingCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>246, 27</value>
+    <value>246, 37</value>
   </data>
   <data name="lab_DyeingCode.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 12pt</value>
   </data>
   <data name="lab_DyeingCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 16</value>
+    <value>106, 24</value>
   </data>
   <data name="lab_DyeingCode.Text" xml:space="preserve">
     <value>DyeCode:</value>
@@ -199,68 +209,107 @@
   <data name="Index.HeaderText" xml:space="preserve">
     <value>ID/Name</value>
   </data>
+  <data name="Index.MinimumWidth" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
   <data name="AssistantCode.HeaderText" xml:space="preserve">
     <value>DyeingAuxiliariesCode</value>
+  </data>
+  <data name="AssistantCode.MinimumWidth" type="System.Int32, mscorlib">
+    <value>8</value>
   </data>
   <data name="AssistantName.HeaderText" xml:space="preserve">
     <value>DyeingAuxiliariesName</value>
   </data>
+  <data name="AssistantName.MinimumWidth" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
   <data name="FormulaDosage.HeaderText" xml:space="preserve">
     <value>DosageOfFormula</value>
+  </data>
+  <data name="FormulaDosage.MinimumWidth" type="System.Int32, mscorlib">
+    <value>8</value>
   </data>
   <data name="UnitOfAccount.HeaderText" xml:space="preserve">
     <value>Units</value>
   </data>
+  <data name="UnitOfAccount.MinimumWidth" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
   <data name="Column1.HeaderText" xml:space="preserve">
     <value>BottleNumber</value>
+  </data>
+  <data name="Column1.MinimumWidth" type="System.Int32, mscorlib">
+    <value>8</value>
   </data>
   <data name="SettingConcentration.HeaderText" xml:space="preserve">
     <value>SetConcentration</value>
   </data>
+  <data name="SettingConcentration.MinimumWidth" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
   <data name="RealConcentration.HeaderText" xml:space="preserve">
     <value>ActualConcentration</value>
+  </data>
+  <data name="RealConcentration.MinimumWidth" type="System.Int32, mscorlib">
+    <value>8</value>
   </data>
   <data name="ObjectDropWeight.HeaderText" xml:space="preserve">
     <value>TargetVolume</value>
   </data>
+  <data name="ObjectDropWeight.MinimumWidth" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
   <data name="RealDropWeight.HeaderText" xml:space="preserve">
     <value>ActualVolume</value>
   </data>
+  <data name="RealDropWeight.MinimumWidth" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
   <data name="BottleSelection.HeaderText" xml:space="preserve">
     <value>Selecting</value>
+  </data>
+  <data name="BottleSelection.MinimumWidth" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="dgv_FormulaData.RowHeadersWidth" type="System.Int32, mscorlib">
+    <value>62</value>
   </data>
   <data name="txt_CupNum.Location" type="System.Drawing.Point, System.Drawing">
     <value>92, 92</value>
   </data>
   <data name="txt_CupNum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 29</value>
+    <value>90, 40</value>
   </data>
   <data name="txt_ClothType.Location" type="System.Drawing.Point, System.Drawing">
     <value>1203, 20</value>
   </data>
   <data name="txt_ClothType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>102, 29</value>
+    <value>102, 40</value>
   </data>
   <data name="txt_CreateTime.Location" type="System.Drawing.Point, System.Drawing">
     <value>910, 92</value>
   </data>
   <data name="txt_CreateTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>395, 29</value>
+    <value>395, 40</value>
   </data>
   <data name="txt_TotalWeight.Location" type="System.Drawing.Point, System.Drawing">
     <value>618, 56</value>
   </data>
   <data name="txt_TotalWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>87, 29</value>
+    <value>87, 40</value>
   </data>
   <data name="txt_BathRatio.Location" type="System.Drawing.Point, System.Drawing">
     <value>420, 56</value>
+  </data>
+  <data name="txt_BathRatio.Size" type="System.Drawing.Size, System.Drawing">
+    <value>49, 40</value>
   </data>
   <data name="txt_ClothWeight.Location" type="System.Drawing.Point, System.Drawing">
     <value>283, 56</value>
   </data>
   <data name="txt_ClothWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>45, 29</value>
+    <value>45, 40</value>
   </data>
   <data name="chk_AddWaterChoose.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 12pt</value>
@@ -269,7 +318,7 @@
     <value>713, 58</value>
   </data>
   <data name="chk_AddWaterChoose.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 20</value>
+    <value>132, 28</value>
   </data>
   <data name="chk_AddWaterChoose.Text" xml:space="preserve">
     <value>AddWater</value>
@@ -278,22 +327,31 @@
     <value>92, 56</value>
   </data>
   <data name="txt_Customer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 29</value>
+    <value>90, 40</value>
   </data>
   <data name="txt_FormulaName.Location" type="System.Drawing.Point, System.Drawing">
     <value>910, 20</value>
   </data>
   <data name="txt_FormulaName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 29</value>
+    <value>158, 40</value>
   </data>
   <data name="txt_State.Location" type="System.Drawing.Point, System.Drawing">
     <value>302, 20</value>
   </data>
+  <data name="txt_State.Size" type="System.Drawing.Size, System.Drawing">
+    <value>167, 40</value>
+  </data>
   <data name="txt_VersionNum.Location" type="System.Drawing.Point, System.Drawing">
     <value>265, 20</value>
   </data>
+  <data name="txt_VersionNum.Size" type="System.Drawing.Size, System.Drawing">
+    <value>35, 40</value>
+  </data>
   <data name="txt_FormulaCode.Location" type="System.Drawing.Point, System.Drawing">
     <value>92, 20</value>
+  </data>
+  <data name="txt_FormulaCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>171, 40</value>
   </data>
   <data name="lab_CreateTime.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 12pt</value>
@@ -302,7 +360,7 @@
     <value>818, 98</value>
   </data>
   <data name="lab_CreateTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 16</value>
+    <value>142, 24</value>
   </data>
   <data name="lab_CreateTime.Text" xml:space="preserve">
     <value>FilingTime:</value>
@@ -311,7 +369,7 @@
     <value>宋体, 12pt</value>
   </data>
   <data name="lab_CupNum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>87, 16</value>
+    <value>130, 24</value>
   </data>
   <data name="lab_CupNum.Text" xml:space="preserve">
     <value>CupNumber:</value>
@@ -323,7 +381,7 @@
     <value>191, 98</value>
   </data>
   <data name="lab_Operator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>79, 16</value>
+    <value>118, 24</value>
   </data>
   <data name="lab_Operator.Text" xml:space="preserve">
     <value>Operator:</value>
@@ -335,7 +393,7 @@
     <value>486, 62</value>
   </data>
   <data name="lab_TotalWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>135, 16</value>
+    <value>202, 24</value>
   </data>
   <data name="lab_TotalWeight.Text" xml:space="preserve">
     <value>TotalBathVolume:</value>
@@ -347,7 +405,7 @@
     <value>336, 62</value>
   </data>
   <data name="lab_BathRatio.Size" type="System.Drawing.Size, System.Drawing">
-    <value>87, 16</value>
+    <value>130, 24</value>
   </data>
   <data name="lab_BathRatio.Text" xml:space="preserve">
     <value>BathRatio:</value>
@@ -359,7 +417,7 @@
     <value>191, 62</value>
   </data>
   <data name="lab_ClothWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 16</value>
+    <value>142, 24</value>
   </data>
   <data name="lab_ClothWeight.Text" xml:space="preserve">
     <value>ClothHeavy:</value>
@@ -371,7 +429,7 @@
     <value>3, 62</value>
   </data>
   <data name="lab_Customer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>87, 16</value>
+    <value>130, 24</value>
   </data>
   <data name="lab_Customer.Text" xml:space="preserve">
     <value>Customers:</value>
@@ -383,7 +441,7 @@
     <value>1066, 26</value>
   </data>
   <data name="lab_ClothType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>143, 16</value>
+    <value>214, 24</value>
   </data>
   <data name="lab_ClothType.Text" xml:space="preserve">
     <value>Fabric/Substrate:</value>
@@ -395,7 +453,7 @@
     <value>818, 26</value>
   </data>
   <data name="lab_FormulaName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 16</value>
+    <value>142, 24</value>
   </data>
   <data name="lab_FormulaName.Text" xml:space="preserve">
     <value>RecipeName:</value>
@@ -407,7 +465,7 @@
     <value>3, 26</value>
   </data>
   <data name="lab_FormulaCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 16</value>
+    <value>142, 24</value>
   </data>
   <data name="lab_FormulaCode.Text" xml:space="preserve">
     <value>RecipeCode:</value>
@@ -473,13 +531,13 @@
     <value>WaitList(0)</value>
   </data>
   <data name="tsm_Delete.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>136, 30</value>
   </data>
   <data name="tsm_Delete.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
   <data name="contextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 48</value>
+    <value>137, 34</value>
   </data>
   <data name="btn_NotDrip.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 12pt</value>
@@ -493,14 +551,29 @@
   <data name="btn_NotDrip.Text" xml:space="preserve">
     <value>FormulaNotYetDripping</value>
   </data>
+  <data name="txt_Browse_Operator.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 37</value>
+  </data>
   <data name="rdo_Browse_condition.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 10.5pt</value>
   </data>
   <data name="rdo_Browse_condition.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 18</value>
+    <value>211, 25</value>
   </data>
   <data name="rdo_Browse_condition.Text" xml:space="preserve">
     <value>ConditionalQuery</value>
+  </data>
+  <data name="dgv_FormulaBrowse.RowHeadersWidth" type="System.Int32, mscorlib">
+    <value>62</value>
+  </data>
+  <data name="dt_Browse_End.Size" type="System.Drawing.Size, System.Drawing">
+    <value>132, 40</value>
+  </data>
+  <data name="dt_Browse_Start.Size" type="System.Drawing.Size, System.Drawing">
+    <value>132, 40</value>
+  </data>
+  <data name="txt_Browse_Code.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 40</value>
   </data>
   <data name="btn_Browse_Delete.Text" xml:space="preserve">
     <value>Delete</value>
@@ -512,7 +585,7 @@
     <value>宋体, 10.5pt</value>
   </data>
   <data name="rdo_Browse_NoDrop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 18</value>
+    <value>200, 25</value>
   </data>
   <data name="rdo_Browse_NoDrop.Text" xml:space="preserve">
     <value>UndroppedLiquid</value>
@@ -521,7 +594,7 @@
     <value>宋体, 10.5pt</value>
   </data>
   <data name="rdo_Browse_All.Size" type="System.Drawing.Size, System.Drawing">
-    <value>88, 18</value>
+    <value>134, 25</value>
   </data>
   <data name="rdo_Browse_All.Text" xml:space="preserve">
     <value>ShowToday</value>

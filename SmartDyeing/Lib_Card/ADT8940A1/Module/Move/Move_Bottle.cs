@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmartDyeing.FADM_Object;
+using System;
 using System.Drawing;
 using System.Threading;
 
@@ -9,7 +10,7 @@ namespace Lib_Card.ADT8940A1.Module.Move
     /// </summary>
     public class Move_Bottle : Move
     {
-        public override int TargetMove(int iCylinderVersion, int iNo)
+        public override int TargetMove(int iCylinderVersion, int iNo, int iX, int iY, int iType)
         {
             if(0 >= iNo || iNo > Configure.Parameter.Machine_Bottle_Total)
             {
@@ -24,7 +25,7 @@ namespace Lib_Card.ADT8940A1.Module.Move
                
             }
 
-            if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip==1)
+            if (Communal._b_isBalanceInDrip)
             {
                 //计算坐标
                 int iXPules = 0;
@@ -34,12 +35,37 @@ namespace Lib_Card.ADT8940A1.Module.Move
                     throw new Exception("非法瓶号");
                 else
                 {
+                    if (Configure.Parameter.Machine_Bottle_Total - 14 >= iNo)
+                    {
+                        iXPules = Configure.Parameter.Coordinate_Bottle_X - (iNo - 1) %
+                            Configure.Parameter.Machine_Bottle_Column * Configure.Parameter.Coordinate_Bottle_Interval;
+                        iYPules = Configure.Parameter.Coordinate_Bottle_Y + (iNo - 1) /
+                            Configure.Parameter.Machine_Bottle_Column * Configure.Parameter.Coordinate_Bottle_Interval;
+                    }
+                    else if (Configure.Parameter.Machine_Bottle_Total - 7 >= iNo)
+                    {
+                        iXPules = Configure.Parameter.Coordinate_Bottle_X -
+                            ((iNo + 14 - Configure.Parameter.Machine_Bottle_Total) % 8 + 2)
+                            * Configure.Parameter.Coordinate_Bottle_Interval;
+                        iYPules = Configure.Parameter.Coordinate_Bottle_Y +
+                            ((Configure.Parameter.Machine_Bottle_Total - 14) /
+                            Configure.Parameter.Machine_Bottle_Column +
+                            (iNo + 14 - Configure.Parameter.Machine_Bottle_Total) / 8)
+                            * Configure.Parameter.Coordinate_Bottle_Interval;
 
-                    iXPules = Configure.Parameter.Coordinate_Bottle_X +(iNo - 1) %
-                        Configure.Parameter.Machine_Bottle_Column * Configure.Parameter.Coordinate_Bottle_Interval;
-                    iYPules = Configure.Parameter.Coordinate_Bottle_Y + (iNo - 1) /
-                        Configure.Parameter.Machine_Bottle_Column * Configure.Parameter.Coordinate_Bottle_Interval;
 
+                    }
+                    else
+                    {
+                        iXPules = Configure.Parameter.Coordinate_Bottle_X -
+                           ((iNo + 14 - Configure.Parameter.Machine_Bottle_Total) % 8 + 3)
+                           * Configure.Parameter.Coordinate_Bottle_Interval;
+                        iYPules = Configure.Parameter.Coordinate_Bottle_Y +
+                            ((Configure.Parameter.Machine_Bottle_Total - 14) /
+                            Configure.Parameter.Machine_Bottle_Column +
+                            (iNo + 14 - Configure.Parameter.Machine_Bottle_Total) / 8)
+                            * Configure.Parameter.Coordinate_Bottle_Interval;
+                    }
                 }
 
 
@@ -96,37 +122,37 @@ namespace Lib_Card.ADT8940A1.Module.Move
                     throw new Exception("非法瓶号");
                 else
                 {
-                    if (Configure.Parameter.Machine_Bottle_Total - 14 >= iNo)
-                    {
+                    //if (Configure.Parameter.Machine_Bottle_Total - 14 >= iNo)
+                    //{
                         iXPules = Configure.Parameter.Coordinate_Bottle_X - (iNo - 1) %
                             Configure.Parameter.Machine_Bottle_Column * Configure.Parameter.Coordinate_Bottle_Interval;
                         iYPules = Configure.Parameter.Coordinate_Bottle_Y + (iNo - 1) /
                             Configure.Parameter.Machine_Bottle_Column * Configure.Parameter.Coordinate_Bottle_Interval;
-                    }
-                    else if (Configure.Parameter.Machine_Bottle_Total - 7 >= iNo)
-                    {
-                        iXPules = Configure.Parameter.Coordinate_Bottle_X -
-                            ((iNo + 14 - Configure.Parameter.Machine_Bottle_Total) % 8 + 2)
-                            * Configure.Parameter.Coordinate_Bottle_Interval;
-                        iYPules = Configure.Parameter.Coordinate_Bottle_Y +
-                            ((Configure.Parameter.Machine_Bottle_Total - 14) /
-                            Configure.Parameter.Machine_Bottle_Column +
-                            (iNo + 14 - Configure.Parameter.Machine_Bottle_Total) / 8)
-                            * Configure.Parameter.Coordinate_Bottle_Interval;
+                    //}
+                    //else if (Configure.Parameter.Machine_Bottle_Total - 7 >= iNo)
+                    //{
+                    //    iXPules = Configure.Parameter.Coordinate_Bottle_X -
+                    //        ((iNo + 14 - Configure.Parameter.Machine_Bottle_Total) % 8 + 2)
+                    //        * Configure.Parameter.Coordinate_Bottle_Interval;
+                    //    iYPules = Configure.Parameter.Coordinate_Bottle_Y +
+                    //        ((Configure.Parameter.Machine_Bottle_Total - 14) /
+                    //        Configure.Parameter.Machine_Bottle_Column +
+                    //        (iNo + 14 - Configure.Parameter.Machine_Bottle_Total) / 8)
+                    //        * Configure.Parameter.Coordinate_Bottle_Interval;
 
 
-                    }
-                    else
-                    {
-                        iXPules = Configure.Parameter.Coordinate_Bottle_X -
-                           ((iNo + 14 - Configure.Parameter.Machine_Bottle_Total) % 8 + 3)
-                           * Configure.Parameter.Coordinate_Bottle_Interval;
-                        iYPules = Configure.Parameter.Coordinate_Bottle_Y +
-                            ((Configure.Parameter.Machine_Bottle_Total - 14) /
-                            Configure.Parameter.Machine_Bottle_Column +
-                            (iNo + 14 - Configure.Parameter.Machine_Bottle_Total) / 8)
-                            * Configure.Parameter.Coordinate_Bottle_Interval;
-                    }
+                    //}
+                    //else
+                    //{
+                    //    iXPules = Configure.Parameter.Coordinate_Bottle_X -
+                    //       ((iNo + 14 - Configure.Parameter.Machine_Bottle_Total) % 8 + 3)
+                    //       * Configure.Parameter.Coordinate_Bottle_Interval;
+                    //    iYPules = Configure.Parameter.Coordinate_Bottle_Y +
+                    //        ((Configure.Parameter.Machine_Bottle_Total - 14) /
+                    //        Configure.Parameter.Machine_Bottle_Column +
+                    //        (iNo + 14 - Configure.Parameter.Machine_Bottle_Total) / 8)
+                    //        * Configure.Parameter.Coordinate_Bottle_Interval;
+                    //}
                 }
 
 

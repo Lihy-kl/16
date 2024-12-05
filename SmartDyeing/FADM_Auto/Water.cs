@@ -18,8 +18,8 @@ namespace SmartDyeing.FADM_Auto
             try
             {
                 FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "水校正启动");
-                
-                MyModbusFun.MyMachineReset();
+
+                MyModbusFun.Reset();
                 FADM_Object.Communal.WriteMachineStatus(5);
                 //回零
                 //if (!Lib_Card.ADT8940A1.Module.Home.Home.Home_XYZFinish)
@@ -73,7 +73,7 @@ namespace SmartDyeing.FADM_Auto
                 //}
 
                 //记录初始天平读数
-                double d_blBalanceValue0 = Convert.ToDouble(string.Format("{0:F3}", FADM_Object.Communal._s_balanceValue));
+                double d_blBalanceValue0 = FADM_Object.Communal.SteBalance(); ;
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平读数：" + d_blBalanceValue0);
 
                 //伸出接液盘
@@ -98,9 +98,35 @@ namespace SmartDyeing.FADM_Auto
                 //加水
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水启动(" + Lib_Card.Configure.Parameter.Correcting_Water_Time + "s)");
 
-                i_mRes = MyModbusFun.AddWater(Lib_Card.Configure.Parameter.Correcting_Water_Time);
-                if (-2 == i_mRes)
-                    throw new Exception("收到退出消息");
+                double d_addWaterTime = Lib_Card.Configure.Parameter.Correcting_Water_Time;
+                if (d_addWaterTime <= 32)
+                {
+                    i_mRes = MyModbusFun.AddWater(d_addWaterTime);
+                    if (-2 == i_mRes)
+                        throw new Exception("收到退出消息");
+                }
+                else
+                {
+                    double d = 32;
+                    while (true)
+                    {
+                        if (d_addWaterTime > 32)
+                        {
+                            //每次减32s
+                            i_mRes = MyModbusFun.AddWater(d);
+                            if (-2 == i_mRes)
+                                throw new Exception("收到退出消息");
+                        }
+                        else
+                        {
+                            i_mRes = MyModbusFun.AddWater(d_addWaterTime);
+                            if (-2 == i_mRes)
+                                throw new Exception("收到退出消息");
+                            break;
+                        }
+                        d_addWaterTime -= d;
+                    }
+                }
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水完成");
 
                 //读取校正重量
@@ -139,9 +165,34 @@ namespace SmartDyeing.FADM_Auto
 
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水启动(" + string.Format("{0:F3}", d_blTime) + "s)");
 
-                i_mRes = MyModbusFun.AddWater(d_blTime);
-                if (-2 == i_mRes)
-                    throw new Exception("收到退出消息");
+                if (d_blTime <= 32)
+                {
+                    i_mRes = MyModbusFun.AddWater(d_blTime);
+                    if (-2 == i_mRes)
+                        throw new Exception("收到退出消息");
+                }
+                else
+                {
+                    double d = 32;
+                    while (true)
+                    {
+                        if (d_blTime > 32)
+                        {
+                            //每次减32s
+                            i_mRes = MyModbusFun.AddWater(d);
+                            if (-2 == i_mRes)
+                                throw new Exception("收到退出消息");
+                        }
+                        else
+                        {
+                            i_mRes = MyModbusFun.AddWater(d_blTime);
+                            if (-2 == i_mRes)
+                                throw new Exception("收到退出消息");
+                            break;
+                        }
+                        d_blTime -= d;
+                    }
+                }
 
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水完成");
 
@@ -310,8 +361,8 @@ namespace SmartDyeing.FADM_Auto
             try
             {
                 FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "水验证启动");
-                
-                MyModbusFun.MyMachineReset();
+
+                MyModbusFun.Reset();
                 FADM_Object.Communal.WriteMachineStatus(12);
                 //FADM_Auto.Reset.IOReset();
                 //回零
@@ -367,16 +418,41 @@ namespace SmartDyeing.FADM_Auto
                 //}
 
                 //记录初始天平读数
-                double d_blBalanceValue0 = Convert.ToDouble(string.Format("{0:F3}", FADM_Object.Communal._s_balanceValue));
+                double d_blBalanceValue0 = FADM_Object.Communal.SteBalance();
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平读数：" + d_blBalanceValue0);
 
                 ////加水
                 //Add(d_blWeight, "RobotHand");
 
                 double d_addWaterTime = MyModbusFun.GetWaterTime(d_blWeight);//加水时间
-                i_mRes = MyModbusFun.AddWater(d_addWaterTime);
-                if (-2 == i_mRes)
-                    throw new Exception("收到退出消息");
+                if (d_addWaterTime <= 32)
+                {
+                    i_mRes = MyModbusFun.AddWater(d_addWaterTime);
+                    if (-2 == i_mRes)
+                        throw new Exception("收到退出消息");
+                }
+                else
+                {
+                    double d = 32;
+                    while (true)
+                    {
+                        if (d_addWaterTime > 32)
+                        {
+                            //每次减32s
+                            i_mRes = MyModbusFun.AddWater(d);
+                            if (-2 == i_mRes)
+                                throw new Exception("收到退出消息");
+                        }
+                        else
+                        {
+                            i_mRes = MyModbusFun.AddWater(d_addWaterTime);
+                            if (-2 == i_mRes)
+                                throw new Exception("收到退出消息");
+                            break;
+                        }
+                        d_addWaterTime -= d;
+                    }
+                }
 
                 //天平读数
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数启动");
@@ -520,6 +596,48 @@ namespace SmartDyeing.FADM_Auto
                 //Lib_SerialPort.Balance.METTLER.bReSetSign = true;
             }
 
+        }
+
+        public void Add(double dblTime, string sName)
+        {
+
+            //伸出接液盘
+            Lib_Card.ADT8940A1.OutPut.Tray.Tray tray = new Lib_Card.ADT8940A1.OutPut.Tray.Tray_Condition();
+            if (-1 == tray.Tray_On())
+                throw new Exception("驱动异常");
+
+            //计算加水时间
+            //double dblTime = 0;
+            //if (0 == FADM_Object.Communal.WaterWay)
+            //{
+            //    if (Lib_Card.Configure.Parameter.Correcting_Water_RWeight > Lib_Card.Configure.Parameter.Correcting_Water_FWeight)
+            //        dblTime = (Lib_Card.Configure.Parameter.Correcting_Water_RWeight - Lib_Card.Configure.Parameter.Correcting_Water_FWeight) / Lib_Card.Configure.Parameter.Correcting_Water_Value + 1;
+            //    else
+            //    {
+            //        dblTime = Lib_Card.Configure.Parameter.Correcting_Water_RWeight / Lib_Card.Configure.Parameter.Correcting_Water_Value;
+            //        if (dblTime < 0.01)
+            //            dblTime = 0.01;
+            //    }
+            //}
+            //else
+            //{
+            //    if (dblWeight > 13)
+            //        dblTime = (dblWeight - Lib_Card.Configure.Parameter.Correcting_Water_FWeight) / Lib_Card.Configure.Parameter.Correcting_Water_Value + 1;
+            //    else
+            //        dblTime = dblWeight / Lib_Card.Configure.Parameter.Correcting_Water_Value + Lib_Card.Configure.Parameter.Other_Coefficient_Water;
+            //}
+            FADM_Object.Communal._fadmSqlserver.InsertRun(sName, "加水启动(" + string.Format("{0:F2}", dblTime) + "s)");
+            Lib_Card.ADT8940A1.OutPut.Water.Water water = new Lib_Card.ADT8940A1.OutPut.Water.Water_Condition();
+            if (-1 == water.Water_On())
+                throw new Exception("驱动异常");
+
+            Thread.Sleep(Convert.ToInt32(dblTime * 1000));
+
+            if (-1 == water.Water_Off())
+                throw new Exception("驱动异常");
+
+
+            FADM_Object.Communal._fadmSqlserver.InsertRun(sName, "加水完成");
         }
 
 

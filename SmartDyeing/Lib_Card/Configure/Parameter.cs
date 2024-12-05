@@ -35,8 +35,10 @@
 
         /// <summary>
         /// 开料机类型
-        /// 0：威纶
-        /// 1：台达
+        /// 0：触摸屏
+        /// 1：PLC
+        /// 2：威纶
+        /// 3：台达
         /// </summary>
         public static int Machine_Opening_Type { get; set; }
 
@@ -142,6 +144,27 @@
         /// </summary>
         public static int Machine_AreaWetCloth_Col { get; set; }
 
+        /// <summary>
+        /// 是否使用后光幕
+        /// 0：不使用
+        /// 1：使用
+        /// </summary>
+        public static int Machine_UseBack { get; set; }
+
+        /// <summary>
+        /// 是否使用气缸慢速中
+        /// 0：不使用
+        /// 1：使用
+        /// </summary>
+        public static int Machine_SlopDown { get; set; }
+
+        /// <summary>
+        /// 滴液机类型
+        /// 0：板卡版
+        /// 1：PLC版
+        /// </summary>
+        public static int Machine_Type  { get; set; }
+
 
 
         /// <summary>
@@ -156,7 +179,9 @@
         /// <summary>
         /// 打板机类型
         /// 0：转子机
-        /// 1：摇摆机
+        /// 1：6杯摇摆机
+        /// 2：12杯摇摆机
+        /// 3：4杯摇摆机
         /// </summary>
         public static int Machine_Area1_DyeType { get; set; }
 
@@ -190,6 +215,11 @@
         public static int Machine_Area1_CupMax { get; set; }
 
         /// <summary>
+        /// 区域1是否大杯子 1:是  0:否
+        /// </summary>
+        public static int Machine_Area1_Big { get; set; }
+
+        /// <summary>
         /// 区域2类型
         /// 0：无
         /// 1：前处理区
@@ -201,7 +231,9 @@
         /// <summary>
         /// 打板机类型
         /// 0：转子机
-        /// 1：摇摆机
+        /// 1：6杯摇摆机
+        /// 2：12杯摇摆机
+        /// 3：4杯摇摆机
         /// </summary>
         public static int Machine_Area2_DyeType { get; set; }
 
@@ -233,6 +265,11 @@
         public static int Machine_Area2_CupMax { get; set; }
 
         /// <summary>
+        /// 区域2是否大杯子 1:是  0:否
+        /// </summary>
+        public static int Machine_Area2_Big { get; set; }
+
+        /// <summary>
         /// 区域3类型
         /// 0：无
         /// 1：前处理区
@@ -244,7 +281,9 @@
         /// <summary>
         /// 打板机类型
         /// 0：转子机
-        /// 1：摇摆机
+        /// 1：6杯摇摆机
+        /// 2：12杯摇摆机
+        /// 3：4杯摇摆机
         /// </summary>
         public static int Machine_Area3_DyeType { get; set; }
 
@@ -276,6 +315,11 @@
         public static int Machine_Area3_CupMax { get; set; }
 
         /// <summary>
+        /// 区域3是否大杯子 1:是  0:否
+        /// </summary>
+        public static int Machine_Area3_Big { get; set; }
+
+        /// <summary>
         /// 区域4类型
         /// 0：无
         /// 1：前处理区
@@ -287,7 +331,9 @@
         /// <summary>
         /// 打板机类型
         /// 0：转子机
-        /// 1：摇摆机
+        /// 1：6杯摇摆机
+        /// 2：12杯摇摆机
+        /// 3：4杯摇摆机
         /// </summary>
         public static int Machine_Area4_DyeType { get; set; }
 
@@ -319,6 +365,11 @@
         public static int Machine_Area4_CupMax { get; set; }
 
         /// <summary>
+        /// 区域4是否大杯子 1:是  0:否
+        /// </summary>
+        public static int Machine_Area4_Big { get; set; }
+
+        /// <summary>
         /// 区域5类型
         /// 0：无
         /// 1：前处理区
@@ -330,7 +381,9 @@
         /// <summary>
         /// 打板机类型
         /// 0：转子机
-        /// 1：摇摆机
+        /// 1：6杯摇摆机
+        /// 2：12杯摇摆机
+        /// 3：4杯摇摆机
         /// </summary>
         public static int Machine_Area5_DyeType { get; set; }
 
@@ -362,6 +415,11 @@
         public static int Machine_Area5_CupMax { get; set; }
 
         /// <summary>
+        /// 区域5是否大杯子 1:是  0:否
+        /// </summary>
+        public static int Machine_Area5_Big { get; set; }
+
+        /// <summary>
         /// 区域6类型
         /// 0：无
         /// 1：前处理区
@@ -373,7 +431,9 @@
         /// <summary>
         /// 打板机类型
         /// 0：转子机
-        /// 1：摇摆机
+        /// 1：6杯摇摆机
+        /// 2：12杯摇摆机
+        /// 3：4杯摇摆机
         /// </summary>
         public static int Machine_Area6_DyeType { get; set; }
 
@@ -403,6 +463,11 @@
         /// 区域6最大杯号
         /// </summary>
         public static int Machine_Area6_CupMax { get; set; }
+
+        /// <summary>
+        /// 区域6是否大杯子 1:是  0:否
+        /// </summary>
+        public static int Machine_Area6_Big { get; set; }
 
         #endregion
 
@@ -555,6 +620,11 @@
         public static int Move_S_HSpeed { get; set; }
 
         /// <summary>
+        /// 小针筒运行慢速驱动速度
+        /// </summary>
+        public static int Move_S_MinHSpeed { get; set; }
+
+        /// <summary>
         /// 小针筒运行加减速时间
         /// </summary>
         public static double Move_S_UTime { get; set; }
@@ -568,6 +638,11 @@
         /// 大针筒运行驱动速度
         /// </summary>
         public static int Move_B_HSpeed { get; set; }
+
+        /// <summary>
+        /// 大针筒运行慢速驱动速度
+        /// </summary>
+        public static int Move_B_MinHSpeed { get; set; }
 
         /// <summary>
         /// 大针筒运行加减速时间
@@ -784,9 +859,21 @@
         public static int Coordinate_AreaWetCloth_IntervalX { get; set; }
 
         /// <summary>
+        /// 湿布区域X轴组间间隔
+        /// </summary>
+        public static int Coordinate_AreaWetCloth_IntervalX_S { get; set; }
+
+
+        /// <summary>
         /// 湿布区域Y轴间隔
         /// </summary>
         public static int Coordinate_AreaWetCloth_IntervalY { get; set; }
+
+        /// <summary>
+        /// 湿布区域Y轴组间间隔
+        /// </summary>
+        public static int Coordinate_AreaWetCloth_IntervalY_S { get; set; }
+
 
         /// <summary>
         /// 干布夹子X轴坐标
@@ -807,6 +894,26 @@
         /// 湿布夹子Y轴坐标
         /// </summary>
         public static int Coordinate_WetClamp_Y { get; set; }
+
+        /// <summary>
+        /// 吸光度1号杯X轴坐标
+        /// </summary>
+        public static int Coordinate_Abs1_X { get; set; }
+
+        /// <summary>
+        /// 吸光度1号杯Y轴坐标
+        /// </summary>
+        public static int Coordinate_Abs1_Y { get; set; }
+
+        /// <summary>
+        /// 吸光度2号杯X轴坐标
+        /// </summary>
+        public static int Coordinate_Abs2_X { get; set; }
+
+        /// <summary>
+        /// 吸光度2号杯Y轴坐标
+        /// </summary>
+        public static int Coordinate_Abs2_Y { get; set; }
 
 
 
@@ -1751,6 +1858,11 @@
         public static double Other_AddWater { get; set; }
 
         /// <summary>
+        /// 洗杯加水量(大杯)
+        /// </summary>
+        public static double Other_AddWater_Big { get; set; }
+
+        /// <summary>
         /// 
         /// </summary>
         public static double Other_SplitValue { get; set; }
@@ -1776,6 +1888,11 @@
         /// 后处理杯位最大重量
         /// </summary>
         public static double Other_HandleMaxWeight { get; set; }
+
+        /// <summary>
+        /// 后处理杯位最大重量(大杯)
+        /// </summary>
+        public static double Other_HandleMaxWeight_Big { get; set; }
 
         /// <summary>
         /// 输入染料报警值
@@ -1844,6 +1961,58 @@
         /// 稳定读数判断值
         /// </summary>
         public static double Other_Stable_Value { get; set; }
+
+        /// <summary>
+        /// 是否使用吸光度机
+        /// 0：不使用
+        /// 1：使用
+        /// </summary>
+        public static int Other_UseAbs { get; set; }
+
+        /// <summary>
+        /// 开始波长
+        /// </summary>
+        public static int Other_StartWave { get; set; }
+
+        /// <summary>
+        /// 结束波长
+        /// </summary>
+        public static int Other_EndWave { get; set; }
+
+        /// <summary>
+        /// 波长间隔
+        /// </summary>
+        public static int Other_IntWave { get; set; }
+
+        /// <summary>
+        /// 搅拌时间
+        /// </summary>
+        public static int Other_StirTime { get; set; }
+
+        /// <summary>
+        /// 洗杯搅拌时间
+        /// </summary>
+        public static int Other_WashStirTime { get; set; }
+
+        /// <summary>
+        /// 抽液时间
+        /// </summary>
+        public static int Other_AspirationTime { get; set; }
+
+        /// <summary>
+        /// 校验抽液时间
+        /// </summary>
+        public static int Other_CalAspirationTime { get; set; }
+
+        /// <summary>
+        /// 复测抽液时间
+        /// </summary>
+        public static int Other_ReAspirationTime { get; set; }
+
+        /// <summary>
+        /// 吸光度机洗杯加水量
+        /// </summary>
+        public static double Other_AbsAddWater { get; set; }
 
     }
 }

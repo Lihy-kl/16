@@ -32,6 +32,14 @@ namespace SmartDyeing.FADM_Object
         public bool _b_isSendCoverStatus4 = false;
         public bool _b_isSendCoverStatus5 = false;
         public bool _b_isSendCoverStatus6 = false;
+        public bool _b_isSendCoverStatus7 = false;
+        public bool _b_isSendCoverStatus8 = false;
+        public bool _b_isSendCoverStatus9 = false;
+        public bool _b_isSendCoverStatus10 = false;
+        public bool _b_isSendCoverStatus11 = false;
+        public bool _b_isSendCoverStatus12 = false;
+        //是否已经发送过开关盖状态（用于12杯）
+        public bool[] _b_isSendCoverStatus= { false, false, false, false, false, false, false, false, false, false, false, false};
 
 
         //连接
@@ -110,6 +118,7 @@ namespace SmartDyeing.FADM_Object
                 catch (Exception ex)
                 {
                     Console.WriteLine("写寄存器数据异常" + ex.Message);
+                    ReConnect();
                     goto labRewrite;
                     return -1;
                 }
@@ -141,16 +150,16 @@ namespace SmartDyeing.FADM_Object
             {
                 try
                 {
-                    if (i_type == 1)
+                    if (i_type == 1 || i_type == 2|| i_type == 3)
                     {
 
                         for (int i = 0; i < 6; i++)
                         {
-                            int[] ia_values = new int[20];
+                            int[] ia_values = new int[64];
                             int i_ret = -1;
                             //if (i_type == 0)
                             {
-                                i_ret = Read(500 + 64 * i, 20, ref ia_values);
+                                i_ret = Read(500 + 64 * i, 64, ref ia_values);
                                 if (i_ret == 0)
                                 {
                                     //解析数据
@@ -169,7 +178,10 @@ namespace SmartDyeing.FADM_Object
                                     d._s_history = (ia_values[11]).ToString();
                                     d._s_lockUp = (ia_values[17]).ToString();
                                     d._s_Warm = (ia_values[19]).ToString();
-                                    int[] ia_values1 = new int[1];
+                                    d._s_secondhistory = (ia_values[21]).ToString();
+                                    d._s_secondopenInplace = (ia_values[22]).ToString();
+                                    d._s_secondrealTem = (ia_values[44]).ToString();
+                                    //int[] ia_values1 = new int[1];
                                     lis_l.Add(d);
                                     _b_Connect = true;
                                     //int ret1 = Read(508 + 64 * i, 1, ref ia_values1);
@@ -295,6 +307,11 @@ namespace SmartDyeing.FADM_Object
         public string _s_realTem;
 
         /// <summary>
+        /// 副杯实际温度
+        /// </summary>
+        public string _s_secondrealTem;
+
+        /// <summary>
         /// 当前工艺
         /// </summary>
         public string _s_currentCraft;
@@ -330,6 +347,11 @@ namespace SmartDyeing.FADM_Object
         public string _s_openInplace;
 
         /// <summary>
+        /// 副杯杯盖动作信号(或泄压信号)
+        /// </summary>
+        public string _s_secondopenInplace;
+
+        /// <summary>
         /// 洗杯加水
         /// </summary>
         public string _s_addWater;
@@ -345,9 +367,19 @@ namespace SmartDyeing.FADM_Object
         public string _s_history;
 
         /// <summary>
+        /// 副杯历史状态
+        /// </summary>
+        public string _s_secondhistory;
+
+        /// <summary>
         ///  请求开关盖信号
         /// </summary>
         public string _s_coverSign;
+
+        /// <summary>
+        ///  副杯请求开关盖信号
+        /// </summary>
+        public string _s_secondcoverSign;
 
         /// <summary>
         ///  锁止上状态0=无信号 1=锁止上信号

@@ -184,6 +184,12 @@ namespace SmartDyeing.FADM_Object
         /// 光幕B阻挡信号
         /// </summary>
         public static int InPut_Sunx_B { get; set; }
+
+        /// <summary>
+        /// 后光幕
+        /// </summary>
+        public static int InPut_Back { get; set; }
+
         #endregion
 
         #region 按钮信号
@@ -231,6 +237,8 @@ namespace SmartDyeing.FADM_Object
         /// 气缸阻挡限位
         /// </summary>
         public static int InPut_Cylinder_Block { get; set; }
+
+        
 
         #endregion
 

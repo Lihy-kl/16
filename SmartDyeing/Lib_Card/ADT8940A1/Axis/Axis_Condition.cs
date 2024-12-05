@@ -10,22 +10,81 @@ namespace Lib_Card.ADT8940A1.Axis
     {
         public override int Absolute_X(int iCylinderVersion, int iPulse, int iReserve)
         {
-        /* 条件：
-         *     1：X轴矢能已通
-         *     2：X轴未运行
-         *     3：X轴未报警
-         *     4：X轴正限位未通
-         *     5：X轴反限位未通
-         *     6：光幕A未遮挡
-         *     7：光幕B未遮挡
-         *     8：急停未通
-         *     9：气缸在上限位
-         *     10：暂停无信号
-         *     11：退出无信号
-         * 
-         */
+            /* 条件：
+             *     1：X轴矢能已通
+             *     2：X轴未运行
+             *     3：X轴未报警
+             *     4：X轴正限位未通
+             *     5：X轴反限位未通
+             *     6：光幕A未遮挡
+             *     7：光幕B未遮挡
+             *     8：急停未通
+             *     9：气缸在上限位
+             *     10：暂停无信号
+             *     11：退出无信号
+             * 
+             */
 
+            //如果正限位接通，需要向反向移动时，先联动移出限位
+            int iXCorotation1 = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_X_Corotation);
+            if (-1 == iXCorotation1)
+                return -1;
+            else if (1 == iXCorotation1)
+            {
+                int iResPos = 0;
+                if (-1 == CardObject.OA1.ReadAxisActualPosition(ADT8940A1_IO.Axis_X, ref iResPos))
+                    return -1;
+                if (iPulse < iResPos)
+                {
+                    OutPut.X_Power.X_Power xpower1 = new OutPut.X_Power.X_Power_Condition();
+                    if (-1 == xpower1.X_Power_On())
+                    {
+                        return -1;
+                    }
 
+                    ADT8940A1_Card.MoveArg s_MoveArgGo = new Card.MoveArg()
+                    {
+                        Pulse = -10000,
+                        LSpeed = Configure.Parameter.Home_X_LSpeed,
+                        HSpeed = Configure.Parameter.Home_X_HSpeed,
+                        Time = 1
+                    };
+
+                    int iResX = Lib_Card.CardObject.OA1Axis.Relative_X(iCylinderVersion, s_MoveArgGo, 0);
+                    if (-1 == iResX)
+                        throw new Exception("驱动异常");
+                }
+            }
+            //如果反限位接通，需要向反向移动时，先联动移出限位
+            int iXReverse1 = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_X_Reverse);
+            if (-1 == iXReverse1)
+                return -1;
+            else if (1 == iXReverse1)
+            {
+                int iResPos = 0;
+
+                if (-1 == CardObject.OA1.ReadAxisActualPosition(ADT8940A1_IO.Axis_X, ref iResPos))
+                    return -1;
+                if (iPulse > iResPos)
+                {
+                    OutPut.X_Power.X_Power xpower1 = new OutPut.X_Power.X_Power_Condition();
+                    if (-1 == xpower1.X_Power_On())
+                    {
+                        return -1;
+                    }
+                    ADT8940A1_Card.MoveArg s_MoveArgGo = new Card.MoveArg()
+                    {
+                        Pulse = 10000,
+                        LSpeed = Configure.Parameter.Home_X_LSpeed,
+                        HSpeed = Configure.Parameter.Home_X_HSpeed,
+                        Time = 1
+                    };
+
+                    int iResX = Lib_Card.CardObject.OA1Axis.Relative_X(iCylinderVersion, s_MoveArgGo, 0);
+                    if (-1 == iResX)
+                        throw new Exception("驱动异常");
+                }
+            }
 
 
         lable:
@@ -39,6 +98,7 @@ namespace Lib_Card.ADT8940A1.Axis
             if (Lib_Card.Configure.Parameter.Other_ActualPosition == 1)
             {
                 int iResPos = 0;
+
                 if (-1 == CardObject.OA1.ReadAxisActualPosition(ADT8940A1_IO.Axis_X, ref iResPos))
                     return -1;
 
@@ -54,7 +114,7 @@ namespace Lib_Card.ADT8940A1.Axis
                     return -1;
                 else if (0 == iXPowerStatus)
                 {
-                    if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
+                    if (-1 == CardObject.OA1.SuddnStop(ADT8940A1_IO.Axis_X))
                         return -1;
 
                     OutPut.X_Power.X_Power xpower = new OutPut.X_Power.X_Power_Condition();
@@ -71,7 +131,7 @@ namespace Lib_Card.ADT8940A1.Axis
                     return -1;
                 else if (1 == iXAlarm)
                 {
-                    if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
+                    if (-1 == CardObject.OA1.SuddnStop(ADT8940A1_IO.Axis_X))
                         return -1;
                     throw new Exception("X轴伺服器报警");
                 }
@@ -81,7 +141,7 @@ namespace Lib_Card.ADT8940A1.Axis
                     return -1;
                 else if (1 == iXCorotation)
                 {
-                    if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
+                    if (-1 == CardObject.OA1.SuddnStop(ADT8940A1_IO.Axis_X))
                         return -1;
                     throw new Exception("X轴正限位已通");
                 }
@@ -91,7 +151,7 @@ namespace Lib_Card.ADT8940A1.Axis
                     return -1;
                 else if (1 == iXReverse)
                 {
-                    if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
+                    if (-1 == CardObject.OA1.SuddnStop(ADT8940A1_IO.Axis_X))
                         return -1;
                     throw new Exception("X轴反限位已通");
                 }
@@ -171,7 +231,11 @@ namespace Lib_Card.ADT8940A1.Axis
                 int iCylinderUp = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Up);
                 if (-1 == iCylinderUp)
                     return -1;
-                else if (0 == iCylinderUp)
+                int iCylinderDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Down);
+                if (-1 == iCylinderDown)
+                    return -1;
+                
+                if (0 == iCylinderUp||1== iCylinderDown)
                 {
                     if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
                         return -1;
@@ -182,48 +246,50 @@ namespace Lib_Card.ADT8940A1.Axis
                     else
                         cylinder = new OutPut.Cylinder.DualControl.Cylinder_Condition();
 
-                    if (-1 == cylinder.CylinderUp())
+                    if (-1 == cylinder.CylinderUp(0))
                         return -1;
+
+                    continue;
 
                 }
 
-                int iCylinderDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Down);
-                if (-1 == iCylinderDown)
-                    return -1;
-                else if (1 == iCylinderDown)
-                {
-                    if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
-                        return -1;
-                    string s;
-                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                        s = CardObject.InsertD("气缸下已接通，请检查，确定没有接通请点是，退出运行请点否", " Absolute_X");
-                    else
-                        s = CardObject.InsertD("The lower part of the cylinder is connected. Please check if it is not connected. Click Yes to confirm if it is not connected. Click No to exit the operation", " Absolute_X");
-                    while (true)
-                    {
-                        Thread.Sleep(1);
-                        if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
-                            break;
+                //int iCylinderDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Down);
+                //if (-1 == iCylinderDown)
+                //    return -1;
+                //else if (1 == iCylinderDown)
+                //{
+                //    if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
+                //        return -1;
+                //    string s = CardObject.InsertD("气缸下已接通，请检查，确定没有接通请点是，退出运行请点否", " Absolute_X");
+                //    while (true)
+                //    {
+                //        Thread.Sleep(1);
+                //        if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
+                //            break;
 
-                    }
-                    CardObject.DeleteD(s);
-                    int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
-                    if (Alarm_Choose == 1)
-                    {
-                        goto lable;
-                    }
-                    else
-                    {
-                        throw new Exception("气缸下已接通");
-                    }
+                //    }
+                //    int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                //    CardObject.DeleteD(s);
 
-                }
-                if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip != 1)
+                //    if (Alarm_Choose == 1)
+                //    {
+                //        goto lable;
+                //    }
+                //    else
+                //    {
+                //        throw new Exception("气缸下已接通");
+                //    }
+
+                //}
+                if (Lib_Card.Configure.Parameter.Machine_Decompression == 1)
                 {
                     int iDecompression = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up);
                     if (-1 == iDecompression)
                         return -1;
-                    else if (0 == iDecompression)
+                    int iDecompressionDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Down);
+                    if (-1 == iDecompressionDown)
+                        return -1;
+                    if (0 == iDecompression || 1 == iDecompressionDown)
                     {
                         if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
                             return -1;
@@ -231,25 +297,27 @@ namespace Lib_Card.ADT8940A1.Axis
                         OutPut.Decompression.Decompression decompression = new OutPut.Decompression.Decompression_Condition();
                         if (-1 == decompression.Decompression_Up())
                             return -1;
-                    }
 
-                    if (Lib_Card.Configure.Parameter.Machine_Decompression == 2)
-                    {
-
-                        int iDecompression_Right = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up_Right);
-                        if (-1 == iDecompression_Right)
-                            return -1;
-                        else if (0 == iDecompression_Right)
-                        {
-                            if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
-                                return -1;
-
-                            OutPut.Decompression.Decompression decompression_Right = new OutPut.Decompression.Decompression_Condition();
-                            if (-1 == decompression_Right.Decompression_Up_Right())
-                                return -1;
-                        }
+                        continue;
                     }
                 }
+
+                //if (Lib_Card.Configure.Parameter.Machine_Decompression == 2)
+                //{
+
+                //    int iDecompression_Right = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up_Right);
+                //    if (-1 == iDecompression_Right)
+                //        return -1;
+                //    else if (0 == iDecompression_Right)
+                //    {
+                //        if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
+                //            return -1;
+
+                //        OutPut.Decompression.Decompression decompression_Right = new OutPut.Decompression.Decompression_Condition();
+                //        if (-1 == decompression_Right.Decompression_Up_Right())
+                //            return -1;
+                //    }
+                //}
 
                 int iPositionNowX = 0;
                 iPositionRes = CardObject.OA1.ReadAxisCommandPosition(ADT8940A1_IO.Axis_X, ref iPositionNowX);
@@ -269,28 +337,89 @@ namespace Lib_Card.ADT8940A1.Axis
                     if (-1 == CardObject.OA1.AbsoluteMove(ADT8940A1_IO.Axis_X, s_MoveArg))
                         return -1;
                 }
+                //Thread.Sleep(1);
 
-
+                //if (-1 == CardObject.OA1.SuddnStop(ADT8940A1_IO.Axis_X))
+                //    return -1;
+                //Thread.Sleep(1);
             }
         }
 
         public override int Absolute_Y(int iCylinderVersion, int iPulse, int iReserve)
         {
-        /* 条件：
-        *     1：Y轴矢能已通
-        *     2：Y轴未运行
-        *     3：Y轴未报警
-        *     4：Y轴正限位未通
-        *     5：Y轴反限位未通
-        *     6：光幕A未遮挡
-        *     7：光幕B未遮挡
-        *     8：急停未通
-        *     9：气缸在上限位
-        *     10：暂停无信号
-        *     11：退出无信号
-        * 
-        */
+            /* 条件：
+            *     1：Y轴矢能已通
+            *     2：Y轴未运行
+            *     3：Y轴未报警
+            *     4：Y轴正限位未通
+            *     5：Y轴反限位未通
+            *     6：光幕A未遮挡
+            *     7：光幕B未遮挡
+            *     8：急停未通
+            *     9：气缸在上限位
+            *     10：暂停无信号
+            *     11：退出无信号
+            * 
+            */
 
+            //如果正限位接通，需要向反向移动时，先联动移出限位
+            int iYCorotation1 = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Y_Corotation);
+            if (-1 == iYCorotation1)
+                return -1;
+            else if (1 == iYCorotation1)
+            {
+                int iResPos = 0;
+                if (-1 == CardObject.OA1.ReadAxisActualPosition(ADT8940A1_IO.Axis_Y, ref iResPos))
+                    return -1;
+                if (iPulse < iResPos)
+                {
+                    OutPut.Y_Power.Y_Power ypower1 = new OutPut.Y_Power.Y_Power_Condition();
+                    if (-1 == ypower1.Y_Power_On())
+                    {
+                        return -1;
+                    }
+                    ADT8940A1_Card.MoveArg s_MoveArgGo = new Card.MoveArg()
+                    {
+                        Pulse = -10000,
+                        LSpeed = Configure.Parameter.Home_X_LSpeed,
+                        HSpeed = Configure.Parameter.Home_X_HSpeed,
+                        Time = 1
+                    };
+
+                    int iResY = Lib_Card.CardObject.OA1Axis.Relative_Y(iCylinderVersion, s_MoveArgGo, 0);
+                    if (-1 == iResY)
+                        throw new Exception("驱动异常");
+                }
+            }
+            //如果反限位接通，需要向反向移动时，先联动移出限位
+            int iYReverse1 = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Y_Reverse);
+            if (-1 == iYReverse1)
+                return -1;
+            else if (1 == iYReverse1)
+            {
+                int iResPos = 0;
+                if (-1 == CardObject.OA1.ReadAxisActualPosition(ADT8940A1_IO.Axis_Y, ref iResPos))
+                    return -1;
+                if (iPulse > iResPos)
+                {
+                    OutPut.Y_Power.Y_Power ypower1 = new OutPut.Y_Power.Y_Power_Condition();
+                    if (-1 == ypower1.Y_Power_On())
+                    {
+                        return -1;
+                    }
+                    ADT8940A1_Card.MoveArg s_MoveArgGo = new Card.MoveArg()
+                    {
+                        Pulse = 10000,
+                        LSpeed = Configure.Parameter.Home_X_LSpeed,
+                        HSpeed = Configure.Parameter.Home_X_HSpeed,
+                        Time = 1
+                    };
+
+                    int iResY = Lib_Card.CardObject.OA1Axis.Relative_Y(iCylinderVersion, s_MoveArgGo, 0);
+                    if (-1 == iResY)
+                        throw new Exception("驱动异常");
+                }
+            }
 
         lable:
 
@@ -492,7 +621,10 @@ namespace Lib_Card.ADT8940A1.Axis
                 int iCylinderUp = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Up);
                 if (-1 == iCylinderUp)
                     return -1;
-                else if (0 == iCylinderUp)
+                int iCylinderDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Down);
+                if (-1 == iCylinderDown)
+                    return -1;
+                if (0 == iCylinderUp||1== iCylinderDown)
                 {
                     if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_Y))
                         return -1;
@@ -503,48 +635,49 @@ namespace Lib_Card.ADT8940A1.Axis
                     else
                         cylinder = new OutPut.Cylinder.DualControl.Cylinder_Condition();
 
-                    if (-1 == cylinder.CylinderUp())
+                    if (-1 == cylinder.CylinderUp(0))
                         return -1;
+
+                    continue;
 
                 }
 
-                int iCylinderDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Down);
-                if (-1 == iCylinderDown)
-                    return -1;
-                else if (1 == iCylinderDown)
-                {
-                    if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
-                        return -1;
-                    string s;
-                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                        s = CardObject.InsertD("气缸下已接通，请检查，确定没有接通请点是，退出运行请点否", " Absolute_Y");
-                    else
-                        s = CardObject.InsertD("The lower part of the cylinder is connected. Please check if it is not connected. Click Yes to confirm if it is not connected. Click No to exit the operation", " Absolute_Y");
-                    while (true)
-                    {
-                        Thread.Sleep(1);
-                        if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
-                            break;
+                //int iCylinderDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Down);
+                //if (-1 == iCylinderDown)
+                //    return -1;
+                //else if (1 == iCylinderDown)
+                //{
+                //    if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
+                //        return -1;
+                //    string s = CardObject.InsertD("气缸下已接通，请检查，确定没有接通请点是，退出运行请点否", " Absolute_Y");
+                //    while (true)
+                //    {
+                //        Thread.Sleep(1);
+                //        if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
+                //            break;
 
-                    }
-                    CardObject.DeleteD(s);
-                    int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
-                    if (Alarm_Choose == 1)
-                    {
-                        goto lable;
-                    }
-                    else
-                    {
-                        throw new Exception("气缸下已接通");
-                    }
+                //    }
+                //    int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                //    CardObject.DeleteD(s);
+                //    if (Alarm_Choose == 1)
+                //    {
+                //        goto lable;
+                //    }
+                //    else
+                //    {
+                //        throw new Exception("气缸下已接通");
+                //    }
 
-                }
-                if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip != 1)
+                //}
+                if (Lib_Card.Configure.Parameter.Machine_Decompression == 1)
                 {
                     int iDecompression = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up);
                     if (-1 == iDecompression)
                         return -1;
-                    else if (0 == iDecompression)
+                    int iDecompressionDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Down);
+                    if (-1 == iDecompressionDown)
+                        return -1;
+                    if (0 == iDecompression || 1 == iDecompressionDown)
                     {
                         if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_Y))
                             return -1;
@@ -552,25 +685,26 @@ namespace Lib_Card.ADT8940A1.Axis
                         OutPut.Decompression.Decompression decompression = new OutPut.Decompression.Decompression_Condition();
                         if (-1 == decompression.Decompression_Up())
                             return -1;
-                    }
-
-                    if (Lib_Card.Configure.Parameter.Machine_Decompression == 2)
-                    {
-
-                        int iDecompression_Right = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up_Right);
-                        if (-1 == iDecompression_Right)
-                            return -1;
-                        else if (0 == iDecompression_Right)
-                        {
-                            if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
-                                return -1;
-
-                            OutPut.Decompression.Decompression decompression_Right = new OutPut.Decompression.Decompression_Condition();
-                            if (-1 == decompression_Right.Decompression_Up_Right())
-                                return -1;
-                        }
+                        continue;
                     }
                 }
+
+                //if (Lib_Card.Configure.Parameter.Machine_Decompression == 2)
+                //{
+
+                //    int iDecompression_Right = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up_Right);
+                //    if (-1 == iDecompression_Right)
+                //        return -1;
+                //    else if (0 == iDecompression_Right)
+                //    {
+                //        if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
+                //            return -1;
+
+                //        OutPut.Decompression.Decompression decompression_Right = new OutPut.Decompression.Decompression_Condition();
+                //        if (-1 == decompression_Right.Decompression_Up_Right())
+                //            return -1;
+                //    }
+                //}
 
 
 
@@ -613,15 +747,8 @@ namespace Lib_Card.ADT8940A1.Axis
 
             if (0 == iType)
             {
-                if (iPulse < Configure.Parameter.Other_S_MaxPulse)
-                {
-                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                        throw new Exception("脉冲计算异常：" + iPulse + " < " + Configure.Parameter.Other_S_MaxPulse);
-                    else
-                        throw new Exception("Pulse calculation anomaly：" + iPulse + " < " + Configure.Parameter.Other_S_MaxPulse);
-
-                }
-
+                if (iPulse > Configure.Parameter.Other_S_MaxPulse+5000)
+                    throw new Exception("脉冲计算异常：" + iPulse + " > " + Configure.Parameter.Other_S_MaxPulse+5000);
 
                 s_MoveArg = new Card.MoveArg()
                 {
@@ -633,13 +760,8 @@ namespace Lib_Card.ADT8940A1.Axis
             }
             else
             {
-                if (iPulse < Configure.Parameter.Other_B_MaxPulse)
-                {
-                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                        throw new Exception("脉冲计算异常：" + iPulse + " < " + Configure.Parameter.Other_B_MaxPulse);
-                    else
-                        throw new Exception("Pulse calculation anomaly：" + iPulse + " < " + Configure.Parameter.Other_B_MaxPulse);
-                }
+                if (iPulse > Configure.Parameter.Other_B_MaxPulse+5000)
+                    throw new Exception("脉冲计算异常：" + iPulse + " > " + Configure.Parameter.Other_B_MaxPulse+5000);
 
                 s_MoveArg = new Card.MoveArg()
                 {
@@ -708,6 +830,7 @@ namespace Lib_Card.ADT8940A1.Axis
                     OutPut.Tongs.Tongs tongs = new OutPut.Tongs.Tongs_Condition();
                     if (-1 == tongs.Tongs_On())
                         return -1;
+                    continue;
                 }
 
                 int iTongsB = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Tongs_B);
@@ -718,16 +841,20 @@ namespace Lib_Card.ADT8940A1.Axis
                     OutPut.Tongs.Tongs tongs = new OutPut.Tongs.Tongs_Condition();
                     if (-1 == tongs.Tongs_On())
                         return -1;
+                    continue;
                 }
 
                 int iTray = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Tray_In);
                 if (-1 == iTray)
-                    return -1;
-                else if (0 == iTray)
+                    return -1; 
+                //int iTrayOut = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Tray_Out);
+                //if (-1 == iTrayOut)
+                    //return -1;
+                if (0 == iTray/*||1== iTrayOut*/)
                 {
                     if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_Z))
                         return -1;
-
+                    //无条件调用接液盘回
                     OutPut.Tray.Tray tray = new OutPut.Tray.Tray_Basic();
                     if (-1 == tray.Tray_Off())
                         return -1;
@@ -815,7 +942,6 @@ namespace Lib_Card.ADT8940A1.Axis
                         return -1;
                     throw new Exception("X轴正限位已通");
                 }
-
                 if (Lib_Card.Configure.Parameter.Other_ActualPosition == 1)
                 {
                     int iXReady = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_X_Ready);
@@ -875,7 +1001,11 @@ namespace Lib_Card.ADT8940A1.Axis
                 int iCylinderUp = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Up);
                 if (-1 == iCylinderUp)
                     return -1;
-                else if (0 == iCylinderUp)
+                int iCylinderDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Down);
+                if (-1 == iCylinderDown)
+                    return -1;
+
+                if (0 == iCylinderUp||1== iCylinderDown)
                 {
                     if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
                         return -1;
@@ -886,49 +1016,49 @@ namespace Lib_Card.ADT8940A1.Axis
                     else
                         cylinder = new OutPut.Cylinder.DualControl.Cylinder_Condition();
 
-                    if (-1 == cylinder.CylinderUp())
+                    if (-1 == cylinder.CylinderUp(0))
                         return -1;
 
-
+                    continue;
                 }
 
-                int iCylinderDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Down);
-                if (-1 == iCylinderDown)
-                    return -1;
-                else if (1 == iCylinderDown)
-                {
-                    if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
-                        return -1;
-                    string s;
-                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                        s = CardObject.InsertD("气缸下已接通，请检查，确定没有接通请点是，退出运行请点否", " Home_X");
-                    else
-                        s = CardObject.InsertD("The lower part of the cylinder is connected. Please check if it is not connected. Click Yes to confirm if it is not connected. Click No to exit the operation", " Home_X");
-                    while (true)
-                    {
-                        Thread.Sleep(1);
-                        if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
-                            break;
+                //int iCylinderDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Down);
+                //if (-1 == iCylinderDown)
+                //    return -1;
+                //else if (1 == iCylinderDown)
+                //{
+                //    if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
+                //        return -1;
+                //    string s = CardObject.InsertD("气缸下已接通，请检查，确定没有接通请点是，退出运行请点否", " Home_X");
+                //    while (true)
+                //    {
+                //        Thread.Sleep(1);
+                //        if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
+                //            break;
 
-                    }
-                    CardObject.DeleteD(s);
-                    int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
-                    if (Alarm_Choose == 1)
-                    {
-                        goto lable;
-                    }
-                    else
-                    {
-                        throw new Exception("气缸下已接通");
-                    }
+                //    }
+                //    int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                //    CardObject.DeleteD(s);
+                //    if (Alarm_Choose == 1)
+                //    {
+                //        goto lable;
+                //    }
+                //    else
+                //    {
+                //        throw new Exception("气缸下已接通");
+                //    }
 
-                }
-                if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip != 1)
+                //}
+                if (Lib_Card.Configure.Parameter.Machine_Decompression == 1)
                 {
                     int iDecompression = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up);
                     if (-1 == iDecompression)
                         return -1;
-                    else if (0 == iDecompression)
+                    int iDecompressionDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Down);
+                    if (-1 == iDecompressionDown)
+                        return -1;
+
+                    if (0 == iDecompression || 1 == iDecompressionDown)
                     {
                         if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
                             return -1;
@@ -936,25 +1066,27 @@ namespace Lib_Card.ADT8940A1.Axis
                         OutPut.Decompression.Decompression decompression = new OutPut.Decompression.Decompression_Condition();
                         if (-1 == decompression.Decompression_Up())
                             return -1;
-                    }
 
-                    if (Lib_Card.Configure.Parameter.Machine_Decompression == 2)
-                    {
-
-                        int iDecompression_Right = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up_Right);
-                        if (-1 == iDecompression_Right)
-                            return -1;
-                        else if (0 == iDecompression_Right)
-                        {
-                            if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
-                                return -1;
-
-                            OutPut.Decompression.Decompression decompression_Right = new OutPut.Decompression.Decompression_Condition();
-                            if (-1 == decompression_Right.Decompression_Up_Right())
-                                return -1;
-                        }
+                        continue;
                     }
                 }
+
+                //if (Lib_Card.Configure.Parameter.Machine_Decompression == 2)
+                //{
+
+                //    int iDecompression_Right = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up_Right);
+                //    if (-1 == iDecompression_Right)
+                //        return -1;
+                //    else if (0 == iDecompression_Right)
+                //    {
+                //        if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
+                //            return -1;
+
+                //        OutPut.Decompression.Decompression decompression_Right = new OutPut.Decompression.Decompression_Condition();
+                //        if (-1 == decompression_Right.Decompression_Up_Right())
+                //            return -1;
+                //    }
+                //}
 
                 int iXStatus = CardObject.OA1.ReadAxisStatus(ADT8940A1_IO.Axis_X);
                 if (-1 == iXStatus)
@@ -1057,7 +1189,6 @@ namespace Lib_Card.ADT8940A1.Axis
                         return -1;
                     throw new Exception("Y轴正限位已通");
                 }
-
                 if (Lib_Card.Configure.Parameter.Other_ActualPosition == 1)
                 {
                     int iYReady = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Y_Ready);
@@ -1116,7 +1247,10 @@ namespace Lib_Card.ADT8940A1.Axis
                 int iCylinderUp = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Up);
                 if (-1 == iCylinderUp)
                     return -1;
-                else if (0 == iCylinderUp)
+                int iCylinderDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Down);
+                if (-1 == iCylinderDown)
+                    return -1;
+                if (0 == iCylinderUp||1== iCylinderDown)
                 {
                     if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_Y))
                         return -1;
@@ -1127,48 +1261,49 @@ namespace Lib_Card.ADT8940A1.Axis
                     else
                         cylinder = new OutPut.Cylinder.DualControl.Cylinder_Condition();
 
-                    if (-1 == cylinder.CylinderUp())
+                    if (-1 == cylinder.CylinderUp(0))
                         return -1;
+
+                    continue;
 
                 }
 
-                int iCylinderDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Down);
-                if (-1 == iCylinderDown)
-                    return -1;
-                else if (1 == iCylinderDown)
-                {
-                    if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
-                        return -1;
-                    string s;
-                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                        s = CardObject.InsertD("气缸下已接通，请检查，确定没有接通请点是，退出运行请点否", " Home_Y");
-                    else
-                        s = CardObject.InsertD("The lower part of the cylinder is connected. Please check if it is not connected. Click Yes to confirm if it is not connected. Click No to exit the operation", " Home_Y");
-                    while (true)
-                    {
-                        Thread.Sleep(1);
-                        if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
-                            break;
+                //int iCylinderDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Down);
+                //if (-1 == iCylinderDown)
+                //    return -1;
+                //else if (1 == iCylinderDown)
+                //{
+                //    if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
+                //        return -1;
+                //    string s = CardObject.InsertD("气缸下已接通，请检查，确定没有接通请点是，退出运行请点否", " Home_Y");
+                //    while (true)
+                //    {
+                //        Thread.Sleep(1);
+                //        if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
+                //            break;
 
-                    }
-                    CardObject.DeleteD(s);
-                    int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
-                    if (Alarm_Choose == 1)
-                    {
-                        goto lable;
-                    }
-                    else
-                    {
-                        throw new Exception("气缸下已接通");
-                    }
+                //    }
+                //    int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                //    CardObject.DeleteD(s);
+                //    if (Alarm_Choose == 1)
+                //    {
+                //        goto lable;
+                //    }
+                //    else
+                //    {
+                //        throw new Exception("气缸下已接通");
+                //    }
 
-                }
-                if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip != 1)
+                //}
+                if (Lib_Card.Configure.Parameter.Machine_Decompression == 1)
                 {
                     int iDecompression = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up);
                     if (-1 == iDecompression)
                         return -1;
-                    else if (0 == iDecompression)
+                    int iDecompressionDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Down);
+                    if (-1 == iDecompressionDown)
+                        return -1;
+                    if (0 == iDecompression || 1 == iDecompressionDown)
                     {
                         if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_Y))
                             return -1;
@@ -1176,25 +1311,27 @@ namespace Lib_Card.ADT8940A1.Axis
                         OutPut.Decompression.Decompression decompression = new OutPut.Decompression.Decompression_Condition();
                         if (-1 == decompression.Decompression_Up())
                             return -1;
-                    }
 
-                    if (Lib_Card.Configure.Parameter.Machine_Decompression == 2)
-                    {
-
-                        int iDecompression_Right = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up_Right);
-                        if (-1 == iDecompression_Right)
-                            return -1;
-                        else if (0 == iDecompression_Right)
-                        {
-                            if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
-                                return -1;
-
-                            OutPut.Decompression.Decompression decompression_Right = new OutPut.Decompression.Decompression_Condition();
-                            if (-1 == decompression_Right.Decompression_Up_Right())
-                                return -1;
-                        }
+                        continue;
                     }
                 }
+
+                //if (Lib_Card.Configure.Parameter.Machine_Decompression == 2)
+                //{
+
+                //    int iDecompression_Right = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up_Right);
+                //    if (-1 == iDecompression_Right)
+                //        return -1;
+                //    else if (0 == iDecompression_Right)
+                //    {
+                //        if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
+                //            return -1;
+
+                //        OutPut.Decompression.Decompression decompression_Right = new OutPut.Decompression.Decompression_Condition();
+                //        if (-1 == decompression_Right.Decompression_Up_Right())
+                //            return -1;
+                //    }
+                //}
 
                 int iYStatus = CardObject.OA1.ReadAxisStatus(ADT8940A1_IO.Axis_Y);
                 if (-1 == iYStatus)
@@ -1255,6 +1392,30 @@ namespace Lib_Card.ADT8940A1.Axis
             while (true)
             {
                 Thread.Sleep(1);
+                int iCylinderUp = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Up);
+                if (-1 == iCylinderUp)
+                    return -1;
+                int iCylinderDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Down);
+                if (-1 == iCylinderDown)
+                    return -1;
+
+                if (0 == iCylinderUp || 1 == iCylinderDown)
+                {
+                    if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
+                        return -1;
+
+                    OutPut.Cylinder.Cylinder cylinder;
+                    if (0 == iCylinderVersion)
+                        cylinder = new OutPut.Cylinder.SingleControl.Cylinder_Condition();
+                    else
+                        cylinder = new OutPut.Cylinder.DualControl.Cylinder_Condition();
+
+                    if (-1 == cylinder.CylinderUp(0))
+                        return -1;
+                    continue;
+
+                }
+
                 int iTongsA = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Tongs_A);
                 if (-1 == iTongsA)
                     return -1;
@@ -1263,6 +1424,7 @@ namespace Lib_Card.ADT8940A1.Axis
                     OutPut.Tongs.Tongs tongs = new OutPut.Tongs.Tongs_Condition();
                     if (-1 == tongs.Tongs_On())
                         return -1;
+                    continue;
                 }
 
                 int iTongsB = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Tongs_B);
@@ -1273,6 +1435,7 @@ namespace Lib_Card.ADT8940A1.Axis
                     OutPut.Tongs.Tongs tongs = new OutPut.Tongs.Tongs_Condition();
                     if (-1 == tongs.Tongs_On())
                         return -1;
+                    continue;
                 }
 
                 int iPositionNowY = 0;
@@ -1295,25 +1458,7 @@ namespace Lib_Card.ADT8940A1.Axis
                     }
                 }
 
-                int iCylinderUp = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Up);
-                if (-1 == iCylinderUp)
-                    return -1;
-                else if (0 == iCylinderUp)
-                {
-                    if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_Z))
-                        return -1;
-
-                    OutPut.Cylinder.Cylinder cylinder;
-                    if (0 == iCylinderVersion)
-                        cylinder = new OutPut.Cylinder.SingleControl.Cylinder_Condition();
-                    else
-                        cylinder = new OutPut.Cylinder.DualControl.Cylinder_Condition();
-
-                    if (-1 == cylinder.CylinderUp())
-                        return -1;
-
-
-                }
+                
 
 
                 int iZStatus = CardObject.OA1.ReadAxisStatus(ADT8940A1_IO.Axis_Z);
@@ -1323,7 +1468,7 @@ namespace Lib_Card.ADT8940A1.Axis
                 {
                     if (-3 == iHomeStatus)
                     {
-                        if (-1 == CardObject.OA1.SetHomeMode(ADT8940A1_IO.Axis_Z, 3, s_HomeArg.Home_Offset))
+                        if (-1 == CardObject.OA1.SetHomeMode(ADT8940A1_IO.Axis_Z, 0, s_HomeArg.Home_Offset))
                             return -1;
 
                         if (-1 == CardObject.OA1.SetHomeSpeed(ADT8940A1_IO.Axis_Z, s_HomeArg))
@@ -1417,7 +1562,6 @@ namespace Lib_Card.ADT8940A1.Axis
                         throw new Exception("X轴反限位已通");
                     }
                 }
-
                 if (Lib_Card.Configure.Parameter.Other_ActualPosition == 1)
                 {
                     int iXReady = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_X_Ready);
@@ -1476,7 +1620,11 @@ namespace Lib_Card.ADT8940A1.Axis
                 int iCylinderUp = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Up);
                 if (-1 == iCylinderUp)
                     return -1;
-                else if (0 == iCylinderUp)
+                int iCylinderDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Down);
+                if (-1 == iCylinderDown)
+                    return -1;
+                
+                if (0 == iCylinderUp||1== iCylinderDown)
                 {
                     if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
                         return -1;
@@ -1487,48 +1635,49 @@ namespace Lib_Card.ADT8940A1.Axis
                     else
                         cylinder = new OutPut.Cylinder.DualControl.Cylinder_Condition();
 
-                    if (-1 == cylinder.CylinderUp())
+                    if (-1 == cylinder.CylinderUp(0))
                         return -1;
+                    continue;
 
                 }
 
-                int iCylinderDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Down);
-                if (-1 == iCylinderDown)
-                    return -1;
-                else if (1 == iCylinderDown)
-                {
-                    if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
-                        return -1;
-                    string s;
-                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                        s = CardObject.InsertD("气缸下已接通，请检查，确定没有接通请点是，退出运行请点否", " Relative_X");
-                    else
-                        s = CardObject.InsertD("The lower part of the cylinder is connected. Please check if it is not connected. Click Yes to confirm if it is not connected. Click No to exit the operation", " Relative_X");
-                    while (true)
-                    {
-                        Thread.Sleep(1);
-                        if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
-                            break;
+                //int iCylinderDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Down);
+                //if (-1 == iCylinderDown)
+                //    return -1;
+                //else if (1 == iCylinderDown)
+                //{
+                //    if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
+                //        return -1;
+                //    string s = CardObject.InsertD("气缸下已接通，请检查，确定没有接通请点是，退出运行请点否", " Relative_X");
+                //    while (true)
+                //    {
+                //        Thread.Sleep(1);
+                //        if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
+                //            break;
 
-                    }
-                    CardObject.DeleteD(s);
-                    int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
-                    if (Alarm_Choose == 1)
-                    {
-                        goto lable;
-                    }
-                    else
-                    {
-                        throw new Exception("气缸下已接通");
-                    }
+                //    }
+                //    int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                //    CardObject.DeleteD(s);
+                //    if (Alarm_Choose == 1)
+                //    {
+                //        goto lable;
+                //    }
+                //    else
+                //    {
+                //        throw new Exception("气缸下已接通");
+                //    }
 
-                }
-                if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip != 1)
+                //}
+                if (Lib_Card.Configure.Parameter.Machine_Decompression == 1)
                 {
                     int iDecompression = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up);
                     if (-1 == iDecompression)
                         return -1;
-                    else if (0 == iDecompression)
+                    int iDecompressionDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Down);
+                    if (-1 == iDecompressionDown)
+                        return -1;
+
+                    if (0 == iDecompression || 1 == iDecompressionDown)
                     {
                         if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
                             return -1;
@@ -1536,25 +1685,26 @@ namespace Lib_Card.ADT8940A1.Axis
                         OutPut.Decompression.Decompression decompression = new OutPut.Decompression.Decompression_Condition();
                         if (-1 == decompression.Decompression_Up())
                             return -1;
-                    }
-
-                    if (Lib_Card.Configure.Parameter.Machine_Decompression == 2)
-                    {
-
-                        int iDecompression_Right = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up_Right);
-                        if (-1 == iDecompression_Right)
-                            return -1;
-                        else if (0 == iDecompression_Right)
-                        {
-                            if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
-                                return -1;
-
-                            OutPut.Decompression.Decompression decompression_Right = new OutPut.Decompression.Decompression_Condition();
-                            if (-1 == decompression_Right.Decompression_Up_Right())
-                                return -1;
-                        }
+                        continue;
                     }
                 }
+
+                //if (Lib_Card.Configure.Parameter.Machine_Decompression == 2)
+                //{
+
+                //    int iDecompression_Right = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up_Right);
+                //    if (-1 == iDecompression_Right)
+                //        return -1;
+                //    else if (0 == iDecompression_Right)
+                //    {
+                //        if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
+                //            return -1;
+
+                //        OutPut.Decompression.Decompression decompression_Right = new OutPut.Decompression.Decompression_Condition();
+                //        if (-1 == decompression_Right.Decompression_Up_Right())
+                //            return -1;
+                //    }
+                //}
 
                 int iPositionNow = 0;
                 iPositionRes = CardObject.OA1.ReadAxisCommandPosition(ADT8940A1_IO.Axis_X, ref iPositionNow);
@@ -1659,7 +1809,6 @@ namespace Lib_Card.ADT8940A1.Axis
                         throw new Exception("Y轴反限位已通");
                     }
                 }
-
                 if (Lib_Card.Configure.Parameter.Other_ActualPosition == 1)
                 {
                     int iYReady = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Y_Ready);
@@ -1718,9 +1867,13 @@ namespace Lib_Card.ADT8940A1.Axis
                 int iCylinderUp = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Up);
                 if (-1 == iCylinderUp)
                     return -1;
-                else if (0 == iCylinderUp)
+                int iCylinderDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Down);
+                if (-1 == iCylinderDown)
+                    return -1;
+
+                if (0 == iCylinderUp || 1 == iCylinderDown)
                 {
-                    if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_Y))
+                    if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
                         return -1;
 
                     OutPut.Cylinder.Cylinder cylinder;
@@ -1729,73 +1882,75 @@ namespace Lib_Card.ADT8940A1.Axis
                     else
                         cylinder = new OutPut.Cylinder.DualControl.Cylinder_Condition();
 
-                    if (-1 == cylinder.CylinderUp())
+                    if (-1 == cylinder.CylinderUp(0))
                         return -1;
+                    continue;
 
                 }
 
-                int iCylinderDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Down);
-                if (-1 == iCylinderDown)
-                    return -1;
-                else if (1 == iCylinderDown)
-                {
-                    if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
-                        return -1;
-                    string s;
-                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                        s = CardObject.InsertD("气缸下已接通，请检查，确定没有接通请点是，退出运行请点否", " Relative_Y");
-                    else
-                        s = CardObject.InsertD("The lower part of the cylinder is connected. Please check if it is not connected. Click Yes to confirm if it is not connected. Click No to exit the operation", " Relative_Y");
-                    while (true)
-                    {
-                        Thread.Sleep(1);
-                        if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
-                            break;
+                //int iCylinderDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Down);
+                //if (-1 == iCylinderDown)
+                //    return -1;
+                //else if (1 == iCylinderDown)
+                //{
+                //    if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
+                //        return -1;
+                //    string s = CardObject.InsertD("气缸下已接通，请检查，确定没有接通请点是，退出运行请点否", " Relative_Y");
+                //    while (true)
+                //    {
+                //        Thread.Sleep(1);
+                //        if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
+                //            break;
 
-                    }
-                    CardObject.DeleteD(s);
-                    int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
-                    if (Alarm_Choose == 1)
-                    {
-                        goto lable;
-                    }
-                    else
-                    {
-                        throw new Exception("气缸下已接通");
-                    }
+                //    }
+                //    int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                //    CardObject.DeleteD(s);
+                //    if (Alarm_Choose == 1)
+                //    {
+                //        goto lable;
+                //    }
+                //    else
+                //    {
+                //        throw new Exception("气缸下已接通");
+                //    }
 
-                }
-                if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip != 1)
+                //}
+                if (Lib_Card.Configure.Parameter.Machine_Decompression == 1)
                 {
                     int iDecompression = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up);
                     if (-1 == iDecompression)
                         return -1;
-                    else if (0 == iDecompression)
+                    int iDecompressionDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Down);
+                    if (-1 == iDecompressionDown)
+                        return -1;
+
+                    if (0 == iDecompression || 1 == iDecompressionDown)
                     {
-                        if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_Y))
+                        if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
                             return -1;
 
                         OutPut.Decompression.Decompression decompression = new OutPut.Decompression.Decompression_Condition();
                         if (-1 == decompression.Decompression_Up())
                             return -1;
-                    }
-                    if (Lib_Card.Configure.Parameter.Machine_Decompression == 2)
-                    {
-
-                        int iDecompression_Right = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up_Right);
-                        if (-1 == iDecompression_Right)
-                            return -1;
-                        else if (0 == iDecompression_Right)
-                        {
-                            if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
-                                return -1;
-
-                            OutPut.Decompression.Decompression decompression_Right = new OutPut.Decompression.Decompression_Condition();
-                            if (-1 == decompression_Right.Decompression_Up_Right())
-                                return -1;
-                        }
+                        continue;
                     }
                 }
+                //if (Lib_Card.Configure.Parameter.Machine_Decompression == 2)
+                //{
+
+                //    int iDecompression_Right = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up_Right);
+                //    if (-1 == iDecompression_Right)
+                //        return -1;
+                //    else if (0 == iDecompression_Right)
+                //    {
+                //        if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
+                //            return -1;
+
+                //        OutPut.Decompression.Decompression decompression_Right = new OutPut.Decompression.Decompression_Condition();
+                //        if (-1 == decompression_Right.Decompression_Up_Right())
+                //            return -1;
+                //    }
+                //}
 
                 int iPositionNow = 0;
                 iPositionRes = CardObject.OA1.ReadAxisCommandPosition(ADT8940A1_IO.Axis_Y, ref iPositionNow);

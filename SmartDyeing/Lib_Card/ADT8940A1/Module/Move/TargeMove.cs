@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Lib_Card.ADT8940A1.Module.Home;
+using Lib_Card;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,18 +9,10 @@ using System.Threading.Tasks;
 
 namespace Lib_Card.ADT8940A1.Module.Move
 {
-    /// <summary>
-    /// 配液杯盖移动
-    /// </summary>
-    public class Move_Cupcover : Move
+    public class TargeMove : Move
     {
-        public override int TargetMove(int iCylinderVersion, int iNo)
+        public override int TargetMove(int iCylinderVersion, int iNo, int iX, int iY,int iType)
         {
-            if (0 >= iNo || iNo > Configure.Parameter.Machine_Cup_Total)
-            {
-                throw new Exception("非法杯号");
-            }
-
             if (!Home.Home.Home_XYZFinish)
             {
                 Home.Home home = new Home.Home_Condition();
@@ -26,22 +20,12 @@ namespace Lib_Card.ADT8940A1.Module.Move
                     return -1;
             }
 
-            //计算坐标
-            int iXPules = 0, iYPules = 0;
-
-            iXPules = Configure.Parameter.Coordinate_AreaCover_IntervalX -
-                            ((iNo - 1) % Configure.Parameter.Machine_AreaCover_Row) * Configure.Parameter.Coordinate_AreaCover_IntervalX;
-            iYPules = Configure.Parameter.Coordinate_Area1_Y -
-                ((iNo - 1) / Configure.Parameter.Machine_AreaCover_Row) * Configure.Parameter.Coordinate_AreaCover_IntervalY;
-
-
-
             int iXRes = -1;
             Thread threadX = new Thread(() =>
             {
                 try
                 {
-                    iXRes = CardObject.OA1Axis.Absolute_X(iCylinderVersion, iXPules, 0);
+                    iXRes = CardObject.OA1Axis.Absolute_X(iCylinderVersion, iX, 0);
                 }
                 catch (Exception ex)
                 {
@@ -57,7 +41,7 @@ namespace Lib_Card.ADT8940A1.Module.Move
             });
             threadX.Start();
 
-            int iYRes = CardObject.OA1Axis.Absolute_Y(iCylinderVersion, iYPules, 0);
+            int iYRes = CardObject.OA1Axis.Absolute_Y(iCylinderVersion, iY, 0);
             if (0 != iYRes)
                 return iYRes;
 
@@ -75,8 +59,24 @@ namespace Lib_Card.ADT8940A1.Module.Move
             else if (-6 == iXRes)
                 throw new Exception("X轴反限位已通");
 
+
+            if (iType == 3)
+            {
+                OutPut.X_Power.X_Power x_Power = new OutPut.X_Power.X_Power_Condition();
+                if (-1 == x_Power.X_Power_Off())
+                    return -1;
+
+                OutPut.Y_Power.Y_Power y_Power = new OutPut.Y_Power.Y_Power_Condition();
+                if (-1 == y_Power.Y_Power_Off())
+                    return -1;
+
+                OutPut.Tray.Tray tray = new OutPut.Tray.Tray_Condition();
+                if (-1 == tray.Tray_Off())
+                    return -1;
+            }
+
             return 0;
         }
-    
+        
     }
 }

@@ -53,6 +53,10 @@ namespace SmartDyeing
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
 
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+            Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
@@ -97,6 +101,9 @@ namespace SmartDyeing
 
                 FADM_Form.Login login = new Login();
 
+                //FADM_Form.ReportTest r = new ReportTest("202312040034", "6");
+                //r.ShowDialog();
+
                 //界面转换
                 login.ShowDialog();
 
@@ -117,6 +124,21 @@ namespace SmartDyeing
             {
                 HandleRunningInstance(instance);
             }
+        }
+
+        static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
+        {
+            MessageBox.Show($"未处理的线程异常: {e.Exception.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Lib_Log.Log.writeLogException("未处理的线程异常" + e.ToString());
+            // 记录异常详细信息到日志文件或其他存储
+        }
+
+        static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Exception ex = (Exception)e.ExceptionObject;
+            MessageBox.Show($"未处理的域异常: {ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Lib_Log.Log.writeLogException("未处理的域异常" + ex.ToString());
+            // 记录异常详细信息到日志文件或其他存储
         }
 
         /// <summary> 

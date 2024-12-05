@@ -24,6 +24,11 @@ namespace SmartDyeing.FADM_Form
         private void Cup_FormClosed(object sender, FormClosedEventArgs e)
         {
             _b_open = false;
+            foreach (Control control in this.panel1.Controls)
+            {
+                this.panel1.Controls.Remove(control);
+                control.Dispose();
+            }
         }
     }
 }

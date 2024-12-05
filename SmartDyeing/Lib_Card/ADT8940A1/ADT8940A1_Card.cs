@@ -36,21 +36,21 @@ namespace Lib_Card.ADT8940A1
                     {
                         if (1 == Adt8940a1m.adt8940a1_set_pulse_mode(0, ADT8940A1_IO.Axis_X, 0, 0, 0))
                             throw new Exception("X轴设定脉冲工作方式异常");
-                        if (1 == Adt8940a1m.adt8940a1_set_acc(0, ADT8940A1_IO.Axis_X, 40))
+                        if (1 == Adt8940a1m.adt8940a1_set_acc(0, ADT8940A1_IO.Axis_X, 50000))
                             throw new Exception("X轴设定加速度异常");
                     }
                     if (-1 != ADT8940A1_IO.Axis_Y)
                     {
                         if (1 == Adt8940a1m.adt8940a1_set_pulse_mode(0, ADT8940A1_IO.Axis_Y, 0, 0, 0))
                             throw new Exception("Y轴设定脉冲工作方式异常");
-                        if (1 == Adt8940a1m.adt8940a1_set_acc(0, ADT8940A1_IO.Axis_Y, 40))
+                        if (1 == Adt8940a1m.adt8940a1_set_acc(0, ADT8940A1_IO.Axis_Y, 50000))
                             throw new Exception("Y轴设定加速度异常");
                     }
                     if (-1 != ADT8940A1_IO.Axis_Z)
                     {
                         if (1 == Adt8940a1m.adt8940a1_set_pulse_mode(0, ADT8940A1_IO.Axis_Z, 1, 0, 0))
                             throw new Exception("Z轴设定脉冲工作方式异常");
-                        if (1 == Adt8940a1m.adt8940a1_set_acc(0, ADT8940A1_IO.Axis_Z, 40))
+                        if (1 == Adt8940a1m.adt8940a1_set_acc(0, ADT8940A1_IO.Axis_Z, 50000))
                             throw new Exception("Z轴设定加速度异常");
                     }
 
@@ -176,7 +176,7 @@ namespace Lib_Card.ADT8940A1
 
             if (1 == Adt8940a1m.adt8940a1_HomeProcess_Ex(0, iAxisNo))
                 return -1;
-            return 0;
+            return 0;   
 
 
         }

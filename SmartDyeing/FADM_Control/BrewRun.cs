@@ -192,6 +192,8 @@ namespace SmartDyeing.FADM_Control
                                 this.dgv_Run.Columns[i].Width = ia_width[i];
                             }
 
+                            this.dgv_Run.Columns[1].DefaultCellStyle.Format = "yyyy-MM-dd HH:mm:ss";
+
                         }
                         else
                         {
@@ -203,6 +205,7 @@ namespace SmartDyeing.FADM_Control
                                 this.dgv_Run.Columns[i].HeaderCell.Value = sa_name[i];
                                 this.dgv_Run.Columns[i].Width = ia_width[i];
                             }
+                            this.dgv_Run.Columns[1].DefaultCellStyle.Format = "yyyy-MM-dd HH:mm:ss";
                         }
                         this._i_pagelast = this._i_pagenow;
 

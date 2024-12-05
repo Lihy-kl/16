@@ -17,7 +17,7 @@ namespace Lib_Card.ADT8940A1.OutPut.Water
         }
 
         public override int Water_On()
-        {           
+        {
             /* 条件
              *     1：X轴未运行
              *     2：Y轴未运行
@@ -25,7 +25,7 @@ namespace Lib_Card.ADT8940A1.OutPut.Water
              * 
              */
 
-           
+            labelTop:
             bool bReset = false;
             lable:
             int iXStatus = CardObject.OA1.ReadAxisStatus(ADT8940A1_IO.Axis_X);
@@ -38,11 +38,19 @@ namespace Lib_Card.ADT8940A1.OutPut.Water
 
            
 
-            int iTongsOut = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Tray_Out);
-            if (-1 == iTongsOut)
+            int iTray_Out = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Tray_Out);
+            if (-1 == iTray_Out)
                 return -1;
+            else if (0 == iTray_Out)
+            {
+                //接液盘出
+                Lib_Card.ADT8940A1.OutPut.Tray.Tray tray = new Lib_Card.ADT8940A1.OutPut.Tray.Tray_Condition();
+                if (-1 == tray.Tray_On())
+                    return -1;
+                goto labelTop;
+            }
 
-            if (0 == iXStatus && 0 == iYStatus && 1 == iTongsOut)
+            if (0 == iXStatus && 0 == iYStatus && 1 == iTray_Out)
             {
                 int iRes = CardObject.OA1.WriteOutPut(ADT8940A1_IO.OutPut_Water, 1);
                 if (-1 == iRes)
@@ -69,12 +77,7 @@ namespace Lib_Card.ADT8940A1.OutPut.Water
                     }
                     else
                     {
-                        string s;
-                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                            s = CardObject.InsertD("接液盘未伸出，请检查，确定伸出请点是，退出运行请点否", " Water_On");
-                        else
-                            s = CardObject.InsertD("The liquid tray is not extended, please check. If it is extended, please click Yes. If it is exited, please click No", " Water_On");
-
+                        string s = CardObject.InsertD("接液盘未伸出，请检查，确定伸出请点是，退出运行请点否", " Water_On");
                         while (true)
                         {
                             Thread.Sleep(1);
@@ -82,8 +85,8 @@ namespace Lib_Card.ADT8940A1.OutPut.Water
                                 break;
 
                         }
-                        CardObject.DeleteD(s);
                         int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                        CardObject.DeleteD(s);
                         if (Alarm_Choose == 1)
                         {
                             bReset = false;

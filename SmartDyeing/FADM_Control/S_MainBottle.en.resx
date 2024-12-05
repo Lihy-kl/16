@@ -140,36 +140,36 @@
     <value>236, 70</value>
   </data>
   <data name="tsm_SignCheck.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>150, 22</value>
   </data>
   <data name="tsm_SignCheck.Text" xml:space="preserve">
     <value>Correction</value>
   </data>
   <data name="tsm_SignSelf.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>150, 22</value>
   </data>
   <data name="tsm_SignSelf.Text" xml:space="preserve">
     <value>SelfChecking</value>
   </data>
   <data name="tsm_SignPause.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>150, 22</value>
   </data>
   <data name="tsm_SignPause.Text" xml:space="preserve">
     <value>Pause</value>
   </data>
   <data name="tsm_SignStop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>150, 22</value>
   </data>
   <data name="tsm_SignStop.Text" xml:space="preserve">
     <value>Stop</value>
   </data>
   <data name="tsm_SignUpdate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>150, 22</value>
   </data>
   <data name="tsm_SignUpdate.Text" xml:space="preserve">
     <value>Update</value>
   </data>
   <data name="contextMenuStrip2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 136</value>
+    <value>151, 114</value>
   </data>
 </root>

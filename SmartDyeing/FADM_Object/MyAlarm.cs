@@ -58,7 +58,14 @@ namespace SmartDyeing.FADM_Object
                     {
                         return;
                     }
-                    if (s_text != "右光幕遮挡" && s_text != "左光幕遮挡" && s_text != "前光幕遮挡" && s_text != "急停已按下" && s_text != "左门已打开" && s_text != "右门已打开" && FADM_Object.Communal._b_isNetWork)
+                    if (s_text != "右光幕遮挡,请离开光幕" && s_text != "Right light curtain obstruction,Please step away from the light curtain" 
+                        && s_text != "左光幕遮挡,请离开光幕" && s_text != "Left light curtain obstruction,Please step away from the light curtain"
+                        && s_text != "前光幕遮挡,请离开光幕" && s_text != "Front light curtain obstruction,Please step away from the light curtain" 
+                        && s_text != "急停已按下,请打开急停开关" && s_text != "Emergency stop pressed,Please turn on the emergency stop switch" 
+                        && s_text != "左门已打开,请关闭左门" && s_text != "The left door is open,Please close the left door"
+                        && s_text != "右门已打开,请关闭右门" && s_text != "The right door is open,Please close the right door" 
+                        && s_text != "后光幕遮挡,请离开光幕" && s_text != "Back light curtain obstruction,Please step away from the light curtain"
+                        && FADM_Object.Communal._b_isNetWork)
                     {
                         //插入微信播报表 推送微信 isBroadcastW为真 保存表   isBroadcastW为假 不保存表   
                         inBroadcastW(FADM_Object.Communal._s_machineCode, s_text, s_insert, ba_isBroadcastW);
@@ -68,10 +75,13 @@ namespace SmartDyeing.FADM_Object
                     {
                         Thread P_thd_2 = new Thread(() =>
                         {
-                            if (s_text == "右光幕遮挡" || s_text == "左光幕遮挡" || s_text == "前光幕遮挡" || s_text == "急停已按下" || s_text == "左门已打开" || s_text == "右门已打开"
-                            || s_text == "Right light curtain occlusion" || s_text == "The right door is open"
-                            || s_text == "Left light curtain occlusion" || s_text == "The left door is open"
-                            || s_text == "Emergency stop pressed" || s_text == "Front light curtain occlusion")
+                            if (s_text == "右光幕遮挡,请离开光幕" || s_text == "Right light curtain obstruction,Please step away from the light curtain" 
+                            || s_text == "左光幕遮挡,请离开光幕" || s_text == "Left light curtain obstruction,Please step away from the light curtain"
+                            || s_text == "前光幕遮挡,请离开光幕" || s_text == "Front light curtain obstruction,Please step away from the light curtain"
+                            || s_text == "急停已按下,请打开急停开关" || s_text == "Emergency stop pressed,Please turn on the emergency stop switch"
+                            || s_text == "左门已打开,请关闭左门" || s_text == "The left door is open,Please close the left door"
+                            || s_text == "右门已打开,请关闭右门" || s_text == "The right door is open,Please close the right door"
+                            || s_text == "后光幕遮挡,请离开光幕" || s_text == "Back light curtain obstruction,Please step away from the light curtain")
                             {
                                 //Lib_Card.ADT8940A1.OutPut.Buzzer.Buzzer buzzer = new Lib_Card.ADT8940A1.OutPut.Buzzer.Buzzer_Basic();
                                 //buzzer.Buzzer_On();
@@ -79,7 +89,8 @@ namespace SmartDyeing.FADM_Object
 
                                 while (true)
                                 {
-                                    if (s_text == "右光幕遮挡" || s_text == "Right light curtain occlusion" || s_text == "右门已打开"|| s_text == "The right door is open")
+                                    if (s_text == "右光幕遮挡,请离开光幕" || s_text == "Right light curtain obstruction,Please step away from the light curtain" 
+                                    || s_text == "右门已打开,请关闭右门" || s_text == "The right door is open,Please close the right door")
                                     {
                                         //获取光幕1状态
                                         if (!Lib_Card.CardObject.bRight)
@@ -94,7 +105,8 @@ namespace SmartDyeing.FADM_Object
                                         }
 
                                     }
-                                    else if (s_text == "左光幕遮挡" || s_text == "Left light curtain occlusion" || s_text == "左门已打开" || s_text == "The left door is open")
+                                    else if (s_text == "左光幕遮挡,请离开光幕" || s_text == "Left light curtain obstruction,Please step away from the light curtain" 
+                                    || s_text == "左门已打开,请关闭左门" || s_text == "The left door is open,Please close the left door")
                                     {
                                         //获取光幕2状态
                                         if (!Lib_Card.CardObject.bLeft)
@@ -109,7 +121,7 @@ namespace SmartDyeing.FADM_Object
                                             break;
                                         }
                                     }
-                                    else if (s_text == "前光幕遮挡" || s_text == "Front light curtain occlusion")
+                                    else if (s_text == "前光幕遮挡,请离开光幕" || s_text == "Front light curtain obstruction,Please step away from the light curtain")
                                     {
                                         //获取光幕2状态
                                         if (!Lib_Card.CardObject.bFront)
@@ -124,10 +136,25 @@ namespace SmartDyeing.FADM_Object
                                             break;
                                         }
                                     }
+                                    else if (s_text == "后光幕遮挡,请离开光幕" || s_text == "Back light curtain obstruction,Please step away from the light curtain")
+                                    {
+                                        //获取光幕2状态
+                                        if (!Lib_Card.CardObject.bBack)
+                                        {
+                                            Lib_Card.CardObject.DeleteD(s_insert);
+
+                                            break;
+                                        }
+                                        if (Lib_Card.CardObject.keyValuePairs[s_insert].Choose != 0)
+                                        {
+                                            Lib_Card.CardObject.DeleteD(s_insert);
+                                            break;
+                                        }
+                                    }
                                     else
                                     {
                                         //获取急停按钮状态
-                                        if (s_text == "急停已按下" || s_text == "Emergency stop pressed")
+                                        if (s_text == "急停已按下,请打开急停开关" || s_text == "Emergency stop pressed,Please turn on the emergency stop switch")
                                         {
                                             if (!Lib_Card.CardObject.bStopScr)
                                             {
@@ -242,11 +269,17 @@ namespace SmartDyeing.FADM_Object
                         }
                         else if (s_insert == "重复1")
                         {
-                            if (i_type == 4 )
+                            if (i_type == 4)
                             {
-                                //修改为加药
+                                // //修改为加药
+                                // FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                //"UPDATE dye_details SET  Cooperate = 1 WHERE  Cooperate = " + 9 + " AND CupNum = " + i_cupNum + " ;");
+
+                                //重新置0，等待获取开盖申请
+                                FADM_Auto.Dye._cup_Temps[i_cupNum - 1]._i_cover = 0;
+
                                 FADM_Object.Communal._fadmSqlserver.ReviseData(
-                               "UPDATE dye_details SET  Cooperate = 1 WHERE  Cooperate = " + 9 + " AND CupNum = " + i_cupNum + " ;");
+                                   "UPDATE cup_details SET  Cooperate = 0 WHERE  CupNum = " + i_cupNum + " ;");
 
                                 _i_alarm_Repeat = 1;
                                 return;
@@ -318,17 +351,26 @@ namespace SmartDyeing.FADM_Object
                                 return;
                             }
                         }
+                        else {
+
+                            if (FADM_Object.Communal._b_isNetWork) {
+                                inBroadcastW(FADM_Object.Communal._s_machineCode, s_text, s_insert, true);
+                            }
+                           
+                        }
 
                         //Lib_Card.ADT8940A1.OutPut.Buzzer.Buzzer buzzer = new Lib_Card.ADT8940A1.OutPut.Buzzer.Buzzer_Basic();
                         //buzzer.Buzzer_On();
-
-
                         while (true)
                         {
                             Thread.Sleep(1);
                             if (Lib_Card.CardObject.keyValuePairs[s_insert].Choose != 0)
                                 break;
-
+                            if (FADM_Object.Communal._b_isNetWork)
+                            {
+                                getBroadcastRe(FADM_Object.Communal._s_machineCode, s_insert, s_insert);
+                                Thread.Sleep(1000);
+                            }
                         }
 
                         _i_alarm_Choose = Lib_Card.CardObject.keyValuePairs[s_insert].Choose;
@@ -349,9 +391,15 @@ namespace SmartDyeing.FADM_Object
                             {
                                 if (i_type == 4)
                                 {
-                                    //修改为加药
+                                    // //修改为加药
+                                    // FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                    //"UPDATE dye_details SET  Cooperate = 1 WHERE  Cooperate = " + 9 + " AND CupNum = " + i_cupNum + " ;");
+
+                                    //重新置0，等待获取开盖申请
+                                    FADM_Auto.Dye._cup_Temps[i_cupNum - 1]._i_cover = 0;
+
                                     FADM_Object.Communal._fadmSqlserver.ReviseData(
-                                   "UPDATE dye_details SET  Cooperate = 1 WHERE  Cooperate = " + 9 + " AND CupNum = " + i_cupNum + " ;");
+                                       "UPDATE cup_details SET  Cooperate = 0 WHERE  CupNum = " + i_cupNum + " ;");
 
                                 }
                                 else if (i_type == 5)
@@ -463,8 +511,8 @@ namespace SmartDyeing.FADM_Object
                                     //加药
                                     if (i_type == 4)
                                     {
-                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
-                                   "UPDATE dye_details SET  Cooperate = 1 WHERE  Cooperate = " + 9 + " AND CupNum = " + i_cupNum + " ;");
+                                   //     FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                   //"UPDATE dye_details SET  Cooperate = 1 WHERE  Cooperate = " + 9 + " AND CupNum = " + i_cupNum + " ;");
                                     }
                                     //流程加水
                                     else if (i_type == 5)
@@ -620,15 +668,8 @@ namespace SmartDyeing.FADM_Object
                         if (FADM_Object.Communal._b_isNetWork)
                         {
                             //插入微信播报表
-                            string Result = inBroadcastW(FADM_Object.Communal._s_machineCode, s_text, s_insert, true);
-                            if (Result != null && Result.Length > 0)
-                            {
-                                obj = JObject.Parse(Result);
-                                if (obj["istrue"].Value<string>().Equals("true") && obj["errcode"].Value<string>().Equals("0"))
-                                {
-                                    s_errcode = "0";
-                                }
-                            }
+                            inBroadcastW(FADM_Object.Communal._s_machineCode, s_text, s_insert, true);
+                           
                         }
                     }
 
@@ -637,11 +678,11 @@ namespace SmartDyeing.FADM_Object
                         Thread.Sleep(1);
                         if (Lib_Card.CardObject.keyValuePairs[s_insert].Choose != 0)
                             break;
-                        if (s_errcode.Equals("0"))
+                        if (FADM_Object.Communal._b_isNetWork)
                         {
                             //发起请求查询 
                             getBroadcastRe(FADM_Object.Communal._s_machineCode, s_insert, s_insert);
-                            Thread.Sleep(1500);
+                            Thread.Sleep(1000);
                         }
                     }
 
@@ -670,18 +711,25 @@ namespace SmartDyeing.FADM_Object
             }
         }
 
-         public static string inBroadcastW(string machineCode,string Text,string time, params bool[] isFlag) {
+        async public static void inBroadcastW(string machineCode, string Text, string time, params bool[] isFlag)
+        {
             Console.WriteLine("插入播报表==============");
             IDictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("machineCode", machineCode);
             parameters.Add("Text", Text);
             parameters.Add("time", time);
-            HttpWebResponse response = HttpUtil.CreatePostHttpResponse("https://www.gz-kelian.com/outer/product/inBroadcastW", parameters, 15000, null, null);
-            Stream st = response.GetResponseStream();
-            StreamReader reader = new StreamReader(st);
-            string msg = reader.ReadToEnd();
-            Console.WriteLine("返回内容是" + msg);
-            return msg;
+            if (isFlag != null && isFlag.Length > 0 && isFlag[0])
+            {
+                parameters.Add("isFlag", "True");
+            }
+            await Task.Run(() => {
+                try {
+                    HttpWebResponse response = HttpUtil.CreatePostHttpResponse("https://www.gz-kelian.com/outer/product/inBroadcastW", parameters, 15000, null, null);
+                    response.GetResponseStream();
+                } catch (Exception ex) { 
+                }
+                
+            });
             /*return await Task.Run(() => {
                 // htt ps://www.gz-kelian.com/outer/product/inBroadcastW  h ttp://192.168.144.105:8080/outer/product/inBroadcastW
                 */
@@ -746,6 +794,22 @@ namespace SmartDyeing.FADM_Object
                                "UPDATE dye_details SET  Choose = 0 WHERE  Choose = 2 AND BottleNum = " + i_bottleNo + " ;");
                             return;
                         }
+                        else {
+
+                            if (s_text != "右光幕遮挡,请离开光幕" && s_text != "Right light curtain obstruction,Please step away from the light curtain"
+                        && s_text != "左光幕遮挡,请离开光幕" && s_text != "Left light curtain obstruction,Please step away from the light curtain"
+                        && s_text != "前光幕遮挡,请离开光幕" && s_text != "Front light curtain obstruction,Please step away from the light curtain"
+                        && s_text != "急停已按下,请打开急停开关" && s_text != "Emergency stop pressed,Please turn on the emergency stop switch"
+                        && s_text != "左门已打开,请关闭左门" && s_text != "The left door is open,Please close the left door"
+                        && s_text != "右门已打开,请关闭右门" && s_text != "The right door is open,Please close the right door"
+                        && s_text != "后光幕遮挡,请离开光幕" && s_text != "Back light curtain obstruction,Please step away from the light curtain"
+                        && FADM_Object.Communal._b_isNetWork)
+                            {
+                                //插入微信播报表 推送微信 isBroadcastW为真 保存表   isBroadcastW为假 不保存表   
+                                //插入微信播报表
+                                inBroadcastW(FADM_Object.Communal._s_machineCode, s_text, s_insert, true);
+                            }
+                        }
 
                         //Lib_Card.ADT8940A1.OutPut.Buzzer.Buzzer buzzer = new Lib_Card.ADT8940A1.OutPut.Buzzer.Buzzer_Basic();
                         //buzzer.Buzzer_On();
@@ -756,6 +820,20 @@ namespace SmartDyeing.FADM_Object
                             Thread.Sleep(1);
                             if (Lib_Card.CardObject.keyValuePairs[s_insert].Choose != 0)
                                 break;
+
+                            if (s_text != "右光幕遮挡,请离开光幕" && s_text != "Right light curtain obstruction,Please step away from the light curtain"
+                        && s_text != "左光幕遮挡,请离开光幕" && s_text != "Left light curtain obstruction,Please step away from the light curtain"
+                        && s_text != "前光幕遮挡,请离开光幕" && s_text != "Front light curtain obstruction,Please step away from the light curtain"
+                        && s_text != "急停已按下,请打开急停开关" && s_text != "Emergency stop pressed,Please turn on the emergency stop switch"
+                        && s_text != "左门已打开,请关闭左门" && s_text != "The left door is open,Please close the left door"
+                        && s_text != "右门已打开,请关闭右门" && s_text != "The right door is open,Please close the right door"
+                        && s_text != "后光幕遮挡,请离开光幕" && s_text != "Back light curtain obstruction,Please step away from the light curtain"
+                        && FADM_Object.Communal._b_isNetWork)
+                            {
+                                //发起请求查询 
+                                getBroadcastRe(FADM_Object.Communal._s_machineCode, s_insert, s_insert);
+                                Thread.Sleep(1000);
+                            }
 
                         }
 
@@ -840,6 +918,149 @@ namespace SmartDyeing.FADM_Object
                             FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
                         }
 
+                        Lib_Card.CardObject.DeleteD(s_insert);
+
+
+                        //buzzer.Buzzer_Off();
+
+
+
+
+                    });
+                    thread.Start();
+                }
+            }
+            catch
+            {
+                goto label1;
+            }
+
+
+        }
+
+        public MyAlarm(string s_text, int i_cupNo, int i_oldSign)
+        {
+        label1:
+            try
+            {
+                if (!string.IsNullOrEmpty(s_text))
+                {
+                    Thread thread = new Thread(() =>
+                    {
+                        string s_insert = Lib_Card.CardObject.InsertCF(s_text, "AbsAddMedicine");
+                        if (s_insert == "重复")
+                        {
+                            //FADM_Object.Communal._fadmSqlserver.ReviseData(
+                            //   "UPDATE dye_details SET  Cooperate = 1 WHERE  Cooperate = " + i_oldSign + " AND BottleNum = " + i_bottleNo + " ;");
+                            return;
+                        }
+                        else if (s_insert == "重复1")
+                        {
+                            if (i_oldSign == 7 || i_oldSign == 9 || i_oldSign == 13)
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                   "UPDATE abs_cup_details SET  Cooperate = 33 WHERE  Cooperate = " + i_oldSign + " AND CupNum = " + i_cupNo + " ;");
+                            else if (i_oldSign == 8 || i_oldSign == 10 || i_oldSign == 11)
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                   "UPDATE abs_cup_details SET  Cooperate = 32 WHERE  Cooperate = " + i_oldSign + " AND CupNum = " + i_cupNo + " ;");
+                            return;
+                        }
+                        else {
+                            if (s_text != "右光幕遮挡,请离开光幕" && s_text != "Right light curtain obstruction,Please step away from the light curtain"
+                        && s_text != "左光幕遮挡,请离开光幕" && s_text != "Left light curtain obstruction,Please step away from the light curtain"
+                        && s_text != "前光幕遮挡,请离开光幕" && s_text != "Front light curtain obstruction,Please step away from the light curtain"
+                        && s_text != "急停已按下,请打开急停开关" && s_text != "Emergency stop pressed,Please turn on the emergency stop switch"
+                        && s_text != "左门已打开,请关闭左门" && s_text != "The left door is open,Please close the left door"
+                        && s_text != "右门已打开,请关闭右门" && s_text != "The right door is open,Please close the right door"
+                        && s_text != "后光幕遮挡,请离开光幕" && s_text != "Back light curtain obstruction,Please step away from the light curtain"
+                        && FADM_Object.Communal._b_isNetWork)
+                            {
+                                //插入微信播报表 推送微信 isBroadcastW为真 保存表   isBroadcastW为假 不保存表   
+                                //插入微信播报表
+                                inBroadcastW(FADM_Object.Communal._s_machineCode, s_text, s_insert, true);
+                            }
+                        }
+
+                        //Lib_Card.ADT8940A1.OutPut.Buzzer.Buzzer buzzer = new Lib_Card.ADT8940A1.OutPut.Buzzer.Buzzer_Basic();
+                        //buzzer.Buzzer_On();
+
+                        //FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "1 ;");
+                        while (true)
+                        {
+                            Thread.Sleep(1);
+                            if (Lib_Card.CardObject.keyValuePairs[s_insert].Choose != 0)
+                                break;
+
+                            if (s_text != "右光幕遮挡,请离开光幕" && s_text != "Right light curtain obstruction,Please step away from the light curtain"
+                        && s_text != "左光幕遮挡,请离开光幕" && s_text != "Left light curtain obstruction,Please step away from the light curtain"
+                        && s_text != "前光幕遮挡,请离开光幕" && s_text != "Front light curtain obstruction,Please step away from the light curtain"
+                        && s_text != "急停已按下,请打开急停开关" && s_text != "Emergency stop pressed,Please turn on the emergency stop switch"
+                        && s_text != "左门已打开,请关闭左门" && s_text != "The left door is open,Please close the left door"
+                        && s_text != "右门已打开,请关闭右门" && s_text != "The right door is open,Please close the right door"
+                        && s_text != "后光幕遮挡,请离开光幕" && s_text != "Back light curtain obstruction,Please step away from the light curtain"
+                        && FADM_Object.Communal._b_isNetWork)
+                            {
+                                //发起请求查询 
+                                getBroadcastRe(FADM_Object.Communal._s_machineCode, s_insert, s_insert);
+                                Thread.Sleep(1000);
+                            }
+
+                        }
+
+                        _i_alarm_Choose = Lib_Card.CardObject.keyValuePairs[s_insert].Choose;
+                        if (Lib_Card.CardObject.keyValuePairs[s_insert].Choose == 1)
+                        {
+                            if (i_oldSign == 7 || i_oldSign == 9 || i_oldSign == 13 || i_oldSign == 14)
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                   "UPDATE abs_cup_details SET  Cooperate = 33 WHERE  Cooperate = " + i_oldSign + " AND CupNum = " + i_cupNo + " ;");
+                            else if (i_oldSign == 8 || i_oldSign == 10 || i_oldSign == 11 || i_oldSign == 12)
+                            {
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                   "UPDATE abs_cup_details SET  Cooperate = 32 WHERE  Cooperate = " + i_oldSign + " AND CupNum = " + i_cupNo + " ;");
+                            }
+                            else if (i_oldSign == 77)
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                                      "UPDATE abs_cup_details SET  Cooperate = 88 WHERE  Cooperate = " + i_oldSign + " AND CupNum = " + i_cupNo + " ;");
+                        }
+                        else
+                        {
+                            ////忽略过期等，直接操作
+                            //FADM_Object.Communal._fadmSqlserver.ReviseData(
+                            //   "UPDATE dye_details SET  Cooperate = 1,Choose = 1 WHERE  Cooperate = " + i_oldSign + " AND BottleNum = " + i_bottleNo + " ;");
+
+                            //FADM_Object.Communal._fadmSqlserver.ReviseData(
+                            //       "UPDATE dye_details SET  Choose = 1 WHERE  Choose = 2 AND BottleNum = " + i_bottleNo + " ;");
+
+                            if (i_oldSign == 7 || i_oldSign == 8 || i_oldSign == 9 || i_oldSign == 10 || i_oldSign == 77)
+                            {
+                                //选择否直接置为99,判断为退出
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                       "UPDATE abs_cup_details SET  Cooperate = 99 WHERE   CupNum = " + i_cupNo + " ;");
+                            }
+                            else
+                            {
+                                //过期或液量低，选择否继续滴液
+                                if (i_oldSign == 13 || i_oldSign == 14)
+                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                   "UPDATE abs_cup_details SET  Cooperate = 23 WHERE  Cooperate = " + i_oldSign + " AND CupNum = " + i_cupNo + " ;");
+                                else
+                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                   "UPDATE abs_cup_details SET  Cooperate = 21 WHERE  Cooperate = " + i_oldSign + " AND CupNum = " + i_cupNo + " ;");
+                            }
+                        }
+
+                        //if (messageBoxButtons == MessageBoxButtons.YesNo)
+                        {
+                            //写进数据库
+                            string s_sql = "INSERT INTO alarm_table" +
+                                         "(MyDate,MyTime,AlarmHead,AlarmDetails)" +
+                                         " VALUES( '" +
+                                         String.Format("{0:d}", DateTime.Now) + "','" +
+                                         String.Format("{0:T}", DateTime.Now) + "','AbsAddMedicine','" +
+                                         s_text + "(" + (_i_alarm_Choose == 1 ? "Yes" : "No") + ")');";
+
+                            FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                        }
                         Lib_Card.CardObject.DeleteD(s_insert);
 
 

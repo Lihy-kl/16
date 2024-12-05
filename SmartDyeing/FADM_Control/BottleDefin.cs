@@ -290,6 +290,35 @@ namespace SmartDyeing.FADM_Control
                 return;
             }
 
+            //判断G/L或WATER单位是否只有一个母液瓶
+            List<string> lis_ass = new List<string>();
+            string s_sql_ass = "SELECT * FROM assistant_details WHERE UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L' OR UnitOfAccount  collate Chinese_PRC_CS_AS = 'Water' ;";
+            DataTable dt_temp_ass = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_ass);
+            foreach (DataRow row in dt_temp_ass.Rows)
+            {
+                lis_ass.Add(row["AssistantCode"].ToString());
+            }
+
+            //如果是这两个特殊单位代码，就要判断是否瓶号是否一致
+            if(lis_ass.Contains(cbo_AssistantCode.Text))
+            {
+                //查询此助剂是否存在母液瓶
+                string s_sql_bottle = "SELECT * FROM bottle_details WHERE AssistantCode = '"+ cbo_AssistantCode.Text+"' ;";
+                DataTable dt_temp_bottle = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_bottle);
+                if(dt_temp_bottle.Rows.Count >0)
+                {
+                    if(txt_BottleNum.Text != dt_temp_bottle.Rows[0]["BottleNum"].ToString())
+                    {
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            FADM_Form.CustomMessageBox.Show("此助剂只能存在一个母液瓶!", "温馨提示", MessageBoxButtons.OK, false);
+                        else
+                            FADM_Form.CustomMessageBox.Show("This additive can only be present in one mother liquor bottle", "Tips", MessageBoxButtons.OK, false);
+                        
+                        return;
+                    }
+                }
+            }
+
             //s_sql = "SELECT * FROM machine_parameters WHERE MyID = 1;";
             //DataTable P_dt_machine = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
             int i_machine = Lib_Card.Configure.Parameter.Machine_Bottle_Total;

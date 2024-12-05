@@ -41,18 +41,24 @@ namespace SmartDyeing.FADM_Control
             this.tsm_Check = new System.Windows.Forms.ToolStripMenuItem();
             this.tsm_Self = new System.Windows.Forms.ToolStripMenuItem();
             this.tsm_Water = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsm_Abs = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsm_InsertAbs = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsm_SignCheck = new System.Windows.Forms.ToolStripMenuItem();
             this.tsm_SignSelf = new System.Windows.Forms.ToolStripMenuItem();
             this.tsm_SignPause = new System.Windows.Forms.ToolStripMenuItem();
             this.tsm_SignStop = new System.Windows.Forms.ToolStripMenuItem();
             this.tsm_SignUpdate = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsm_TestAbs = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsm_TestBaseAbs = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsm_TestStanAbs = new System.Windows.Forms.ToolStripMenuItem();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel6 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.tsm_TestAbsCompensate = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
             this.SuspendLayout();
@@ -70,86 +76,123 @@ namespace SmartDyeing.FADM_Control
             // 
             // lab_Low
             // 
-            resources.ApplyResources(this.lab_Low, "lab_Low");
             this.lab_Low.AutoEllipsis = true;
+            resources.ApplyResources(this.lab_Low, "lab_Low");
             this.lab_Low.ForeColor = System.Drawing.Color.Red;
             this.lab_Low.Name = "lab_Low";
             // 
             // lab_Expire
             // 
-            resources.ApplyResources(this.lab_Expire, "lab_Expire");
             this.lab_Expire.AutoEllipsis = true;
+            resources.ApplyResources(this.lab_Expire, "lab_Expire");
             this.lab_Expire.ForeColor = System.Drawing.Color.Red;
             this.lab_Expire.Name = "lab_Expire";
             // 
             // contextMenuStrip1
             // 
-            resources.ApplyResources(this.contextMenuStrip1, "contextMenuStrip1");
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsm_Check,
             this.tsm_Self,
-            this.tsm_Water});
+            this.tsm_Water,
+            this.tsm_Abs,
+            this.tsm_InsertAbs});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
+            resources.ApplyResources(this.contextMenuStrip1, "contextMenuStrip1");
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // tsm_Check
             // 
-            resources.ApplyResources(this.tsm_Check, "tsm_Check");
             this.tsm_Check.Name = "tsm_Check";
+            resources.ApplyResources(this.tsm_Check, "tsm_Check");
             this.tsm_Check.Click += new System.EventHandler(this.tsm_CheckAndSelf_Click);
             // 
             // tsm_Self
             // 
-            resources.ApplyResources(this.tsm_Self, "tsm_Self");
             this.tsm_Self.Name = "tsm_Self";
+            resources.ApplyResources(this.tsm_Self, "tsm_Self");
             this.tsm_Self.Click += new System.EventHandler(this.tsm_Self_Click);
             // 
             // tsm_Water
             // 
-            resources.ApplyResources(this.tsm_Water, "tsm_Water");
             this.tsm_Water.Name = "tsm_Water";
+            resources.ApplyResources(this.tsm_Water, "tsm_Water");
             this.tsm_Water.Click += new System.EventHandler(this.tsm_Water_Click);
+            // 
+            // tsm_Abs
+            // 
+            this.tsm_Abs.Name = "tsm_Abs";
+            resources.ApplyResources(this.tsm_Abs, "tsm_Abs");
+            this.tsm_Abs.Click += new System.EventHandler(this.tsm_Abs_Click);
+            // 
+            // tsm_InsertAbs
+            // 
+            this.tsm_InsertAbs.Name = "tsm_InsertAbs";
+            resources.ApplyResources(this.tsm_InsertAbs, "tsm_InsertAbs");
+            this.tsm_InsertAbs.Click += new System.EventHandler(this.tsm_InsertAbs_Click);
             // 
             // contextMenuStrip2
             // 
-            resources.ApplyResources(this.contextMenuStrip2, "contextMenuStrip2");
             this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsm_SignCheck,
             this.tsm_SignSelf,
             this.tsm_SignPause,
             this.tsm_SignStop,
-            this.tsm_SignUpdate});
+            this.tsm_SignUpdate,
+            this.tsm_TestAbsCompensate,
+            this.tsm_TestAbs,
+            this.tsm_TestBaseAbs,
+            this.tsm_TestStanAbs});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
+            resources.ApplyResources(this.contextMenuStrip2, "contextMenuStrip2");
             this.contextMenuStrip2.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip2_Opening);
             // 
             // tsm_SignCheck
             // 
-            resources.ApplyResources(this.tsm_SignCheck, "tsm_SignCheck");
             this.tsm_SignCheck.Name = "tsm_SignCheck";
+            resources.ApplyResources(this.tsm_SignCheck, "tsm_SignCheck");
             this.tsm_SignCheck.Click += new System.EventHandler(this.tsm_SignCheck_Click);
             // 
             // tsm_SignSelf
             // 
-            resources.ApplyResources(this.tsm_SignSelf, "tsm_SignSelf");
             this.tsm_SignSelf.Name = "tsm_SignSelf";
+            resources.ApplyResources(this.tsm_SignSelf, "tsm_SignSelf");
             this.tsm_SignSelf.Click += new System.EventHandler(this.tsm_SignSelf_Click);
             // 
             // tsm_SignPause
             // 
-            resources.ApplyResources(this.tsm_SignPause, "tsm_SignPause");
             this.tsm_SignPause.Name = "tsm_SignPause";
+            resources.ApplyResources(this.tsm_SignPause, "tsm_SignPause");
             this.tsm_SignPause.Click += new System.EventHandler(this.tsm_SignPause_Click);
             // 
             // tsm_SignStop
             // 
-            resources.ApplyResources(this.tsm_SignStop, "tsm_SignStop");
             this.tsm_SignStop.Name = "tsm_SignStop";
+            resources.ApplyResources(this.tsm_SignStop, "tsm_SignStop");
             this.tsm_SignStop.Click += new System.EventHandler(this.tsm_SignStop_Click);
             // 
             // tsm_SignUpdate
             // 
-            resources.ApplyResources(this.tsm_SignUpdate, "tsm_SignUpdate");
             this.tsm_SignUpdate.Name = "tsm_SignUpdate";
+            resources.ApplyResources(this.tsm_SignUpdate, "tsm_SignUpdate");
             this.tsm_SignUpdate.Click += new System.EventHandler(this.tsm_SignUpdate_Click);
+            // 
+            // tsm_TestAbs
+            // 
+            this.tsm_TestAbs.Name = "tsm_TestAbs";
+            resources.ApplyResources(this.tsm_TestAbs, "tsm_TestAbs");
+            this.tsm_TestAbs.Click += new System.EventHandler(this.tsm_TestAbs_Click);
+            // 
+            // tsm_TestBaseAbs
+            // 
+            this.tsm_TestBaseAbs.Name = "tsm_TestBaseAbs";
+            resources.ApplyResources(this.tsm_TestBaseAbs, "tsm_TestBaseAbs");
+            this.tsm_TestBaseAbs.Click += new System.EventHandler(this.tsm_TestBaseAbs_Click);
+            // 
+            // tsm_TestStanAbs
+            // 
+            this.tsm_TestStanAbs.Name = "tsm_TestStanAbs";
+            resources.ApplyResources(this.tsm_TestStanAbs, "tsm_TestStanAbs");
+            this.tsm_TestStanAbs.Click += new System.EventHandler(this.tsm_TestStanAbs_Click);
             // 
             // panel4
             // 
@@ -180,6 +223,12 @@ namespace SmartDyeing.FADM_Control
             // 
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
+            // 
+            // tsm_TestAbsCompensate
+            // 
+            this.tsm_TestAbsCompensate.Name = "tsm_TestAbsCompensate";
+            resources.ApplyResources(this.tsm_TestAbsCompensate, "tsm_TestAbsCompensate");
+            this.tsm_TestAbsCompensate.Click += new System.EventHandler(this.tsm_TestAbsCompensate_Click);
             // 
             // MainBottle
             // 
@@ -228,5 +277,11 @@ namespace SmartDyeing.FADM_Control
         private Panel panel3;
         private Panel panel2;
         private Panel panel1;
+        private ToolStripMenuItem tsm_TestAbs;
+        private ToolStripMenuItem tsm_Abs;
+        private ToolStripMenuItem tsm_TestStanAbs;
+        private ToolStripMenuItem tsm_TestBaseAbs;
+        private ToolStripMenuItem tsm_InsertAbs;
+        private ToolStripMenuItem tsm_TestAbsCompensate;
     }
 }

@@ -18,18 +18,13 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
              *    4：Y轴未报警
              *    5：接液盘伸出状态
              */
-
-            if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1)
-            {
-                return 0;
-            }
-
-                bool bReset = false;
+            labelTop:
+            bool bReset = false;
             int iDecompressionDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Down);
             if (-1 == iDecompressionDown)
                 return -1;
-            else if (1 == iDecompressionDown)
-                return 0;
+            //else if (1 == iDecompressionDown)
+            //    return 0;
             else
             {
             lable:
@@ -54,6 +49,14 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
                 int iTrayOut = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Tray_Out);
                 if (-1 == iTrayOut)
                     return -1;
+                else if (0 == iTrayOut)
+                {
+                    //接液盘出
+                    Lib_Card.ADT8940A1.OutPut.Tray.Tray tray = new Lib_Card.ADT8940A1.OutPut.Tray.Tray_Condition();
+                    if (-1 == tray.Tray_On())
+                        return -1;
+                    goto labelTop;
+                }
 
                 if (0 == iXStatus && 0 == iYStatus && 0 == iXAlarm &&
                     0 == iYAlarm && 1 == iTrayOut)
@@ -92,16 +95,57 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
                             break;
                         if (bDelay)
                         {
-                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                s = CardObject.InsertD("泄压气缸下超时", "Decompression_Down");
+                            //s = CardObject.InsertD("泄压气缸下超时", "Decompression_Down");
+                            s = CardObject.InsertD("泄压气缸下超时，请检查，排除异常请点是，退出运行请点否", " Decompression_Down");
+                            while (true)
+                            {
+                                Thread.Sleep(1);
+                                if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
+                                    break;
+
+                            }
+                            int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                            CardObject.DeleteD(s);
+                            if (Alarm_Choose == 1)
+                            {
+                                goto lable;
+                            }
                             else
-                                s = CardObject.InsertD("Pressure relief cylinder down timeout", "Decompression_Down");
+                            {
+                                throw new Exception("泄压气缸下超时");
+                            }
                         }
+
 
                     }
 
-                    if (bDelay)
-                        Lib_Card.CardObject.DeleteD(s);
+                    //if (bDelay)
+                    //    Lib_Card.CardObject.DeleteD(s);
+
+                    int iDecompressionUp = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up);
+                    if (-1 == iDecompressionUp)
+                        return -1;
+                    else if (1 == iDecompressionUp)
+                    {
+                        s = CardObject.InsertD("泄压上信号已接通，请检查，确定无接通请点是，退出运行请点否", " Decompression_Down");
+                        while (true)
+                        {
+                            Thread.Sleep(1);
+                            if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
+                                break;
+
+                        }
+                        int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                        CardObject.DeleteD(s);
+                        if (Alarm_Choose == 1)
+                        {
+                            goto labelTop;
+                        }
+                        else
+                        {
+                            throw new Exception("泄压上信号已接通");
+                        }
+                    }
                     return 0;
 
                 }
@@ -129,12 +173,7 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
                         }
                         else
                         {
-                            string s;
-                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                s = CardObject.InsertD("接液盘未伸出，请检查，确定伸出请点是，退出运行请点否", " Decompression_Down");
-                            else
-                                s = CardObject.InsertD("The liquid tray is not extended, please check. If it is extended, please click Yes. If it is exited, please click No", " Decompression_Down");
-
+                            string s = CardObject.InsertD("接液盘未伸出，请检查，确定伸出请点是，退出运行请点否", " Decompression_Down");
                             while (true)
                             {
                                 Thread.Sleep(1);
@@ -142,8 +181,8 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
                                     break;
 
                             }
-                            CardObject.DeleteD(s);
                             int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                            CardObject.DeleteD(s);
                             if (Alarm_Choose == 1)
                             {
                                 bReset = false;
@@ -168,16 +207,13 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
              *    4：Y轴未报警
              *    5：接液盘伸出状态
              */
-            if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1)
-            {
-                return 0;
-            }
+            labelTop:
             bool bReset = false;
-            int iDecompressionDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up);
-            if (-1 == iDecompressionDown)
+            int iDecompressionUp = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up);
+            if (-1 == iDecompressionUp)
                 return -1;
-            else if (1 == iDecompressionDown)
-                return 0;
+            //else if (1 == iDecompressionDown)
+            //    return 0;
             else
             {
             lable:
@@ -197,12 +233,12 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
                 if (-1 == iYAlarm)
                     return -1;
 
-                int iTrayOut = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Tray_Out);
-                if (-1 == iTrayOut)
-                    return -1;
+                //int iTrayOut = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Tray_Out);
+                //if (-1 == iTrayOut)
+                //    return -1;
 
                 if (0 == iXStatus && 0 == iYStatus && 0 == iXAlarm &&
-                    0 == iYAlarm && 1 == iTrayOut)
+                    0 == iYAlarm /*&& 1 == iTrayOut*/)
                 {
                     int iRes = CardObject.OA1.WriteOutPut(ADT8940A1_IO.OutPut_Decompression, 0);
                     if (-1 == iRes)
@@ -231,23 +267,63 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
                     while (true)
                     {
                         Thread.Sleep(1);
-                        iDecompressionDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up);
-                        if (-1 == iDecompressionDown)
+                        iDecompressionUp = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up);
+                        if (-1 == iDecompressionUp)
                             return -1;
-                        else if (1 == iDecompressionDown)
+                        else if (1 == iDecompressionUp)
                             break;
                         if (bDelay)
                         {
-                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                s = CardObject.InsertD("泄压气缸上超时", "Decompression_Up");
+                            //s = CardObject.InsertD("泄压气缸上超时", "Decompression_Up");
+                            s = CardObject.InsertD("泄压气缸上超时，请检查，排除异常请点是，退出运行请点否", " Decompression_Up");
+                            while (true)
+                            {
+                                Thread.Sleep(1);
+                                if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
+                                    break;
+
+                            }
+                            int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                            CardObject.DeleteD(s);
+                            if (Alarm_Choose == 1)
+                            {
+                                goto lable;
+                            }
                             else
-                                s = CardObject.InsertD("Pressure relief cylinder Up timeout", "Decompression_Up");
+                            {
+                                throw new Exception("泄压气缸上超时");
+                            }
                         }
 
                     }
 
-                    if (bDelay)
-                        Lib_Card.CardObject.DeleteD(s);
+                    //if (bDelay)
+                    //    Lib_Card.CardObject.DeleteD(s);
+
+                    int iDecompressionDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Down);
+                    if (-1 == iDecompressionDown)
+                        return -1;
+                    else if (1 == iDecompressionDown)
+                    {
+                        s = CardObject.InsertD("泄压下信号已接通，请检查，确定无接通请点是，退出运行请点否", " Decompression_Up");
+                        while (true)
+                        {
+                            Thread.Sleep(1);
+                            if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
+                                break;
+
+                        }
+                        int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                        CardObject.DeleteD(s);
+                        if (Alarm_Choose == 1)
+                        {
+                            goto labelTop;
+                        }
+                        else
+                        {
+                            throw new Exception("泄压下信号已接通");
+                        }
+                    }
                     return 0;
 
                 }
@@ -265,42 +341,39 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
                     else if (1 == iYAlarm)
                         throw new Exception("Y轴伺服器报警");
 
-                    else
-                    {
-                        if (!bReset)
-                        {
-                            Thread.Sleep(1000);
-                            bReset = true;
-                            goto lable;
-                        }
-                        else
-                        {
-                            string s;
-                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                s = CardObject.InsertD("接液盘未伸出，请检查，确定伸出请点是，退出运行请点否", " Decompression_Up");
-                            else
-                                s = CardObject.InsertD("The liquid tray is not extended, please check. If it is extended, please click Yes. If it is exited, please click No", " Decompression_Up");
+                    return 0;
 
-                            while (true)
-                            {
-                                Thread.Sleep(1);
-                                if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
-                                    break;
+                    //else
+                    //{
+                    //    if (!bReset)
+                    //    {
+                    //        Thread.Sleep(1000);
+                    //        bReset = true;
+                    //        goto lable;
+                    //    }
+                    //    else
+                    //    {
+                    //        string s = CardObject.InsertD("接液盘未伸出，请检查，确定伸出请点是，退出运行请点否", " Decompression_Up");
+                    //        while (true)
+                    //        {
+                    //            Thread.Sleep(1);
+                    //            if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
+                    //                break;
 
-                            }
-                            CardObject.DeleteD(s);
-                            int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
-                            if (Alarm_Choose == 1)
-                            {
-                                bReset = false;
-                                goto lable;
-                            }
-                            else
-                            {
-                                throw new Exception("接液盘未伸出");
-                            }
-                        }
-                    }
+                    //        }
+                    //        int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                    //        CardObject.DeleteD(s);
+                    //        if (Alarm_Choose == 1)
+                    //        {
+                    //            bReset = false;
+                    //            goto lable;
+                    //        }
+                    //        else
+                    //        {
+                    //            throw new Exception("接液盘未伸出");
+                    //        }
+                    //    }
+                    //}
                 }
             }
         }
@@ -314,10 +387,7 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
              *    4：Y轴未报警
              *    5：接液盘伸出状态
              */
-            if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1)
-            {
-                return 0;
-            }
+
             bool bReset = false;
             int iDecompressionDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Down_Right);
             if (-1 == iDecompressionDown)
@@ -386,17 +456,30 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
                             break;
                         if (bDelay)
                         {
-                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                s = CardObject.InsertD("泄压气缸下超时", "Decompression_Down_Right");
-                            else
-                                s = CardObject.InsertD("Pressure relief cylinder Down timeout", "Decompression_Down_Right");
+                            s = CardObject.InsertD("泄压气缸下超时，请检查，排除异常请点是，退出运行请点否", " Decompression_Down_Right");
+                            while (true)
+                            {
+                                Thread.Sleep(1);
+                                if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
+                                    break;
 
+                            }
+                            int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                            CardObject.DeleteD(s);
+                            if (Alarm_Choose == 1)
+                            {
+                                goto lable;
+                            }
+                            else
+                            {
+                                throw new Exception("泄压气缸下超时");
+                            }
                         }
 
                     }
 
-                    if (bDelay)
-                        Lib_Card.CardObject.DeleteD(s);
+                    //if (bDelay)
+                    //    Lib_Card.CardObject.DeleteD(s);
                     return 0;
 
                 }
@@ -424,12 +507,7 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
                         }
                         else
                         {
-                            string s;
-                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                s = CardObject.InsertD("接液盘未伸出，请检查，确定伸出请点是，退出运行请点否", " Decompression_Down_Right");
-                            else
-                                s = CardObject.InsertD("The liquid tray is not extended, please check. If it is extended, please click Yes. If it is exited, please click No", " Decompression_Down_Right");
-
+                            string s = CardObject.InsertD("接液盘未伸出，请检查，确定伸出请点是，退出运行请点否", " Decompression_Down_Right");
                             while (true)
                             {
                                 Thread.Sleep(1);
@@ -437,8 +515,8 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
                                     break;
 
                             }
-                            CardObject.DeleteD(s);
                             int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                            CardObject.DeleteD(s);
                             if (Alarm_Choose == 1)
                             {
                                 bReset = false;
@@ -463,10 +541,7 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
              *    4：Y轴未报警
              *    5：接液盘伸出状态
              */
-            if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1)
-            {
-                return 0;
-            }
+
             bool bReset = false;
             int iDecompressionDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Decompression_Up_Right);
             if (-1 == iDecompressionDown)
@@ -533,17 +608,31 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
                             break;
                         if (bDelay)
                         {
-                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                s = CardObject.InsertD("泄压气缸上超时", "Decompression_Up_Right");
-                            else
-                                s = CardObject.InsertD("Pressure relief cylinder Up timeout", "Decompression_Up_Right");
+                            //s = CardObject.InsertD("泄压气缸上超时", "Decompression_Up_Right");
+                            s = CardObject.InsertD("泄压气缸上超时，请检查，排除异常请点是，退出运行请点否", " Decompression_Up_Right");
+                            while (true)
+                            {
+                                Thread.Sleep(1);
+                                if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
+                                    break;
 
+                            }
+                            int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                            CardObject.DeleteD(s);
+                            if (Alarm_Choose == 1)
+                            {
+                                goto lable;
+                            }
+                            else
+                            {
+                                throw new Exception("泄压气缸上超时");
+                            }
                         }
 
                     }
 
-                    if (bDelay)
-                        Lib_Card.CardObject.DeleteD(s);
+                    //if (bDelay)
+                    //    Lib_Card.CardObject.DeleteD(s);
                     return 0;
 
                 }
@@ -571,12 +660,7 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
                         }
                         else
                         {
-                            string s;
-                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                s = CardObject.InsertD("接液盘未伸出，请检查，确定伸出请点是，退出运行请点否", " Decompression_Up_Right");
-                            else
-                                s = CardObject.InsertD("The liquid tray is not extended, please check. If it is extended, please click Yes. If it is exited, please click No", " Decompression_Up_Right");
-
+                            string s = CardObject.InsertD("接液盘未伸出，请检查，确定伸出请点是，退出运行请点否", " Decompression_Up_Right");
                             while (true)
                             {
                                 Thread.Sleep(1);
@@ -584,8 +668,8 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
                                     break;
 
                             }
-                            CardObject.DeleteD(s);
                             int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                            CardObject.DeleteD(s);
                             if (Alarm_Choose == 1)
                             {
                                 bReset = false;

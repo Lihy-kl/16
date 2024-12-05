@@ -217,6 +217,15 @@
   <data name="groupBox2.Text" xml:space="preserve">
     <value>BalanceMonitoring</value>
   </data>
+  <data name="ChkInPut_Back.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <data name="ChkInPut_Back.Size" type="System.Drawing.Size, System.Drawing">
+    <value>78, 16</value>
+  </data>
+  <data name="ChkInPut_Back.Text" xml:space="preserve">
+    <value>BackLight</value>
+  </data>
   <data name="ChkInPut_Slow_Mid.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 9pt</value>
   </data>

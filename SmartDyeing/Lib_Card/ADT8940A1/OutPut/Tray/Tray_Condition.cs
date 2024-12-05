@@ -17,14 +17,14 @@ namespace Lib_Card.ADT8940A1.OutPut.Tray
              *    2：气缸在上限位
              */
 
-           
-           
+
+            labelTop:
             bool  bReset = false;
             int iTrayIn = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Tray_In);
             if (-1 == iTrayIn)
                 return -1;
-            else if (1 == iTrayIn)
-                return 0;
+            //else if (1 == iTrayIn)
+            //    return 0;
             else
             {
                 lable:
@@ -37,6 +37,23 @@ namespace Lib_Card.ADT8940A1.OutPut.Tray
                 int iCylinderUp = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Up);
                 if (-1 == iCylinderUp)
                     return -1;
+                int iCylinderDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Down);
+                if (-1 == iCylinderDown)
+                    return -1;
+                if (iCylinderUp == 0 || iCylinderDown == 1)
+                {
+                    //气缸上
+                    OutPut.Cylinder.Cylinder cylinder;
+                    if (0 == Lib_Card.Configure.Parameter.Machine_CylinderVersion)
+                        cylinder = new OutPut.Cylinder.SingleControl.Cylinder_Condition();
+                    else
+                        cylinder = new OutPut.Cylinder.DualControl.Cylinder_Condition();
+
+                    if (-1 == cylinder.CylinderUp(0))
+                        return -1;
+
+                    goto labelTop;
+                }
 
                 if (0 == iZStatus && 1 == iCylinderUp)
                 {
@@ -74,16 +91,57 @@ namespace Lib_Card.ADT8940A1.OutPut.Tray
                             break;
                         if (bDelay)
                         {
-                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                s = CardObject.InsertD("接液盘伸出超时", "Tray_Off");
-                            else
-                                s = CardObject.InsertD("Liquid tray extension timeout", "Tray_Off");
+                            //s = CardObject.InsertD("接液盘收回超时", "Tray_Off");
+                            s = CardObject.InsertD("接液盘收回超时，请检查，排除异常请点是，退出运行请点否", " Tray_On");
+                            while (true)
+                            {
+                                Thread.Sleep(1);
+                                if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
+                                    break;
 
+                            }
+                            int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                            CardObject.DeleteD(s);
+                            if (Alarm_Choose == 1)
+                            {
+                                goto lable;
+                            }
+                            else
+                            {
+                                throw new Exception("接液盘收回超时");
+                            }
                         }
 
                     }
+                    //if(bDelay)
+                    //Lib_Card.CardObject.DeleteD(s);
 
-                    Lib_Card.CardObject.DeleteD(s);
+                    //再判断一下接液盘回信号是否有，有就提示，要手动确认没问题才可以继续
+                    int iTrayOut = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Tray_Out);
+                    if (-1 == iTrayOut)
+                        return -1;
+                    else if (1 == iTrayOut)
+                    {
+                        s = CardObject.InsertD("接液盘出信号已接通，请检查，确定无接通请点是，退出运行请点否", " Tray_Off");
+                        while (true)
+                        {
+                            Thread.Sleep(1);
+                            if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
+                                break;
+
+                        }
+                        int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                        CardObject.DeleteD(s);
+                        if (Alarm_Choose == 1)
+                        {
+                            goto labelTop;
+                        }
+                        else
+                        {
+                            throw new Exception("接液盘出信号已接通");
+                        }
+                    }
+
                     return 0;
 
                 }
@@ -102,11 +160,7 @@ namespace Lib_Card.ADT8940A1.OutPut.Tray
                         }
                         else
                         {
-                            string s;
-                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                s = CardObject.InsertD("气缸未在上限位，请检查，确定到位请点是，退出运行请点否", " Tray_Off");
-                            else
-                                s = CardObject.InsertD("The cylinder is not in the upper limit position, please check. If it is in place, please click Yes. If it is out of operation, please click No", " Tray_Off");
+                            string s = CardObject.InsertD("气缸未在上限位，请检查，确定到位请点是，退出运行请点否", " Tray_On");
                             while (true)
                             {
                                 Thread.Sleep(1);
@@ -114,8 +168,8 @@ namespace Lib_Card.ADT8940A1.OutPut.Tray
                                     break;
 
                             }
-                            CardObject.DeleteD(s);
                             int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                            CardObject.DeleteD(s);
                             if (Alarm_Choose == 1)
                             {
                                 
@@ -136,19 +190,19 @@ namespace Lib_Card.ADT8940A1.OutPut.Tray
 
         public override int Tray_On()
         {
-            /* 条件
-            *    1：Z轴未运行
-            *    2：气缸在上限位
-            */
+        /* 条件
+        *    1：Z轴未运行
+        *    2：气缸在上限位
+        */
 
-         
-          
+
+        labelTop:
             bool bReset = false;
             int iTrayOut = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Tray_Out);
             if (-1 == iTrayOut)
                 return -1;
-            else if (1 == iTrayOut)
-                return 0;
+            //else if (1 == iTrayOut)
+            //    return 0;
             else
             {
                 lable:
@@ -161,6 +215,23 @@ namespace Lib_Card.ADT8940A1.OutPut.Tray
                 int iCylinderUp = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Up);
                 if (-1 == iCylinderUp)
                     return -1;
+                int iCylinderDown = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Down);
+                if (-1 == iCylinderDown)
+                    return -1;
+                if(iCylinderUp==0 || iCylinderDown==1)
+                {
+                    //气缸上
+                    OutPut.Cylinder.Cylinder cylinder;
+                    if (0 == Lib_Card.Configure.Parameter.Machine_CylinderVersion)
+                        cylinder = new OutPut.Cylinder.SingleControl.Cylinder_Condition();
+                    else
+                        cylinder = new OutPut.Cylinder.DualControl.Cylinder_Condition();
+
+                    if (-1 == cylinder.CylinderUp(0))
+                        return -1;
+
+                    goto labelTop;
+                }
 
                 if (0 == iZStatus && 1 == iCylinderUp)
                 {
@@ -198,15 +269,56 @@ namespace Lib_Card.ADT8940A1.OutPut.Tray
                             break;
                         if (bDelay)
                         {
-                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                s = CardObject.InsertD("接液盘伸出超时", "Tray_On");
+                            //s = CardObject.InsertD("接液盘伸出超时", "Tray_On");
+                            s = CardObject.InsertD("接液盘伸出超时，请检查，排除异常请点是，退出运行请点否", " Tray_On");
+                            while (true)
+                            {
+                                Thread.Sleep(1);
+                                if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
+                                    break;
+
+                            }
+                            int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                            CardObject.DeleteD(s);
+                            if (Alarm_Choose == 1)
+                            {
+                                goto lable;
+                            }
                             else
-                                s = CardObject.InsertD("Liquid tray extension timeout", "Tray_On");
+                            {
+                                throw new Exception("接液盘伸出超时");
+                            }
+                        }
+                        
+                    }
+                    //if (bDelay)
+                    //    Lib_Card.CardObject.DeleteD(s);
+
+                    //再判断一下接液盘回信号是否有，有就提示，要手动确认没问题才可以继续
+                    int iTrayIn = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Tray_In);
+                    if (-1 == iTrayIn)
+                        return -1;
+                    else if (1 == iTrayIn)
+                    {
+                        s = CardObject.InsertD("接液盘回信号已接通，请检查，确定无接通请点是，退出运行请点否", " Tray_On");
+                        while (true)
+                        {
+                            Thread.Sleep(1);
+                            if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
+                                break;
 
                         }
+                        int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                        CardObject.DeleteD(s);
+                        if (Alarm_Choose == 1)
+                        {
+                            goto labelTop;
+                        }
+                        else
+                        {
+                            throw new Exception("接液盘回信号已接通");
+                        }
                     }
-
-                   Lib_Card.CardObject.DeleteD(s);
                     return 0;
 
                 }
@@ -225,11 +337,7 @@ namespace Lib_Card.ADT8940A1.OutPut.Tray
                         }
                         else
                         {
-                            string s;
-                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                s = CardObject.InsertD("气缸未在上限位，请检查，确定到位请点是，退出运行请点否", " Tray_On");
-                            else
-                                s = CardObject.InsertD("The cylinder is not in the upper limit position, please check. If it is in place, please click Yes. If it is out of operation, please click No", " Tray_On");
+                            string s = CardObject.InsertD("气缸未在上限位，请检查，确定到位请点是，退出运行请点否", " Tray_On");
                             while (true)
                             {
                                 Thread.Sleep(1);
@@ -237,8 +345,8 @@ namespace Lib_Card.ADT8940A1.OutPut.Tray
                                     break;
 
                             }
-                            CardObject.DeleteD(s);
                             int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                            CardObject.DeleteD(s);
                             if (Alarm_Choose == 1)
                             {
                                 bReset = false;

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Data;
+using System.Windows.Forms.VisualStyles;
+using SmartDyeing.FADM_Control;
 
 namespace SmartDyeing.FADM_Object
 {
@@ -29,7 +31,7 @@ namespace SmartDyeing.FADM_Object
                                 {
                                     if (this[4, this.CurrentRow.Index].Value.ToString() == "%")
                                     {
-                                        if (this[3, this.CurrentRow.Index].Value!=null && this[3, this.CurrentRow.Index].Value.ToString() != "" && Convert.ToDouble(this[3, this.CurrentRow.Index].Value.ToString()) > Lib_Card.Configure.Parameter.Other_DyeAlarmWeight)
+                                        if (this[3, this.CurrentRow.Index].Value != null && this[3, this.CurrentRow.Index].Value.ToString() != "" && Convert.ToDouble(this[3, this.CurrentRow.Index].Value.ToString()) > Lib_Card.Configure.Parameter.Other_DyeAlarmWeight)
                                         {
                                             if (Lib_Card.Configure.Parameter.Other_Language == 0)
                                                 FADM_Form.CustomMessageBox.Show("输入配方用量过大", "MyDataGridView", MessageBoxButtons.OK, true);
@@ -40,8 +42,8 @@ namespace SmartDyeing.FADM_Object
                                     }
                                     else
                                     {
-                                         
-                                        if (this[3, this.CurrentRow.Index].Value!=null && this[3, this.CurrentRow.Index].Value.ToString()!="" && Convert.ToDouble(this[3, this.CurrentRow.Index].Value.ToString()) > Lib_Card.Configure.Parameter.Other_AdditivesAlarmWeight)
+
+                                        if (this[3, this.CurrentRow.Index].Value != null && this[3, this.CurrentRow.Index].Value.ToString() != "" && Convert.ToDouble(this[3, this.CurrentRow.Index].Value.ToString()) > Lib_Card.Configure.Parameter.Other_AdditivesAlarmWeight)
                                         {
                                             if (Lib_Card.Configure.Parameter.Other_Language == 0)
                                                 FADM_Form.CustomMessageBox.Show("输入配方用量过大", "MyDataGridView", MessageBoxButtons.OK, true);
@@ -113,7 +115,7 @@ namespace SmartDyeing.FADM_Object
 
                                             }
                                         }
-                                        else 
+                                        else
                                         {
                                             if (DialogResult.OK == FADM_Form.CustomMessageBox.Show(this.CurrentRow.Cells[1].Value.ToString() +
                                             " Dyeing agent code does not exist, please re-enter！", "Input exception", MessageBoxButtons.OK, false))
@@ -167,8 +169,27 @@ namespace SmartDyeing.FADM_Object
 
                                     if (dt_assistant.Rows.Count > 0)
                                     {
+                                        List<string> lis_bottleNum = new List<string>();
                                         this.CurrentRow.Cells[2].Value = dt_assistant.Rows[0]["AssistantName"].ToString();
-                                        this.CurrentRow.Cells[4].Value = dt_assistant.Rows[0]["UnitOfAccount"].ToString();
+                                        string UnitOfAccount = dt_assistant.Rows[0]["UnitOfAccount"].ToString();
+
+                                        DataGridViewComboBoxCell dd = (DataGridViewComboBoxCell)this[4, i_row];
+                                        if (UnitOfAccount.Equals("%"))
+                                        {
+                                            lis_bottleNum.Add("%");
+                                        }
+                                        else if (UnitOfAccount.Equals("g/l"))
+                                        {
+                                            lis_bottleNum.Add("g/l");
+                                            lis_bottleNum.Add("%");
+                                        }
+                                        else
+                                        {
+                                            lis_bottleNum.Add(UnitOfAccount);
+                                        }
+                                        dd.DataSource = lis_bottleNum;
+                                        dd.Value = lis_bottleNum[0].ToString();
+
                                     }
                                 }
                             }
@@ -302,10 +323,209 @@ namespace SmartDyeing.FADM_Object
 
                             }
 
-                            this.CurrentCell = this[i_col, i_row+1];
+                            this.CurrentCell = this[i_col, i_row + 1];
 
                         }
                     }
+                    else if (this.Name.Contains("dgv_dyconfiglisg")) //工艺步骤这里跳表格要判断下 不同工艺
+                    {  //处理工艺步骤填写内容
+                        Console.WriteLine(1);
+                        int i_col = this.CurrentCell.ColumnIndex;  //列
+                        int i_row = this.CurrentCell.RowIndex;  //行
+                        ;
+                        int R = i_row;
+                        int C = i_col;
+                        for (int i = 0; i < this.Rows.Count; i++)
+                        {
+                            if (R > this.Rows.Count - 1)
+                            {
+                                //最后一行最后一个格子结束
+                                break;
+                            }
+
+                            string cellV = this[1, R].Value.ToString();//当前行的步骤名称
+                            if ("放布".Equals(cellV))
+                            {
+                                R = R + 1;
+                                C = 1;
+                                continue;
+                            }
+                            else if ("冷行".Equals(cellV))
+                            {
+
+                                if (C == 4)
+                                {
+                                    C = 5;
+                                    break;
+                                }
+                                else if (C == 5)
+                                {
+                                    R = R + 1;
+                                    C = 1;
+                                    continue;
+                                }
+                                else
+                                { //不是4或者5的列，就跳到4上
+                                    C = 4;
+                                    break;
+                                }
+                            }
+                            else if ("温控".Equals(cellV))
+                            {
+                                if (C == 2)
+                                {
+                                    C = 3;
+                                    break;
+                                }
+                                else if (C == 3)
+                                {
+                                    C = 4;
+                                    break;
+                                }
+                                else if (C == 4)
+                                {
+                                    C = 5;
+                                    break;
+                                }
+                                else if (C == 5)
+                                {
+                                    R = R + 1;
+                                    C = 1;
+                                    continue;
+                                }
+                                else
+                                {
+                                    C = 2;
+                                    break;
+                                }
+                            }
+                            else if (cellV.Trim().Equals("加A") || cellV.Trim().Equals("加B") || cellV.Trim().Equals("加C") || cellV.Trim().Equals("加D") || cellV.Trim().Equals("加E") || cellV.Trim().Equals("加F") || cellV.Trim().Equals("加G") || cellV.Trim().Equals("加H") || cellV.Trim().Equals("加I") || cellV.Trim().Equals("加J") || cellV.Trim().Equals("加K") || cellV.Trim().Equals("加L") || cellV.Trim().Equals("加M") || cellV.Trim().Equals("加N"))
+                            {
+                                /* if (C == 4)
+                                 {
+                                     C = 5;
+                                     break;
+                                 }*/
+                                if (C == 5)
+                                {
+                                    R = R + 1;
+                                    C = 1;
+                                    continue;
+                                }
+                                else
+                                { //不是4或者5的列，就跳到4上
+                                    C = 5;
+                                    break;
+                                }
+                            }
+                            else if ("加水".Equals(cellV))
+                            {
+                                if (C == 4)
+                                {
+                                    C = 5;
+                                    break;
+                                }
+                                else if (C == 5)
+                                {
+                                    R = R + 1;
+                                    C = 1;
+                                    continue;
+                                }
+                                else
+                                { //不是4或者5的列，就跳到4上
+                                    C = 4;
+                                    break;
+                                }
+                            }
+                            else if ("搅拌".Equals(cellV))
+                            {
+                                if (C == 4)
+                                {
+                                    C = 5;
+                                    break;
+                                }
+                                else if (C == 5)
+                                {
+                                    R = R + 1;
+                                    C = 1;
+                                    continue;
+                                }
+                                else
+                                { //不是4或者5的列，就跳到4上
+                                    C = 4;
+                                    break;
+                                }
+                            }
+                            else if ("排液".Equals(cellV))
+                            {
+                                if (C == 5)
+                                {
+                                    R = R + 1;
+                                    C = 1;
+                                    continue;
+                                }
+                                else
+                                { //不是4或者5的列，就跳到4上
+                                    C = 5;
+                                    break;
+                                }
+                            }
+                            else if ("出布".Equals(cellV))
+                            {
+                                R = R + 1;
+                                C = 1;
+                                continue;
+                            }
+                            else if ("洗杯".Equals(cellV))
+                            {
+                                if (C == 4)
+                                {
+                                    C = 5;
+                                    break;
+                                }
+                                else if (C == 5)
+                                {
+                                    R = R + 1;
+                                    C = 1;
+                                    continue;
+                                }
+                                else
+                                { //不是4或者5的列，就跳到4上
+                                    C = 4;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (R > this.Rows.Count - 1)
+                        {
+                            //最后一行最后一个格子结束
+                            //this.Enabled = false;
+
+                            string s_temp = this.Name.Split('_')[2];
+                            FADM_Control.myDyeingConfiguration s = FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp) - 1).ToString()];
+                            if (s.dgv_Dye.Rows.Count != 0)
+                            {
+                                s.dgv_Dye.Enabled = true;
+                                s.dgv_Dye.CurrentCell = s.dgv_Dye[1, 0];
+                                s.dgv_Dye.Focus();
+                            }
+                            else
+                            {
+                                //没有需要填写加A加B 就跳到下一个工艺选择 com上
+                                //==0个
+                                myDyeSelect d = FADM_Control.Formula.myDyeSelectList[Convert.ToInt32(s_temp)];
+                                d.dy_type_comboBox1.Focus();
+                            }
+
+                        }
+                        else
+                        {
+                            this.CurrentCell = this[C, R];
+                        }
+
+
+                    } ///------------------------------------
                     else
                     {
                         int i_col = this.CurrentCell.ColumnIndex;
@@ -343,7 +563,7 @@ namespace SmartDyeing.FADM_Object
                                 }
                             }
 
-                                i_col = 0;
+                            i_col = 0;
 
                             //if (_i_row == this.NewRowIndex)
                             //{
@@ -372,15 +592,98 @@ namespace SmartDyeing.FADM_Object
                             //    }
 
                             //}
-                            if (i_row != this.Rows.Count - 1)
+
+                            if (this.Parent.Text.Contains("后处理工艺"))
                             {
-                                i_row++;
-                                this.CurrentCell = this[i_col + 1, i_row];
+                                if (this[1, i_row].Value == null)
+                                {
+                                    if (i_row != this.Rows.Count - 1)
+                                    {
+                                        i_row++;
+                                        this.CurrentCell = this[i_col + 1, i_row];
+                                    }
+                                    else
+                                    {
+                                        //是不是直接跳到保存上
+
+                                        string s_temp = this.Name;
+                                        myDyeSelect d = FADM_Control.Formula.myDyeSelectList[Convert.ToInt32(s_temp)];
+                                        d.dy_type_comboBox1.Focus();
+
+                                        if (FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp) - 1).ToString()].Visible)
+                                        { //隐藏
+
+                                            Label la = (Label)FADM_Control.Formula.isHiSo[Convert.ToInt32(s_temp) - 1];
+                                            string s_temp2 = la.Name;
+                                            if (FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Visible)
+                                            { //隐藏
+                                                FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Hide();
+                                                la.Text = "▲                                                                                  ";
+                                            }
+                                            else
+                                            {
+                                                FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Show();
+                                                la.Text = "▼                                                                                  ";
+                                            }
+                                            // FADM_Control.Formula.DyeingConHS(FADM_Control.Formula.isHiSo[Convert.ToInt32(s_temp)-1], null);
+
+                                        }
+
+                                    }
+                                }
+                                else
+                                {
+                                    i_row++;
+                                    //回车不跳到下一行 新增一行 如果这一行都没有内容就跳到加B上
+                                    this.Rows.Insert(i_row);
+                                    this.CurrentCell = this[1, i_row];
+                                    this.Height = this.Height + 30;
+                                    this.Parent.Height = this.Parent.Height + 30;
+                                    this.Parent.Parent.Height = this.Parent.Parent.Height + 30;
+                                }
+
                             }
                             else
                             {
-                                this.CurrentCell.Selected = false;
+                                if (i_row != this.Rows.Count - 1)
+                                {
+                                    i_row++;
+                                    this.CurrentCell = this[i_col + 1, i_row];
+                                }
+                                else
+                                {
+                                    this.CurrentCell.Selected = false;
+
+                                    if (this.Parent.Text.Contains("染色工艺")) {
+                                        string s_temp = this.Name;
+                                        myDyeSelect d = FADM_Control.Formula.myDyeSelectList[Convert.ToInt32(s_temp)];
+                                        d.dy_type_comboBox1.Focus();
+                                        if (FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp) - 1).ToString()].Visible)
+                                        { //隐藏
+
+                                            Label la = (Label)FADM_Control.Formula.isHiSo[Convert.ToInt32(s_temp) - 1];
+                                            string s_temp2 = la.Name;
+                                            if (FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Visible)
+                                            { //隐藏
+                                                FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Hide();
+                                                la.Text = "▲                                                                                  ";
+                                            }
+                                            else
+                                            {
+                                                FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Show();
+                                                la.Text = "▼                                                                                  ";
+                                            }
+                                        }
+
+                                    }
+                                   
+
+                                }
                             }
+
+
+
+
                         }
                         else if (i_col == 1)
                         {
@@ -436,11 +739,50 @@ namespace SmartDyeing.FADM_Object
 
                                 if (dt_assistant.Rows.Count > 0)
                                 {
+                                    List<string> lis_bottleNum = new List<string>();
                                     this.CurrentRow.Cells[2].Value = dt_assistant.Rows[0]["AssistantName"].ToString();
-                                    this.CurrentRow.Cells[4].Value = dt_assistant.Rows[0]["UnitOfAccount"].ToString();
+                                    string UnitOfAccount = dt_assistant.Rows[0]["UnitOfAccount"].ToString();
+                                    DataGridViewComboBoxCell dd = (DataGridViewComboBoxCell)this[4, i_row];
+                                    if (UnitOfAccount.Equals("%"))
+                                    {
+                                        lis_bottleNum.Add("%");
+                                    }
+                                    else if (UnitOfAccount.Equals("g/l"))
+                                    {
+                                        lis_bottleNum.Add("g/l");
+                                        lis_bottleNum.Add("%");
+                                    }
+                                    else
+                                    {
+                                        lis_bottleNum.Add(UnitOfAccount);
+                                    }
+                                    dd.DataSource = lis_bottleNum;
+                                    dd.Value = lis_bottleNum[0].ToString();
                                 }
 
                                 this.CurrentCell = this[i_col + 2, i_row];
+                            }
+                            else if (this.Parent.Text.Contains("后处理工艺"))
+                            {
+                                this.CurrentCell = this[i_col + 2, i_row];
+                                if (i_row != this.Rows.Count - 1)
+                                {
+                                    // i_row++;
+
+                                }
+                                else
+                                {
+                                    if (this.CurrentRow.Cells[0].Value != null && this.CurrentRow.Cells[0].Value.ToString() != "")
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        this.CurrentCell.Selected = false;
+                                        //  this.Enabled = false;//这里直接退出？
+                                    }
+                                    // this.CurrentCell.Selected = false;
+                                }
                             }
 
                         }
@@ -462,8 +804,32 @@ namespace SmartDyeing.FADM_Object
                 case Keys.Delete:
                     try
                     {
-                        if (this.Name == "dgv_FormulaData" || this.Name == "dgv_FormulaGroup")
+                        if (this.Name == "dgv_FormulaData" || this.Name == "dgv_FormulaGroup") {
                             this.Rows.Remove(this.CurrentRow);
+                        } else if (this.AccessibleName == "dye" && this.Parent.Text.Contains("后处理") ) { //第一个单元格没有加A 就证明可以删除
+                            int i_col = this.CurrentCell.ColumnIndex;
+                            int i_row = this.CurrentCell.RowIndex;
+                            if (this.CurrentRow.Cells[0].Value == null || this.CurrentRow.Cells[0].Value.ToString().Length == 0)
+                            {
+                                this.Rows.Remove(this.CurrentRow);
+                            }
+                            else {
+                                //遍历看下 是否有重复的
+                                string cellV = this.CurrentRow.Cells[0].Value.ToString();
+                                int count = 0;
+                                foreach (DataGridViewRow dgvr in this.Rows) {
+                                    if (dgvr.Cells[0].Value!=null && dgvr.Cells[0].Value.ToString().Length>0 && dgvr.Cells[0].Value.ToString().Equals(cellV)) {
+                                        count++;
+                                    }
+                                }
+                                if (count >= 2) {
+                                    this.Rows.Remove(this.CurrentRow);
+                                }
+                            }
+                        }
+
+
+                            
                     }
                     catch
                     {
@@ -566,7 +932,6 @@ namespace SmartDyeing.FADM_Object
                                     this.CurrentCell.Selected = false;
                                     return;
                                 }
-
                             }
                             i_row++;
                             this[i_col, i_row].Value = i_row + 1;
@@ -595,7 +960,7 @@ namespace SmartDyeing.FADM_Object
                                                 {
                                                     this.CurrentRow.Cells[i].Value = null;
                                                 }
-                                                return ;
+                                                return;
 
                                             }
                                         }
@@ -608,7 +973,7 @@ namespace SmartDyeing.FADM_Object
                                                 {
                                                     this.CurrentRow.Cells[i].Value = null;
                                                 }
-                                                return ;
+                                                return;
 
                                             }
                                         }
@@ -631,7 +996,7 @@ namespace SmartDyeing.FADM_Object
                                                         {
                                                             this.CurrentRow.Cells[i].Value = null;
                                                         }
-                                                        return ;
+                                                        return;
                                                     }
                                                 }
                                                 else
@@ -781,7 +1146,7 @@ namespace SmartDyeing.FADM_Object
                             {
 
                             }
-                            this.CurrentCell = this[i_col, i_row+1];
+                            this.CurrentCell = this[i_col, i_row + 1];
                         }
                     }
                     else

@@ -38,50 +38,6 @@ namespace SmartDyeing.FADM_Control
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.grp_BatchData = new System.Windows.Forms.GroupBox();
             this.dgv_BatchData = new System.Windows.Forms.DataGridView();
-            this.grp_FormulaData = new System.Windows.Forms.GroupBox();
-            this.txt_Operator = new System.Windows.Forms.TextBox();
-            this.txt_FormulaGroup = new System.Windows.Forms.ComboBox();
-            this.lab_FormulaGroup = new System.Windows.Forms.Label();
-            this.txt_AnhydrationWR = new System.Windows.Forms.TextBox();
-            this.lab_AnhydrationWR = new System.Windows.Forms.Label();
-            this.txt_Non_AnhydrationWR = new System.Windows.Forms.TextBox();
-            this.lab_Non_AnhydrationWR = new System.Windows.Forms.Label();
-            this.txt_DyeingCode = new System.Windows.Forms.ComboBox();
-            this.lab_DyeingCode = new System.Windows.Forms.Label();
-            this.dgv_FormulaData = new SmartDyeing.FADM_Object.MyDataGridView();
-            this.Index = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AssistantCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AssistantName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FormulaDosage = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.UnitOfAccount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.SettingConcentration = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RealConcentration = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ObjectDropWeight = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RealDropWeight = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BottleSelection = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.txt_CupNum = new System.Windows.Forms.TextBox();
-            this.txt_ClothType = new System.Windows.Forms.TextBox();
-            this.txt_CreateTime = new System.Windows.Forms.TextBox();
-            this.txt_TotalWeight = new System.Windows.Forms.TextBox();
-            this.txt_BathRatio = new System.Windows.Forms.TextBox();
-            this.txt_ClothWeight = new System.Windows.Forms.TextBox();
-            this.chk_AddWaterChoose = new System.Windows.Forms.CheckBox();
-            this.txt_Customer = new System.Windows.Forms.TextBox();
-            this.txt_FormulaName = new System.Windows.Forms.TextBox();
-            this.txt_State = new System.Windows.Forms.TextBox();
-            this.txt_VersionNum = new System.Windows.Forms.TextBox();
-            this.txt_FormulaCode = new System.Windows.Forms.TextBox();
-            this.lab_CreateTime = new System.Windows.Forms.Label();
-            this.lab_CupNum = new System.Windows.Forms.Label();
-            this.lab_Operator = new System.Windows.Forms.Label();
-            this.lab_TotalWeight = new System.Windows.Forms.Label();
-            this.lab_BathRatio = new System.Windows.Forms.Label();
-            this.lab_ClothWeight = new System.Windows.Forms.Label();
-            this.lab_Customer = new System.Windows.Forms.Label();
-            this.lab_ClothType = new System.Windows.Forms.Label();
-            this.lab_FormulaName = new System.Windows.Forms.Label();
-            this.lab_FormulaCode = new System.Windows.Forms.Label();
             this.btn_FormulaCodeAdd = new System.Windows.Forms.Button();
             this.btn_Save = new System.Windows.Forms.Button();
             this.btn_BatchAdd = new System.Windows.Forms.Button();
@@ -107,32 +63,78 @@ namespace SmartDyeing.FADM_Control
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.grp_FormulaData = new System.Windows.Forms.GroupBox();
+            this.txt_Operator = new System.Windows.Forms.TextBox();
+            this.txt_FormulaGroup = new System.Windows.Forms.ComboBox();
+            this.lab_FormulaGroup = new System.Windows.Forms.Label();
+            this.txt_AnhydrationWR = new System.Windows.Forms.TextBox();
+            this.lab_AnhydrationWR = new System.Windows.Forms.Label();
+            this.txt_Non_AnhydrationWR = new System.Windows.Forms.TextBox();
+            this.lab_Non_AnhydrationWR = new System.Windows.Forms.Label();
+            this.txt_CupNum = new System.Windows.Forms.TextBox();
+            this.txt_ClothType = new System.Windows.Forms.TextBox();
+            this.txt_CreateTime = new System.Windows.Forms.TextBox();
+            this.txt_TotalWeight = new System.Windows.Forms.TextBox();
+            this.txt_BathRatio = new System.Windows.Forms.TextBox();
+            this.txt_ClothWeight = new System.Windows.Forms.TextBox();
+            this.chk_AddWaterChoose = new System.Windows.Forms.CheckBox();
+            this.txt_Customer = new System.Windows.Forms.TextBox();
+            this.txt_FormulaName = new System.Windows.Forms.TextBox();
+            this.txt_State = new System.Windows.Forms.TextBox();
+            this.txt_VersionNum = new System.Windows.Forms.TextBox();
+            this.txt_FormulaCode = new System.Windows.Forms.TextBox();
+            this.lab_CreateTime = new System.Windows.Forms.Label();
+            this.lab_CupNum = new System.Windows.Forms.Label();
+            this.lab_Operator = new System.Windows.Forms.Label();
+            this.lab_TotalWeight = new System.Windows.Forms.Label();
+            this.lab_BathRatio = new System.Windows.Forms.Label();
+            this.lab_ClothWeight = new System.Windows.Forms.Label();
+            this.lab_Customer = new System.Windows.Forms.Label();
+            this.lab_ClothType = new System.Windows.Forms.Label();
+            this.lab_FormulaName = new System.Windows.Forms.Label();
+            this.lab_FormulaCode = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.btn_pre = new System.Windows.Forms.Button();
+            this.btn_upd = new System.Windows.Forms.Button();
+            this.dgv_FormulaData = new SmartDyeing.FADM_Object.MyDataGridView();
+            this.Index = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AssistantCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AssistantName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FormulaDosage = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.UnitOfAccount = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.SettingConcentration = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RealConcentration = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ObjectDropWeight = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RealDropWeight = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BottleSelection = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.grp_BatchData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_BatchData)).BeginInit();
-            this.grp_FormulaData.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_FormulaData)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.grp_FormulaBrowse.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_FormulaBrowse)).BeginInit();
+            this.panel1.SuspendLayout();
+            this.grp_FormulaData.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_FormulaData)).BeginInit();
             this.SuspendLayout();
             // 
             // grp_BatchData
             // 
-            resources.ApplyResources(this.grp_BatchData, "grp_BatchData");
             this.grp_BatchData.Controls.Add(this.dgv_BatchData);
+            resources.ApplyResources(this.grp_BatchData, "grp_BatchData");
             this.grp_BatchData.Name = "grp_BatchData";
             this.grp_BatchData.TabStop = false;
             // 
             // dgv_BatchData
             // 
-            resources.ApplyResources(this.dgv_BatchData, "dgv_BatchData");
             this.dgv_BatchData.AllowUserToAddRows = false;
             this.dgv_BatchData.AllowUserToOrderColumns = true;
             this.dgv_BatchData.AllowUserToResizeColumns = false;
             this.dgv_BatchData.AllowUserToResizeRows = false;
             this.dgv_BatchData.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dgv_BatchData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            resources.ApplyResources(this.dgv_BatchData, "dgv_BatchData");
             this.dgv_BatchData.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.dgv_BatchData.Name = "dgv_BatchData";
             this.dgv_BatchData.ReadOnly = true;
@@ -145,9 +147,203 @@ namespace SmartDyeing.FADM_Control
             this.dgv_BatchData.Enter += new System.EventHandler(this.dgv_BatchData_Enter);
             this.dgv_BatchData.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgv_BatchData_KeyDown);
             // 
+            // btn_FormulaCodeAdd
+            // 
+            resources.ApplyResources(this.btn_FormulaCodeAdd, "btn_FormulaCodeAdd");
+            this.btn_FormulaCodeAdd.Name = "btn_FormulaCodeAdd";
+            this.btn_FormulaCodeAdd.UseVisualStyleBackColor = true;
+            this.btn_FormulaCodeAdd.Click += new System.EventHandler(this.btn_FormulaCodeAdd_Click);
+            // 
+            // btn_Save
+            // 
+            resources.ApplyResources(this.btn_Save, "btn_Save");
+            this.btn_Save.Name = "btn_Save";
+            this.btn_Save.UseVisualStyleBackColor = true;
+            this.btn_Save.Click += new System.EventHandler(this.btn_Save_Click);
+            this.btn_Save.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btn_Save_KeyDown);
+            // 
+            // btn_BatchAdd
+            // 
+            resources.ApplyResources(this.btn_BatchAdd, "btn_BatchAdd");
+            this.btn_BatchAdd.Name = "btn_BatchAdd";
+            this.btn_BatchAdd.UseVisualStyleBackColor = true;
+            this.btn_BatchAdd.Click += new System.EventHandler(this.btn_BatchAdd_Click);
+            // 
+            // btn_Start
+            // 
+            resources.ApplyResources(this.btn_Start, "btn_Start");
+            this.btn_Start.Name = "btn_Start";
+            this.btn_Start.UseVisualStyleBackColor = true;
+            this.btn_Start.Click += new System.EventHandler(this.btn_Start_Click);
+            // 
+            // btn_Stop
+            // 
+            resources.ApplyResources(this.btn_Stop, "btn_Stop");
+            this.btn_Stop.Name = "btn_Stop";
+            this.btn_Stop.UseVisualStyleBackColor = true;
+            this.btn_Stop.Click += new System.EventHandler(this.btn_Stop_Click);
+            // 
+            // tmr
+            // 
+            this.tmr.Tick += new System.EventHandler(this.tmr_Tick);
+            // 
+            // Btn_WaitList
+            // 
+            resources.ApplyResources(this.Btn_WaitList, "Btn_WaitList");
+            this.Btn_WaitList.Name = "Btn_WaitList";
+            this.Btn_WaitList.UseVisualStyleBackColor = true;
+            this.Btn_WaitList.Click += new System.EventHandler(this.Btn_WaitList_Click);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsm_Delete});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            resources.ApplyResources(this.contextMenuStrip1, "contextMenuStrip1");
+            // 
+            // tsm_Delete
+            // 
+            this.tsm_Delete.Name = "tsm_Delete";
+            resources.ApplyResources(this.tsm_Delete, "tsm_Delete");
+            this.tsm_Delete.Click += new System.EventHandler(this.tsm_Delete_Click);
+            // 
+            // btn_NotDrip
+            // 
+            resources.ApplyResources(this.btn_NotDrip, "btn_NotDrip");
+            this.btn_NotDrip.Name = "btn_NotDrip";
+            this.btn_NotDrip.UseVisualStyleBackColor = true;
+            this.btn_NotDrip.Click += new System.EventHandler(this.btn_NotDrip_Click);
+            // 
+            // grp_FormulaBrowse
+            // 
+            this.grp_FormulaBrowse.Controls.Add(this.txt_Browse_Operator);
+            this.grp_FormulaBrowse.Controls.Add(this.rdo_Browse_condition);
+            this.grp_FormulaBrowse.Controls.Add(this.dgv_FormulaBrowse);
+            this.grp_FormulaBrowse.Controls.Add(this.dt_Browse_End);
+            this.grp_FormulaBrowse.Controls.Add(this.dt_Browse_Start);
+            this.grp_FormulaBrowse.Controls.Add(this.txt_Browse_Code);
+            this.grp_FormulaBrowse.Controls.Add(this.btn_Browse_Delete);
+            this.grp_FormulaBrowse.Controls.Add(this.btn_Browse_Select);
+            this.grp_FormulaBrowse.Controls.Add(this.rdo_Browse_NoDrop);
+            this.grp_FormulaBrowse.Controls.Add(this.rdo_Browse_All);
+            this.grp_FormulaBrowse.Controls.Add(this.label14);
+            this.grp_FormulaBrowse.Controls.Add(this.label13);
+            this.grp_FormulaBrowse.Controls.Add(this.label12);
+            this.grp_FormulaBrowse.Controls.Add(this.label11);
+            resources.ApplyResources(this.grp_FormulaBrowse, "grp_FormulaBrowse");
+            this.grp_FormulaBrowse.Name = "grp_FormulaBrowse";
+            this.grp_FormulaBrowse.TabStop = false;
+            // 
+            // txt_Browse_Operator
+            // 
+            resources.ApplyResources(this.txt_Browse_Operator, "txt_Browse_Operator");
+            this.txt_Browse_Operator.FormattingEnabled = true;
+            this.txt_Browse_Operator.Name = "txt_Browse_Operator";
+            // 
+            // rdo_Browse_condition
+            // 
+            resources.ApplyResources(this.rdo_Browse_condition, "rdo_Browse_condition");
+            this.rdo_Browse_condition.Name = "rdo_Browse_condition";
+            this.rdo_Browse_condition.UseVisualStyleBackColor = true;
+            this.rdo_Browse_condition.CheckedChanged += new System.EventHandler(this.rdo_Browse_condition_CheckedChanged);
+            // 
+            // dgv_FormulaBrowse
+            // 
+            this.dgv_FormulaBrowse.AllowUserToAddRows = false;
+            this.dgv_FormulaBrowse.AllowUserToDeleteRows = false;
+            this.dgv_FormulaBrowse.AllowUserToResizeColumns = false;
+            this.dgv_FormulaBrowse.AllowUserToResizeRows = false;
+            this.dgv_FormulaBrowse.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.dgv_FormulaBrowse.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            resources.ApplyResources(this.dgv_FormulaBrowse, "dgv_FormulaBrowse");
+            this.dgv_FormulaBrowse.Name = "dgv_FormulaBrowse";
+            this.dgv_FormulaBrowse.ReadOnly = true;
+            this.dgv_FormulaBrowse.RowHeadersVisible = false;
+            this.dgv_FormulaBrowse.RowTemplate.Height = 23;
+            this.dgv_FormulaBrowse.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgv_FormulaBrowse.CurrentCellChanged += new System.EventHandler(this.dgv_FormulaBrowse_CurrentCellChanged);
+            this.dgv_FormulaBrowse.Enter += new System.EventHandler(this.dgv_FormulaBrowse_Enter_1);
+            // 
+            // dt_Browse_End
+            // 
+            resources.ApplyResources(this.dt_Browse_End, "dt_Browse_End");
+            this.dt_Browse_End.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dt_Browse_End.Name = "dt_Browse_End";
+            this.dt_Browse_End.ShowUpDown = true;
+            // 
+            // dt_Browse_Start
+            // 
+            resources.ApplyResources(this.dt_Browse_Start, "dt_Browse_Start");
+            this.dt_Browse_Start.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dt_Browse_Start.Name = "dt_Browse_Start";
+            this.dt_Browse_Start.ShowUpDown = true;
+            this.dt_Browse_Start.Value = new System.DateTime(2021, 1, 1, 0, 0, 0, 0);
+            // 
+            // txt_Browse_Code
+            // 
+            resources.ApplyResources(this.txt_Browse_Code, "txt_Browse_Code");
+            this.txt_Browse_Code.Name = "txt_Browse_Code";
+            // 
+            // btn_Browse_Delete
+            // 
+            resources.ApplyResources(this.btn_Browse_Delete, "btn_Browse_Delete");
+            this.btn_Browse_Delete.Name = "btn_Browse_Delete";
+            this.btn_Browse_Delete.UseVisualStyleBackColor = true;
+            this.btn_Browse_Delete.Click += new System.EventHandler(this.btn_Browse_Delete_Click);
+            // 
+            // btn_Browse_Select
+            // 
+            resources.ApplyResources(this.btn_Browse_Select, "btn_Browse_Select");
+            this.btn_Browse_Select.Name = "btn_Browse_Select";
+            this.btn_Browse_Select.UseVisualStyleBackColor = true;
+            this.btn_Browse_Select.Click += new System.EventHandler(this.btn_Browse_Select_Click);
+            // 
+            // rdo_Browse_NoDrop
+            // 
+            resources.ApplyResources(this.rdo_Browse_NoDrop, "rdo_Browse_NoDrop");
+            this.rdo_Browse_NoDrop.Checked = true;
+            this.rdo_Browse_NoDrop.Name = "rdo_Browse_NoDrop";
+            this.rdo_Browse_NoDrop.TabStop = true;
+            this.rdo_Browse_NoDrop.UseVisualStyleBackColor = true;
+            this.rdo_Browse_NoDrop.CheckedChanged += new System.EventHandler(this.rdo_Browse_NoDrop_CheckedChanged);
+            // 
+            // rdo_Browse_All
+            // 
+            resources.ApplyResources(this.rdo_Browse_All, "rdo_Browse_All");
+            this.rdo_Browse_All.Name = "rdo_Browse_All";
+            this.rdo_Browse_All.UseVisualStyleBackColor = true;
+            this.rdo_Browse_All.CheckedChanged += new System.EventHandler(this.rdo_Browse_All_CheckedChanged);
+            // 
+            // label14
+            // 
+            resources.ApplyResources(this.label14, "label14");
+            this.label14.Name = "label14";
+            // 
+            // label13
+            // 
+            resources.ApplyResources(this.label13, "label13");
+            this.label13.Name = "label13";
+            // 
+            // label12
+            // 
+            resources.ApplyResources(this.label12, "label12");
+            this.label12.Name = "label12";
+            // 
+            // label11
+            // 
+            resources.ApplyResources(this.label11, "label11");
+            this.label11.Name = "label11";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.grp_FormulaData);
+            this.panel1.Controls.Add(this.panel2);
+            resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.Name = "panel1";
+            // 
             // grp_FormulaData
             // 
-            resources.ApplyResources(this.grp_FormulaData, "grp_FormulaData");
             this.grp_FormulaData.Controls.Add(this.txt_Operator);
             this.grp_FormulaData.Controls.Add(this.txt_FormulaGroup);
             this.grp_FormulaData.Controls.Add(this.lab_FormulaGroup);
@@ -155,8 +351,6 @@ namespace SmartDyeing.FADM_Control
             this.grp_FormulaData.Controls.Add(this.lab_AnhydrationWR);
             this.grp_FormulaData.Controls.Add(this.txt_Non_AnhydrationWR);
             this.grp_FormulaData.Controls.Add(this.lab_Non_AnhydrationWR);
-            this.grp_FormulaData.Controls.Add(this.txt_DyeingCode);
-            this.grp_FormulaData.Controls.Add(this.lab_DyeingCode);
             this.grp_FormulaData.Controls.Add(this.dgv_FormulaData);
             this.grp_FormulaData.Controls.Add(this.txt_CupNum);
             this.grp_FormulaData.Controls.Add(this.txt_ClothType);
@@ -180,6 +374,7 @@ namespace SmartDyeing.FADM_Control
             this.grp_FormulaData.Controls.Add(this.lab_ClothType);
             this.grp_FormulaData.Controls.Add(this.lab_FormulaName);
             this.grp_FormulaData.Controls.Add(this.lab_FormulaCode);
+            resources.ApplyResources(this.grp_FormulaData, "grp_FormulaData");
             this.grp_FormulaData.Name = "grp_FormulaData";
             this.grp_FormulaData.TabStop = false;
             // 
@@ -224,159 +419,6 @@ namespace SmartDyeing.FADM_Control
             // 
             resources.ApplyResources(this.lab_Non_AnhydrationWR, "lab_Non_AnhydrationWR");
             this.lab_Non_AnhydrationWR.Name = "lab_Non_AnhydrationWR";
-            // 
-            // txt_DyeingCode
-            // 
-            resources.ApplyResources(this.txt_DyeingCode, "txt_DyeingCode");
-            this.txt_DyeingCode.FormattingEnabled = true;
-            this.txt_DyeingCode.Name = "txt_DyeingCode";
-            this.txt_DyeingCode.SelectedIndexChanged += new System.EventHandler(this.txt_DyeingCode_SelectedIndexChanged);
-            this.txt_DyeingCode.TextUpdate += new System.EventHandler(this.txt_DyeingCode_TextUpdate);
-            this.txt_DyeingCode.Leave += new System.EventHandler(this.txt_DyeingCode_Leave);
-            // 
-            // lab_DyeingCode
-            // 
-            resources.ApplyResources(this.lab_DyeingCode, "lab_DyeingCode");
-            this.lab_DyeingCode.Name = "lab_DyeingCode";
-            // 
-            // dgv_FormulaData
-            // 
-            resources.ApplyResources(this.dgv_FormulaData, "dgv_FormulaData");
-            this.dgv_FormulaData.AllowUserToDeleteRows = false;
-            this.dgv_FormulaData.AllowUserToResizeColumns = false;
-            this.dgv_FormulaData.AllowUserToResizeRows = false;
-            this.dgv_FormulaData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgv_FormulaData.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
-            this.dgv_FormulaData.BackgroundColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 10.5F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_FormulaData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgv_FormulaData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_FormulaData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Index,
-            this.AssistantCode,
-            this.AssistantName,
-            this.FormulaDosage,
-            this.UnitOfAccount,
-            this.Column1,
-            this.SettingConcentration,
-            this.RealConcentration,
-            this.ObjectDropWeight,
-            this.RealDropWeight,
-            this.BottleSelection});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 10.5F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv_FormulaData.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgv_FormulaData.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.dgv_FormulaData.MultiSelect = false;
-            this.dgv_FormulaData.Name = "dgv_FormulaData";
-            this.dgv_FormulaData.RowHeadersVisible = false;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 14.25F);
-            this.dgv_FormulaData.RowsDefaultCellStyle = dataGridViewCellStyle3;
-            this.dgv_FormulaData.RowTemplate.Height = 30;
-            this.dgv_FormulaData.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_FormulaData.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgv_FormulaData_EditingControlShowing);
-            this.dgv_FormulaData.RowLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_FormulaData_RowLeave);
-            this.dgv_FormulaData.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dgv_FormulaData_RowsAdded);
-            this.dgv_FormulaData.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dgv_FormulaData_RowsRemoved);
-            this.dgv_FormulaData.SelectionChanged += new System.EventHandler(this.dgv_FormulaData_SelectionChanged);
-            this.dgv_FormulaData.Leave += new System.EventHandler(this.dgv_FormulaData_Leave);
-            // 
-            // Index
-            // 
-            this.Index.FillWeight = 77.02372F;
-            resources.ApplyResources(this.Index, "Index");
-            this.Index.Name = "Index";
-            this.Index.ReadOnly = true;
-            this.Index.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // AssistantCode
-            // 
-            this.AssistantCode.FillWeight = 104.9278F;
-            resources.ApplyResources(this.AssistantCode, "AssistantCode");
-            this.AssistantCode.Name = "AssistantCode";
-            this.AssistantCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // AssistantName
-            // 
-            this.AssistantName.FillWeight = 152.5202F;
-            resources.ApplyResources(this.AssistantName, "AssistantName");
-            this.AssistantName.Name = "AssistantName";
-            this.AssistantName.ReadOnly = true;
-            this.AssistantName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // FormulaDosage
-            // 
-            this.FormulaDosage.FillWeight = 75.44542F;
-            resources.ApplyResources(this.FormulaDosage, "FormulaDosage");
-            this.FormulaDosage.Name = "FormulaDosage";
-            this.FormulaDosage.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // UnitOfAccount
-            // 
-            this.UnitOfAccount.FillWeight = 79.8297F;
-            resources.ApplyResources(this.UnitOfAccount, "UnitOfAccount");
-            this.UnitOfAccount.Name = "UnitOfAccount";
-            this.UnitOfAccount.ReadOnly = true;
-            this.UnitOfAccount.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column1
-            // 
-            this.Column1.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.Nothing;
-            this.Column1.FillWeight = 60.30895F;
-            this.Column1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            resources.ApplyResources(this.Column1, "Column1");
-            this.Column1.Name = "Column1";
-            // 
-            // SettingConcentration
-            // 
-            this.SettingConcentration.FillWeight = 116.9112F;
-            resources.ApplyResources(this.SettingConcentration, "SettingConcentration");
-            this.SettingConcentration.Name = "SettingConcentration";
-            this.SettingConcentration.ReadOnly = true;
-            this.SettingConcentration.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // RealConcentration
-            // 
-            this.RealConcentration.FillWeight = 122.0618F;
-            resources.ApplyResources(this.RealConcentration, "RealConcentration");
-            this.RealConcentration.Name = "RealConcentration";
-            this.RealConcentration.ReadOnly = true;
-            this.RealConcentration.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // ObjectDropWeight
-            // 
-            this.ObjectDropWeight.FillWeight = 138.4942F;
-            resources.ApplyResources(this.ObjectDropWeight, "ObjectDropWeight");
-            this.ObjectDropWeight.Name = "ObjectDropWeight";
-            this.ObjectDropWeight.ReadOnly = true;
-            this.ObjectDropWeight.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // RealDropWeight
-            // 
-            this.RealDropWeight.FillWeight = 147.1373F;
-            resources.ApplyResources(this.RealDropWeight, "RealDropWeight");
-            this.RealDropWeight.Name = "RealDropWeight";
-            this.RealDropWeight.ReadOnly = true;
-            this.RealDropWeight.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // BottleSelection
-            // 
-            this.BottleSelection.FillWeight = 69.70769F;
-            resources.ApplyResources(this.BottleSelection, "BottleSelection");
-            this.BottleSelection.Name = "BottleSelection";
-            this.BottleSelection.ReadOnly = true;
             // 
             // txt_CupNum
             // 
@@ -502,224 +544,196 @@ namespace SmartDyeing.FADM_Control
             resources.ApplyResources(this.lab_FormulaCode, "lab_FormulaCode");
             this.lab_FormulaCode.Name = "lab_FormulaCode";
             // 
-            // btn_FormulaCodeAdd
+            // panel2
             // 
-            resources.ApplyResources(this.btn_FormulaCodeAdd, "btn_FormulaCodeAdd");
-            this.btn_FormulaCodeAdd.Name = "btn_FormulaCodeAdd";
-            this.btn_FormulaCodeAdd.UseVisualStyleBackColor = true;
-            this.btn_FormulaCodeAdd.Click += new System.EventHandler(this.btn_FormulaCodeAdd_Click);
+            resources.ApplyResources(this.panel2, "panel2");
+            this.panel2.Name = "panel2";
             // 
-            // btn_Save
+            // btn_pre
             // 
-            resources.ApplyResources(this.btn_Save, "btn_Save");
-            this.btn_Save.Name = "btn_Save";
-            this.btn_Save.UseVisualStyleBackColor = true;
-            this.btn_Save.Click += new System.EventHandler(this.btn_Save_Click);
-            this.btn_Save.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btn_Save_KeyDown);
+            resources.ApplyResources(this.btn_pre, "btn_pre");
+            this.btn_pre.Name = "btn_pre";
+            this.btn_pre.UseVisualStyleBackColor = true;
+            this.btn_pre.Click += new System.EventHandler(this.btn_pre_Click);
             // 
-            // btn_BatchAdd
+            // btn_upd
             // 
-            resources.ApplyResources(this.btn_BatchAdd, "btn_BatchAdd");
-            this.btn_BatchAdd.Name = "btn_BatchAdd";
-            this.btn_BatchAdd.UseVisualStyleBackColor = true;
-            this.btn_BatchAdd.Click += new System.EventHandler(this.btn_BatchAdd_Click);
+            resources.ApplyResources(this.btn_upd, "btn_upd");
+            this.btn_upd.Name = "btn_upd";
+            this.btn_upd.UseVisualStyleBackColor = true;
+            this.btn_upd.Click += new System.EventHandler(this.btn_upd_Click);
             // 
-            // btn_Start
+            // dgv_FormulaData
             // 
-            resources.ApplyResources(this.btn_Start, "btn_Start");
-            this.btn_Start.Name = "btn_Start";
-            this.btn_Start.UseVisualStyleBackColor = true;
-            this.btn_Start.Click += new System.EventHandler(this.btn_Start_Click);
+            this.dgv_FormulaData.AllowUserToDeleteRows = false;
+            this.dgv_FormulaData.AllowUserToResizeColumns = false;
+            this.dgv_FormulaData.AllowUserToResizeRows = false;
+            this.dgv_FormulaData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgv_FormulaData.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
+            this.dgv_FormulaData.BackgroundColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 10.5F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_FormulaData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgv_FormulaData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_FormulaData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Index,
+            this.AssistantCode,
+            this.AssistantName,
+            this.FormulaDosage,
+            this.UnitOfAccount,
+            this.Column1,
+            this.SettingConcentration,
+            this.RealConcentration,
+            this.ObjectDropWeight,
+            this.RealDropWeight,
+            this.BottleSelection});
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 10.5F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv_FormulaData.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgv_FormulaData.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            resources.ApplyResources(this.dgv_FormulaData, "dgv_FormulaData");
+            this.dgv_FormulaData.MultiSelect = false;
+            this.dgv_FormulaData.Name = "dgv_FormulaData";
+            this.dgv_FormulaData.RowHeadersVisible = false;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 14.25F);
+            this.dgv_FormulaData.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            this.dgv_FormulaData.RowTemplate.Height = 30;
+            this.dgv_FormulaData.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_FormulaData.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgv_FormulaData_EditingControlShowing);
+            this.dgv_FormulaData.RowLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_FormulaData_RowLeave);
+            this.dgv_FormulaData.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dgv_FormulaData_RowsAdded);
+            this.dgv_FormulaData.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dgv_FormulaData_RowsRemoved);
+            this.dgv_FormulaData.SelectionChanged += new System.EventHandler(this.dgv_FormulaData_SelectionChanged);
+            this.dgv_FormulaData.UserAddedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dgv_FormulaData_UserAddedRow);
+            this.dgv_FormulaData.Leave += new System.EventHandler(this.dgv_FormulaData_Leave);
             // 
-            // btn_Stop
+            // Index
             // 
-            resources.ApplyResources(this.btn_Stop, "btn_Stop");
-            this.btn_Stop.Name = "btn_Stop";
-            this.btn_Stop.UseVisualStyleBackColor = true;
-            this.btn_Stop.Click += new System.EventHandler(this.btn_Stop_Click);
+            this.Index.FillWeight = 77.02372F;
+            resources.ApplyResources(this.Index, "Index");
+            this.Index.Name = "Index";
+            this.Index.ReadOnly = true;
+            this.Index.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // tmr
+            // AssistantCode
             // 
-            this.tmr.Tick += new System.EventHandler(this.tmr_Tick);
+            this.AssistantCode.FillWeight = 104.9278F;
+            resources.ApplyResources(this.AssistantCode, "AssistantCode");
+            this.AssistantCode.Name = "AssistantCode";
+            this.AssistantCode.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // Btn_WaitList
+            // AssistantName
             // 
-            resources.ApplyResources(this.Btn_WaitList, "Btn_WaitList");
-            this.Btn_WaitList.Name = "Btn_WaitList";
-            this.Btn_WaitList.UseVisualStyleBackColor = true;
-            this.Btn_WaitList.Click += new System.EventHandler(this.Btn_WaitList_Click);
+            this.AssistantName.FillWeight = 152.5202F;
+            resources.ApplyResources(this.AssistantName, "AssistantName");
+            this.AssistantName.Name = "AssistantName";
+            this.AssistantName.ReadOnly = true;
+            this.AssistantName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // contextMenuStrip1
+            // FormulaDosage
             // 
-            resources.ApplyResources(this.contextMenuStrip1, "contextMenuStrip1");
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsm_Delete});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.FormulaDosage.FillWeight = 75.44542F;
+            resources.ApplyResources(this.FormulaDosage, "FormulaDosage");
+            this.FormulaDosage.Name = "FormulaDosage";
+            this.FormulaDosage.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // tsm_Delete
+            // UnitOfAccount
             // 
-            resources.ApplyResources(this.tsm_Delete, "tsm_Delete");
-            this.tsm_Delete.Name = "tsm_Delete";
-            this.tsm_Delete.Click += new System.EventHandler(this.tsm_Delete_Click);
+            this.UnitOfAccount.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.Nothing;
+            this.UnitOfAccount.FillWeight = 79.8297F;
+            this.UnitOfAccount.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            resources.ApplyResources(this.UnitOfAccount, "UnitOfAccount");
+            this.UnitOfAccount.Name = "UnitOfAccount";
+            this.UnitOfAccount.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
-            // btn_NotDrip
+            // Column1
             // 
-            resources.ApplyResources(this.btn_NotDrip, "btn_NotDrip");
-            this.btn_NotDrip.Name = "btn_NotDrip";
-            this.btn_NotDrip.UseVisualStyleBackColor = true;
-            this.btn_NotDrip.Click += new System.EventHandler(this.btn_NotDrip_Click);
+            this.Column1.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.Nothing;
+            this.Column1.FillWeight = 60.30895F;
+            this.Column1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            resources.ApplyResources(this.Column1, "Column1");
+            this.Column1.Name = "Column1";
             // 
-            // grp_FormulaBrowse
+            // SettingConcentration
             // 
-            resources.ApplyResources(this.grp_FormulaBrowse, "grp_FormulaBrowse");
-            this.grp_FormulaBrowse.Controls.Add(this.txt_Browse_Operator);
-            this.grp_FormulaBrowse.Controls.Add(this.rdo_Browse_condition);
-            this.grp_FormulaBrowse.Controls.Add(this.dgv_FormulaBrowse);
-            this.grp_FormulaBrowse.Controls.Add(this.dt_Browse_End);
-            this.grp_FormulaBrowse.Controls.Add(this.dt_Browse_Start);
-            this.grp_FormulaBrowse.Controls.Add(this.txt_Browse_Code);
-            this.grp_FormulaBrowse.Controls.Add(this.btn_Browse_Delete);
-            this.grp_FormulaBrowse.Controls.Add(this.btn_Browse_Select);
-            this.grp_FormulaBrowse.Controls.Add(this.rdo_Browse_NoDrop);
-            this.grp_FormulaBrowse.Controls.Add(this.rdo_Browse_All);
-            this.grp_FormulaBrowse.Controls.Add(this.label14);
-            this.grp_FormulaBrowse.Controls.Add(this.label13);
-            this.grp_FormulaBrowse.Controls.Add(this.label12);
-            this.grp_FormulaBrowse.Controls.Add(this.label11);
-            this.grp_FormulaBrowse.Name = "grp_FormulaBrowse";
-            this.grp_FormulaBrowse.TabStop = false;
+            this.SettingConcentration.FillWeight = 116.9112F;
+            resources.ApplyResources(this.SettingConcentration, "SettingConcentration");
+            this.SettingConcentration.Name = "SettingConcentration";
+            this.SettingConcentration.ReadOnly = true;
+            this.SettingConcentration.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // txt_Browse_Operator
+            // RealConcentration
             // 
-            resources.ApplyResources(this.txt_Browse_Operator, "txt_Browse_Operator");
-            this.txt_Browse_Operator.FormattingEnabled = true;
-            this.txt_Browse_Operator.Name = "txt_Browse_Operator";
+            this.RealConcentration.FillWeight = 122.0618F;
+            resources.ApplyResources(this.RealConcentration, "RealConcentration");
+            this.RealConcentration.Name = "RealConcentration";
+            this.RealConcentration.ReadOnly = true;
+            this.RealConcentration.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // rdo_Browse_condition
+            // ObjectDropWeight
             // 
-            resources.ApplyResources(this.rdo_Browse_condition, "rdo_Browse_condition");
-            this.rdo_Browse_condition.Name = "rdo_Browse_condition";
-            this.rdo_Browse_condition.UseVisualStyleBackColor = true;
-            this.rdo_Browse_condition.CheckedChanged += new System.EventHandler(this.rdo_Browse_condition_CheckedChanged);
+            this.ObjectDropWeight.FillWeight = 138.4942F;
+            resources.ApplyResources(this.ObjectDropWeight, "ObjectDropWeight");
+            this.ObjectDropWeight.Name = "ObjectDropWeight";
+            this.ObjectDropWeight.ReadOnly = true;
+            this.ObjectDropWeight.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // dgv_FormulaBrowse
+            // RealDropWeight
             // 
-            resources.ApplyResources(this.dgv_FormulaBrowse, "dgv_FormulaBrowse");
-            this.dgv_FormulaBrowse.AllowUserToAddRows = false;
-            this.dgv_FormulaBrowse.AllowUserToDeleteRows = false;
-            this.dgv_FormulaBrowse.AllowUserToResizeColumns = false;
-            this.dgv_FormulaBrowse.AllowUserToResizeRows = false;
-            this.dgv_FormulaBrowse.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.dgv_FormulaBrowse.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_FormulaBrowse.Name = "dgv_FormulaBrowse";
-            this.dgv_FormulaBrowse.ReadOnly = true;
-            this.dgv_FormulaBrowse.RowHeadersVisible = false;
-            this.dgv_FormulaBrowse.RowTemplate.Height = 23;
-            this.dgv_FormulaBrowse.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_FormulaBrowse.CurrentCellChanged += new System.EventHandler(this.dgv_FormulaBrowse_CurrentCellChanged);
-            this.dgv_FormulaBrowse.Enter += new System.EventHandler(this.dgv_FormulaBrowse_Enter_1);
+            this.RealDropWeight.FillWeight = 147.1373F;
+            resources.ApplyResources(this.RealDropWeight, "RealDropWeight");
+            this.RealDropWeight.Name = "RealDropWeight";
+            this.RealDropWeight.ReadOnly = true;
+            this.RealDropWeight.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // dt_Browse_End
+            // BottleSelection
             // 
-            resources.ApplyResources(this.dt_Browse_End, "dt_Browse_End");
-            this.dt_Browse_End.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dt_Browse_End.Name = "dt_Browse_End";
-            this.dt_Browse_End.ShowUpDown = true;
-            // 
-            // dt_Browse_Start
-            // 
-            resources.ApplyResources(this.dt_Browse_Start, "dt_Browse_Start");
-            this.dt_Browse_Start.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dt_Browse_Start.Name = "dt_Browse_Start";
-            this.dt_Browse_Start.ShowUpDown = true;
-            this.dt_Browse_Start.Value = new System.DateTime(2021, 1, 1, 0, 0, 0, 0);
-            // 
-            // txt_Browse_Code
-            // 
-            resources.ApplyResources(this.txt_Browse_Code, "txt_Browse_Code");
-            this.txt_Browse_Code.Name = "txt_Browse_Code";
-            // 
-            // btn_Browse_Delete
-            // 
-            resources.ApplyResources(this.btn_Browse_Delete, "btn_Browse_Delete");
-            this.btn_Browse_Delete.Name = "btn_Browse_Delete";
-            this.btn_Browse_Delete.UseVisualStyleBackColor = true;
-            this.btn_Browse_Delete.Click += new System.EventHandler(this.btn_Browse_Delete_Click);
-            // 
-            // btn_Browse_Select
-            // 
-            resources.ApplyResources(this.btn_Browse_Select, "btn_Browse_Select");
-            this.btn_Browse_Select.Name = "btn_Browse_Select";
-            this.btn_Browse_Select.UseVisualStyleBackColor = true;
-            this.btn_Browse_Select.Click += new System.EventHandler(this.btn_Browse_Select_Click);
-            // 
-            // rdo_Browse_NoDrop
-            // 
-            resources.ApplyResources(this.rdo_Browse_NoDrop, "rdo_Browse_NoDrop");
-            this.rdo_Browse_NoDrop.Checked = true;
-            this.rdo_Browse_NoDrop.Name = "rdo_Browse_NoDrop";
-            this.rdo_Browse_NoDrop.TabStop = true;
-            this.rdo_Browse_NoDrop.UseVisualStyleBackColor = true;
-            this.rdo_Browse_NoDrop.CheckedChanged += new System.EventHandler(this.rdo_Browse_NoDrop_CheckedChanged);
-            // 
-            // rdo_Browse_All
-            // 
-            resources.ApplyResources(this.rdo_Browse_All, "rdo_Browse_All");
-            this.rdo_Browse_All.Name = "rdo_Browse_All";
-            this.rdo_Browse_All.UseVisualStyleBackColor = true;
-            this.rdo_Browse_All.CheckedChanged += new System.EventHandler(this.rdo_Browse_All_CheckedChanged);
-            // 
-            // label14
-            // 
-            resources.ApplyResources(this.label14, "label14");
-            this.label14.Name = "label14";
-            // 
-            // label13
-            // 
-            resources.ApplyResources(this.label13, "label13");
-            this.label13.Name = "label13";
-            // 
-            // label12
-            // 
-            resources.ApplyResources(this.label12, "label12");
-            this.label12.Name = "label12";
-            // 
-            // label11
-            // 
-            resources.ApplyResources(this.label11, "label11");
-            this.label11.Name = "label11";
-            // 
-            // panel1
-            // 
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.Name = "panel1";
+            this.BottleSelection.FillWeight = 69.70769F;
+            resources.ApplyResources(this.BottleSelection, "BottleSelection");
+            this.BottleSelection.Name = "BottleSelection";
+            this.BottleSelection.ReadOnly = true;
             // 
             // Formula
             // 
-            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            resources.ApplyResources(this, "$this");
+            this.Controls.Add(this.btn_upd);
+            this.Controls.Add(this.Btn_WaitList);
+            this.Controls.Add(this.btn_FormulaCodeAdd);
+            this.Controls.Add(this.btn_NotDrip);
+            this.Controls.Add(this.btn_pre);
+            this.Controls.Add(this.btn_Save);
+            this.Controls.Add(this.btn_BatchAdd);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.grp_FormulaBrowse);
-            this.Controls.Add(this.btn_NotDrip);
-            this.Controls.Add(this.Btn_WaitList);
             this.Controls.Add(this.btn_Stop);
             this.Controls.Add(this.btn_Start);
-            this.Controls.Add(this.grp_FormulaData);
             this.Controls.Add(this.grp_BatchData);
-            this.Controls.Add(this.btn_BatchAdd);
-            this.Controls.Add(this.btn_Save);
-            this.Controls.Add(this.btn_FormulaCodeAdd);
             this.Name = "Formula";
+            this.ShowIcon = false;
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Formula_FormClosed);
             this.Load += new System.EventHandler(this.Formula_Load);
             this.grp_BatchData.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_BatchData)).EndInit();
-            this.grp_FormulaData.ResumeLayout(false);
-            this.grp_FormulaData.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_FormulaData)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             this.grp_FormulaBrowse.ResumeLayout(false);
             this.grp_FormulaBrowse.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_FormulaBrowse)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.grp_FormulaData.ResumeLayout(false);
+            this.grp_FormulaData.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_FormulaData)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -727,61 +741,17 @@ namespace SmartDyeing.FADM_Control
         #endregion
 
         private GroupBox grp_BatchData;
-        private GroupBox grp_FormulaData;
         private Button btn_Stop;
-        private Label lab_CreateTime;
-        private Label lab_CupNum;
-        private Label lab_Operator;
-        private Label lab_TotalWeight;
-        private Label lab_BathRatio;
-        private Label lab_ClothWeight;
-        private Label lab_Customer;
-        private Label lab_ClothType;
-        private Label lab_FormulaName;
-        private Label lab_FormulaCode;
-        private TextBox txt_FormulaName;
-        private TextBox txt_State;
-        private TextBox txt_VersionNum;
-        private TextBox txt_FormulaCode;
-        private TextBox txt_CreateTime;
-        private TextBox txt_TotalWeight;
-        private TextBox txt_BathRatio;
-        private TextBox txt_ClothWeight;
-        private CheckBox chk_AddWaterChoose;
-        private TextBox txt_Customer;
-        private TextBox txt_CupNum;
-        private TextBox txt_ClothType;
         private Button btn_FormulaCodeAdd;
         private Button btn_BatchAdd;
         public Button btn_Save;
         private DataGridView dgv_BatchData;
-        private SmartDyeing.FADM_Object.MyDataGridView dgv_FormulaData;
         private System.Windows.Forms.Timer tmr;
-        private ComboBox txt_DyeingCode;
-        private Label lab_DyeingCode;
-        private TextBox txt_AnhydrationWR;
-        private Label lab_AnhydrationWR;
-        private TextBox txt_Non_AnhydrationWR;
-        private Label lab_Non_AnhydrationWR;
         private Button Btn_WaitList;
         public Button btn_Start;
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem tsm_Delete;
-        private Label lab_FormulaGroup;
-        private ComboBox txt_FormulaGroup;
         public Button btn_NotDrip;
-        private TextBox txt_Operator;
-        private DataGridViewTextBoxColumn Index;
-        private DataGridViewTextBoxColumn AssistantCode;
-        private DataGridViewTextBoxColumn AssistantName;
-        private DataGridViewTextBoxColumn FormulaDosage;
-        private DataGridViewTextBoxColumn UnitOfAccount;
-        private DataGridViewComboBoxColumn Column1;
-        private DataGridViewTextBoxColumn SettingConcentration;
-        private DataGridViewTextBoxColumn RealConcentration;
-        private DataGridViewTextBoxColumn ObjectDropWeight;
-        private DataGridViewTextBoxColumn RealDropWeight;
-        private DataGridViewCheckBoxColumn BottleSelection;
         private GroupBox grp_FormulaBrowse;
         private ComboBox txt_Browse_Operator;
         private RadioButton rdo_Browse_condition;
@@ -797,6 +767,51 @@ namespace SmartDyeing.FADM_Control
         private Label label13;
         private Label label12;
         private Label label11;
-        private Panel panel1;
+        private FlowLayoutPanel panel1;
+        private FlowLayoutPanel panel2;
+        public Button btn_pre;
+        public GroupBox grp_FormulaData;
+        private TextBox txt_Operator;
+        private ComboBox txt_FormulaGroup;
+        private Label lab_FormulaGroup;
+        private TextBox txt_AnhydrationWR;
+        private Label lab_AnhydrationWR;
+        private TextBox txt_Non_AnhydrationWR;
+        private Label lab_Non_AnhydrationWR;
+        public FADM_Object.MyDataGridView dgv_FormulaData;
+        private DataGridViewTextBoxColumn Index;
+        private DataGridViewTextBoxColumn AssistantCode;
+        private DataGridViewTextBoxColumn AssistantName;
+        private DataGridViewTextBoxColumn FormulaDosage;
+        private DataGridViewComboBoxColumn UnitOfAccount;
+        private DataGridViewComboBoxColumn Column1;
+        private DataGridViewTextBoxColumn SettingConcentration;
+        private DataGridViewTextBoxColumn RealConcentration;
+        private DataGridViewTextBoxColumn ObjectDropWeight;
+        private DataGridViewTextBoxColumn RealDropWeight;
+        private DataGridViewCheckBoxColumn BottleSelection;
+        public TextBox txt_CupNum;
+        private TextBox txt_ClothType;
+        private TextBox txt_CreateTime;
+        private TextBox txt_TotalWeight;
+        private TextBox txt_BathRatio;
+        private TextBox txt_ClothWeight;
+        private CheckBox chk_AddWaterChoose;
+        private TextBox txt_Customer;
+        private TextBox txt_FormulaName;
+        private TextBox txt_State;
+        private TextBox txt_VersionNum;
+        private TextBox txt_FormulaCode;
+        private Label lab_CreateTime;
+        private Label lab_CupNum;
+        private Label lab_Operator;
+        private Label lab_TotalWeight;
+        private Label lab_BathRatio;
+        private Label lab_ClothWeight;
+        private Label lab_Customer;
+        private Label lab_ClothType;
+        private Label lab_FormulaName;
+        private Label lab_FormulaCode;
+        public Button btn_upd;
     }
 }

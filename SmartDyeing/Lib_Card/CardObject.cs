@@ -11,18 +11,19 @@ namespace Lib_Card
 {
     public class CardObject
     {
-        //public static Base.Card OA1 = new ADT8940A1.ADT8940A1_Card();
-        //public static Base.Card OD1 = new ADT8940A1.ADT8940A1_Card();
+        public static Base.Card OA1 = new ADT8940A1.ADT8940A1_Card();
+        public static Base.Card OD1 = new ADT8940A1.ADT8940A1_Card();
 
-        //public static ADT8940A1.InPut.InPut OA1Input = new ADT8940A1.InPut.InPut_Basic();
-        //public static ADT8940D1.InPut.InPut OD1Input = new ADT8940D1.InPut.InPut_Basic();
+        public static ADT8940A1.InPut.InPut OA1Input = new ADT8940A1.InPut.InPut_Basic();
+        public static ADT8940D1.InPut.InPut OD1Input = new ADT8940D1.InPut.InPut_Basic();
 
-        //public static ADT8940A1.Axis.Axis OA1Axis = new ADT8940A1.Axis.Axis_Condition();
+        public static ADT8940A1.Axis.Axis OA1Axis = new ADT8940A1.Axis.Axis_Condition();
 
         public static bool bLeft = false;//左光幕是否遮挡
         public static bool bRight = false;//右光幕是否遮挡
         public static bool bFront = false;//前光幕是否遮挡
         public static bool bStopScr = false;//急停按钮是否拍下
+        public static bool bBack = false;//后光幕是否遮挡
 
         public static bool bPLCStatus = false;//PLC连接状态
 
@@ -50,51 +51,65 @@ namespace Lib_Card
         /// <param name="Caption">类型</param>
         public static string InsertD(string Text, string Caption)
         {
-        labe2:
-            try
+            lock (keyValuePairs)
             {
-                Console.WriteLine("插入" + Text);
-                keyValuePairsCopy1 = new Dictionary<string, prompt>(keyValuePairs);
-                foreach (string s in keyValuePairsCopy1.Keys)
+            labe2:
+                try
                 {
-                    //已存在
-                    if (keyValuePairsCopy1[s].Type == Caption && keyValuePairsCopy1[s].Info == Text)
+                    Console.WriteLine("插入" + Text);
+                    keyValuePairsCopy1 = new Dictionary<string, prompt>(keyValuePairs);
+                    foreach (string s in keyValuePairsCopy1.Keys)
                     {
-                        //mutexlock.WaitOne();
-                        //try 
-                        //{
-                        //    //keyValuePairs[s].Count;
-                        //}
-                        //finally
-                        //{ mutexlock.ReleaseMutex(); }
-                        return s;
+                        if (s == null)
+                        {
+                            continue;
+                        }
+                        //已存在
+                        if (keyValuePairsCopy1[s].Type == Caption && keyValuePairsCopy1[s].Info == Text)
+                        {
+                            //mutexlock.WaitOne();
+                            //try 
+                            //{
+                            //    //keyValuePairs[s].Count;
+                            //}
+                            //finally
+                            //{ mutexlock.ReleaseMutex(); }
+                            return s;
+                        }
                     }
                 }
-            }
-            catch {
-                goto labe2;
-            }
+                catch (Exception e)
+                {
+                    Lib_Log.Log.writeLogException("插入InsertD：" + e.ToString());
+                    Lib_Log.Log.writeLogException("插入InsertD：" + Text);
+                    Thread.Sleep(1000);
+                    goto labe2;
+                }
 
 
-    label:
+            label:
 
-            try
-            {
-                DateTime dateTime = DateTime.Now;
-                string time = dateTime.ToLongTimeString();
-                prompt prompt = new prompt();
+                try
+                {
+                    DateTime dateTime = DateTime.Now;
+                    string time = dateTime.ToLongTimeString();
+                    prompt prompt = new prompt();
 
-                prompt.Type = Caption;
-                prompt.Info = Text;
-                prompt.Choose = 0;
-                prompt.Count = 0;
-                keyValuePairs.Add(time, prompt);
-                return time;
-            }
-            catch(Exception e) 
-            {
-               Console.WriteLine(e.Message);
-                goto label;
+                    prompt.Type = Caption;
+                    prompt.Info = Text;
+                    prompt.Choose = 0;
+                    prompt.Count = 0;
+                    keyValuePairs.Add(time, prompt);
+                    return time;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    Lib_Log.Log.writeLogException("InsertD：" + e.ToString());
+                    Lib_Log.Log.writeLogException("InsertD：" + Text);
+                    Thread.Sleep(1000);
+                    goto label;
+                }
             }
 
         }
@@ -106,63 +121,77 @@ namespace Lib_Card
         /// <param name="Caption">类型</param>
         public static string InsertCF(string Text, string Caption)
         {
-        label2:
-            try
+            lock (keyValuePairs)
             {
-                Console.WriteLine("插入" + Text);
-                keyValuePairsCopy = new Dictionary<string, prompt>(keyValuePairs);
-                foreach (string s in keyValuePairsCopy.Keys)
-                {
-                    //已存在
-                    if (keyValuePairsCopy[s].Type == Caption && keyValuePairsCopy[s].Info == Text)
-                    {
-                        //mutexlock.WaitOne();
-                        //try 
-                        //{
-                        //    //keyValuePairs[s].Count;
-                        //}
-                        //finally
-                        //{ mutexlock.ReleaseMutex(); }
-                        if (keyValuePairsCopy[s].Choose != 0)
-                        {
-                            //证明已经选择过
-                            return "重复1";
-                        }
-                        else
-                        {
-                            return "重复";
-                        }
 
+            label2:
+                try
+                {
+                    Console.WriteLine("插入" + Text);
+                    keyValuePairsCopy = new Dictionary<string, prompt>(keyValuePairs);
+                    foreach (string s in keyValuePairsCopy.Keys)
+                    {
+                        if (s == null)
+                        {
+                            continue;
+                        }
+                        //已存在
+                        if (keyValuePairsCopy[s].Type == Caption && keyValuePairsCopy[s].Info == Text)
+                        {
+                            //mutexlock.WaitOne();
+                            //try 
+                            //{
+                            //    //keyValuePairs[s].Count;
+                            //}
+                            //finally
+                            //{ mutexlock.ReleaseMutex(); }
+                            if (keyValuePairsCopy[s].Choose != 0)
+                            {
+                                //证明已经选择过
+                                return "重复1";
+                            }
+                            else
+                            {
+                                return "重复";
+                            }
+
+                        }
                     }
+
+                }
+                catch (Exception e)
+                {
+                    Lib_Log.Log.writeLogException("插入InsertCF：" + e.ToString());
+                    Lib_Log.Log.writeLogException("插入InsertCF：" + Text);
+                    goto label2;
                 }
 
-            }
-            catch
-            {
-                goto label2;
-            }
 
+            label:
 
-        label:
+                try
+                {
+                    DateTime dateTime = DateTime.Now;
+                    string time = dateTime.ToLongTimeString();
+                    prompt prompt = new prompt();
 
-            try
-            {
-                DateTime dateTime = DateTime.Now;
-                string time = dateTime.ToLongTimeString();
-                prompt prompt = new prompt();
+                    prompt.Type = Caption;
+                    prompt.Info = Text;
+                    prompt.Choose = 0;
+                    prompt.Count = 0;
+                    prompt.Speech = false;
+                    keyValuePairs.Add(time, prompt);
+                    return time;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
 
-                prompt.Type = Caption;
-                prompt.Info = Text;
-                prompt.Choose = 0;
-                prompt.Count = 0;
-                prompt.Speech = false;
-                keyValuePairs.Add(time, prompt);
-                return time;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                goto label2;
+                    Lib_Log.Log.writeLogException("InsertCF：" + e.ToString());
+                    Lib_Log.Log.writeLogException("InsertCF：" + Text);
+                    Thread.Sleep(1000);
+                    goto label2;
+                }
             }
 
         }
@@ -176,37 +205,46 @@ namespace Lib_Card
             {
                 if (!string.IsNullOrEmpty(s))
                 {
+                    lab:
                     try
                     {
-                        while (true)
+                        if (keyValuePairs.ContainsKey(s))
                         {
-                            if (keyValuePairs[s].Speech)
-                                break;
-                            Thread.Sleep(1);
-                        }
-                        string str = keyValuePairs[s].Info;
+                            while (true)
+                            {
+                                if (keyValuePairs[s].Speech)
+                                    break;
+                                Thread.Sleep(1);
+                            }
+                            string str = keyValuePairs[s].Info;
 
-                        keyValuePairs.Remove(s);
-                        if( str== "右光幕遮挡" || str == "Right light curtain occlusion" || str == "右门已打开")
-                        {
-                            bRight = false;
-                        }
-                        if (str == "左光幕遮挡" || str == "Left light curtain occlusion" || str == "左门已打开")
-                        {
-                            bLeft = false;
-                        }
-                        if (str == "前光幕遮挡" || str == "Front light curtain occlusion")
-                        {
-                            bFront = false;
-                        }
-                        if (str == "急停已按下")
-                        {
-                            bStopScr = false;
+                            keyValuePairs.Remove(s);
+                            if (str == "右光幕遮挡" || str == "Right light curtain occlusion" || str == "右门已打开" || str == "The right door is open")
+                            {
+                                bRight = false;
+                            }
+                            if (str == "左光幕遮挡" || str == "Left light curtain occlusion" || str == "左门已打开" || str == "The Left door is open")
+                            {
+                                bLeft = false;
+                            }
+                            if (str == "前光幕遮挡" || str == "Front light curtain occlusion")
+                            {
+                                bFront = false;
+                            }
+                            if (str == "后光幕遮挡" || str == "Back light curtain occlusion")
+                            {
+                                bBack = false;
+                            }
+                            if (str == "急停已按下")
+                            {
+                                bStopScr = false;
+                            }
                         }
                     }
-                    catch
+                    catch (Exception e)
                     {
-
+                        Lib_Log.Log.writeLogException("DeleteD：" + e.ToString());
+                        goto lab;
                     }
 
                 }

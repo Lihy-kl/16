@@ -428,17 +428,44 @@ namespace SmartDyeing.FADM_Control
                 //更新所以瓶
                 bottle_update();
                 cup_update();
-
-                if ("6666" != FADM_Object.Communal._s_balanceValue &&
-                    "7777" != FADM_Object.Communal._s_balanceValue &&
-                    "8888" != FADM_Object.Communal._s_balanceValue &&
-                    "9999" != FADM_Object.Communal._s_balanceValue)
+                if (Lib_Card.Configure.Parameter.Machine_Type == 0)
                 {
-                    _balance.Title = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", FADM_Object.Communal._s_balanceValue) : string.Format("{0:F3}", FADM_Object.Communal._s_balanceValue);
-                    this._balance.LiquidColor = Color.DeepSkyBlue;
+                    if (Lib_Card.Configure.Parameter.Machine_BalanceType == 0)
+                    {
+                        if (6666 != Lib_SerialPort.Balance.METTLER.BalanceValue &&
+                            7777 != Lib_SerialPort.Balance.METTLER.BalanceValue &&
+                            8888 != Lib_SerialPort.Balance.METTLER.BalanceValue &&
+                            9999 != Lib_SerialPort.Balance.METTLER.BalanceValue)
+                            _balance.Title = string.Format("{0:F}", Lib_SerialPort.Balance.METTLER.BalanceValue);
+                    }
+                    else
+                    {
+                        if (6666 != Lib_SerialPort.Balance.SHINKO.BalanceValue &&
+                            //7777 != Lib_SerialPort.Balance.SHINKO.BalanceValue &&
+                            8888 != Lib_SerialPort.Balance.SHINKO.BalanceValue &&
+                            9999 != Lib_SerialPort.Balance.SHINKO.BalanceValue)
+                            _balance.Title = string.Format("{0:F3}", Lib_SerialPort.Balance.SHINKO.BalanceValue);
+                    }
+
+                    if (FADM_Object.Communal._b_balanceAlarm)
+                        this._balance.LiquidColor = Color.Red;
+                    else
+                        this._balance.LiquidColor = Color.DeepSkyBlue;
                 }
-                else {
-                    this._balance.LiquidColor = Color.Red;
+                else
+                {
+                    if ("6666" != FADM_Object.Communal._s_balanceValue &&
+                        "7777" != FADM_Object.Communal._s_balanceValue &&
+                        "8888" != FADM_Object.Communal._s_balanceValue &&
+                        "9999" != FADM_Object.Communal._s_balanceValue)
+                    {
+                        _balance.Title = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", FADM_Object.Communal._s_balanceValue) : string.Format("{0:F3}", FADM_Object.Communal._s_balanceValue);
+                        this._balance.LiquidColor = Color.DeepSkyBlue;
+                    }
+                    else
+                    {
+                        this._balance.LiquidColor = Color.Red;
+                    }
                 }
                     
 

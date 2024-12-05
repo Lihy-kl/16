@@ -8,7 +8,7 @@ namespace Lib_Card.ADT8940A1.Module.Move
     /// </summary>
     public class Move_Standby : Move
     {
-        public override int TargetMove(int iCylinderVersion, int iNo)
+        public override int TargetMove(int iCylinderVersion, int iNo, int iX, int iY, int iType)
         {
             if (iNo == 1 || Lib_Card.Configure.Parameter.Other_ActualPosition == 0)
             {
@@ -19,7 +19,9 @@ namespace Lib_Card.ADT8940A1.Module.Move
                         return -1;
                 }
 
+                
 
+                
                 int iXRes = -1;
                 Thread threadX = new Thread(() =>
                 {

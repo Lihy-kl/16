@@ -31,8 +31,11 @@ namespace Lib_Card.ADT8940A1.Module.Move
         /// </summary>
         /// <param name="iCylinderVersion">0：单控上下气缸；1：双控上下气缸</param>
         /// <param name="iNo">瓶号/杯号/预留</param>
+        /// <param name="iX">X坐标</param>
+        /// <param name="iY">Y坐标</param>
+        /// /// <param name="iType">移动类型 0母液瓶 1缸杯位 2 天平位 3 待机位置 4 放盖区 5 泄压区 6:干布区域 7:湿布区域 8:干布夹子 9:湿布夹子</param>
         /// <returns>0：正常；-1：异常；-2：收到退出消息</returns>
-        public abstract int TargetMove(int iCylinderVersion, int iNo);
+        public abstract int TargetMove(int iCylinderVersion, int iNo,int iX,int iY, int iType);
 
 
     }

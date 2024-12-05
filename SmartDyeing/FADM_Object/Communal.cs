@@ -33,7 +33,12 @@ namespace SmartDyeing.FADM_Object
         /// <summary>
         /// 梅特勒天平对象
         /// </summary>
-        //public static Lib_SerialPort.Balance.METTLER Mettler { get; set; }
+        public static Lib_SerialPort.Balance.METTLER Mettler { get; set; }
+
+        /// <summary>
+        /// 日本星光天平对象
+        /// </summary>
+        public static Lib_SerialPort.Balance.SHINKO Shinko { get; set; }
 
 
         //
@@ -43,9 +48,19 @@ namespace SmartDyeing.FADM_Object
         public static TCPModBus _tcpModBus { get; set; }
 
         /// <summary>
-        /// 开料机对象
+        /// 开料机对象（TCP）
         /// </summary>
         public static TCPModBus _tcpModBusBrew { get; set; }
+
+        /// <summary>
+        /// 开料机对象(串口)
+        /// </summary>
+        public static Lib_SerialPort.HMI.BrewHMI MyBrew { get; set; } = null;
+
+        /// <summary>
+        /// 吸光度机对象
+        /// </summary>
+        public static TCPModBus _tcpModBusAbs { get; set; }
 
 
         public static SmartDyeing.FADM_Object.MyRegister _softReg { get; set; }
@@ -111,6 +126,7 @@ namespace SmartDyeing.FADM_Object
             }
         }
 
+        public static double dBalanceValue = 0.00;
 
         /// <summary>
         /// 操作母液瓶号
@@ -299,6 +315,11 @@ namespace SmartDyeing.FADM_Object
         public static List<int> _lis_ForwordwashCup = new List<int>();
 
         /// <summary>
+        /// 已发启动信号
+        /// </summary>
+        public static List<int> _lis_SendReadyCup = new List<int>();
+
+        /// <summary>
         /// 染色线程
         /// </summary>
         private static Thread DyeThread = null;
@@ -366,6 +387,11 @@ namespace SmartDyeing.FADM_Object
         /// </summary>
         public static bool _b_brewErr = false;
 
+        /// <summary>
+        /// 吸光度机通讯中断标志位
+        /// </summary>
+        public static bool _b_absErr = false;
+
 
         /// <summary>
         /// 是否打开等待列表页面
@@ -425,6 +451,11 @@ namespace SmartDyeing.FADM_Object
         public static string _s_regInfo = null;
 
         /// <summary>
+        /// 是否倒序
+        /// </summary>
+        public static bool _b_isDesc = false;
+
+        /// <summary>
         /// 滴液区杯号
         /// </summary>
         public static List<int> _lis_dripCupNum = new List<int>();
@@ -433,6 +464,31 @@ namespace SmartDyeing.FADM_Object
         /// 后处理杯号
         /// </summary>
         public static List<int> _lis_dyeCupNum = new List<int>();
+
+        /// <summary>
+        /// 副杯杯号
+        /// </summary>
+        public static List<int> _lis_deputyCupNum = new List<int>();
+
+        /// <summary>
+        /// 主杯杯号
+        /// </summary>
+        public static List<int> _lis_firstCupNum = new List<int>();
+
+        /// <summary>
+        /// 主副杯对应
+        /// </summary>
+        public static Dictionary<int, int> _dic_first_second = new Dictionary<int, int>();
+
+        /// <summary>
+        /// 大小杯对应
+        /// </summary>
+        public static Dictionary<int, int> _dic_big_small_cup = new Dictionary<int, int>();
+
+        /// <summary>
+        /// 杯号和序号对应
+        /// </summary>
+        public static Dictionary<int, int> _dic_cup_index = new Dictionary<int, int>();
 
         /// <summary>
         /// 后处理杯号类型
@@ -459,6 +515,8 @@ namespace SmartDyeing.FADM_Object
 
         public static bool _b_isBalanceInDrip = true;//天平是否放置滴液区
 
+        public static bool _b_isNewSet = true;//母液区摆设(0:以前传统滴液机母液区摆设 1:PLC版母液区摆设,原点在10号母液瓶)
+
         public static bool _b_isGetDryClamp = false;//是否拿着干布夹子
 
         public static bool _b_isGetWetClamp = false;//是否拿着湿布夹子
@@ -479,6 +537,24 @@ namespace SmartDyeing.FADM_Object
         public static List<int> _lis_warmBottle = new List<int>();//记录一轮循环预滴液时判断液量低
 
         public static bool _b_getFile = true;//是否开始拿文件
+        public static bool _b_getFile_sec = true;//是否开始拿文件
+        public static bool[] _b_isFullTest = { false, false };//是否吸光度全测量
+
+        public static double _d_ppm = 30;//吸光度稀释ppm值
+
+        public static double _d_absMax = 0.004;//吸光度对比值
+
+        public static double _d_TestSpan = 30;//吸光度测试间隔
+
+        public static double _d_abs_total = 50;//吸光度总液量
+
+        public static bool _b_isMove = false;//后处理是否移动过，用于判断是否需要回待机位
+
+        public static string  _s_absPath = "";//吸光度结果导出路径
+
+        public static bool _b_isWaitDrip = false;//是否等待滴液
+
+        public static double _d_abs_sub = 40;//吸光度白点差值判断范围
 
         /// <summary>
         /// 抛出异常中英文对接
@@ -568,6 +644,48 @@ namespace SmartDyeing.FADM_Object
             }
         }
 
+        /// <summary>
+        /// 吸光度数据交互结构
+        /// </summary>
+        public struct AbsData
+        {
+            /// <summary>
+            /// 工位状态
+            /// </summary>
+            public string _s_currentState;
+
+            /// <summary>
+            /// 动作请求
+            /// </summary>
+            public string _s_request;
+
+            /// <summary>
+            /// 保存数据请求
+            /// </summary>
+            public string _s_datarequest;
+
+            /// <summary>
+            /// 母液瓶号
+            /// </summary>
+            public string _s_boottlenum;
+
+            /// <summary>
+            /// 数据数量
+            /// </summary>
+            public string _s_totaldata;
+
+            /// <summary>
+            /// 报警
+            /// </summary>
+            public string _s_warm;
+
+            //申请加药状态 0 代表可接收信号写入数据库 1代表写入数据库完成 2 代表执行对应操作完成(接收到2后通过刷新才能变为0)
+            public int _i_requesadd;
+
+            //历史状态 0 正常结束 1需要前洗杯
+            public string _s_history;
+        }
+
 
         public struct sAddArg
         {
@@ -597,18 +715,19 @@ namespace SmartDyeing.FADM_Object
         ///  lWater:后处理加药时先加水的重量
         /// </summary>
         /// /// <returns>0：正常；-1：夹不到针筒退出；-2：收到退出消息</returns>
-        public static int AddMac(sAddArg o,ref Dictionary<int, double> directoryReturn)
+        
+        public static int AddMac(sAddArg o, ref Dictionary<int, double> directoryReturn, int i_type)
         {
             List<int> lis_data = new List<int>();
-            string s_batchName=o._obj_batchName;
+            string s_batchName = o._obj_batchName;
             int i_minBottleNo = o._i_minBottleNo;
-            string s_syringeType=o._s_syringeType;
+            string s_syringeType = o._s_syringeType;
             int i_pulseT = o._i_pulseT;
             int i_adjust = o._i_adjust;
-            string s_unitOfAccount=o._s_unitOfAccount;
+            string s_unitOfAccount = o._s_unitOfAccount;
 
             Dictionary<int, int> dic_pulse = o._dic_pulse;
-            Dictionary<int, double> dic_water=o._dic_water;
+            Dictionary<int, double> dic_water = o._dic_water;
 
             Thread thread = null;
         label9:
@@ -651,7 +770,7 @@ namespace SmartDyeing.FADM_Object
 
                             i_temp = iExtractionPulse;
 
-                            if (i_temp + v1.Value - Lib_Card.Configure.Parameter.Other_Z_BackPulse  > Lib_Card.Configure.Parameter.Other_S_MaxPulse)
+                            if (i_temp + v1.Value - Lib_Card.Configure.Parameter.Other_Z_BackPulse > Lib_Card.Configure.Parameter.Other_S_MaxPulse)
                             {
                                 //如果需加量大于10g，直接先加
                                 //if(v1.Value/1.0/ _i_adjust > Lib_Card.Configure.Parameter.Other_SplitValue)
@@ -662,7 +781,7 @@ namespace SmartDyeing.FADM_Object
                                 else
                                 {
                                     //如果一筒抽不完就分2次，一次抽完就留下一次独立抽
-                                    if (v1.Value + i_adjust * (Lib_Card.Configure.Parameter.Correcting_S_Weight + 1) - Lib_Card.Configure.Parameter.Other_Z_BackPulse  > Lib_Card.Configure.Parameter.Other_S_MaxPulse)
+                                    if (v1.Value + i_adjust * (Lib_Card.Configure.Parameter.Correcting_S_Weight + 1) - Lib_Card.Configure.Parameter.Other_Z_BackPulse > Lib_Card.Configure.Parameter.Other_S_MaxPulse)
                                     {
                                         iExtractionPulse = Lib_Card.Configure.Parameter.Other_S_MaxPulse + Lib_Card.Configure.Parameter.Other_Z_BackPulse;
                                     }
@@ -684,7 +803,11 @@ namespace SmartDyeing.FADM_Object
                 try
                 {
                     iExtractionPulse = iExtractionPulse - Lib_Card.Configure.Parameter.Other_Z_BackPulse;
-                    i_mRes = MyModbusFun.Extract(iExtractionPulse, s_unitOfAccount.Equals("g/l") ? true : false, 0); //抽液
+                    if (i_type == 1)
+                        i_mRes = MyModbusFun.Extract(iExtractionPulse, s_unitOfAccount.Equals("g/l") ? true : false, 0); //抽液
+                    else
+                        i_mRes = MyModbusFun.Extract(iExtractionPulse, true, 0); //抽液
+
                     if (-2 == i_mRes)
                         throw new Exception("收到退出消息");
                 }
@@ -720,7 +843,7 @@ namespace SmartDyeing.FADM_Object
 
                             i_temp = iExtractionPulse;
 
-                            if (i_temp + v1.Value - Lib_Card.Configure.Parameter.Other_Z_BackPulse  > Lib_Card.Configure.Parameter.Other_B_MaxPulse)
+                            if (i_temp + v1.Value - Lib_Card.Configure.Parameter.Other_Z_BackPulse > Lib_Card.Configure.Parameter.Other_B_MaxPulse)
                             {
                                 ////如果需加量大于10g，直接先加
                                 //if (v1.Value / 1.0 / _i_adjust >= Lib_Card.Configure.Parameter.Other_SplitValue)
@@ -752,7 +875,10 @@ namespace SmartDyeing.FADM_Object
                 try
                 {
                     iExtractionPulse = iExtractionPulse - Lib_Card.Configure.Parameter.Other_Z_BackPulse;
-                    i_mRes = MyModbusFun.Extract(iExtractionPulse, s_unitOfAccount.Equals("g/l") ? true : false, 1); //抽液
+                    if (i_type == 1)
+                        i_mRes = MyModbusFun.Extract(iExtractionPulse, s_unitOfAccount.Equals("g/l") ? true : false, 1); //抽液
+                    else
+                        i_mRes = MyModbusFun.Extract(iExtractionPulse, true, 1); //抽液
                     if (-2 == i_mRes)
                         throw new Exception("收到退出消息");
                 }
@@ -785,7 +911,7 @@ namespace SmartDyeing.FADM_Object
 
             if (FADM_Object.Communal._b_isDripReserveFirst)
             {
-                
+
 
 
                 //移动到天平位，先滴预留量
@@ -798,7 +924,15 @@ namespace SmartDyeing.FADM_Object
 
                 FADM_Object.Communal.BalanceState("滴液");
 
-                double d_blBalanceValueStart = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", FADM_Object.Communal._s_balanceValue)) : Convert.ToDouble(string.Format("{0:F3}", FADM_Object.Communal._s_balanceValue));
+                double d_blBalanceValueStart;
+                if (Lib_Card.Configure.Parameter.Machine_Type == 0)
+                {
+                    d_blBalanceValueStart = Lib_Card.Configure.Parameter.Machine_BalanceType == 0 ? Convert.ToDouble(string.Format("{0:F2}", FADM_Object.Communal.dBalanceValue)) : Convert.ToDouble(string.Format("{0:F3}", FADM_Object.Communal.dBalanceValue));
+                }
+                else
+                {
+                    d_blBalanceValueStart = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", FADM_Object.Communal._s_balanceValue)) : Convert.ToDouble(string.Format("{0:F3}", FADM_Object.Communal._s_balanceValue));
+                }
 
 
                 i_mRes = MyModbusFun.TargetMove(2, 0, 0);
@@ -821,7 +955,10 @@ namespace SmartDyeing.FADM_Object
                     i_infusionPulse1 = i_zPulse1 - i_adjust;
 
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "废液注液启动(" + i_infusionPulse1 + ")");
-                i_mRes = MyModbusFun.Shove(i_infusionPulse1);
+                if ("小针筒" == s_syringeType || "Little Syringe" == s_syringeType)
+                    i_mRes = MyModbusFun.Shove(i_infusionPulse1, 0);
+                else
+                    i_mRes = MyModbusFun.Shove(i_infusionPulse1, 1);
                 if (-2 == i_mRes)
                     throw new Exception("收到退出消息");
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "废液注液完成");
@@ -829,8 +966,15 @@ namespace SmartDyeing.FADM_Object
                 //等待一秒就当数据稳定
                 Thread.Sleep(1000);
 
-                double d_blBalanceValueEnd = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", FADM_Object.Communal._s_balanceValue)) : Convert.ToDouble(string.Format("{0:F3}", FADM_Object.Communal._s_balanceValue));
-
+                double d_blBalanceValueEnd;
+                if (Lib_Card.Configure.Parameter.Machine_Type == 0)
+                {
+                    d_blBalanceValueEnd = Lib_Card.Configure.Parameter.Machine_BalanceType == 0 ? Convert.ToDouble(string.Format("{0:F2}", FADM_Object.Communal.dBalanceValue)) : Convert.ToDouble(string.Format("{0:F3}", FADM_Object.Communal.dBalanceValue));
+                }
+                else
+                {
+                    d_blBalanceValueEnd = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", FADM_Object.Communal._s_balanceValue)) : Convert.ToDouble(string.Format("{0:F3}", FADM_Object.Communal._s_balanceValue));
+                }
                 double d_blDif = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", d_blBalanceValueEnd - d_blBalanceValueStart)) : Convert.ToDouble(string.Format("{0:F3}", d_blBalanceValueEnd - d_blBalanceValueStart));
 
                 //母液瓶扣减1克
@@ -838,12 +982,12 @@ namespace SmartDyeing.FADM_Object
                     "UPDATE bottle_details SET CurrentWeight = CurrentWeight - " + d_blDif + "  " +
                     "WHERE BottleNum = '" + i_minBottleNo + "';");
                 //滴到废液桶时，数据差小于0.5，就当液量不够，提示
-                if(d_blDif <0.5)
+                if (d_blDif < 0.5)
                 {
                     //记录第一个杯需加量脉冲
                     _i_needPulse = dic_pulse.First().Value;
                     _i_needPulseCupNumber = dic_pulse.First().Key;
-                    MyModbusFun.MyMachineReset(); //复位
+                    MyModbusFun.MyMachineReset1(); //复位
                     return -2;
                 }
 
@@ -883,18 +1027,31 @@ namespace SmartDyeing.FADM_Object
 
             }
 
-            if(dic_pulse.Count==0)
+            if (dic_pulse.Count == 0)
             {
                 //如果已经没有要添加的杯，就直接进去
                 goto label13;
             }
+            if (i_type == 1)
+            {
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找" + dic_pulse.First().Key + "号配液杯");
 
-            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找" + dic_pulse.First().Key + "号配液杯");
-            FADM_Object.Communal._i_OptCupNum = dic_pulse.First().Key;
-            i_mRes = MyModbusFun.TargetMove(1, dic_pulse.First().Key, 0);
-            if (-2 == i_mRes)
-                throw new Exception("收到退出消息");
-            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达" + dic_pulse.First().Key + "号配液杯");
+                FADM_Object.Communal._i_OptCupNum = dic_pulse.First().Key;
+                i_mRes = MyModbusFun.TargetMove(1, dic_pulse.First().Key, 0);
+                if (-2 == i_mRes)
+                    throw new Exception("收到退出消息");
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达" + dic_pulse.First().Key + "号配液杯");
+            }
+            else
+            {
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找" + dic_pulse.First().Key + "号(吸光度杯)");
+
+                FADM_Object.Communal._i_OptCupNum = dic_pulse.First().Key;
+                i_mRes = MyModbusFun.TargetMove(10, dic_pulse.First().Key, 0);
+                if (-2 == i_mRes)
+                    throw new Exception("收到退出消息");
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达" + dic_pulse.First().Key + "号(吸光度杯)");
+            }
 
             //判断是否加水
 
@@ -903,13 +1060,40 @@ namespace SmartDyeing.FADM_Object
             {
                 //new Water().Add(lWater.First(), "Dail");
                 double d_addWaterTime = MyModbusFun.GetWaterTime(dic_water[dic_pulse.First().Key]);//加水时间
-                i_mRes = MyModbusFun.AddWater(d_addWaterTime);
-                if (-2 == i_mRes)
-                    throw new Exception("收到退出消息");
+                if (d_addWaterTime <= 32)
+                {
+                    i_mRes = MyModbusFun.AddWater(d_addWaterTime);
+                    if (-2 == i_mRes)
+                        throw new Exception("收到退出消息");
+                }
+                else
+                {
+                    double d = 32;
+                    while (true)
+                    {
+                        if (d_addWaterTime > 32)
+                        {
+                            //每次减32s
+                            i_mRes = MyModbusFun.AddWater(d);
+                            if (-2 == i_mRes)
+                                throw new Exception("收到退出消息");
+                        }
+                        else
+                        {
+                            i_mRes = MyModbusFun.AddWater(d_addWaterTime);
+                            if (-2 == i_mRes)
+                                throw new Exception("收到退出消息");
+                            break;
+                        }
+                        d_addWaterTime -= d;
+                    }
+                }
                 //加完水后会把加水量置为0，否则一针筒加药加不完的第二针筒加药时会重复加水
-                
-                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                if (i_type == 1)
+                {
+                    FADM_Object.Communal._fadmSqlserver.ReviseData(
                     "UPDATE cup_details SET TotalWeight = TotalWeight + " + dic_water[dic_pulse.First().Key] + " WHERE CupNum = " + dic_pulse.First().Key + ";");
+                }
 
                 dic_water[dic_pulse.First().Key] = 0;
             }
@@ -952,16 +1136,35 @@ namespace SmartDyeing.FADM_Object
 
 
 
-
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注液启动(" + iInfusionPulse + ")");
-                i_mRes = MyModbusFun.Shove(iInfusionPulse);
-                if (-2 == i_mRes)
-                    throw new Exception("收到退出消息");
+                if (i_type == 1)
+                {
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注液启动(" + iInfusionPulse + ")");
+                    i_mRes = MyModbusFun.Shove(iInfusionPulse, 0);
+                    if (-2 == i_mRes)
+                        throw new Exception("收到退出消息");
+                }
+                else
+                {
+                    if (Lib_Card.Configure.Parameter.Machine_SlopDown == 1)
+                    {
+                        FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注液启动(" + iInfusionPulse + ")");
+                        i_mRes = MyModbusFun.AbsShove(iInfusionPulse, 0);
+                        if (-2 == i_mRes)
+                            throw new Exception("收到退出消息");
+                    }
+                    else
+                    {
+                        FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注液启动(" + iInfusionPulse + ")");
+                        i_mRes = MyModbusFun.Shove(iInfusionPulse, 0);
+                        if (-2 == i_mRes)
+                            throw new Exception("收到退出消息");
+                    }
+                }
 
             }
             else
             {
-                if (i_zPulse - i_adjust * (Lib_Card.Configure.Parameter.Correcting_B_Weight + 1) >= -dic_pulse.First().Value)
+                if (i_zPulse - i_adjust * (Lib_Card.Configure.Parameter.Correcting_B_Weight + 1) >= dic_pulse.First().Value)
                 {
                     //剩余量大于等于需加量
                     iInfusionPulse = i_zPulse - dic_pulse.First().Value;
@@ -987,11 +1190,30 @@ namespace SmartDyeing.FADM_Object
                     dic_pulse[dic_pulse.First().Key] -= (i_zPulse - i_adjust * (Lib_Card.Configure.Parameter.Correcting_B_Weight + 1));
                     i_pulseT -= (i_zPulse - i_adjust * (Lib_Card.Configure.Parameter.Correcting_B_Weight + 1));
                 }
-
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注液启动(" + iInfusionPulse + ")");
-                i_mRes = MyModbusFun.Shove(iInfusionPulse);
-                if (-2 == i_mRes)
-                    throw new Exception("收到退出消息");
+                if (i_type == 1)
+                {
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注液启动(" + iInfusionPulse + ")");
+                    i_mRes = MyModbusFun.Shove(iInfusionPulse,1);
+                    if (-2 == i_mRes)
+                        throw new Exception("收到退出消息");
+                }
+                else
+                {
+                    if (Lib_Card.Configure.Parameter.Machine_SlopDown == 1)
+                    {
+                        FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注液启动(" + iInfusionPulse + ")");
+                        i_mRes = MyModbusFun.AbsShove(iInfusionPulse, 1);
+                        if (-2 == i_mRes)
+                            throw new Exception("收到退出消息");
+                    }
+                    else
+                    {
+                        FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注液启动(" + iInfusionPulse + ")");
+                        i_mRes = MyModbusFun.Shove(iInfusionPulse,1);
+                        if (-2 == i_mRes)
+                            throw new Exception("收到退出消息");
+                    }
+                }
             }
 
 
@@ -1048,8 +1270,8 @@ namespace SmartDyeing.FADM_Object
             {
                 iInfusionPulse = i_adjust;
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "验证启动(" + iInfusionPulse + ")");
-                i_mRes = MyModbusFun.Shove(iInfusionPulse);
-                if ( -1== i_mRes)
+                i_mRes = MyModbusFun.Shove(iInfusionPulse, 0);
+                if (-1 == i_mRes)
                     throw new Exception("驱动异常");
                 else if (-2 == i_mRes)
                     throw new Exception("收到退出消息");
@@ -1058,7 +1280,7 @@ namespace SmartDyeing.FADM_Object
             {
                 iInfusionPulse = i_adjust;
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "验证启动(" + iInfusionPulse + ")");
-                i_mRes = MyModbusFun.Shove(iInfusionPulse);
+                i_mRes = MyModbusFun.Shove(iInfusionPulse,1);
                 if (-2 == i_mRes)
                     throw new Exception("收到退出消息");
             }
@@ -1066,7 +1288,7 @@ namespace SmartDyeing.FADM_Object
 
             //读取验证重量
             sArg sArg = new sArg();
-            sArg._i_minBottleNo= i_minBottleNo;
+            sArg._i_minBottleNo = i_minBottleNo;
             sArg._d_blBalanceValue3 = d_blBalanceValue3;
             sArg._s_syringeType = s_syringeType;
             thread = new Thread(WaitBalance);
@@ -1101,13 +1323,13 @@ namespace SmartDyeing.FADM_Object
 
             if ("小针筒" == s_syringeType || "Little Syringe" == s_syringeType)
             {
-                i_mRes = MyModbusFun.Put();
+                i_mRes = MyModbusFun.Put(0);
                 if (-2 == i_mRes)
                     throw new Exception("收到退出消息");
             }
             else
             {
-                i_mRes = MyModbusFun.Put();
+                i_mRes = MyModbusFun.Put(1);
                 if (-2 == i_mRes)
                     throw new Exception("收到退出消息");
             }
@@ -1115,7 +1337,7 @@ namespace SmartDyeing.FADM_Object
 
             if (null != thread)
                 thread.Join();
-            for (int i = 0;i<lis_data.Count;i++)
+            for (int i = 0; i < lis_data.Count; i++)
             {
                 //对应值复称值写入
                 directoryReturn.Add(lis_data[i], _d_reviewBalance);
@@ -1138,6 +1360,11 @@ namespace SmartDyeing.FADM_Object
             string s_syringeType=sArg._s_syringeType;
             FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数启动");
             double d_w = SteBalance();
+            if (Math.Abs(d_w - d_temp) > 20)
+            {
+                d_temp = d_w;
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平复称异常，把实际重量置为0");
+            }
             double d_blWeight = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", d_w - d_temp)) : Convert.ToDouble(string.Format("{0:F3}", d_w - d_temp));
             FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数：" + d_w + ",实际重量：" + d_blWeight);
             _d_reviewBalance = d_blWeight;
@@ -1169,31 +1396,129 @@ namespace SmartDyeing.FADM_Object
         //天平稳定数据
         public static double SteBalance()
         {
-        label15:
-            Thread.Sleep(Convert.ToInt32(Lib_Card.Configure.Parameter.Delay_Balance_Read * 1000));
-            double d_blBalanceValue4 = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", FADM_Object.Communal._s_balanceValue)) : Convert.ToDouble(string.Format("{0:F3}", FADM_Object.Communal._s_balanceValue));
-            Thread.Sleep(Convert.ToInt32(Lib_Card.Configure.Parameter.Delay_Balance_Read * 1000));
-            double d_blBalanceValue5 = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", FADM_Object.Communal._s_balanceValue)) : Convert.ToDouble(string.Format("{0:F3}", FADM_Object.Communal._s_balanceValue));
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
+            {
+            label15:
+                Thread.Sleep(Convert.ToInt32(Lib_Card.Configure.Parameter.Delay_Balance_Read * 1000));
+                double d_blBalanceValue4 = Lib_Card.Configure.Parameter.Machine_BalanceType == 0 ? Convert.ToDouble(string.Format("{0:F2}", FADM_Object.Communal.dBalanceValue)) : Convert.ToDouble(string.Format("{0:F3}", FADM_Object.Communal.dBalanceValue));
+                Thread.Sleep(Convert.ToInt32(Lib_Card.Configure.Parameter.Delay_Balance_Read * 1000));
+                double d_blBalanceValue5 = Lib_Card.Configure.Parameter.Machine_BalanceType == 0 ? Convert.ToDouble(string.Format("{0:F2}", FADM_Object.Communal.dBalanceValue)) : Convert.ToDouble(string.Format("{0:F3}", FADM_Object.Communal.dBalanceValue));
 
 
-            double d_blDif = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", d_blBalanceValue4 - d_blBalanceValue5)) : Convert.ToDouble(string.Format("{0:F3}", d_blBalanceValue4 - d_blBalanceValue5));
-            d_blDif = d_blDif < 0 ? -d_blDif : d_blDif;
+                double d_blDif = Lib_Card.Configure.Parameter.Machine_BalanceType == 0 ? Convert.ToDouble(string.Format("{0:F2}", d_blBalanceValue4 - d_blBalanceValue5)) : Convert.ToDouble(string.Format("{0:F3}", d_blBalanceValue4 - d_blBalanceValue5));
+                d_blDif = d_blDif < 0 ? -d_blDif : d_blDif;
 
-            if (d_blDif > Lib_Card.Configure.Parameter.Other_Stable_Value || d_blBalanceValue4 > 6000 || d_blBalanceValue5 > 6000)
-                goto label15;
+                if (d_blDif > Lib_Card.Configure.Parameter.Other_Stable_Value || d_blBalanceValue4 > 6000 || d_blBalanceValue5 > 6000)
+                {
+                label4:
+                    if (6666 == FADM_Object.Communal.dBalanceValue)
+                    {
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            new FADM_Object.MyAlarm("天平通讯异常,检查恢复后请点是", "滴液", false, 1);
+                        else
+                            new FADM_Object.MyAlarm("Abnormal communication on the balance,Click Yes after checking the recovery", "Drip", false, 1);
+                        goto label4;
+                    }
+                    else if (7777 == FADM_Object.Communal.dBalanceValue)
+                    {
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            new FADM_Object.MyAlarm("开机未拿走废液桶,请先拿走废液桶，等待天平清零后重新放置废液桶，然后点确定", "滴液", false, 1);
+                        else
+                            new FADM_Object.MyAlarm("The balance was turned on but the waste liquid tank was not taken away,Please take away the waste liquid bucket first, wait for the balance to be cleared and re-place the waste liquid bucket, and then click OK", "Drip", false, 1);
+                        goto label4;
+                    }
+                    else if (8888 == FADM_Object.Communal.dBalanceValue)
+                    {
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            new FADM_Object.MyAlarm("天平超下限,检查恢复后请点是", "滴液", false, 1);
+                        else
+                            new FADM_Object.MyAlarm("Balance exceeds the lower limit,Click Yes after checking the recovery", "Drip", false, 1);
+                        goto label4;
+                    }
+                    else if (9999 == FADM_Object.Communal.dBalanceValue)
+                    {
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            new FADM_Object.MyAlarm("天平超上限,检查恢复后请点是", "滴液", false, 1);
+                        else
+                            new FADM_Object.MyAlarm("The balance exceeds the upper limit,Click Yes after checking the recovery", "Drip", false, 1);
 
-            double d_blRRead = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", (d_blBalanceValue4 + d_blBalanceValue5) / 2)) : Convert.ToDouble(string.Format("{0:F3}", (d_blBalanceValue4 + d_blBalanceValue5) / 2));
-            
-            return d_blRRead;
+                        goto label4;
+                    }
+                    //FADM_Object.Communal.BalanceState("滴液");
+                    goto label15;
+                }
+
+                double d_blRRead = Lib_Card.Configure.Parameter.Machine_BalanceType == 0 ? Convert.ToDouble(string.Format("{0:F2}", (d_blBalanceValue4 + d_blBalanceValue5) / 2)) : Convert.ToDouble(string.Format("{0:F3}", (d_blBalanceValue4 + d_blBalanceValue5) / 2));
+
+                return d_blRRead;
+            }
+            else
+            {
+            label15:
+                Thread.Sleep(Convert.ToInt32(Lib_Card.Configure.Parameter.Delay_Balance_Read * 1000));
+                double d_blBalanceValue4 = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", FADM_Object.Communal._s_balanceValue)) : Convert.ToDouble(string.Format("{0:F3}", FADM_Object.Communal._s_balanceValue));
+                Thread.Sleep(Convert.ToInt32(Lib_Card.Configure.Parameter.Delay_Balance_Read * 1000));
+                double d_blBalanceValue5 = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", FADM_Object.Communal._s_balanceValue)) : Convert.ToDouble(string.Format("{0:F3}", FADM_Object.Communal._s_balanceValue));
+
+
+                double d_blDif = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", d_blBalanceValue4 - d_blBalanceValue5)) : Convert.ToDouble(string.Format("{0:F3}", d_blBalanceValue4 - d_blBalanceValue5));
+                d_blDif = d_blDif < 0 ? -d_blDif : d_blDif;
+
+                if (d_blDif > Lib_Card.Configure.Parameter.Other_Stable_Value || d_blBalanceValue4 > 6000 || d_blBalanceValue5 > 6000)
+                {
+                label4:
+                    if ("6666" == FADM_Object.Communal._s_balanceValue)
+                    {
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            new FADM_Object.MyAlarm("天平通讯异常,检查恢复后请点是", "滴液", false, 1);
+                        else
+                            new FADM_Object.MyAlarm("Abnormal communication on the balance,Click Yes after checking the recovery", "Drip", false, 1);
+                        goto label4;
+                    }
+                    else if ("7777" == FADM_Object.Communal._s_balanceValue)
+                    {
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            new FADM_Object.MyAlarm("开机未拿走废液桶,请先拿走废液桶，等待天平清零后重新放置废液桶，然后点确定", "滴液", false, 1);
+                        else
+                            new FADM_Object.MyAlarm("The balance was turned on but the waste liquid tank was not taken away,Please take away the waste liquid bucket first, wait for the balance to be cleared and re-place the waste liquid bucket, and then click OK", "Drip", false, 1);
+                        goto label4;
+                    }
+                    else if ("8888" == FADM_Object.Communal._s_balanceValue)
+                    {
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            new FADM_Object.MyAlarm("天平超下限,检查恢复后请点是", "滴液", false, 1);
+                        else
+                            new FADM_Object.MyAlarm("Balance exceeds the lower limit,Click Yes after checking the recovery", "Drip", false, 1);
+                        goto label4;
+                    }
+                    else if ("9999" == FADM_Object.Communal._s_balanceValue)
+                    {
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            new FADM_Object.MyAlarm("天平超上限,检查恢复后请点是", "滴液", false, 1);
+                        else
+                            new FADM_Object.MyAlarm("The balance exceeds the upper limit,Click Yes after checking the recovery", "Drip", false, 1);
+
+                        goto label4;
+                    }
+                    //FADM_Object.Communal.BalanceState("滴液");
+                    goto label15;
+                }
+
+                double d_blRRead = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", (d_blBalanceValue4 + d_blBalanceValue5) / 2)) : Convert.ToDouble(string.Format("{0:F3}", (d_blBalanceValue4 + d_blBalanceValue5) / 2));
+
+                return d_blRRead;
+            }
         }
 
 
         //移动到天平前，判断天平状态 
         public static void BalanceState(string s)
         {
-            int i_mRes = MyModbusFun.CheckBalance();//检查天平
-            if (-2 == i_mRes)
-                throw new Exception("收到退出消息");
+            
+                int i_mRes = MyModbusFun.CheckBalance();//检查天平
+                if (-2 == i_mRes)
+                    throw new Exception("收到退出消息");
+            
         }
     }
 }

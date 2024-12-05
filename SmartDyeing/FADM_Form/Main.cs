@@ -29,9 +29,22 @@ namespace SmartDyeing.FADM_Form
         private extern static IntPtr FindWindow(string lpClassName, string lpWindowName);
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern int PostMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        [DllImportAttribute("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+
+        [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "SetForegroundWindow")]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
+
         public const int WM_CLOSE = 0x10;
 
         Thread _thread_check = null;
+
+        bool b = false;
         public Main()
         {
             InitializeComponent();
@@ -45,6 +58,20 @@ namespace SmartDyeing.FADM_Form
                 FADM_Object.Communal._b_isBalanceInDrip = false;
             }
 
+            string s_newSet = Lib_File.Ini.GetIni("Setting", "IsNewSet", "1", s_path);
+            if (s_newSet == "0")
+            {
+                FADM_Object.Communal._b_isNewSet = false;
+            }
+
+            string isUseAuto = Lib_File.Ini.GetIni("Setting", "IsUseAuto", "1", s_path);
+            if (isUseAuto == "0")
+            {
+                FADM_Object.Communal._b_isUseAuto = false;
+            }
+
+            countDown();
+
             BtnMain_Click(sender, e);
 
             Thread thread = new Thread(ReadBalance); //读取天平数据和光幕数据
@@ -55,7 +82,7 @@ namespace SmartDyeing.FADM_Form
             //thread3.IsBackground = true;
             //thread3.Start();
 
-            //Thread thread2 = new Thread(WriteBalance1); //读取天平数据和光幕数据
+            //Thread thread2 = new Thread(WaitList1); //读取天平数据和光幕数据
             //thread2.IsBackground = true;
             //thread2.Start();
 
@@ -74,6 +101,18 @@ namespace SmartDyeing.FADM_Form
             System.Threading.Thread P_thd_brew = new System.Threading.Thread(SmartDyeing.FADM_Auto.MyBrew.Brew);
             P_thd_brew.IsBackground = true;
             P_thd_brew.Start();
+
+            if (Lib_Card.Configure.Parameter.Other_UseAbs == 1)
+            {
+                System.Threading.Thread P_thd_abs = new System.Threading.Thread(SmartDyeing.FADM_Auto.MyAbsorbance.Absorbance);
+                P_thd_abs.IsBackground = true;
+                P_thd_abs.Start();
+
+                //自动插入吸光度测量
+                Thread P_thd4 = new Thread(InsertAbs);
+                P_thd4.IsBackground = true;
+                P_thd4.Start();
+            }
 
             //播报线程
             Thread P_thd = new Thread(Speech);
@@ -101,6 +140,18 @@ namespace SmartDyeing.FADM_Form
             {
                 TmrFGY.Interval = Convert.ToInt16(d_mytime * 1000);
                 TmrFGY.Enabled = true;
+            }
+
+            //设置分光仪信息
+            string s_isUse_ASL = Lib_File.Ini.GetIni("Spectrometer_ASL", "IsUse","0", s_path);
+            this._s_m_route_ASL = Lib_File.Ini.GetIni("Spectrometer_ASL", "Route", "", s_path) ;
+
+            double d_mytime_ASL = Convert.ToDouble(Lib_File.Ini.GetIni("Spectrometer_ASL", "Time","10", s_path) == "" ? "0" : Lib_File.Ini.GetIni("Spectrometer_ASL", "Time","10", s_path));
+
+            if (_s_m_route_ASL != "" && s_isUse_ASL == "1")
+            {
+                timer1.Interval = Convert.ToInt16(d_mytime_ASL * 1000);
+                timer1.Enabled = true;
             }
 
             //string sPath = Environment.CurrentDirectory + "\\Config.ini";
@@ -208,13 +259,30 @@ namespace SmartDyeing.FADM_Form
                 FADM_Object.Communal._b_isUseClamp = true;
             }
 
-            string isUseAuto = Lib_File.Ini.GetIni("Setting", "IsUseAuto", "1", s_path);
-            if (isUseAuto == "0")
-            {
-                FADM_Object.Communal._b_isUseAuto = false;
-            }
+            
 
-            countDown();
+            string isppm = Lib_File.Ini.GetIni("Setting", "PPM", "30", s_path);
+            FADM_Object.Communal._d_ppm = Convert.ToDouble(isppm);
+
+            string absMas = Lib_File.Ini.GetIni("Setting", "absMax", "0.004", s_path);
+            FADM_Object.Communal._d_absMax = Convert.ToDouble(absMas);
+
+            string sTestSpan = Lib_File.Ini.GetIni("Setting", "TestSpan", "30", s_path);
+            FADM_Object.Communal._d_TestSpan = Convert.ToDouble(sTestSpan);
+
+            string sabs_total = Lib_File.Ini.GetIni("Setting", "AbsTotal", "50", s_path);
+            FADM_Object.Communal._d_abs_total = Convert.ToDouble(sabs_total);
+
+            string sabs_sub = Lib_File.Ini.GetIni("Setting", "AbsSub", "40", s_path);
+            FADM_Object.Communal._d_abs_sub = Convert.ToDouble(sabs_sub);
+
+            FADM_Object.Communal._s_absPath = Lib_File.Ini.GetIni("Abs", "Path", "D:\\Abs\\", s_path);
+
+            string s_desc = Lib_File.Ini.GetIni("Setting", "DESC", "0", s_path);
+            if (s_desc == "1")
+            {
+                FADM_Object.Communal._b_isDesc = true;
+            }
         }
 
         public void countDown()
@@ -287,6 +355,7 @@ namespace SmartDyeing.FADM_Form
 
             if ((P_dt_now - P_dt_create).Days < i_usetime)
             {
+                Communal._b_isexpired = false;
                 P_dt_create = P_dt_create.AddDays(i_usetime);
                 string s_end = Convert.ToString(P_dt_create);
                 s_end = s_end.Replace("/", "-");
@@ -344,7 +413,10 @@ namespace SmartDyeing.FADM_Form
                                 }
                             }
                         }
-                        catch { }
+                        catch (Exception ex)
+                        {
+                            Lib_Log.Log.writeLogException("Main Speech：" + ex.ToString());
+                        }
                         if (b_true)
                         {
                             if (!Communal._b_isBSendOpen)
@@ -371,30 +443,110 @@ namespace SmartDyeing.FADM_Form
 
                     foreach (var key in sortedKeys)
                     {
-                        if (!Lib_Card.CardObject.keyValuePairs[key].Speech)
+                        if (Lib_Card.CardObject.keyValuePairs.ContainsKey(key))
                         {
-                            Lib_Card.CardObject.prompt prompt = new Lib_Card.CardObject.prompt();
-                            prompt = Lib_Card.CardObject.keyValuePairs[key];
-                            prompt.Speech = true;
-                            Lib_Card.CardObject.keyValuePairs[key] = prompt;
+                            SpeechSynthesizer speech = new SpeechSynthesizer();
+                            speech.Rate = -1; //语速
+                            speech.Volume = 100; //声音
+                            speech.SelectVoice("Microsoft Huihui Desktop");//设置中文
+                            string s_info = Lib_Card.CardObject.keyValuePairs[key].Info;
+                            speech.Speak(s_info);
+                            speech.Dispose();
+                            //播报完后，把播报标志位改为true
+                            if (!Lib_Card.CardObject.keyValuePairs[key].Speech)
+                            {
+                                Lib_Card.CardObject.prompt prompt = new Lib_Card.CardObject.prompt();
+                                prompt = Lib_Card.CardObject.keyValuePairs[key];
+                                prompt.Speech = true;
+                                Lib_Card.CardObject.keyValuePairs[key] = prompt;
+                            }
+                            Thread.Sleep(200);
                         }
-
-                        SpeechSynthesizer speech = new SpeechSynthesizer();
-                        speech.Rate = -1; //语速
-                        speech.Volume = 100; //声音
-                        speech.SelectVoice("Microsoft Huihui Desktop");//设置中文
-                        string s_info = Lib_Card.CardObject.keyValuePairs[key].Info;
-                        speech.Speak(s_info);
-
                     }
 
 
                 }
-                catch
+                catch (Exception ex)
                 {
-
+                    Lib_Log.Log.writeLogException("Main Speech2：" + ex.ToString());
                 }
             }
+        }
+
+        public static int JudDyeingCode(string s_firstformulaCode, string s_firstver, string s_secondformulaCode, string s_secondver)
+        {
+            try
+            {
+                //先核对处理工艺步骤是否一致
+                string s_sql = "SELECT  * FROM  dyeing_details where FormulaCode = '" + s_firstformulaCode + "' and VersionNum = " + s_firstver + " order by StepNum;";
+                DataTable dt_data_first = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                s_sql = "SELECT  * FROM  dyeing_details where FormulaCode = '" + s_secondformulaCode + "' and VersionNum = " + s_secondver + " order by StepNum;";
+                DataTable dt_data_second = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                //先判断数据量是否一致
+                if (dt_data_first.Rows.Count != dt_data_second.Rows.Count)
+                {
+                    return -1;
+                }
+                else
+                {
+                    //核对每一步骤是否一致
+                    for (int i = 0; i < dt_data_first.Rows.Count; i++)
+                    {
+                        //判断工艺是否一致
+                        if (dt_data_first.Rows[i]["TechnologyName"].ToString() != dt_data_second.Rows[i]["TechnologyName"].ToString())
+                        {
+                            return -1;
+                        }
+                        else
+                        {
+                            if (dt_data_first.Rows[i]["TechnologyName"].ToString() == "温控" || dt_data_first.Rows[i]["TechnologyName"].ToString() == "Temperature control")
+                            {
+                                //温度，速率，时间不相等
+                                if (Convert.ToDouble(dt_data_first.Rows[i]["Temp"].ToString()) != Convert.ToDouble(dt_data_second.Rows[i]["Temp"].ToString())
+                                    || Convert.ToDouble(dt_data_first.Rows[i]["TempSpeed"].ToString()) != Convert.ToDouble(dt_data_second.Rows[i]["TempSpeed"].ToString())
+                                    || Convert.ToDouble(dt_data_first.Rows[i]["Time"].ToString()) != Convert.ToDouble(dt_data_second.Rows[i]["Time"].ToString())
+                                    )
+                                {
+                                    return -1;
+                                }
+                            }
+                            else if (dt_data_first.Rows[i]["TechnologyName"].ToString() == "冷行" || dt_data_first.Rows[i]["TechnologyName"].ToString() == "洗杯" /*|| dt_data_first.Rows[i]["TechnologyName"].ToString() == "排液" */|| dt_data_first.Rows[i]["TechnologyName"].ToString() == "搅拌"
+                                            || dt_data_first.Rows[i]["TechnologyName"].ToString() == "Cool line" || dt_data_first.Rows[i]["TechnologyName"].ToString() == "Wash the cup" /*|| dt_data_first.Rows[i]["TechnologyName"].ToString() == "Drainage"*/ || dt_data_first.Rows[i]["TechnologyName"].ToString() == "Stir")
+                            {
+                                //时间不等
+                                if (Convert.ToDouble(dt_data_first.Rows[i]["Time"].ToString()) != Convert.ToDouble(dt_data_second.Rows[i]["Time"].ToString()))
+                                {
+                                    return -1;
+                                }
+                            }
+                            else if ((dt_data_first.Rows[i]["TechnologyName"].ToString().Substring(0, 1) == "加" && dt_data_first.Rows[i]["TechnologyName"].ToString() != "加水" && dt_data_first.Rows[i]["TechnologyName"].ToString() != "加药")
+                                            || (dt_data_first.Rows[i]["TechnologyName"].ToString() == "Add A" || dt_data_first.Rows[i]["TechnologyName"].ToString() == "Add B" || dt_data_first.Rows[i]["TechnologyName"].ToString() == "Add C" || dt_data_first.Rows[i]["TechnologyName"].ToString() == "Add D" || dt_data_first.Rows[i]["TechnologyName"].ToString() == "Add E"))
+                            {
+                                //查询对应加药条数
+                                s_sql = "SELECT  * FROM  formula_handle_details where FormulaCode = '" + s_firstformulaCode + "' and VersionNum = " + s_firstver + " and Code = '" + dt_data_first.Rows[i]["Code"].ToString() + "' and TechnologyName = '" + dt_data_first.Rows[i]["TechnologyName"].ToString() + "';";
+                                DataTable dt_data_first_handle = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                                s_sql = "SELECT  * FROM  formula_handle_details where FormulaCode = '" + s_secondformulaCode + "' and VersionNum = " + s_secondver + " and Code = '" + dt_data_second.Rows[i]["Code"].ToString() + "' and TechnologyName = '" + dt_data_second.Rows[i]["TechnologyName"].ToString() + "';";
+                                DataTable dt_data_second_handle = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                                if (dt_data_first_handle.Rows.Count != dt_data_second_handle.Rows.Count)
+                                {
+                                    return -1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.Message, "JudDyeingCode", MessageBoxButtons.OK, false);
+                return -1;
+            }
+
+            return 0;
         }
 
         private void WaitList()
@@ -420,13 +572,44 @@ namespace SmartDyeing.FADM_Form
                             string str_head = "SELECT  * FROM drop_head WHERE  CupNum = " + Row[0].ToString() + " ;";
                             DataTable dt_head = FADM_Object.Communal._fadmSqlserver.GetData(str_head);
 
-                            if (dataTabletemp1.Rows.Count > 0 && dt_head.Rows.Count == 0)
+                            if(dt_head.Rows.Count != 0)
                             {
-                                b_newInsert = true;
-                                //加入批次
-                                AddDropList a = new AddDropList(dataTabletemp1.Rows[0]["FormulaCode"].ToString(), dataTabletemp1.Rows[0]["VersionNum"].ToString(), Row[0].ToString(), 3);
-                                //删除等待列表记录
-                                FADM_Object.Communal._fadmSqlserver.GetData("Delete from wait_list where Type = 3 and IndexNum = " + dataTabletemp1.Rows[0]["IndexNum"].ToString());
+                                continue;
+                            }
+                            foreach (DataRow Row1 in dataTabletemp1.Rows)
+                            {
+                                //判断另外一个杯子是否在用
+                                if (Communal._dic_first_second[Convert.ToInt32(Row[0].ToString())] > 0)
+                                {
+                                    string str_head_s = "SELECT  * FROM drop_head WHERE  CupNum = " + Communal._dic_first_second[Convert.ToInt32(Row[0].ToString())] + "  And BatchName ='0';";
+                                    DataTable dt_head_s = FADM_Object.Communal._fadmSqlserver.GetData(str_head_s);
+                                    if(dt_head_s.Rows.Count>1)
+                                    {
+                                        string s_head_w = "SELECT  * FROM formula_head WHERE  FormulaCode = '" + Row1["FormulaCode"].ToString() + "' And  VersionNum ='" + Row1["VersionNum"].ToString() + "';";
+                                        DataTable dt_head_w = FADM_Object.Communal._fadmSqlserver.GetData(s_head_w);
+
+                                        //if (dt_head_s.Rows[0]["DyeingCode"].ToString() == dt_head_w.Rows[0]["DyeingCode"].ToString())
+                                        if (JudDyeingCode(dt_head_s.Rows[0]["FormulaCode"].ToString(), dt_head_s.Rows[0]["VersionNum"].ToString(), dt_head_w.Rows[0]["FormulaCode"].ToString(), dt_head_w.Rows[0]["VersionNum"].ToString()) == 0)
+                                        {
+                                            b_newInsert = true;
+                                            //加入批次
+                                            AddDropList a = new AddDropList(dataTabletemp1.Rows[0]["FormulaCode"].ToString(), dataTabletemp1.Rows[0]["VersionNum"].ToString(), Row[0].ToString(), 3);
+                                            //删除等待列表记录
+                                            FADM_Object.Communal._fadmSqlserver.GetData("Delete from wait_list where Type = 3 and IndexNum = " + dataTabletemp1.Rows[0]["IndexNum"].ToString());
+                                            break;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    b_newInsert = true;
+                                    //加入批次
+                                    AddDropList a = new AddDropList(dataTabletemp1.Rows[0]["FormulaCode"].ToString(), dataTabletemp1.Rows[0]["VersionNum"].ToString(), Row[0].ToString(), 3);
+                                    //删除等待列表记录
+                                    FADM_Object.Communal._fadmSqlserver.GetData("Delete from wait_list where Type = 3 and IndexNum = " + dataTabletemp1.Rows[0]["IndexNum"].ToString());
+
+                                    break;
+                                }
                             }
                         }
 
@@ -434,8 +617,7 @@ namespace SmartDyeing.FADM_Form
                         s_sqltemp = "SELECT  CupNum FROM cup_details WHERE   IsUsing = 0 and IsFixed = 0 and Statues = '待机' and enable = 1 and Type = 3 order by CupNum ;";
                         dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sqltemp);
 
-                        string s_sqltemp2 = "SELECT  * FROM wait_list WHERE  CupNum = 0 and Type = 3  order by IndexNum;";
-                        DataTable dt_temp2 = FADM_Object.Communal._fadmSqlserver.GetData(s_sqltemp2);
+                        
 
                         int i_num = 0;
                         foreach (DataRow Row in dt_temp.Rows)
@@ -444,15 +626,63 @@ namespace SmartDyeing.FADM_Form
                             string s_head = "SELECT  * FROM drop_head WHERE  CupNum = " + Row[0].ToString() + " ;";
                             DataTable dt_head = FADM_Object.Communal._fadmSqlserver.GetData(s_head);
 
-                            if (dt_temp2.Rows.Count > i_num && dt_head.Rows.Count == 0)
-                            {
-                                b_newInsert = true;
-                                //加入批次
-                                AddDropList a = new AddDropList(dt_temp2.Rows[i_num]["FormulaCode"].ToString(), dt_temp2.Rows[i_num]["VersionNum"].ToString(), Row[0].ToString(), 3);
-                                //删除等待列表记录
-                                FADM_Object.Communal._fadmSqlserver.GetData("Delete from wait_list where Type = 3 and IndexNum = " + dt_temp2.Rows[i_num]["IndexNum"].ToString());
+                            string s_sqltemp2 = "SELECT  * FROM wait_list WHERE  CupNum = 0 and Type = 3  order by IndexNum;";
+                            DataTable dt_temp2 = FADM_Object.Communal._fadmSqlserver.GetData(s_sqltemp2);
 
-                                i_num++;
+                            if (dt_temp2.Rows.Count == 0)
+                                break;
+
+                            foreach (DataRow Row1 in dt_temp2.Rows)
+                            {
+                                //查询配方对应染固色代码
+                                string s_head_w = "SELECT  * FROM formula_head WHERE  FormulaCode = '" + Row1["FormulaCode"].ToString() + "' And  VersionNum ='" + Row1["VersionNum"].ToString() + "';";
+                                DataTable dt_head_w = FADM_Object.Communal._fadmSqlserver.GetData(s_head_w);
+
+                                //判断是否双杯
+                                if (Communal._dic_first_second[Convert.ToInt32(Row[0].ToString())] > 0)
+                                {
+                                    string str_head_s = "SELECT  * FROM drop_head WHERE  CupNum = " + Communal._dic_first_second[Convert.ToInt32(Row[0].ToString())] + "  ;";
+                                    DataTable dt_head_s = FADM_Object.Communal._fadmSqlserver.GetData(str_head_s);
+                                    if(dt_head_s.Rows.Count>0 && dt_head_w.Rows.Count>0)
+                                    {
+                                        //判断是否染固色代码一致
+                                        //if (dt_head_s.Rows[0]["DyeingCode"].ToString() == dt_head_w.Rows[0]["DyeingCode"].ToString())
+                                            if(JudDyeingCode(dt_head_s.Rows[0]["FormulaCode"].ToString(), dt_head_s.Rows[0]["VersionNum"].ToString(), dt_head_w.Rows[0]["FormulaCode"].ToString(), dt_head_w.Rows[0]["VersionNum"].ToString()) ==0)
+                                        {
+                                            if (dt_head_s.Rows[0]["BatchName"].ToString() == "0")
+                                            {
+                                                b_newInsert = true;
+                                                //加入批次
+                                                AddDropList a = new AddDropList(Row1["FormulaCode"].ToString(), Row1["VersionNum"].ToString(), Row[0].ToString(), 3);
+                                                //删除等待列表记录
+                                                FADM_Object.Communal._fadmSqlserver.GetData("Delete from wait_list where Type = 3 and IndexNum = " + Row1["IndexNum"].ToString());
+
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        b_newInsert = true;
+                                        //加入批次
+                                        AddDropList a = new AddDropList(Row1["FormulaCode"].ToString(), Row1["VersionNum"].ToString(), Row[0].ToString(), 3);
+                                        //删除等待列表记录
+                                        FADM_Object.Communal._fadmSqlserver.GetData("Delete from wait_list where Type = 3 and IndexNum = " + Row1["IndexNum"].ToString());
+
+                                        break;
+                                    }
+
+                                }
+                                else
+                                {
+                                    b_newInsert = true;
+                                    //加入批次
+                                    AddDropList a = new AddDropList(Row1["FormulaCode"].ToString(), Row1["VersionNum"].ToString(), Row[0].ToString(), 3);
+                                    //删除等待列表记录
+                                    FADM_Object.Communal._fadmSqlserver.GetData("Delete from wait_list where Type = 3 and IndexNum = " + Row1["IndexNum"].ToString());
+
+                                    break;
+                                }
                             }
 
                         }
@@ -468,6 +698,8 @@ namespace SmartDyeing.FADM_Form
                         bool b_type2 = false;
                         foreach (DataRow Row in dt_temp.Rows)
                         {
+                            if (dt_temp3.Rows.Count == 0)
+                                break;
                             //查询是否在drop_head里存在该杯
                             string s_head = "SELECT  * FROM drop_head WHERE  CupNum = " + Row[0].ToString() + " ;";
                             DataTable dt_head = FADM_Object.Communal._fadmSqlserver.GetData(s_head);
@@ -557,8 +789,22 @@ namespace SmartDyeing.FADM_Form
                                         //查询修改该配方为已滴定配方
                                         s_sql = "SELECT * FROM drop_head Where BatchName = '0'  and Stage = '后处理';";
                                         dt_data = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                        List<int> lis_cup=new List<int>();
                                         foreach (DataRow dr in dt_data.Rows)
                                         {
+                                            lis_cup.Add(Convert.ToInt32(dr["CupNum"]));
+                                        }
+                                        foreach (DataRow dr in dt_data.Rows)
+                                        {
+                                            //把双杯的都判断一下，如果两个杯都有配方，就一起滴定，如果只有一个杯有配方就不自动开始
+                                            if (Communal._dic_first_second[Convert.ToInt32(dr["CupNum"])] > 0)
+                                            {
+                                                if(!lis_cup.Contains(Communal._dic_first_second[Convert.ToInt32(dr["CupNum"])]))
+                                                {
+                                                    continue;
+                                                }
+
+                                            }
                                             //写入配方浏览表
                                             s_sql = "UPDATE formula_head SET State = '已滴定配方'" +
                                                        " WHERE FormulaCode = '" + dr["FormulaCode"] + "' AND" +
@@ -577,15 +823,64 @@ namespace SmartDyeing.FADM_Form
                                             FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
                                         }
 
+                                        s_sql = "SELECT * FROM drop_head Where BatchName = '"+ s_batchNum+"';";
+                                        DataTable dt_data1 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
 
-
-
-                                        Thread thread = new Thread(() =>
+                                        if (dt_data1.Rows.Count > 0)
                                         {
-                                            new FADM_Auto.Drip().DripLiquid(s_batchNum);
-                                            FADM_Control.Formula.P_bl_update = true;
-                                        });
-                                        thread.Start();
+                                            //查询是否有实际开始的，再调用开始滴液
+                                            Thread thread = new Thread(() =>
+                                            {
+                                                new FADM_Auto.Drip().DripLiquid(s_batchNum);
+                                                FADM_Control.Formula.P_bl_update = true;
+                                            });
+                                            thread.Start();
+
+                                            //等待进去滴液，需要状态变成不是待机才继续,因为滴液是线程启动，有可能刚好手动点击开始滴液，导致两个线程同时执行
+                                            while (true)
+                                            {
+                                                if (FADM_Object.Communal.ReadMachineStatus() != 0)
+                                                    break;
+                                                Thread.Sleep(10);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            //重新把序号减回去
+                                            //获取之前批次号
+                                            string s_sql_2 = "SELECT BatchName FROM enabled_set Where MyID = 1;";
+                                            DataTable dt_data_2 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_2);
+                                            string s_batchNum_last2 = Convert.ToString(dt_data_2.Rows[0][dt_data_2.Columns[0]]);
+
+                                            //计算当前批次号
+                                            string s_batchNum2 = null;
+                                            if (s_batchNum_last2 == "0")
+                                            {
+                                                //初始状态
+                                                int i_no = 1;
+                                                s_batchNum2 = DateTime.Now.ToString("yyyyMMdd") + i_no.ToString("d4");
+                                            }
+                                            else
+                                            {
+                                                string s_date = s_batchNum_last2.Substring(0, 8);
+                                                string s_no = s_batchNum_last2.Substring(8, 4);
+
+                                                if (s_date == DateTime.Now.ToString("yyyyMMdd"))
+                                                {
+                                                    s_batchNum2 = s_date + (Convert.ToInt32(s_no) - 1).ToString("d4");
+                                                }
+                                                else
+                                                {
+                                                    int i_no = 1;
+                                                    s_batchNum2 = DateTime.Now.ToString("yyyyMMdd") + i_no.ToString("d4");
+                                                }
+                                            }
+
+                                            //修改当前批次号
+                                            s_sql = "UPDATE enabled_set SET BatchName = '" + s_batchNum2 + "'" +
+                                                        " WHERE MyID = 1;";
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                        }
                                         b_newInsert = false;
                                         FADM_Control.Formula._b_updateWait = true;
                                         FADM_Object.Communal._b_isDripping = false;
@@ -621,147 +916,1110 @@ namespace SmartDyeing.FADM_Form
             }
         }
 
-        private void ReadBalance()
+        private void InsertAbs()
         {
-            
             while (true)
             {
-                Thread.Sleep(60);  //这里一直读 如果同时地方也同时读 就有可能造成读不到 
-                //
-                if (FADM_Object.Communal.ReadTcpStatus() && FADM_Object.Communal._b_auto)
+                try
                 {
-                    if (!Communal._b_isBSendOpen)
+
+                    //查询是否有等待数据
+                    string s_sql = "SELECT top 1 * FROM abs_wait_list  order by InsertDate;";
+                    DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                    if (dt_data.Rows.Count > 0)
                     {
-                        if (Communal._i_bType == 1)
+                        int _i_nBottleNum = Convert.ToInt32(dt_data.Rows[0]["BottleNum"]);
+                        //1.查看是否有空闲杯子
+                        s_sql = "SELECT * FROM abs_cup_details WHERE  Enable = 1 And IsUsing=0 order by CupNum;";
+                        DataTable dt_abs_cup_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                        if (dt_abs_cup_details.Rows.Count == 0)
                         {
-                            int[] ia_array12 = { 17 };
-                            int i_state12 = FADM_Object.Communal._tcpModBus.Write(811, ia_array12);
-
-                            Communal._b_isBSendClose = false;
-                            Communal._b_isBSendOpen = true;
-                        }
-                    }
-
-                    if (!Communal._b_isBSendClose)
-                    {
-                        if (Communal._i_bType == 2)
-                        {
-                            int[] ia_array12 = { 18 };
-                            int i_state12 = FADM_Object.Communal._tcpModBus.Write(811, ia_array12);
-
-                            Communal._b_isBSendOpen = false;
-                            Communal._b_isBSendClose = true;
-                        }
-                    }
-
-                    //Console.WriteLine("读天平");
-                    //只读天平寄存器 
-                    int[] ia_array = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-                    int i_state = FADM_Object.Communal._tcpModBus.Read(901, 28, ref ia_array);
-                    if (i_state != -1)
-                    {
-                        MyAlarm myAlarm = null;
-
-                        Communal._s_plcVersion = "V"+ ia_array[26].ToString("d4")+ ia_array[27].ToString("d4");
-
-                        double d_b = 0.0;
-                        if (ia_array[0] < 0)
-                        {
-                            d_b = ((ia_array[1] + 1) * 65536 + ia_array[0]) / 1000.0;
+                            goto lab_end;
                         }
                         else
                         {
-                            d_b = (ia_array[1] * 65536 + ia_array[0]) / 1000.0;
-                        }
-                        //if(Lib_Card.Configure.Parameter.Machine_BalanceType == 1)
-                        //{
-                        //    b /= 10;
-                        //}
-
-
-
-
-                        if (Convert.ToString(d_b).Equals("9999"))
-                        {
-                            FADM_Object.Communal._s_balanceValue = "9999";
-                            //myAlarm = new FADM_Object.MyAlarm("天平超上限", "天平", true, 1);
-                        }
-                        else if (Convert.ToString(d_b).Equals("8888"))
-                        {
-                            FADM_Object.Communal._s_balanceValue = "8888";
-                            //myAlarm = new FADM_Object.MyAlarm("天平超下限", "天平", true, 1);
-                        }
-                        else if (Convert.ToString(d_b).Equals("7777"))
-                        {
-                            FADM_Object.Communal._s_balanceValue = "7777";
-                            //myAlarm = new FADM_Object.MyAlarm("未拿走废液桶", "天平", true, 1);
-                        }
-                        else if (Convert.ToString(d_b).Equals("6666"))
-                        {
-                            FADM_Object.Communal._s_balanceValue = "6666";
-                            //myAlarm = new FADM_Object.MyAlarm("通讯失败 ", "天平", true, 1);
-                        }
-                        else
-                        {
-                            FADM_Object.Communal._s_balanceValue = Convert.ToString(d_b);
-                        }
-
-                        //失能信号
-                        int i_a5 = ia_array[5];
-                        bool b_xpower = false;
-                        bool b_ypower = false;
-                        char[] ca_cc1 = Convert.ToString(i_a5, 2).PadLeft(12, '0').ToArray();
-                        if (ca_cc1[ca_cc1.Length - 6].Equals('1'))
-                        {
-                            b_xpower = true;
-                        }
-                        if (ca_cc1[ca_cc1.Length - 12].Equals('1'))
-                        {
-                            b_ypower = true;
-                        }
-                        //if (xpower || ypower)
-                        {
-                            //光幕信号 这上面的MyAlarm不要等待
-                            int i_a2 = ia_array[2];
-                            char[] ca_cc = Convert.ToString(i_a2, 2).PadLeft(3, '0').ToArray();
-                            if (ca_cc[ca_cc.Length - 1].Equals('0'))
+                            int i_index = 0;
+                            string s_cupNum = "";
+                        lab_re:
+                            if (i_index == dt_abs_cup_details.Rows.Count)
                             {
-
-                                if (Lib_Card.Configure.Parameter.Machine_IsStopOrFront == 0)
-                                {
-                                    if (!Lib_Card.CardObject.bStopScr)
-                                    {
-                                        Lib_Card.CardObject.bStopScr = true;
-                                        if (b_xpower || b_ypower)
-                                        {
-                                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                                new FADM_Object.MyAlarm("急停已按下", 1);
-                                            else
-                                                new FADM_Object.MyAlarm("Emergency stop pressed", 1);
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    if (!Lib_Card.CardObject.bFront)
-                                    {
-                                        Lib_Card.CardObject.bFront = true;
-                                        if (b_xpower || b_ypower)
-                                        {
-                                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                                new FADM_Object.MyAlarm("前光幕遮挡", 1);
-                                            else
-                                                new FADM_Object.MyAlarm("Front light curtain obstruction", 1);
-                                        }
-                                    }
-                                }
-
+                                goto lab_end;
+                            }
+                            //判断当前工位是否待机(循环查找实际待机杯号)
+                            if (MyAbsorbance._abs_Temps[Convert.ToInt32(dt_abs_cup_details.Rows[i_index]["CupNum"]) - 1]._s_currentState != "1")
+                            {
+                                i_index += 1;
+                                goto lab_re;
                             }
                             else
                             {
-                                if (Lib_Card.Configure.Parameter.Machine_IsStopOrFront == 0)
+                                //记录选择杯号
+                                s_cupNum = dt_abs_cup_details.Rows[i_index]["CupNum"].ToString();
+                            }
+                            //2.计算需要添加的用量并保存到表_i_nBottleNum
+                            s_sql = "SELECT bottle_details.*,assistant_details.AllowMinColoringConcentration,assistant_details.AllowMaxColoringConcentration,assistant_details.AssistantType,assistant_details.UnitOfAccount  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE bottle_details.BottleNum = " + _i_nBottleNum + ";";
+                            DataTable dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                            string s_unitOfAccount = dt_temp.Rows[0]["UnitOfAccount"].ToString();
+                            string s_assistantType = dt_temp.Rows[0]["AssistantType"].ToString();
+                            string s_realConcentration = dt_temp.Rows[0]["RealConcentration"].ToString();
+                            string s_settingConcentration = dt_temp.Rows[0]["SettingConcentration"].ToString();
+                            string s_compensate = dt_temp.Rows[0]["Compensate"].ToString();
+                            //if(Convert.ToDouble(s_settingConcentration) < 0.05)
+                            //{
+                            //    FADM_Form.CustomMessageBox.Show("浓度太小，不能测试", "TestAbs",
+                            //    MessageBoxButtons.OK, false);
+                            //    return;
+                            //}
+                            if (s_unitOfAccount != "%")
+                            {
+                                //FADM_Form.CustomMessageBox.Show("不是染料，不能测试", "TestAbs",
+                                //MessageBoxButtons.OK, false);
+                                //return;
+                                FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from abs_wait_list where BottleNum = " + _i_nBottleNum + " And InsertDate = '" + Convert.ToDateTime(dt_data.Rows[0]["InsertDate"]).ToString("yyyy-MM-dd HH:mm:ss.fff") + "';");
+                                goto lab_end;
+                            }
+                            else
+                            {
+                                //需要洗杯
+                                if (MyAbsorbance._abs_Temps[Convert.ToInt32(s_cupNum) - 1]._s_history == "1")
+                                {
+                                    //发送洗杯
+                                    //发送启动
+                                    int[] values = new int[5];
+                                    values[0] = 1;
+                                    values[1] = 0;
+                                    values[2] = 0;
+                                    values[3] = 0;
+                                    values[4] = 3;
+                                    if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                                    {
+                                        FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                                    }
+
+                                    //写入测量数据
+                                    int d_1 = 0;
+                                    d_1 = Convert.ToInt32(FADM_Object.Communal._d_abs_total * 1000) / 65536;
+                                    int i_d_11 = Convert.ToInt32(FADM_Object.Communal._d_abs_total * 1000) % 65536;
+
+                                    int d_2 = 0;
+                                    d_2 = (Convert.ToInt32(Lib_Card.Configure.Parameter.Other_AbsAddWater * 1000) + 10000) / 65536;
+                                    int i_d_22 = (Convert.ToInt32(Lib_Card.Configure.Parameter.Other_AbsAddWater * 1000) + 10000) % 65536;
+
+                                    int d_3 = 0;
+                                    d_3 = Lib_Card.Configure.Parameter.Other_WashStirTime / 65536;
+                                    int i_d_33 = Lib_Card.Configure.Parameter.Other_WashStirTime % 65536;
+
+                                    int d_4 = 0;
+                                    d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
+                                    int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
+
+                                    int d_5 = 0;
+                                    d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
+                                    int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
+
+                                    int[] ia_array = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3 };
+                                    if (Convert.ToInt32(s_cupNum) == 1)
+                                        FADM_Object.Communal._tcpModBusAbs.Write(1010, ia_array);
+                                    else
+                                        FADM_Object.Communal._tcpModBusAbs.Write(1060, ia_array);
+
+                                    if (Convert.ToInt32(s_cupNum) == 1)
+                                        FADM_Object.Communal._tcpModBusAbs.Write(800, values);
+                                    else
+                                        FADM_Object.Communal._tcpModBusAbs.Write(810, values);
+
+                                    s_sql = "UPDATE abs_cup_details SET Statues='洗杯',IsUsing = 1,Type=0  WHERE CupNum = " + s_cupNum + " ;";
+                                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                    goto lab_end;
+                                }
+
+                                //查看纯净水检测是否超过30分钟
+                                s_sql = "SELECT *  FROM standard where Type = 1;";
+
+                                dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                if (dt_temp.Rows.Count == 0 || MyAbsorbance._i_block == 1)
+                                {
+                                    //    FADM_Form.CustomMessageBox.Show("不存在标准记录，先测试标准样", "TestAbs",
+                                    //MessageBoxButtons.OK, false);
+
+                                    DialogResult dialogResult;
+                                    if (MyAbsorbance._i_block == 1)
+                                    {
+                                        dialogResult = FADM_Form.CustomMessageBox.Show("断电重启，先测试基准样，请选择测试基准点母液(选择溶解剂请点是，选择水请点否)", "温馨提示", MessageBoxButtons.YesNo, true);
+                                    }
+                                    else
+                                    {
+                                        dialogResult = FADM_Form.CustomMessageBox.Show("不存在标准记录，先测试基准样，请选择测试基准点母液(选择溶解剂请点是，选择水请点否)", "温馨提示", MessageBoxButtons.YesNo, true);
+                                    }
+                                    if (dialogResult == DialogResult.Yes)
+                                    {
+                                        //找到DNF溶解剂
+                                        s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
+                                    }
+                                    else if (dialogResult == DialogResult.No)
+                                    {
+                                        //找到水
+                                        s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount = 'Water';";
+                                    }
+                                    else
+                                    {
+                                        goto lab_end;
+                                    }
+
+                                    dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                    if (dt_temp.Rows.Count == 0)
+                                    {
+                                        FADM_Form.CustomMessageBox.Show("不存在母液瓶号，不能测试", "TestAbs",
+                                MessageBoxButtons.OK, false);
+                                        return;
+                                    }
+                                    else
+                                    {
+
+                                        //判断是否一样的溶解剂或水
+                                        //if (dataTable.Rows[0]["AdditivesNum"].ToString() != dt_temp.Rows[0]["BottleNum"].ToString())
+                                        {
+                                            //测试样
+                                            if (Convert.ToInt32(dt_data.Rows[0]["Type"]) == 0)
+                                            {
+                                                //更新数据库
+                                                s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", 0.0) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=6,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                            }
+                                            //测试补偿
+                                            else
+                                            {
+                                                //更新数据库，Type 改为8
+                                                s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", 0.0) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=8,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                            }
+
+                                            //发送启动
+                                            int[] values1 = new int[5];
+                                            values1[0] = 1;
+                                            values1[1] = 0;
+                                            values1[2] = 0;
+                                            values1[3] = 0;
+                                            values1[4] = 4;
+                                            if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                                            {
+                                                FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                                            }
+
+                                            //写入测量数据
+                                            int d_1_ = 0;
+                                            d_1_ = Lib_Card.Configure.Parameter.Other_StartWave / 65536;
+                                            int i_d_11_ = Lib_Card.Configure.Parameter.Other_StartWave % 65536;
+
+                                            int d_2_ = 0;
+                                            d_2_ = Lib_Card.Configure.Parameter.Other_EndWave / 65536;
+                                            int i_d_22_ = Lib_Card.Configure.Parameter.Other_EndWave % 65536;
+
+                                            int d_3_ = 0;
+                                            d_3_ = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
+                                            int i_d_33_ = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
+
+                                            int d_4_ = 0;
+                                            d_4_ = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
+                                            int i_d_44_ = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
+
+                                            int d_5_ = 0;
+                                            d_5_ = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
+                                            int i_d_55_ = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
+
+                                            int d_7_ = 0;
+                                            d_7_ = (Convert.ToInt32(FADM_Object.Communal._d_abs_total * 1000)) / 65536;
+                                            int i_d_77_ = (Convert.ToInt32(FADM_Object.Communal._d_abs_total * 1000)) % 65536;
+
+                                            int[] ia_array1 = new int[] { i_d_11_, d_1_, i_d_22_, d_2_, i_d_33_, d_3_, i_d_44_, d_4_, i_d_55_, d_5_, 0, 0, i_d_77_, d_7_ };
+                                            if (Convert.ToInt32(s_cupNum) == 1)
+                                                FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array1);
+                                            else
+                                                FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array1);
+
+                                            if (Convert.ToInt32(s_cupNum) == 1)
+                                                FADM_Object.Communal._tcpModBusAbs.Write(800, values1);
+                                            else
+                                                FADM_Object.Communal._tcpModBusAbs.Write(810, values1);
+
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from abs_wait_list where BottleNum = " + _i_nBottleNum + " And InsertDate = '" + Convert.ToDateTime(dt_data.Rows[0]["InsertDate"]).ToString("yyyy-MM-dd HH:mm:ss.fff") + "';");
+
+                                            //删除上一次标准记录
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from standard where Type = 0");
+
+                                            goto lab_end;
+                                        }
+
+                                        //测试样
+                                        if (Convert.ToInt32(dt_data.Rows[0]["Type"]) == 0)
+                                        {
+                                            //更新数据库
+                                            s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", 0.0) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=2,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                        }
+                                        else
+                                        {
+                                            //更新数据库
+                                            s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", 0.0) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=9,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                        }
+
+                                        //发送启动
+                                        int[] values = new int[6];
+                                        values[0] = 1;
+                                        values[1] = 0;
+                                        values[2] = 0;
+                                        values[3] = 0;
+                                        values[4] = 1;
+                                        values[5] = 1;
+                                        if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                                        {
+                                            FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                                        }
+
+                                        //写入测量数据
+                                        int d_1 = 0;
+                                        d_1 = Lib_Card.Configure.Parameter.Other_StartWave / 65536;
+                                        int i_d_11 = Lib_Card.Configure.Parameter.Other_StartWave % 65536;
+
+                                        int d_2 = 0;
+                                        d_2 = Lib_Card.Configure.Parameter.Other_EndWave / 65536;
+                                        int i_d_22 = Lib_Card.Configure.Parameter.Other_EndWave % 65536;
+
+                                        int d_3 = 0;
+                                        d_3 = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
+                                        int i_d_33 = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
+
+                                        int d_4 = 0;
+                                        d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
+                                        int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
+
+                                        int d_5 = 0;
+                                        d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
+                                        int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
+
+                                        int[] ia_array = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3, i_d_44, d_4, i_d_55, d_5 };
+                                        if (Convert.ToInt32(s_cupNum) == 1)
+                                            FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array);
+                                        else
+                                            FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array);
+
+                                        //测量纯水
+                                        if (Convert.ToInt32(s_cupNum) == 1)
+                                            FADM_Object.Communal._tcpModBusAbs.Write(800, values);
+                                        else
+                                            FADM_Object.Communal._tcpModBusAbs.Write(810, values);
+                                        //删除上一次标准记录
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from standard where Type = 0");
+                                    }
+                                    return;
+                                }
+                                else
+                                {
+                                    DateTime timeA = Convert.ToDateTime(dt_temp.Rows[0]["FinishTime"].ToString());
+                                    DateTime timeB = DateTime.Now; //获取当前时间
+                                    TimeSpan ts = timeB - timeA; //计算时间差
+                                    string s_time = ts.TotalMinutes.ToString(); //将时间差转换为小时
+
+                                    if (Convert.ToDouble(s_time) > FADM_Object.Communal._d_TestSpan)
+                                    {
+                                        //        FADM_Form.CustomMessageBox.Show("标准记录已超期，先测试标准样", "TestAbs",
+                                        //MessageBoxButtons.OK, false);
+                                        //        //找到母液溶解剂母液瓶号
+                                        //        s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
+
+                                        DialogResult dialogResult = FADM_Form.CustomMessageBox.Show("基准记录已超期，先测试基准样，请选择测试基准点母液(选择溶解剂请点是，选择水请点否)", "温馨提示", MessageBoxButtons.YesNo, true);
+                                        if (dialogResult == DialogResult.Yes)
+                                        {
+                                            //找到DNF溶解剂
+                                            s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
+                                        }
+                                        else if (dialogResult == DialogResult.No)
+                                        {
+                                            //找到水
+                                            s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount = 'Water';";
+                                        }
+                                        else
+                                        {
+                                            goto lab_end;
+                                        }
+
+                                        dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                        if (dt_temp.Rows.Count == 0)
+                                        {
+                                            FADM_Form.CustomMessageBox.Show("不存在母液瓶号，不能测试", "TestAbs",
+                                    MessageBoxButtons.OK, false);
+                                            return;
+                                        }
+                                        else
+                                        {
+
+                                            //判断是否一样的溶解剂或水
+                                            //if (dataTable.Rows[0]["AdditivesNum"].ToString() != dt_temp.Rows[0]["BottleNum"].ToString())
+                                            {
+                                                if (Convert.ToInt32(dt_data.Rows[0]["Type"]) == 0)
+                                                {
+                                                    //更新数据库
+                                                    s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", 0.0) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=6,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                                }
+                                                else
+                                                {
+                                                    //更新数据库
+                                                    s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", 0.0) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=8,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                                }
+
+                                                //发送启动
+                                                int[] values1 = new int[5];
+                                                values1[0] = 1;
+                                                values1[1] = 0;
+                                                values1[2] = 0;
+                                                values1[3] = 0;
+                                                values1[4] = 4;
+                                                if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                                                {
+                                                    FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                                                }
+
+                                                //写入测量数据
+                                                int d_1_ = 0;
+                                                d_1_ = Lib_Card.Configure.Parameter.Other_StartWave / 65536;
+                                                int i_d_11_ = Lib_Card.Configure.Parameter.Other_StartWave % 65536;
+
+                                                int d_2_ = 0;
+                                                d_2_ = Lib_Card.Configure.Parameter.Other_EndWave / 65536;
+                                                int i_d_22_ = Lib_Card.Configure.Parameter.Other_EndWave % 65536;
+
+                                                int d_3_ = 0;
+                                                d_3_ = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
+                                                int i_d_33_ = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
+
+                                                int d_4_ = 0;
+                                                d_4_ = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
+                                                int i_d_44_ = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
+
+                                                int d_5_ = 0;
+                                                d_5_ = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
+                                                int i_d_55_ = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
+
+                                                int d_7_ = 0;
+                                                d_7_ = (Convert.ToInt32(FADM_Object.Communal._d_abs_total * 1000)) / 65536;
+                                                int i_d_77_ = (Convert.ToInt32(FADM_Object.Communal._d_abs_total * 1000)) % 65536;
+
+                                                int[] ia_array1 = new int[] { i_d_11_, d_1_, i_d_22_, d_2_, i_d_33_, d_3_, i_d_44_, d_4_, i_d_55_, d_5_, 0, 0, i_d_77_, d_7_ };
+                                                if (Convert.ToInt32(s_cupNum) == 1)
+                                                    FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array1);
+                                                else
+                                                    FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array1);
+
+                                                if (Convert.ToInt32(s_cupNum) == 1)
+                                                    FADM_Object.Communal._tcpModBusAbs.Write(800, values1);
+                                                else
+                                                    FADM_Object.Communal._tcpModBusAbs.Write(810, values1);
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from abs_wait_list where BottleNum = " + _i_nBottleNum + " And InsertDate = '" + Convert.ToDateTime(dt_data.Rows[0]["InsertDate"]).ToString("yyyy-MM-dd HH:mm:ss.fff") + "';");
+                                                goto lab_end;
+                                            }
+                                            if (Convert.ToInt32(dt_data.Rows[0]["Type"]) == 0)
+                                            {
+                                                //更新数据库
+                                                s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", 0.0) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=2,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                            }
+                                            else
+                                            {
+                                                //更新数据库
+                                                s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", 0.0) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=9,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                            }
+
+                                            //发送启动
+                                            int[] values = new int[6];
+                                            values[0] = 1;
+                                            values[1] = 0;
+                                            values[2] = 0;
+                                            values[3] = 0;
+                                            values[4] = 1;
+                                            values[5] = 1;
+                                            if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                                            {
+                                                FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                                            }
+
+                                            //写入测量数据
+                                            int d_1 = 0;
+                                            d_1 = Lib_Card.Configure.Parameter.Other_StartWave / 65536;
+                                            int i_d_11 = Lib_Card.Configure.Parameter.Other_StartWave % 65536;
+
+                                            int d_2 = 0;
+                                            d_2 = Lib_Card.Configure.Parameter.Other_EndWave / 65536;
+                                            int i_d_22 = Lib_Card.Configure.Parameter.Other_EndWave % 65536;
+
+                                            int d_3 = 0;
+                                            d_3 = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
+                                            int i_d_33 = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
+
+                                            int d_4 = 0;
+                                            d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
+                                            int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
+
+                                            int d_5 = 0;
+                                            d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
+                                            int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
+
+                                            int[] ia_array = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3, i_d_44, d_4, i_d_55, d_5 };
+                                            if (Convert.ToInt32(s_cupNum) == 1)
+                                                FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array);
+                                            else
+                                                FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array);
+
+                                            if (Convert.ToInt32(s_cupNum) == 1)
+                                                FADM_Object.Communal._tcpModBusAbs.Write(800, values);
+                                            else
+                                                FADM_Object.Communal._tcpModBusAbs.Write(810, values);
+                                        }
+
+                                        return;
+                                    }
+                                }
+                                //活性用水稀释
+                                if (s_assistantType.Contains("活性"))
+                                {
+                                    //找到母液水剂母液瓶号
+                                    s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount = 'Water';";
+
+                                    dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                    if (dt_temp.Rows.Count == 0)
+                                    {
+                                        FADM_Form.CustomMessageBox.Show("不存在水剂母液瓶号，不能测试", "TestAbs",
+                                MessageBoxButtons.OK, false);
+                                        return;
+                                    }
+                                    else
+                                    {
+                                        //查询上一次使用情况，如果不是一样的母液就先预滴
+                                        DataTable dataTable = FADM_Object.Communal._fadmSqlserver.GetData("SELECT * FROM abs_cup_details WHERE CupNum = " + s_cupNum + ";");
+
+                                        if (dataTable.Rows.Count > 0)
+                                        {
+                                            //判断是否一样的母液
+                                            if (dataTable.Rows[0]["BottleNum"].ToString() != _i_nBottleNum.ToString())
+                                            {
+                                                //计算50g液体需要重量
+                                                double d_stotal1 = FADM_Object.Communal._d_abs_total * (FADM_Object.Communal._d_ppm / 10000);
+                                                //母液重量
+                                                double d_dosage1 = d_stotal1 / Convert.ToDouble(s_realConcentration);
+                                                double d_water1 = FADM_Object.Communal._d_abs_total - d_dosage1;
+
+                                                if (Convert.ToInt32(dt_data.Rows[0]["Type"]) == 0)
+                                                {
+                                                    d_dosage1 = d_dosage1 * (1 + Convert.ToDouble(s_compensate));
+                                                    //更新数据库
+                                                    s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", d_dosage1) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water1) + "',Pulse=0,Cooperate=5,Type =5,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                                }
+                                                else
+                                                {
+                                                    //更新数据库
+                                                    s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", d_dosage1) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water1) + "',Pulse=0,Cooperate=5,Type =10,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                                }
+
+                                                //发送启动
+                                                int[] values1 = new int[5];
+                                                values1[0] = 1;
+                                                values1[1] = 0;
+                                                values1[2] = 0;
+                                                values1[3] = 0;
+                                                values1[4] = 4;
+                                                if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                                                {
+                                                    FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                                                }
+
+                                                //写入测量数据
+                                                int d_1_ = 0;
+                                                d_1_ = Lib_Card.Configure.Parameter.Other_StartWave / 65536;
+                                                int i_d_11_ = Lib_Card.Configure.Parameter.Other_StartWave % 65536;
+
+                                                int d_2_ = 0;
+                                                d_2_ = Lib_Card.Configure.Parameter.Other_EndWave / 65536;
+                                                int i_d_22_ = Lib_Card.Configure.Parameter.Other_EndWave % 65536;
+
+                                                int d_3_ = 0;
+                                                d_3_ = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
+                                                int i_d_33_ = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
+
+                                                int d_4_ = 0;
+                                                d_4_ = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
+                                                int i_d_44_ = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
+
+                                                int d_5_ = 0;
+                                                d_5_ = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
+                                                int i_d_55_ = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
+
+                                                int d_7_ = 0;
+                                                d_7_ = (Convert.ToInt32(FADM_Object.Communal._d_abs_total * 1000)) / 65536;
+                                                int i_d_77_ = (Convert.ToInt32(FADM_Object.Communal._d_abs_total * 1000)) % 65536;
+
+                                                int[] ia_array1 = new int[] { i_d_11_, d_1_, i_d_22_, d_2_, i_d_33_, d_3_, i_d_44_, d_4_, i_d_55_, d_5_, 0, 0, i_d_77_, d_7_ };
+                                                if (Convert.ToInt32(s_cupNum) == 1)
+                                                    FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array1);
+                                                else
+                                                    FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array1);
+
+                                                if (Convert.ToInt32(s_cupNum) == 1)
+                                                    FADM_Object.Communal._tcpModBusAbs.Write(800, values1);
+                                                else
+                                                    FADM_Object.Communal._tcpModBusAbs.Write(810, values1);
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from abs_wait_list where BottleNum = " + _i_nBottleNum + " And InsertDate = '" + Convert.ToDateTime(dt_data.Rows[0]["InsertDate"]).ToString("yyyy-MM-dd HH:mm:ss.fff") + "';");
+                                                goto lab_end;
+                                            }
+                                        }
+                                        //计算50g液体需要重量
+                                        double d_stotal = FADM_Object.Communal._d_abs_total * (FADM_Object.Communal._d_ppm / 10000);
+                                        //母液重量
+                                        double d_dosage = d_stotal / Convert.ToDouble(s_realConcentration);
+                                        double d_water = FADM_Object.Communal._d_abs_total - d_dosage;
+                                        if (Convert.ToInt32(dt_data.Rows[0]["Type"]) == 0)
+                                        {
+                                            d_dosage = d_dosage * (1 + Convert.ToDouble(s_compensate));
+                                            //更新数据库
+                                            s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", d_dosage) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water) + "',Pulse=0,Cooperate=5,Type =1,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                        }
+                                        else
+                                        {
+                                            //更新数据库
+                                            s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", d_dosage) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water) + "',Pulse=0,Cooperate=5,Type =11,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                        }
+
+                                        //发送启动
+                                        int[] values = new int[6];
+                                        values[0] = 1;
+                                        values[1] = 0;
+                                        values[2] = 0;
+                                        values[3] = 0;
+                                        values[4] = 1;
+                                        values[5] = 1;
+                                        if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                                        {
+                                            FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                                        }
+
+                                        //写入测量数据
+                                        int d_1 = 0;
+                                        d_1 = Lib_Card.Configure.Parameter.Other_StartWave / 65536;
+                                        int i_d_11 = Lib_Card.Configure.Parameter.Other_StartWave % 65536;
+
+                                        int d_2 = 0;
+                                        d_2 = Lib_Card.Configure.Parameter.Other_EndWave / 65536;
+                                        int i_d_22 = Lib_Card.Configure.Parameter.Other_EndWave % 65536;
+
+                                        int d_3 = 0;
+                                        d_3 = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
+                                        int i_d_33 = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
+
+                                        int d_4 = 0;
+                                        d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
+                                        int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
+
+                                        int d_5 = 0;
+                                        d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
+                                        int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
+
+                                        int[] ia_array = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3, i_d_44, d_4, i_d_55, d_5 };
+                                        if (Convert.ToInt32(s_cupNum) == 1)
+                                            FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array);
+                                        else
+                                            FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array);
+
+
+                                        if (Convert.ToInt32(s_cupNum) == 1)
+                                            FADM_Object.Communal._tcpModBusAbs.Write(800, values);
+                                        else
+                                            FADM_Object.Communal._tcpModBusAbs.Write(810, values);
+
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from abs_wait_list where BottleNum = " + _i_nBottleNum + " And InsertDate = '" + Convert.ToDateTime(dt_data.Rows[0]["InsertDate"]).ToString("yyyy-MM-dd HH:mm:ss.fff") + "';");
+
+                                    }
+                                }
+                                //其他使用溶解剂稀释
+                                else
+                                {
+                                    s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
+
+                                    dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                    if (dt_temp.Rows.Count == 0)
+                                    {
+                                        FADM_Form.CustomMessageBox.Show("不存在溶解剂母液瓶号，不能测试", "TestAbs",
+                                MessageBoxButtons.OK, false);
+                                        return;
+                                    }
+                                    else
+                                    {
+                                        //查询上一次使用情况，如果不是一样的母液就先预滴
+                                        DataTable dataTable = FADM_Object.Communal._fadmSqlserver.GetData("SELECT * FROM abs_cup_details WHERE CupNum = " + s_cupNum + ";");
+
+                                        if (dataTable.Rows.Count > 0)
+                                        {
+                                            //判断是否一样的母液
+                                            if (dataTable.Rows[0]["BottleNum"].ToString() != _i_nBottleNum.ToString())
+                                            {
+                                                //计算50g液体需要重量
+                                                double d_stotal1 = FADM_Object.Communal._d_abs_total * (FADM_Object.Communal._d_ppm / 10000);
+                                                //母液重量
+                                                double d_dosage1 = d_stotal1 / Convert.ToDouble(s_realConcentration);
+                                                double d_water1 = FADM_Object.Communal._d_abs_total - d_dosage1;
+                                                if (Convert.ToInt32(dt_data.Rows[0]["Type"]) == 0)
+                                                {
+                                                    d_dosage1 = d_dosage1 * (1 + Convert.ToDouble(s_compensate));
+                                                    //更新数据库
+                                                    s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", d_dosage1) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water1) + "',Pulse=0,Cooperate=5,Type =5,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                                }
+                                                else
+                                                {
+                                                    //更新数据库
+                                                    s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", d_dosage1) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water1) + "',Pulse=0,Cooperate=5,Type =10,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                                }
+
+                                                //发送启动
+                                                int[] values1 = new int[5];
+                                                values1[0] = 1;
+                                                values1[1] = 0;
+                                                values1[2] = 0;
+                                                values1[3] = 0;
+                                                values1[4] = 4;
+                                                if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                                                {
+                                                    FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                                                }
+
+                                                //写入测量数据
+                                                int d_1_ = 0;
+                                                d_1_ = Lib_Card.Configure.Parameter.Other_StartWave / 65536;
+                                                int i_d_11_ = Lib_Card.Configure.Parameter.Other_StartWave % 65536;
+
+                                                int d_2_ = 0;
+                                                d_2_ = Lib_Card.Configure.Parameter.Other_EndWave / 65536;
+                                                int i_d_22_ = Lib_Card.Configure.Parameter.Other_EndWave % 65536;
+
+                                                int d_3_ = 0;
+                                                d_3_ = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
+                                                int i_d_33_ = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
+
+                                                int d_4_ = 0;
+                                                d_4_ = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
+                                                int i_d_44_ = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
+
+                                                int d_5_ = 0;
+                                                d_5_ = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
+                                                int i_d_55_ = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
+
+                                                int d_7_ = 0;
+                                                d_7_ = (Convert.ToInt32(FADM_Object.Communal._d_abs_total * 1000)) / 65536;
+                                                int i_d_77_ = (Convert.ToInt32(FADM_Object.Communal._d_abs_total * 1000)) % 65536;
+
+                                                int[] ia_array1 = new int[] { i_d_11_, d_1_, i_d_22_, d_2_, i_d_33_, d_3_, i_d_44_, d_4_, i_d_55_, d_5_, 0, 0, i_d_77_, d_7_ };
+                                                if (Convert.ToInt32(s_cupNum) == 1)
+                                                    FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array1);
+                                                else
+                                                    FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array1);
+
+                                                if (Convert.ToInt32(s_cupNum) == 1)
+                                                    FADM_Object.Communal._tcpModBusAbs.Write(800, values1);
+                                                else
+                                                    FADM_Object.Communal._tcpModBusAbs.Write(810, values1);
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from abs_wait_list where BottleNum = " + _i_nBottleNum + " And InsertDate = '" + Convert.ToDateTime(dt_data.Rows[0]["InsertDate"]).ToString("yyyy-MM-dd HH:mm:ss.fff") + "';");
+                                                goto lab_end;
+                                            }
+                                        }
+                                        //计算50g液体需要重量
+                                        double d_stotal = FADM_Object.Communal._d_abs_total * (FADM_Object.Communal._d_ppm / 10000);
+                                        //母液重量
+                                        double d_dosage = d_stotal / Convert.ToDouble(s_realConcentration);
+                                        double d_water = FADM_Object.Communal._d_abs_total - d_dosage;
+                                        if (Convert.ToInt32(dt_data.Rows[0]["Type"]) == 0)
+                                        {
+                                            d_dosage = d_dosage * (1 + Convert.ToDouble(s_compensate));
+                                            //更新数据库
+                                            s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", d_dosage) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water) + "',Pulse=0,Cooperate=5,Type =1,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                        }
+                                        else
+                                        {
+                                            //更新数据库
+                                            s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", d_dosage) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water) + "',Pulse=0,Cooperate=5,Type =11,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                        }
+
+                                        //发送启动
+                                        int[] values = new int[6];
+                                        values[0] = 1;
+                                        values[1] = 0;
+                                        values[2] = 0;
+                                        values[3] = 0;
+                                        values[4] = 1;
+                                        values[5] = 0;
+                                        if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                                        {
+                                            FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                                        }
+
+                                        //写入测量数据
+                                        int d_1 = 0;
+                                        d_1 = Lib_Card.Configure.Parameter.Other_StartWave / 65536;
+                                        int i_d_11 = Lib_Card.Configure.Parameter.Other_StartWave % 65536;
+
+                                        int d_2 = 0;
+                                        d_2 = Lib_Card.Configure.Parameter.Other_EndWave / 65536;
+                                        int i_d_22 = Lib_Card.Configure.Parameter.Other_EndWave % 65536;
+
+                                        int d_3 = 0;
+                                        d_3 = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
+                                        int i_d_33 = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
+
+                                        int d_4 = 0;
+                                        d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
+                                        int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
+
+                                        int d_5 = 0;
+                                        d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
+                                        int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
+
+                                        int[] ia_array = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3, i_d_44, d_4, i_d_55, d_5 };
+                                        if (Convert.ToInt32(s_cupNum) == 1)
+                                            FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array);
+                                        else
+                                            FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array);
+
+                                        if (Convert.ToInt32(s_cupNum) == 1)
+                                            FADM_Object.Communal._tcpModBusAbs.Write(800, values);
+                                        else
+                                            FADM_Object.Communal._tcpModBusAbs.Write(810, values);
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from abs_wait_list where BottleNum = " + _i_nBottleNum + " And InsertDate = '" + Convert.ToDateTime(dt_data.Rows[0]["InsertDate"]).ToString("yyyy-MM-dd HH:mm:ss.fff") + "';");
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                //
+                lab_end:
+                    Thread.Sleep(30000);
+                }
+                catch
+                { }
+            }
+        }
+
+        private void ReadBalance()
+        {
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
+            {
+                while (true)
+                {
+                    Thread.Sleep(1);
+                    if (Lib_Card.Configure.Parameter.Machine_BalanceType == 0)
+                    {
+                        //if (FADM_Object.Communal.IsZero)
+                        //{
+                        //    //判断是否有清零信号
+                        //    if (Lib_SerialPort.Balance.METTLER.bZeroSign)
+                        //    {
+                        //        FADM_Object.Communal.Mettler.Zero();
+                        //        Lib_SerialPort.Balance.METTLER.bZeroSign = false;
+                        //    }
+                        //    else if (Lib_SerialPort.Balance.METTLER.bReSetSign)
+                        //    {
+                        //        FADM_Object.Communal.Mettler.Reset();
+                        //        Lib_SerialPort.Balance.METTLER.bReSetSign = false;
+                        //    }
+                        //}
+                        FADM_Object.Communal.Mettler.WriteAndRead();
+                        FADM_Object.Communal.dBalanceValue = Lib_SerialPort.Balance.METTLER.BalanceValue;
+
+                    }
+                    else
+                    {
+                        FADM_Object.Communal.Shinko.WriteAndRead();
+                        FADM_Object.Communal.dBalanceValue = Lib_SerialPort.Balance.SHINKO.BalanceValue;
+                    }
+
+                }
+            }
+            else
+            {
+                while (true)
+                {
+                    try
+                    {
+                        Thread.Sleep(60);  //这里一直读 如果同时地方也同时读 就有可能造成读不到 
+                                           //
+                        if (FADM_Object.Communal.ReadTcpStatus() && FADM_Object.Communal._b_auto)
+                        {
+                            if (!Communal._b_isBSendOpen)
+                            {
+                                if (Communal._i_bType == 1)
+                                {
+                                    int[] ia_array12 = { 17 };
+                                    int i_state12 = FADM_Object.Communal._tcpModBus.Write(811, ia_array12);
+
+                                    Communal._b_isBSendClose = false;
+                                    Communal._b_isBSendOpen = true;
+                                }
+                            }
+
+                            if (!Communal._b_isBSendClose)
+                            {
+                                if (Communal._i_bType == 2)
+                                {
+                                    int[] ia_array12 = { 18 };
+                                    int i_state12 = FADM_Object.Communal._tcpModBus.Write(811, ia_array12);
+
+                                    Communal._b_isBSendOpen = false;
+                                    Communal._b_isBSendClose = true;
+                                }
+                            }
+
+                            //Console.WriteLine("读天平");
+                            //只读天平寄存器 
+                            int[] ia_array = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+                            int i_state = FADM_Object.Communal._tcpModBus.Read(901, 28, ref ia_array);
+                            if (i_state != -1)
+                            {
+                                MyAlarm myAlarm = null;
+
+                                Communal._s_plcVersion = "V" + ia_array[26].ToString("d4") + ia_array[27].ToString("d4");
+
+                                double d_b = 0.0;
+                                if (ia_array[0] < 0)
+                                {
+                                    d_b = ((ia_array[1] + 1) * 65536 + ia_array[0]) / 1000.0;
+                                }
+                                else
+                                {
+                                    d_b = (ia_array[1] * 65536 + ia_array[0]) / 1000.0;
+                                }
+                                //if(Lib_Card.Configure.Parameter.Machine_BalanceType == 1)
+                                //{
+                                //    b /= 10;
+                                //}
+
+
+
+
+                                if (Convert.ToString(d_b).Equals("9999"))
+                                {
+                                    FADM_Object.Communal._s_balanceValue = "9999";
+                                    //myAlarm = new FADM_Object.MyAlarm("天平超上限", "天平", true, 1);
+                                }
+                                else if (Convert.ToString(d_b).Equals("8888"))
+                                {
+                                    FADM_Object.Communal._s_balanceValue = "8888";
+                                    //myAlarm = new FADM_Object.MyAlarm("天平超下限", "天平", true, 1);
+                                }
+                                else if (Convert.ToString(d_b).Equals("7777"))
+                                {
+                                    FADM_Object.Communal._s_balanceValue = "7777";
+                                    //myAlarm = new FADM_Object.MyAlarm("未拿走废液桶", "天平", true, 1);
+                                }
+                                else if (Convert.ToString(d_b).Equals("6666"))
+                                {
+                                    FADM_Object.Communal._s_balanceValue = "6666";
+                                    //myAlarm = new FADM_Object.MyAlarm("通讯失败 ", "天平", true, 1);
+                                }
+                                else
+                                {
+                                    FADM_Object.Communal._s_balanceValue = Convert.ToString(d_b);
+                                }
+
+                                //失能信号
+                                int i_a5 = ia_array[5];
+                                bool b_xpower = false;
+                                bool b_ypower = false;
+                                char[] ca_cc1 = Convert.ToString(i_a5, 2).PadLeft(12, '0').ToArray();
+                                if (ca_cc1[ca_cc1.Length - 6].Equals('1'))
+                                {
+                                    b_xpower = true;
+                                }
+                                if (ca_cc1[ca_cc1.Length - 12].Equals('1'))
+                                {
+                                    b_ypower = true;
+                                }
+                                //if (xpower || ypower)
+                                {
+                                    //光幕信号 这上面的MyAlarm不要等待
+                                    int i_a2 = ia_array[2];
+                                    char[] ca_cc = Convert.ToString(i_a2, 2).PadLeft(4, '0').ToArray();
+                                    if (ca_cc[ca_cc.Length - 1].Equals('0'))
+                                    {
+
+                                        if (Lib_Card.Configure.Parameter.Machine_IsStopOrFront == 0)
+                                        {
+                                            if (!Lib_Card.CardObject.bStopScr)
+                                            {
+                                                Lib_Card.CardObject.bStopScr = true;
+                                                if (b_xpower || b_ypower)
+                                                {
+                                                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                        new FADM_Object.MyAlarm("急停已按下,请打开急停开关", 1);
+                                                    else
+                                                        new FADM_Object.MyAlarm("Emergency stop pressed,Please turn on the emergency stop switch", 1);
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (!Lib_Card.CardObject.bFront)
+                                            {
+                                                Lib_Card.CardObject.bFront = true;
+                                                if (b_xpower || b_ypower)
+                                                {
+                                                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                        new FADM_Object.MyAlarm("前光幕遮挡,请离开光幕", 1);
+                                                    else
+                                                        new FADM_Object.MyAlarm("Front light curtain obstruction,Please step away from the light curtain", 1);
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        if (Lib_Card.Configure.Parameter.Machine_IsStopOrFront == 0)
+                                        {
+                                            Lib_Card.CardObject.bStopScr = false;
+                                        }
+                                        else
+                                        {
+                                            Lib_Card.CardObject.bFront = false;
+                                        }
+                                    }
+
+
+
+                                    if (ca_cc[ca_cc.Length - 3].Equals('0'))
+                                    {
+                                        if (!Lib_Card.CardObject.bRight)
+                                        {
+                                            Lib_Card.CardObject.bRight = true;
+                                            if (b_xpower || b_ypower)
+                                            {
+                                                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                {
+                                                    if (Lib_Card.Configure.Parameter.Machine_IsRightDoor == 1)
+                                                        new FADM_Object.MyAlarm("右光幕遮挡,请离开光幕", 1);
+                                                    else
+                                                        new FADM_Object.MyAlarm("右门已打开,请关闭右门", 1);
+                                                }
+                                                else
+                                                {
+                                                    if (Lib_Card.Configure.Parameter.Machine_IsRightDoor == 1)
+                                                        new FADM_Object.MyAlarm("Right light curtain obstruction,Please step away from the light curtain", 1);
+                                                    else
+                                                        new FADM_Object.MyAlarm("The right door is open,Please close the right door", 1);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Lib_Card.CardObject.bRight = false;
+                                    }
+                                    //左光幕信号
+                                    //左光幕信号
+                                    if (ca_cc[ca_cc.Length - 2].Equals('0'))
+                                    {
+                                        if (!Lib_Card.CardObject.bLeft)
+                                        {
+                                            Lib_Card.CardObject.bLeft = true;
+                                            if (b_xpower || b_ypower)
+                                            {
+                                                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                {
+                                                    if (Lib_Card.Configure.Parameter.Machine_IsLeftDoor == 1)
+                                                        new FADM_Object.MyAlarm("左光幕遮挡,请离开光幕", 1);
+                                                    else
+                                                        new FADM_Object.MyAlarm("左门已打开,请关闭左门", 1);
+                                                }
+                                                else
+                                                {
+                                                    if (Lib_Card.Configure.Parameter.Machine_IsLeftDoor == 1)
+                                                        new FADM_Object.MyAlarm("Left light curtain obstruction,Please step away from the light curtain", 1);
+                                                    else
+                                                        new FADM_Object.MyAlarm("The left door is open,Please close the left door", 1);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Lib_Card.CardObject.bLeft = false;
+                                    }
+                                    if (Lib_Card.Configure.Parameter.Machine_UseBack == 1)
+                                    {
+                                        if (ca_cc[ca_cc.Length - 4].Equals('0'))
+                                        {
+                                            if (!Lib_Card.CardObject.bBack)
+                                            {
+                                                Lib_Card.CardObject.bBack = true;
+                                                if (b_xpower || b_ypower)
+                                                {
+                                                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                    {
+                                                        new FADM_Object.MyAlarm("后光幕遮挡,请离开光幕", 1);
+                                                    }
+                                                    else
+                                                    {
+                                                        new FADM_Object.MyAlarm("Back light curtain obstruction,Please step away from the light curtain", 1);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Lib_Card.CardObject.bBack = false;
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                //重新连接试试
+                                FADM_Object.Communal._tcpModBus.ReConnect();
+                            }
+                        }
+                        else if (!FADM_Object.Communal.ReadTcpStatus() || !FADM_Object.Communal._b_auto) //说明在执行动作编号后 一直循环读取完成标志位，
+                        {
+                            if (Lib_Card.Configure.Parameter.Machine_IsStopOrFront == 0)
+                            {
+                                if (Lib_Card.CardObject.bStopScr)
+                                {
+                                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                        new FADM_Object.MyAlarm("急停已按下,请打开急停开关", 1);
+                                    else
+                                        new FADM_Object.MyAlarm("Emergency stop pressed,Please turn on the emergency stop switch", 1);
+                                }
+                                else
                                 {
                                     Lib_Card.CardObject.bStopScr = false;
+                                }
+                            }
+                            else
+                            {
+
+                                if (Lib_Card.CardObject.bFront)
+                                {
+                                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                        new FADM_Object.MyAlarm("前光幕遮挡,请离开光幕", 1);
+                                    else
+                                        new FADM_Object.MyAlarm("Front light curtain obstruction,Please step away from the light curtain", 1);
                                 }
                                 else
                                 {
@@ -769,154 +2027,84 @@ namespace SmartDyeing.FADM_Form
                                 }
                             }
 
-
-
-                            if (ca_cc[ca_cc.Length - 3].Equals('0'))
+                            if (Lib_Card.CardObject.bRight)
                             {
-                                if (!Lib_Card.CardObject.bRight)
+                                if (Lib_Card.Configure.Parameter.Other_Language == 0)
                                 {
-                                    Lib_Card.CardObject.bRight = true;
-                                    if (b_xpower || b_ypower)
-                                    {
-                                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                        {
-                                            if (Lib_Card.Configure.Parameter.Machine_IsRightDoor == 1)
-                                                new FADM_Object.MyAlarm("右光幕遮挡", 1);
-                                            else
-                                                new FADM_Object.MyAlarm("右门已打开", 1);
-                                        }
-                                        else
-                                        {
-                                            if (Lib_Card.Configure.Parameter.Machine_IsRightDoor == 1)
-                                                new FADM_Object.MyAlarm("Right light curtain obstruction", 1);
-                                            else
-                                                new FADM_Object.MyAlarm("The right door is open", 1);
-                                        }
-                                    }
+                                    if (Lib_Card.Configure.Parameter.Machine_IsRightDoor == 1)
+                                        new FADM_Object.MyAlarm("右光幕遮挡,请离开光幕", 1);
+                                    else
+                                        new FADM_Object.MyAlarm("右门已打开,请关闭右门", 1);
+                                }
+                                else
+                                {
+                                    if (Lib_Card.Configure.Parameter.Machine_IsRightDoor == 1)
+                                        new FADM_Object.MyAlarm("Right light curtain obstruction,Please step away from the light curtain", 1);
+                                    else
+                                        new FADM_Object.MyAlarm("The right door is open,Please close the right door", 1);
                                 }
                             }
                             else
                             {
                                 Lib_Card.CardObject.bRight = false;
                             }
-                            //左光幕信号
-                            if (ca_cc[ca_cc.Length - 2].Equals('0'))
+
+                            if (Lib_Card.CardObject.bLeft)
                             {
-                                if (!Lib_Card.CardObject.bLeft)
+                                if (Lib_Card.Configure.Parameter.Other_Language == 0)
                                 {
-                                    Lib_Card.CardObject.bLeft = true;
-                                    if (b_xpower || b_ypower)
-                                    {
-                                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                        {
-                                            if (Lib_Card.Configure.Parameter.Machine_IsRightDoor == 1)
-                                                new FADM_Object.MyAlarm("右光幕遮挡", 1);
-                                            else
-                                                new FADM_Object.MyAlarm("右门已打开", 1);
-                                        }
-                                        else
-                                        {
-                                            if (Lib_Card.Configure.Parameter.Machine_IsRightDoor == 1)
-                                                new FADM_Object.MyAlarm("Right light curtain obstruction", 1);
-                                            else
-                                                new FADM_Object.MyAlarm("The right door is open", 1);
-                                        }
-                                    }
+                                    if (Lib_Card.Configure.Parameter.Machine_IsLeftDoor == 1)
+                                        new FADM_Object.MyAlarm("左光幕遮挡,请离开光幕", 1);
+                                    else
+                                        new FADM_Object.MyAlarm("左门已打开,请关闭左门", 1);
+                                }
+                                else
+                                {
+                                    if (Lib_Card.Configure.Parameter.Machine_IsLeftDoor == 1)
+                                        new FADM_Object.MyAlarm("Left light curtain obstruction,Please step away from the light curtain", 1);
+                                    else
+                                        new FADM_Object.MyAlarm("The left door is open,Please close the left door", 1);
                                 }
                             }
                             else
                             {
                                 Lib_Card.CardObject.bLeft = false;
                             }
-                        }
-                    }
-                    else
-                    {
-                        //重新连接试试
-                        FADM_Object.Communal._tcpModBus.ReConnect();
-                    }
-                }
-                else if (!FADM_Object.Communal.ReadTcpStatus() || !FADM_Object.Communal._b_auto) //说明在执行动作编号后 一直循环读取完成标志位，
-                {
-                    if (Lib_Card.Configure.Parameter.Machine_IsStopOrFront == 0)
-                    {
-                        if (Lib_Card.CardObject.bStopScr)
-                        {
-                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                new FADM_Object.MyAlarm("急停已按下", 1);
-                            else
-                                new FADM_Object.MyAlarm("Emergency stop pressed", 1);
-                        }
-                        else
-                        {
-                            Lib_Card.CardObject.bStopScr = false;
-                        }
-                    }
-                    else
-                    {
+                            if (Lib_Card.Configure.Parameter.Machine_UseBack == 1)
+                            {
+                                if (Lib_Card.CardObject.bBack)
+                                {
+                                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                    {
+                                        new FADM_Object.MyAlarm("后光幕遮挡,请离开光幕", 1);
+                                    }
+                                    else
+                                    {
+                                        new FADM_Object.MyAlarm("Back light curtain obstruction,Please step away from the light curtain", 1);
+                                    }
+                                }
+                                else
+                                {
+                                    Lib_Card.CardObject.bBack = false;
+                                }
+                            }
 
-                        if (Lib_Card.CardObject.bFront)
-                        {
-                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                new FADM_Object.MyAlarm("前光幕遮挡", 1);
-                            else
-                                new FADM_Object.MyAlarm("Front light curtain obstruction", 1);
                         }
-                        else
-                        {
-                            Lib_Card.CardObject.bFront = false;
-                        }
-                    }
-
-                    if (Lib_Card.CardObject.bRight)
-                    {
-                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                        {
-                            if (Lib_Card.Configure.Parameter.Machine_IsRightDoor == 1)
-                                new FADM_Object.MyAlarm("右光幕遮挡", 1);
-                            else
-                                new FADM_Object.MyAlarm("右门已打开", 1);
-                        }
-                        else
-                        {
-                            if (Lib_Card.Configure.Parameter.Machine_IsRightDoor == 1)
-                                new FADM_Object.MyAlarm("Right light curtain obstruction", 1);
-                            else
-                                new FADM_Object.MyAlarm("The right door is open", 1);
-                        }
-                    }
-                    else {
-                        Lib_Card.CardObject.bRight = false;
-                    }
-
-                    if (Lib_Card.CardObject.bLeft)
-                    {
-                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                        else if (!FADM_Object.Communal._tcpModBus.getConnect())
                         {
                             if (Lib_Card.Configure.Parameter.Machine_IsLeftDoor == 1)
-                                new FADM_Object.MyAlarm("左光幕遮挡", 1);
+                                new FADM_Object.MyAlarm("PLC连接中断", 1);
                             else
-                                new FADM_Object.MyAlarm("左门已打开", 1);
-                        }
-                        else
-                        {
-                            if (Lib_Card.Configure.Parameter.Machine_IsLeftDoor == 1)
-                                new FADM_Object.MyAlarm("Left light curtain obstruction", 1);
-                            else
-                                new FADM_Object.MyAlarm("The left door is open", 1);
+                                new FADM_Object.MyAlarm("PLC connection interruption", 1);
                         }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        Lib_Card.CardObject.bLeft = false;
+                        //FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+                        Lib_Log.Log.writeLogException("ReadBalance：" + ex.ToString());
                     }
-                } else if (!FADM_Object.Communal._tcpModBus.getConnect()) {
-                    if (Lib_Card.Configure.Parameter.Machine_IsLeftDoor == 1)
-                        new FADM_Object.MyAlarm("PLC连接中断", 1);
-                    else
-                        new FADM_Object.MyAlarm("PLC connection interruption", 1);
+
                 }
-                
             }
         }
 
@@ -981,65 +2169,79 @@ namespace SmartDyeing.FADM_Form
 
         private void BtnUserSwitching_Click(object sender, EventArgs e)
         {
-            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+            try
             {
-                if ("普通用户" == BtnUserSwitching.Text)
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
                 {
-                    BtnUserSwitching.Enabled = false;
-                    Admin admin = new Admin(this)
+                    if ("普通用户" == BtnUserSwitching.Text)
                     {
-                        Owner = this
-                    };
-                    admin.Show();
-                    admin.Focus();
+                        BtnUserSwitching.Enabled = false;
+                        Admin admin = new Admin(this)
+                        {
+                            Owner = this
+                        };
+                        admin.Show();
+                        admin.Focus();
 
+                    }
+                    else
+                    {
+                        BtnUserSwitching.Text = "普通用户";
+                        toolStripSplitButton1.Enabled = false;
+                        toolStripSplitButton2.Enabled = false;
+                        toolStripSplitButton6.Enabled = false;
+                        FADM_Object.Communal._s_operator = "123";
+                    }
                 }
                 else
                 {
-                    BtnUserSwitching.Text = "普通用户";
-                    toolStripSplitButton1.Enabled = false;
-                    toolStripSplitButton2.Enabled = false;
-                    toolStripSplitButton6.Enabled = false;
-                    FADM_Object.Communal._s_operator = "123";
-                }
-            }
-            else
-            {
-                if ("OrdinaryUsers" == BtnUserSwitching.Text)
-                {
-                    BtnUserSwitching.Enabled = false;
-                    Admin admin = new Admin(this)
+                    if ("OrdinaryUsers" == BtnUserSwitching.Text)
                     {
-                        Owner = this
-                    };
-                    admin.Show();
-                    admin.Focus();
+                        BtnUserSwitching.Enabled = false;
+                        Admin admin = new Admin(this)
+                        {
+                            Owner = this
+                        };
+                        admin.Show();
+                        admin.Focus();
+
+                    }
+                    else
+                    {
+                        BtnUserSwitching.Text = "OrdinaryUsers";
+                        toolStripSplitButton1.Enabled = false;
+                        toolStripSplitButton2.Enabled = false;
+                        toolStripSplitButton6.Enabled = false;
+                        FADM_Object.Communal._s_operator = "123";
+                    }
 
                 }
-                else
-                {
-                    BtnUserSwitching.Text = "OrdinaryUsers";
-                    toolStripSplitButton1.Enabled = false;
-                    toolStripSplitButton2.Enabled = false;
-                    toolStripSplitButton6.Enabled = false;
-                    FADM_Object.Communal._s_operator = "123";
-                }
-
             }
-            
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
+
         }
 
         private void MiBrewingProcess_Click(object sender, EventArgs e)
         {
-            foreach (Control control in this.PnlMain.Controls)
+            try
             {
-                this.PnlMain.Controls.Remove(control);
-                control.Dispose();
-            }
+                foreach (Control control in this.PnlMain.Controls)
+                {
+                    this.PnlMain.Controls.Remove(control);
+                    control.Dispose();
+                }
 
-            FADM_Control.BrewingProcess brewingProcess = new BrewingProcess();
-            this.PnlMain.Controls.Add(brewingProcess);
-            brewingProcess.Focus();
+                FADM_Control.BrewingProcess brewingProcess = new BrewingProcess();
+                this.PnlMain.Controls.Add(brewingProcess);
+                brewingProcess.Focus();
+            }
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
         }
 
         private void MiDyeingProcess_Click(object sender, EventArgs e)
@@ -1049,482 +2251,611 @@ namespace SmartDyeing.FADM_Form
 
         private void MiAssistant_Click(object sender, EventArgs e)
         {
-            foreach (Control control in this.PnlMain.Controls)
+            try
             {
-                this.PnlMain.Controls.Remove(control);
-                control.Dispose();
-            }
+                foreach (Control control in this.PnlMain.Controls)
+                {
+                    this.PnlMain.Controls.Remove(control);
+                    control.Dispose();
+                }
 
-            FADM_Control.AssistantDefin assistantDefin = new AssistantDefin();
-            this.PnlMain.Controls.Add(assistantDefin);
-            assistantDefin.Focus();
+                FADM_Control.AssistantDefin assistantDefin = new AssistantDefin();
+                this.PnlMain.Controls.Add(assistantDefin);
+                assistantDefin.Focus();
+            }
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
         }
 
         private void MiBottle_Click(object sender, EventArgs e)
         {
-            foreach (Control control in this.PnlMain.Controls)
+            try
             {
-                this.PnlMain.Controls.Remove(control);
-                control.Dispose();
-            }
+                foreach (Control control in this.PnlMain.Controls)
+                {
+                    this.PnlMain.Controls.Remove(control);
+                    control.Dispose();
+                }
 
-            FADM_Control.BottleDefin bottleDefin = new BottleDefin();
-            this.PnlMain.Controls.Add(bottleDefin);
-            bottleDefin.Focus();
+                FADM_Control.BottleDefin bottleDefin = new BottleDefin();
+                this.PnlMain.Controls.Add(bottleDefin);
+                bottleDefin.Focus();
+            }
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
         }
 
         private void MiDebug_Click(object sender, EventArgs e)
         {
-            foreach (Control control in this.PnlMain.Controls)
+            try
             {
-                this.PnlMain.Controls.Remove(control);
-                control.Dispose();
-            }
+                foreach (Control control in this.PnlMain.Controls)
+                {
+                    this.PnlMain.Controls.Remove(control);
+                    control.Dispose();
+                }
 
-            FADM_Control.Debug debug = new Debug();
-            this.PnlMain.Controls.Add(debug);
-            debug.Focus();
+                FADM_Control.Debug debug = new Debug();
+                this.PnlMain.Controls.Add(debug);
+                debug.Focus();
+            }
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
         }
 
         private void MiRun_Click(object sender, EventArgs e)
         {
-            foreach (Control control in this.PnlMain.Controls)
+            try
             {
-                this.PnlMain.Controls.Remove(control);
-                control.Dispose();
-            }
+                foreach (Control control in this.PnlMain.Controls)
+                {
+                    this.PnlMain.Controls.Remove(control);
+                    control.Dispose();
+                }
 
-            FADM_Control.Run run = new Run();
-            this.PnlMain.Controls.Add(run);
-            run.Focus();
+                FADM_Control.Run run = new Run();
+                this.PnlMain.Controls.Add(run);
+                run.Focus();
+            }
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
 
         }
 
         private void MiAlarm_Click(object sender, EventArgs e)
         {
-            foreach (Control control in this.PnlMain.Controls)
+            try
             {
-                this.PnlMain.Controls.Remove(control);
-                control.Dispose();
-            }
+                foreach (Control control in this.PnlMain.Controls)
+                {
+                    this.PnlMain.Controls.Remove(control);
+                    control.Dispose();
+                }
 
-            FADM_Control.Alarm alarm = new Alarm();
-            this.PnlMain.Controls.Add(alarm);
-            alarm.Focus();
+                FADM_Control.Alarm alarm = new Alarm();
+                this.PnlMain.Controls.Add(alarm);
+                alarm.Focus();
+            }
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
         }
 
         public void BtnMain_Click(object sender, EventArgs e)
         {
-            foreach (Control control in this.PnlMain.Controls)
+            try
             {
-                this.PnlMain.Controls.Remove(control);
-                control.Dispose();
-            }
-
-            if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 0)
-            {
-                if (Communal._b_isBalanceInDrip)
+                foreach (Control control in this.PnlMain.Controls)
                 {
-                    FADM_Control.MainBottle main = new MainBottle();
-                    this.PnlMain.Controls.Add(main);
-                    main.Focus();
+                    this.PnlMain.Controls.Remove(control);
+                    control.Dispose();
+                }
+
+                if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 0)
+                {
+                    if (Communal._b_isBalanceInDrip)
+                    {
+                        FADM_Control.MainBottle main = new MainBottle();
+                        this.PnlMain.Controls.Add(main);
+                        main.Focus();
+                    }
+                    else
+                    {
+
+                        FADM_Control.S_MainBottle main = new S_MainBottle();
+                        this.PnlMain.Controls.Add(main);
+                        main.Focus();
+                    }
                 }
                 else
                 {
-
-                    FADM_Control.S_MainBottle main = new S_MainBottle();
+                    FADM_Control.P_MainBottle main = new P_MainBottle();
                     this.PnlMain.Controls.Add(main);
                     main.Focus();
                 }
-            }
-            else
-            {
-                FADM_Control.P_MainBottle main = new P_MainBottle();
-                this.PnlMain.Controls.Add(main);
-                main.Focus();
-            }
 
-            if (!Cup._b_open && Screen.AllScreens.Count() > 1)
-            {
-                Cup c = new Cup();
-                c.Bounds = Screen.AllScreens[1].Bounds;
-                c.StartPosition = FormStartPosition.Manual;
-                c.Location = Screen.AllScreens[1].Bounds.Location;
-                Point point = new Point(Screen.AllScreens[1].Bounds.Location.X, Screen.AllScreens[1].Bounds.Location.Y);
-                c.Location = point;
-                c.WindowState = FormWindowState.Maximized;
+                if (!Cup._b_open && Screen.AllScreens.Count() > 1)
+                {
+                    Cup c = new Cup();
+                    c.Bounds = Screen.AllScreens[1].Bounds;
+                    c.StartPosition = FormStartPosition.Manual;
+                    c.Location = Screen.AllScreens[1].Bounds.Location;
+                    Point point = new Point(Screen.AllScreens[1].Bounds.Location.X, Screen.AllScreens[1].Bounds.Location.Y);
+                    c.Location = point;
+                    c.WindowState = FormWindowState.Maximized;
 
-                c.Show();
-                Cup._b_open = true;
+                    c.Show();
+                    Cup._b_open = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
             }
         }
 
         private void BtnDrops_Click(object sender, EventArgs e)
         {
-            foreach (Control control in this.PnlMain.Controls)
+            try
             {
-                this.PnlMain.Controls.Remove(control);
-                control.Dispose();
-            }
+                foreach (Control control in this.PnlMain.Controls)
+                {
+                    this.PnlMain.Controls.Remove(control);
+                    control.Dispose();
+                }
 
-            if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1)
-            {
-                FADM_Control.P_Formula formula = new P_Formula(this, FADM_Object.Communal._s_operator);
-                this.PnlMain.Controls.Add(formula);
-                formula.Focus();
+                if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1)
+                {
+                    FADM_Control.P_Formula formula = new P_Formula(this, FADM_Object.Communal._s_operator);
+                    this.PnlMain.Controls.Add(formula);
+                    formula.Focus();
+                }
+                else
+                {
+                    FADM_Control.Formula formula = new Formula(this);
+                    this.PnlMain.Controls.Add(formula);
+                    formula.Focus();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                FADM_Control.Formula formula = new Formula(this);
-                this.PnlMain.Controls.Add(formula);
-                formula.Focus();
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
             }
         }
 
         private void MiAbort_Click(object sender, EventArgs e)
         {
-            Abort abort = new Abort();
-            abort.Owner = this;
-            abort.Show();
-            abort.Focus();
+            try
+            {
+                Abort abort = new Abort();
+                abort.Owner = this;
+                abort.Show();
+                abort.Focus();
+            }
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
         }
 
         private void MiRegister_Click(object sender, EventArgs e)
         {
-            Register register = new Register();
-            register.Owner = this;
-            register.Show();
-            register.Focus();
+            try
+            {
+                Register register = new Register();
+                register.Owner = this;
+                register.Show();
+                register.Focus();
+            }
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
         }
 
         private void BtnResetBrew_Click(object sender, EventArgs e)
         {
-            FADM_Object.Communal._b_brewErr = false;
-            //FADM_Object.Communal.MyBrew.Open();
-            Thread P_thd_brew = new Thread(SmartDyeing.FADM_Auto.MyBrew.Brew);
-            P_thd_brew.IsBackground = true;
-            P_thd_brew.Start();
+            try
+            {
+                FADM_Object.Communal._b_brewErr = false;
+                //FADM_Object.Communal.MyBrew.Open();
+                Thread P_thd_brew = new Thread(SmartDyeing.FADM_Auto.MyBrew.Brew);
+                P_thd_brew.IsBackground = true;
+                P_thd_brew.Start();
+            }
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
+
         }
 
 
         private void Pause()
         {
 
-            //int iXPower = Lib_Card.CardObject.OA1.ReadOutPut(Lib_Card.ADT8940A1.ADT8940A1_IO.OutPut_X_Power);
-            //if (-1 == iXPower)
-            //{
-            //    if (Lib_Card.Configure.Parameter.Other_Language == 0)
-            //        FADM_Form.CustomMessageBox.Show("驱动异常", "ReadOutPut", MessageBoxButtons.OK, false);
-            //    else
-            //        FADM_Form.CustomMessageBox.Show("Drive abnormality", "ReadOutPut", MessageBoxButtons.OK, false);
-            //}
+            int iXPower = Lib_Card.CardObject.OA1.ReadOutPut(Lib_Card.ADT8940A1.ADT8940A1_IO.OutPut_X_Power);
+            if (-1 == iXPower)
+            {
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                    FADM_Form.CustomMessageBox.Show("驱动异常", "ReadOutPut", MessageBoxButtons.OK, false);
+                else
+                    FADM_Form.CustomMessageBox.Show("Drive abnormality", "ReadOutPut", MessageBoxButtons.OK, false);
+            }
 
-            //int iYPower = Lib_Card.CardObject.OA1.ReadOutPut(Lib_Card.ADT8940A1.ADT8940A1_IO.OutPut_Y_Power);
-            //if (-1 == iYPower)
-            //{
-            //    if (Lib_Card.Configure.Parameter.Other_Language == 0)
-            //        FADM_Form.CustomMessageBox.Show("驱动异常", "ReadOutPut", MessageBoxButtons.OK, false);
-            //    else
-            //        FADM_Form.CustomMessageBox.Show("Drive abnormality", "ReadOutPut", MessageBoxButtons.OK, false);
-            //}
+            int iYPower = Lib_Card.CardObject.OA1.ReadOutPut(Lib_Card.ADT8940A1.ADT8940A1_IO.OutPut_Y_Power);
+            if (-1 == iYPower)
+            {
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                    FADM_Form.CustomMessageBox.Show("驱动异常", "ReadOutPut", MessageBoxButtons.OK, false);
+                else
+                    FADM_Form.CustomMessageBox.Show("Drive abnormality", "ReadOutPut", MessageBoxButtons.OK, false);
+            }
 
-            //if (Lib_Card.Configure.Parameter.Other_ActualPosition == 1)
-            //{
-            //    int iXReady = Lib_Card.CardObject.OA1Input.InPutStatus(Lib_Card.ADT8940A1.ADT8940A1_IO.InPut_X_Ready);
-            //    int iYReady = Lib_Card.CardObject.OA1Input.InPutStatus(Lib_Card.ADT8940A1.ADT8940A1_IO.InPut_Y_Ready);
-            //    if (0 == iXReady || 0 == iYReady)
-            //    {
-            //        Lib_Card.ADT8940A1.Module.Home.Home.Home_XYZFinish = false;
-            //    }
-            //}
+            if (Lib_Card.Configure.Parameter.Other_ActualPosition == 1)
+            {
+                int iXReady = Lib_Card.CardObject.OA1Input.InPutStatus(Lib_Card.ADT8940A1.ADT8940A1_IO.InPut_X_Ready);
+                int iYReady = Lib_Card.CardObject.OA1Input.InPutStatus(Lib_Card.ADT8940A1.ADT8940A1_IO.InPut_Y_Ready);
+                if (0 == iXReady || 0 == iYReady)
+                {
+                    Lib_Card.ADT8940A1.Module.Home.Home.Home_XYZFinish = false;
+                }
+            }
 
-            //if (0 == iXPower || 0 == iYPower)
-            //{
-            //    //Lib_Card.ADT8940A1.Module.Home.Home.Home_XYZFinish = false;
-            //    //FADM_Object.Communal._fadmSqlserver.DeleteSpeechInfo("右光幕遮挡");
-            //    //FADM_Object.Communal._fadmSqlserver.DeleteSpeechInfo("左光幕遮挡");
-            //    //FADM_Object.Communal._fadmSqlserver.DeleteSpeechInfo("急停已按下");
-            //}
-            //else
-            //{
+            if (0 == iXPower || 0 == iYPower)
+            {
+                //Lib_Card.ADT8940A1.Module.Home.Home.Home_XYZFinish = false;
+                //FADM_Object.Communal._fadmSqlserver.DeleteSpeechInfo("右光幕遮挡");
+                //FADM_Object.Communal._fadmSqlserver.DeleteSpeechInfo("左光幕遮挡");
+                //FADM_Object.Communal._fadmSqlserver.DeleteSpeechInfo("急停已按下");
+
+                if (Lib_Card.Configure.Parameter.Other_ActualPosition == 0)
+                {
+                    Lib_Card.ADT8940A1.Module.Home.Home.Home_XYZFinish = false;
+                }
+            }
+            else
+            {
 
 
-            //    if (1 == Lib_Card.CardObject.OA1Input.InPutStatus(Lib_Card.ADT8940A1.ADT8940A1_IO.InPut_Sunx_A))
-            //    {
-            //        if (!Lib_Card.CardObject.bRight)
-            //        {
-            //            Lib_Card.CardObject.bRight = true;
-            //            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-            //                new FADM_Object.MyAlarm("右光幕遮挡", 1);
-            //            else
-            //                new FADM_Object.MyAlarm("Right light curtain occlusion", 1);
-            //        }
-            //    }
+                if (1 == Lib_Card.CardObject.OA1Input.InPutStatus(Lib_Card.ADT8940A1.ADT8940A1_IO.InPut_Sunx_A))
+                {
+                    if (!Lib_Card.CardObject.bRight)
+                    {
+                        Lib_Card.CardObject.bRight = true;
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            new FADM_Object.MyAlarm("右光幕遮挡", 1);
+                        else
+                            new FADM_Object.MyAlarm("Right light curtain occlusion", 1);
+                    }
+                }
 
-            //    if (1 == Lib_Card.CardObject.OA1Input.InPutStatus(Lib_Card.ADT8940A1.ADT8940A1_IO.InPut_Sunx_B))
-            //    {
-            //        if (!Lib_Card.CardObject.bLeft)
-            //        {
-            //            Lib_Card.CardObject.bLeft = true;
-            //            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-            //                new FADM_Object.MyAlarm("左光幕遮挡", 1);
-            //            else
-            //                new FADM_Object.MyAlarm("Left light curtain occlusion", 1);
-            //        }
-            //    }
+                if (1 == Lib_Card.CardObject.OA1Input.InPutStatus(Lib_Card.ADT8940A1.ADT8940A1_IO.InPut_Sunx_B))
+                {
+                    if (!Lib_Card.CardObject.bLeft)
+                    {
+                        Lib_Card.CardObject.bLeft = true;
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            new FADM_Object.MyAlarm("左光幕遮挡", 1);
+                        else
+                            new FADM_Object.MyAlarm("Left light curtain occlusion", 1);
+                    }
+                }
 
-            //    if (1 == Lib_Card.CardObject.OA1Input.InPutStatus(Lib_Card.ADT8940A1.ADT8940A1_IO.InPut_Stop))
-            //    {
-            //        if (!Lib_Card.CardObject.bFront)
-            //        {
-            //            Lib_Card.CardObject.bFront = true;
-            //            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-            //                new FADM_Object.MyAlarm("前光幕遮挡", 1);
-            //            else
-            //                new FADM_Object.MyAlarm("Front light curtain occlusion", 1);
-            //        }
-            //    }
-            //}
+                if (1 == Lib_Card.CardObject.OA1Input.InPutStatus(Lib_Card.ADT8940A1.ADT8940A1_IO.InPut_Stop))
+                {
+                    if (!Lib_Card.CardObject.bFront)
+                    {
+                        Lib_Card.CardObject.bFront = true;
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            new FADM_Object.MyAlarm("前光幕遮挡", 1);
+                        else
+                            new FADM_Object.MyAlarm("Front light curtain occlusion", 1);
+                    }
+                }
+            }
 
         }
 
         private void TmrMain_Tick(object sender, EventArgs e)
         {
-            //Thread thread = new Thread(_b_pause); //这里弹出光幕遮挡
-            //thread.Start();  //改造屏蔽
-          
-            
-            if (Convert.ToDouble(FADM_Object.Communal._s_balanceValue) > Lib_Card.Configure.Parameter.Other_BalanceMaxWeight - 100)
-                FADM_Object.Communal._b_balanceAlarm = true;
-            else
-                FADM_Object.Communal._b_balanceAlarm = false;
-
-
-            //Lib_Card.ADT8940A1.Axis.Axis.Axis_Paused = FADM_Object.Communal._b_pause;
-
-            //Lib_Card.ADT8940A1.Axis.Axis.Axis_Exit = FADM_Object.Communal._b_stop;
-
-
-            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
             {
-                switch (FADM_Object.Communal.ReadMachineStatus())
+                Thread thread = new Thread(Pause);
+                thread.Start();
+            }
+            try
+            {
+                if (Lib_Card.Configure.Parameter.Machine_Type == 0)
                 {
+                    if (FADM_Object.Communal.dBalanceValue > Lib_Card.Configure.Parameter.Other_BalanceMaxWeight - 100)
+                        FADM_Object.Communal._b_balanceAlarm = true;
+                    else
+                        FADM_Object.Communal._b_balanceAlarm = false;
 
-                    case 0:
+                    Lib_Card.ADT8940A1.Axis.Axis.Axis_Paused = FADM_Object.Communal._b_pause;
 
-                        LabStatus.Text = "待机";
-                        break;
-                    case 1:
-                        LabStatus.Text = "回零";
-                        break;
+                    Lib_Card.ADT8940A1.Axis.Axis.Axis_Exit = FADM_Object.Communal._b_stop;
+                }
 
-                    case 2:
-                        LabStatus.Text = "定坐标";
-                        break;
 
-                    case 3:
-                        LabStatus.Text = "联动";
-                        break;
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                {
+                    switch (FADM_Object.Communal.ReadMachineStatus())
+                    {
 
-                    case 4:
-                        LabStatus.Text = "定点移动";
-                        break;
+                        case 0:
 
-                    case 5:
-                        LabStatus.Text = "校正";
-                        break;
+                            LabStatus.Text = "待机";
+                            break;
+                        case 1:
+                            LabStatus.Text = "回零";
+                            break;
 
-                    case 6:
-                        LabStatus.Text = "针检";
-                        break;
+                        case 2:
+                            LabStatus.Text = "定坐标";
+                            break;
 
-                    case 7:
-                        LabStatus.Text = "滴液";
-                        break;
+                        case 3:
+                            LabStatus.Text = "联动";
+                            break;
 
-                    case 8:
-                        LabStatus.Text = "异常";
-                        break;
-                    case 9:
-                        LabStatus.Text = "滴液完成";
-                        break;
-                    case 10:
-                        LabStatus.Text = "复位";
-                        break;
+                        case 4:
+                            LabStatus.Text = "定点移动";
+                            break;
 
-                    case 11:
-                        LabStatus.Text = "自检";
-                        break;
+                        case 5:
+                            LabStatus.Text = "校正";
+                            break;
 
-                    case 12:
-                        LabStatus.Text = "验证";
-                        break;
-                    default:
-                        break;
+                        case 6:
+                            LabStatus.Text = "针检";
+                            break;
+
+                        case 7:
+                            LabStatus.Text = "滴液";
+                            break;
+
+                        case 8:
+                            LabStatus.Text = "异常";
+                            break;
+                        case 9:
+                            LabStatus.Text = "滴液完成";
+                            break;
+                        case 10:
+                            LabStatus.Text = "复位";
+                            break;
+
+                        case 11:
+                            LabStatus.Text = "自检";
+                            break;
+
+                        case 12:
+                            LabStatus.Text = "验证";
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (FADM_Object.Communal.ReadMachineStatus())
+                    {
+
+                        case 0:
+
+                            LabStatus.Text = "Standby";
+                            break;
+                        case 1:
+                            LabStatus.Text = "Homing";
+                            break;
+
+                        case 2:
+                            LabStatus.Text = "FixedCoordinates";
+                            break;
+
+                        case 3:
+                            LabStatus.Text = "Linkage";
+                            break;
+
+                        case 4:
+                            LabStatus.Text = "Fixed-pointMovement";
+                            break;
+
+                        case 5:
+                            LabStatus.Text = "Water-Checking";
+                            break;
+
+                        case 6:
+                            LabStatus.Text = "Bottle-Checking";
+                            break;
+
+                        case 7:
+                            LabStatus.Text = "Drip";
+                            break;
+
+                        case 8:
+                            LabStatus.Text = "Exceptional";
+                            break;
+                        case 9:
+                            LabStatus.Text = "DroppingCompleted";
+                            break;
+                        case 10:
+                            LabStatus.Text = "Reset";
+                            break;
+
+                        case 11:
+                            LabStatus.Text = "Self-checking";
+                            break;
+
+                        case 12:
+                            LabStatus.Text = "Water-Correction";
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                //重启com2通讯
+                if (FADM_Object.Communal._b_brewErr)
+                {
+                    if (BtnResetBrew.Visible == false)
+                    {
+                        BtnResetBrew.Visible = true;
+                    }
+                }
+                else
+                {
+                    if (BtnResetBrew.Visible)
+                    {
+                        BtnResetBrew.Visible = false;
+                    }
+                }
+
+                //重启com2通讯
+                if (FADM_Object.Communal._b_absErr)
+                {
+                    if (BtnResetAbs.Visible == false)
+                    {
+                        BtnResetAbs.Visible = true;
+                    }
+                }
+                else
+                {
+                    if (BtnResetAbs.Visible)
+                    {
+                        BtnResetAbs.Visible = false;
+                    }
                 }
             }
-            else
+
+            catch (Exception ex)
             {
-                switch (FADM_Object.Communal.ReadMachineStatus())
-                {
+                //FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
 
-                    case 0:
-
-                        LabStatus.Text = "Standby";
-                        break;
-                    case 1:
-                        LabStatus.Text = "Homing";
-                        break;
-
-                    case 2:
-                        LabStatus.Text = "FixedCoordinates";
-                        break;
-
-                    case 3:
-                        LabStatus.Text = "Linkage";
-                        break;
-
-                    case 4:
-                        LabStatus.Text = "Fixed-pointMovement";
-                        break;
-
-                    case 5:
-                        LabStatus.Text = "Water-Checking";
-                        break;
-
-                    case 6:
-                        LabStatus.Text = "Bottle-Checking";
-                        break;
-
-                    case 7:
-                        LabStatus.Text = "Drip";
-                        break;
-
-                    case 8:
-                        LabStatus.Text = "Exceptional";
-                        break;
-                    case 9:
-                        LabStatus.Text = "DroppingCompleted";
-                        break;
-                    case 10:
-                        LabStatus.Text = "Reset";
-                        break;
-
-                    case 11:
-                        LabStatus.Text = "Self-checking";
-                        break;
-
-                    case 12:
-                        LabStatus.Text = "Water-Correction";
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            //重启com2通讯
-            if (FADM_Object.Communal._b_brewErr)
-            {
-                if (BtnResetBrew.Visible == false)
-                {
-                    BtnResetBrew.Visible = true;
-                }
-            }
-            else
-            {
-                if (BtnResetBrew.Visible)
-                {
-                    BtnResetBrew.Visible = false;
-                }
+                Lib_Log.Log.writeLogException("TmrMain_Tick：" + ex.ToString());
             }
         }
 
         private void MiCup_Click(object sender, EventArgs e)
         {
-            foreach (Control control in this.PnlMain.Controls)
+            try
             {
-                this.PnlMain.Controls.Remove(control);
-                control.Dispose();
+                foreach (Control control in this.PnlMain.Controls)
+                {
+                    this.PnlMain.Controls.Remove(control);
+                    control.Dispose();
+                }
+
+                FADM_Control.CupDefin cupdefin = new CupDefin();
+                this.PnlMain.Controls.Add(cupdefin);
             }
 
-            FADM_Control.CupDefin cupdefin = new CupDefin();
-            this.PnlMain.Controls.Add(cupdefin);
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
         }
 
         public void DetailInfo_Click(object sender, EventArgs e)
         {
-            if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1)
+            try
             {
-                return;
-            }
-            //foreach (Control control in this.PnlMain.Controls)
-            //{
-            //    this.PnlMain.Controls.Remove(control);
-            //    control.Dispose();
-            //}
-
-            //FADM_Control.CupListDetail cupListDetail = new();
-            //this.PnlMain.Controls.Add(cupListDetail);
-            if (!Cup._b_open && Screen.AllScreens.Count() > 1)
-            {
-                Cup c = new Cup();
-                c.Bounds = Screen.AllScreens[1].Bounds;
-                c.StartPosition = FormStartPosition.Manual;
-                c.Location = Screen.AllScreens[1].Bounds.Location;
-                Point point = new Point(Screen.AllScreens[1].Bounds.Location.X, Screen.AllScreens[1].Bounds.Location.Y);
-                c.Location = point;
-                c.WindowState = FormWindowState.Maximized;
-                c.Show();
-                Cup._b_open = true;
-            }
-            else if (!Cup._b_open && Screen.AllScreens.Count() == 1)
-            {
-                Cup cup = new Cup();
-                cup.Show();
-                Cup._b_open = true;
-            }
-            else if (Cup._b_open && Screen.AllScreens.Count() == 1)
-            {
-                IntPtr ptr;
-                if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                    ptr = FindWindow(null, "配液杯详情");
-                else
-                    ptr = FindWindow(null, "CupStatus");
-                if (ptr != IntPtr.Zero)
+                if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1)
                 {
-                    //先删除页面，再重新打开
-                    PostMessage(ptr, WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+                    return;
+                }
+                //foreach (Control control in this.PnlMain.Controls)
+                //{
+                //    this.PnlMain.Controls.Remove(control);
+                //    control.Dispose();
+                //}
 
+                //FADM_Control.CupListDetail cupListDetail = new();
+                //this.PnlMain.Controls.Add(cupListDetail);
+                if (!Cup._b_open && Screen.AllScreens.Count() > 1)
+                {
+                    Cup c = new Cup();
+                    c.Bounds = Screen.AllScreens[1].Bounds;
+                    c.StartPosition = FormStartPosition.Manual;
+                    c.Location = Screen.AllScreens[1].Bounds.Location;
+                    Point point = new Point(Screen.AllScreens[1].Bounds.Location.X, Screen.AllScreens[1].Bounds.Location.Y);
+                    c.Location = point;
+                    c.WindowState = FormWindowState.Maximized;
+                    c.Show();
+                    Cup._b_open = true;
+                }
+                else if (!Cup._b_open && Screen.AllScreens.Count() == 1)
+                {
                     Cup cup = new Cup();
                     cup.Show();
                     Cup._b_open = true;
                 }
+                else if (Cup._b_open && Screen.AllScreens.Count() == 1)
+                {
+                    IntPtr ptr;
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                        ptr = FindWindow(null, "配液杯详情");
+                    else
+                        ptr = FindWindow(null, "CupStatus");
+                    if (ptr != IntPtr.Zero)
+                    {
+                        //先删除页面，再重新打开
+                        PostMessage(ptr, WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+
+                        Cup cup = new Cup();
+                        cup.Show();
+                        Cup._b_open = true;
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
             }
         }
 
         private void TmrTemp_Tick(object sender, EventArgs e)
         {
-            for (int i = 0; i < FADM_Auto.Dye._cup_Temps.Length; i++)
+            try
             {
-                if (FADM_Auto.Dye._cup_Temps[i]._b_start)
+                for (int i = 0; i < FADM_Auto.Dye._cup_Temps.Length; i++)
                 {
-                    if (Convert.ToDouble(FADM_Auto.Dye._cup_Temps[i]._s_temp) > 0)
+                    if (FADM_Auto.Dye._cup_Temps[i]._b_start)
                     {
-                        Txt.WriteTXT(i + 1, FADM_Auto.Dye._cup_Temps[i]._s_temp);
-                        FADM_Object.Communal._fadmSqlserver.ReviseData(
-                            "UPDATE cup_details SET RecordIndex = RecordIndex + 1 WHERE CupNum = " + (i + 1) + ";");
-
-                        if (FADM_Auto.Dye._cup_Temps[i]._b_tagging)
+                        if (Convert.ToDouble(FADM_Auto.Dye._cup_Temps[i]._s_temp) > 0)
                         {
-                            DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(
-                                "SELECT * FROM cup_details WHERE CupNum = " + (i + 1) + ";");
+                            Txt.WriteTXT(i + 1, FADM_Auto.Dye._cup_Temps[i]._s_temp);
+                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                "UPDATE cup_details SET RecordIndex = RecordIndex + 1 WHERE CupNum = " + (i + 1) + ";");
 
-                            Txt.WriteMarkTXT(i + 1, FADM_Auto.Dye._cup_Temps[i]._s_technologyName, dt_data.Rows[0]["RecordIndex"].ToString());
-                            FADM_Auto.Dye._cup_Temps[i]._b_tagging = false;
+                            if (FADM_Auto.Dye._cup_Temps[i]._b_tagging)
+                            {
+                                DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(
+                                    "SELECT * FROM cup_details WHERE CupNum = " + (i + 1) + ";");
+
+                                Txt.WriteMarkTXT(i + 1, FADM_Auto.Dye._cup_Temps[i]._s_technologyName, dt_data.Rows[0]["RecordIndex"].ToString());
+                                FADM_Auto.Dye._cup_Temps[i]._b_tagging = false;
+                            }
                         }
                     }
-                }
 
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Lib_Log.Log.writeLogException("TmrTemp_Tick：" + ex.ToString());
             }
         }
         private string _s_m_route = null;
@@ -1537,6 +2868,7 @@ namespace SmartDyeing.FADM_Form
             {
                 try
                 {
+                    //煜泰
                     if (_s_m_mode == "0")
                     {
                         //if (File.Exists(this._s_m_route))
@@ -1553,7 +2885,7 @@ namespace SmartDyeing.FADM_Form
                                         Thread th = new Thread(insert1);
                                         th.IsBackground = true;
                                         th.Start(files);
-                                        TmrFGY.Enabled = false;
+                                        //TmrFGY.Enabled = false;
                                     }
                                 }
 
@@ -1572,6 +2904,40 @@ namespace SmartDyeing.FADM_Form
 
                         }
                     }
+                    //MAM测试仪
+                    else if (_s_m_mode == "1")
+                    {
+                        if (File.Exists(this._s_m_route))
+                        {
+                            try
+                            {
+                                if (!_logWriteLock.IsWriteLockHeld)
+                                {
+
+                                    _logWriteLock.EnterWriteLock(); //进入写入锁
+                                    string[] sa_temp = File.ReadAllLines(this._s_m_route);
+                                    File.Delete(this._s_m_route);
+                                    Thread th = new Thread(insert3);
+                                    th.IsBackground = true;
+                                    th.Start(sa_temp);
+                                }
+
+                            }
+                            catch (Exception ex)
+                            {
+                                if (_logWriteLock.IsWriteLockHeld)
+                                    _logWriteLock.ExitWriteLock(); //退出写入锁
+                            }
+                            finally
+                            {
+                                if (_logWriteLock.IsWriteLockHeld)
+                                    _logWriteLock.ExitWriteLock(); //退出写入锁
+
+                            }
+
+                        }
+                    }
+                    //自定义含后处理
                     else
                     {
                         if (File.Exists(this._s_m_route))
@@ -1608,7 +2974,7 @@ namespace SmartDyeing.FADM_Form
                 catch (Exception ex)
                 {
                     FADM_Form.CustomMessageBox.Show(ex.Message, "TmrFGY_Tick", MessageBoxButtons.OK, true);
-                    TmrFGY.Enabled = false;
+                    //TmrFGY.Enabled = false;
                 }
             }
         }
@@ -1657,8 +3023,8 @@ namespace SmartDyeing.FADM_Form
                         string s_deyCode = "";
                         double d_readBathRatio = 0;
                         double d_handleBathRatio = 0;
-                        double d_non_AnhydrationWR = 0;
-                        double d_anhydrationWR = 0;
+                        double d_non_AnhydrationWR = Lib_Card.Configure.Parameter.Other_Default_Non_AnhydrationWR;
+                        double d_anhydrationWR = Lib_Card.Configure.Parameter.Other_Default_AnhydrationWR;
 
                         for (; i_currentIndex < sa_rcp.Length; i_currentIndex++)
                         {
@@ -1710,7 +3076,7 @@ namespace SmartDyeing.FADM_Form
                         //List<recipe> Handle5list = new List<recipe>();
                         for (; i_currentIndex < sa_rcp.Length; i_currentIndex++)
                         {
-                            if (sa_rcp[i_currentIndex].Substring(0, 4) == "001C" && sa_rcp[i_currentIndex].Length >32 /*&&
+                            if (sa_rcp[i_currentIndex].Substring(0, 4) == "001C" && sa_rcp[i_currentIndex].Length > 32 /*&&
                                 sa_rcp[i_currentIndex].Substring(4, 12).Trim() == s_formulaCode*/)
                             {
                                 {
@@ -1729,9 +3095,15 @@ namespace SmartDyeing.FADM_Form
                                     if (dt_data.Rows.Count == 0)
                                     {
                                         if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                        {
+                                            System.IO.File.Delete(file.ToString());
                                             throw new Exception("未找到" + re._s_assistantCode + "染助剂代码");
+                                        }
                                         else
+                                        {
+                                            System.IO.File.Delete(file.ToString());
                                             throw new Exception("not found " + re._s_assistantCode + " Dyeing agent code");
+                                        }
                                     }
 
                                     re._s_assistantName = Convert.ToString(dt_data.Rows[0]["AssistantName"]);
@@ -1744,10 +3116,15 @@ namespace SmartDyeing.FADM_Form
                                     if (dt_data.Rows.Count == 0)
                                     {
                                         if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                        {
+                                            System.IO.File.Delete(file.ToString());
                                             throw new Exception("未找到" + re._s_assistantCode + "染助剂代码的瓶号");
+                                        }
                                         else
-
+                                        {
+                                            System.IO.File.Delete(file.ToString());
                                             throw new Exception("not found " + " The bottle number of the  " + re._s_assistantCode);
+                                        }
                                     }
                                     for (int i = 0; i < dt_data.Rows.Count; i++)
                                     {
@@ -1765,16 +3142,22 @@ namespace SmartDyeing.FADM_Form
                                         else
                                         {
                                             if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                            {
+                                                System.IO.File.Delete(file.ToString());
                                                 throw new Exception(re._s_assistantCode + "染助剂的计算单位设置异常");
+                                            }
                                             else
+                                            {
+                                                System.IO.File.Delete(file.ToString());
                                                 throw new Exception(re._s_assistantCode + " Abnormal setting of calculation unit for dyeing auxiliaries");
+                                            }
                                         }
 
                                         if (d_objectW >= Convert.ToDouble(string.Format("{0:F}", dt_data.Rows[i]["DropMinWeight"])))
                                         {
                                             re._i_bottleNum = Convert.ToInt16(dt_data.Rows[i]["BottleNum"]);
-                                            re._d_settingConcentration = Convert.ToDouble(string.Format("{0:F}", dt_data.Rows[i]["SettingConcentration"]));
-                                            re._d_realConcentration = Convert.ToDouble(string.Format("{0:F}", dt_data.Rows[i]["RealConcentration"]));
+                                            re._d_settingConcentration = Convert.ToDouble(string.Format("{0:F6}", dt_data.Rows[i]["SettingConcentration"]));
+                                            re._d_realConcentration = Convert.ToDouble(string.Format("{0:F6}", dt_data.Rows[i]["RealConcentration"]));
                                             re._d_objectDropWeight = d_objectW;
                                             break;
                                         }
@@ -1785,17 +3168,23 @@ namespace SmartDyeing.FADM_Form
                                                 if (d_objectW > 0.1)
                                                 {
                                                     re._i_bottleNum = Convert.ToInt16(dt_data.Rows[i]["BottleNum"]);
-                                                    re._d_settingConcentration = Convert.ToDouble(string.Format("{0:F}", dt_data.Rows[i]["SettingConcentration"]));
-                                                    re._d_realConcentration = Convert.ToDouble(string.Format("{0:F}", dt_data.Rows[i]["RealConcentration"]));
+                                                    re._d_settingConcentration = Convert.ToDouble(string.Format("{0:F6}", dt_data.Rows[i]["SettingConcentration"]));
+                                                    re._d_realConcentration = Convert.ToDouble(string.Format("{0:F6}", dt_data.Rows[i]["RealConcentration"]));
                                                     re._d_objectDropWeight = d_objectW;
                                                     break;
                                                 }
                                                 else
                                                 {
                                                     if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                    {
+                                                        System.IO.File.Delete(file.ToString());
                                                         throw new Exception(re._s_assistantCode + "染助剂滴液量小于0.1克");
+                                                    }
                                                     else
+                                                    {
+                                                        System.IO.File.Delete(file.ToString());
                                                         throw new Exception(re._s_assistantCode + " Dyeing aids with a droplet volume of less than 0.1 grams");
+                                                    }
                                                 }
                                             }
                                         }
@@ -1827,7 +3216,7 @@ namespace SmartDyeing.FADM_Form
                                 " ObjectAddWaterWeight,BathRatio,HandleBathRatio,Non_AnhydrationWR,AnhydrationWR,DyeingCode,Stage,HandleBRList) VALUES('" + s_formulaCode + "'," +
                                 " '" + i_versionNum + "', '" + s_formulaName + "', 1, " +
                                 " '" + d_clothWeight + "', '" + d_totalWeight + "', " +
-                                " '" + DateTime.Now + "', '" + s_temAddWaterWeight + "', '" + d_readBathRatio + "', '" + d_handleBathRatio + "', '" + d_non_AnhydrationWR + "', '" + d_anhydrationWR + "', '" + s_deyCode.Trim() + "', '" + s_stage + "', '" + s_hBRList + "');";
+                                " '" + DateTime.Now + "', '" + s_temAddWaterWeight + "', '" + d_bathRatio + "', '" + d_handleBathRatio + "', '" + d_non_AnhydrationWR + "', '" + d_anhydrationWR + "', '" + s_deyCode.Trim() + "', '" + s_stage + "', '" + s_hBRList + "');";
                             FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
                         }
                         foreach (recipe rc in lis_data)
@@ -1864,6 +3253,439 @@ namespace SmartDyeing.FADM_Form
             {
                 FADM_Form.CustomMessageBox.Show(ex.Message, "insert", MessageBoxButtons.OK, true);
                 Communal._b_getFile = true;
+            }
+        }
+        //爱色丽分光仪对接
+        private void insert2(object arg)
+        {
+            try
+            {
+                string[] files = (string[])arg;
+                int i_ind = 0;
+                foreach (var file in files)
+                {
+                    i_ind++;
+                    if (System.IO.File.Exists(file.ToString()))
+                    {
+
+                        string[] sa_rcp = System.IO.File.ReadAllLines(file.ToString());
+                        int i_currentIndex = 0;
+
+                    label:
+                        string s_formulaCode = "";
+                        int i_versionNum = 0;
+                        int i_num = 0;
+                        string s_formulaName = "";
+                        double d_clothWeight = 0;
+                        double d_totalWeight = 0;
+                        double d_bathRatio = 0;
+                        double d_allW = 0;
+                        string s_deyCode = "";
+                        double d_readBathRatio = 0;
+                        double d_handleBathRatio = 0;
+                        double d_non_AnhydrationWR = Lib_Card.Configure.Parameter.Other_Default_Non_AnhydrationWR;
+                        double d_anhydrationWR = Lib_Card.Configure.Parameter.Other_Default_AnhydrationWR;
+
+                        for (; i_currentIndex < sa_rcp.Length; i_currentIndex++)
+                        {
+                            if (sa_rcp[i_currentIndex].Substring(0, 4) == "001M" && sa_rcp[i_currentIndex].Length == 86)
+                            {
+                                //表头资料
+                                s_formulaCode = sa_rcp[i_currentIndex].Substring(4, 12).Trim();
+                                i_num = Convert.ToInt16(sa_rcp[i_currentIndex].Substring(18, 2));
+                                s_formulaName = sa_rcp[i_currentIndex].Substring(24, 24).Trim();
+                                s_formulaCode = s_formulaName;
+                                d_clothWeight = 5;
+                                d_totalWeight = 100;
+                                //d_readBathRatio = Convert.ToDouble(sa_rcp[i_currentIndex].Substring(86, 8));
+                                //d_handleBathRatio = Convert.ToDouble(sa_rcp[i_currentIndex].Substring(94, 8));
+                                //d_anhydrationWR = Convert.ToDouble(sa_rcp[i_currentIndex].Substring(102, 8));
+                                //d_non_AnhydrationWR = Convert.ToDouble(sa_rcp[i_currentIndex].Substring(110, 8));
+                                //s_deyCode = sa_rcp[i_currentIndex].Substring(118, 30).Trim();
+                                d_bathRatio = Convert.ToDouble(string.Format("{0:F}", d_totalWeight / d_clothWeight));
+                                DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(
+                                    "SELECT * FROM formula_head WHERE FormulaCode ='" +
+                                    s_formulaCode + "' ORDER BY VersionNum DESC");
+                                if (dt_data.Rows.Count > 0)
+                                {
+                                    i_versionNum = (Convert.ToInt16(dt_data.Rows[0]["VersionNum"])) + 1;
+                                }
+                                break;
+                            }
+                        }
+
+                        //先把染固色工艺全部子工艺全部记录
+
+                        //string s_sql_Code = "select * from dyeing_code where DyeingCode ='" + s_deyCode.Trim() + "' order by IndexNum;";
+                        //DataTable dt_data_Code = FADM_Object.Communal.FadmSqlserver.GetData(s_sql_Code);
+                        //Dictionary<int, List<recipe>> dic_listCode = new Dictionary<int, List<recipe>>();
+                        //foreach (DataRow dr in dt_data_Code.Rows)
+                        //{
+                        //    List<recipe> lis_temp = new List<recipe>();
+                        //    dic_listCode.Add(Convert.ToInt32(dr["IndexNum"].ToString()), lis_temp);
+                        //}
+                        List<recipe> lis_data = new List<recipe>();
+
+                        //判断第一个是不是染色工艺
+                        bool b_dyeing = false;
+
+                        //List<recipe> Dyelist = new List<recipe>();
+                        //List<recipe> Handle1list = new List<recipe>();
+                        //List<recipe> Handle2list = new List<recipe>();
+                        //List<recipe> Handle3list = new List<recipe>();
+                        //List<recipe> Handle4list = new List<recipe>();
+                        //List<recipe> Handle5list = new List<recipe>();
+                        for (; i_currentIndex < sa_rcp.Length; i_currentIndex++)
+                        {
+                            if (sa_rcp[i_currentIndex].Substring(0, 4) == "001C" && sa_rcp[i_currentIndex].Length > 32 /*&&
+                                sa_rcp[i_currentIndex].Substring(4, 12).Trim() == s_formulaCode*/)
+                            {
+                                {
+                                    recipe re = new recipe();
+                                    re._i_indexNum = Convert.ToInt16(sa_rcp[i_currentIndex].Substring(18, 2));
+                                    re._s_assistantCode = sa_rcp[i_currentIndex].Substring(24, 8).Trim();
+                                    int i_nleng = sa_rcp[i_currentIndex].Length - 32;
+                                    re._s_formulaDosage = Convert.ToDouble(sa_rcp[i_currentIndex].Substring(32, i_nleng));
+
+                                    re._s_code = "";
+
+                                    DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(
+                                        "SELECT *  FROM assistant_details WHERE " +
+                                         "AssistantCode = '" + re._s_assistantCode + "';");
+
+                                    if (dt_data.Rows.Count == 0)
+                                    {
+                                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                        {
+                                            System.IO.File.Delete(file.ToString());
+                                            throw new Exception("未找到" + re._s_assistantCode + "染助剂代码");
+                                        }
+                                        else
+                                        {
+                                            System.IO.File.Delete(file.ToString());
+                                            throw new Exception("not found " + re._s_assistantCode + " Dyeing agent code");
+                                        }
+                                    }
+
+                                    re._s_assistantName = Convert.ToString(dt_data.Rows[0]["AssistantName"]);
+                                    re._s_unitOfAccount = Convert.ToString(dt_data.Rows[0]["UnitOfAccount"]);
+
+                                    dt_data = FADM_Object.Communal._fadmSqlserver.GetData(
+                                        "SELECT *  FROM bottle_details WHERE " +
+                                         "AssistantCode = '" + re._s_assistantCode + "' AND " +
+                                         "RealConcentration != 0 Order BY SettingConcentration DESC;");
+                                    if (dt_data.Rows.Count == 0)
+                                    {
+                                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                        {
+                                            System.IO.File.Delete(file.ToString());
+                                            throw new Exception("未找到" + re._s_assistantCode + "染助剂代码的瓶号");
+                                        }
+                                        else
+                                        {
+                                            System.IO.File.Delete(file.ToString());
+                                            throw new Exception("not found " + " The bottle number of the  " + re._s_assistantCode);
+                                        }
+                                    }
+                                    for (int i = 0; i < dt_data.Rows.Count; i++)
+                                    {
+                                        double d_objectW = 0;
+                                        if (re._s_unitOfAccount == "%")
+                                        {
+                                            d_objectW = Convert.ToDouble(string.Format("{0:F}",
+                                                d_clothWeight * re._s_formulaDosage / Convert.ToDouble(dt_data.Rows[i]["RealConcentration"])));
+                                        }
+                                        else if (re._s_unitOfAccount == "g/l")
+                                        {
+                                            d_objectW = Convert.ToDouble(string.Format("{0:F}",
+                                                d_totalWeight * re._s_formulaDosage / Convert.ToDouble(dt_data.Rows[i]["RealConcentration"])));
+                                        }
+                                        else
+                                        {
+                                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                            {
+                                                System.IO.File.Delete(file.ToString());
+                                                throw new Exception(re._s_assistantCode + "染助剂的计算单位设置异常");
+                                            }
+                                            else
+                                            {
+                                                System.IO.File.Delete(file.ToString());
+                                                throw new Exception(re._s_assistantCode + " Abnormal setting of calculation unit for dyeing auxiliaries");
+                                            }
+                                        }
+
+                                        if (d_objectW >= Convert.ToDouble(string.Format("{0:F}", dt_data.Rows[i]["DropMinWeight"])))
+                                        {
+                                            re._i_bottleNum = Convert.ToInt16(dt_data.Rows[i]["BottleNum"]);
+                                            re._d_settingConcentration = Convert.ToDouble(string.Format("{0:F6}", dt_data.Rows[i]["SettingConcentration"]));
+                                            re._d_realConcentration = Convert.ToDouble(string.Format("{0:F6}", dt_data.Rows[i]["RealConcentration"]));
+                                            re._d_objectDropWeight = d_objectW;
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            if (i == dt_data.Rows.Count - 1)
+                                            {
+                                                if (d_objectW > 0.1)
+                                                {
+                                                    re._i_bottleNum = Convert.ToInt16(dt_data.Rows[i]["BottleNum"]);
+                                                    re._d_settingConcentration = Convert.ToDouble(string.Format("{0:F6}", dt_data.Rows[i]["SettingConcentration"]));
+                                                    re._d_realConcentration = Convert.ToDouble(string.Format("{0:F6}", dt_data.Rows[i]["RealConcentration"]));
+                                                    re._d_objectDropWeight = d_objectW;
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                    {
+                                                        System.IO.File.Delete(file.ToString());
+                                                        throw new Exception(re._s_assistantCode + "染助剂滴液量小于0.1克");
+                                                    }
+                                                    else
+                                                    {
+                                                        System.IO.File.Delete(file.ToString());
+                                                        throw new Exception(re._s_assistantCode + " Dyeing aids with a droplet volume of less than 0.1 grams");
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (re._s_code.Trim() == "")
+                                    {
+                                        d_allW += re._d_objectDropWeight;
+                                        lis_data.Add(re);
+                                    }
+
+                                }
+
+                            }
+                        }
+                        string s_sql = null;
+                        string s_hBRList = "";
+
+
+                        {
+                            string s_stage = "滴液";
+
+
+                            string s_temAddWaterWeight = /*Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0*/true ? String.Format("{0:F}", d_totalWeight - d_clothWeight * d_anhydrationWR - d_allW) : String.Format("{0:F3}", d_totalWeight - d_clothWeight * d_anhydrationWR - d_allW);
+                            //添加配方表
+                            s_sql = "INSERT INTO formula_head (" +
+                                " FormulaCode, VersionNum, FormulaName," +
+                                " AddWaterChoose,ClothWeight," +
+                                " TotalWeight,CreateTime," +
+                                " ObjectAddWaterWeight,BathRatio,HandleBathRatio,Non_AnhydrationWR,AnhydrationWR,DyeingCode,Stage,HandleBRList) VALUES('" + s_formulaCode + "'," +
+                                " '" + i_versionNum + "', '" + s_formulaName + "', 1, " +
+                                " '" + d_clothWeight + "', '" + d_totalWeight + "', " +
+                                " '" + DateTime.Now + "', '" + s_temAddWaterWeight + "', '" + d_bathRatio + "', '" + d_handleBathRatio + "', '" + d_non_AnhydrationWR + "', '" + d_anhydrationWR + "', '" + s_deyCode.Trim() + "', '" + s_stage + "', '" + s_hBRList + "');";
+                            FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                        }
+                        foreach (recipe rc in lis_data)
+                        {
+                            s_sql = "INSERT INTO formula_details (" +
+                                  " FormulaCode, VersionNum, IndexNum, AssistantCode," +
+                                  " FormulaDosage, UnitOfAccount, BottleNum, SettingConcentration," +
+                                  " RealConcentration, AssistantName, ObjectDropWeight) VALUES( '" +
+                                  s_formulaCode + "', '" + i_versionNum + "', " +
+                                  "'" + rc._i_indexNum + "', '" + rc._s_assistantCode + "', '" +
+                                  rc._s_formulaDosage + "', '" + rc._s_unitOfAccount + "'," +
+                                  " '" + rc._i_bottleNum + "', '" + rc._d_settingConcentration + "', '" +
+                                  rc._d_realConcentration + "', '" + rc._s_assistantName + "'," +
+                                  " '" + rc._d_objectDropWeight + "');";
+
+                            FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                        }
+
+
+
+
+                        if (i_currentIndex < sa_rcp.Length - 1)
+                        {
+                            goto label;
+                        }
+                    }
+                    System.IO.File.Delete(file.ToString());
+                }
+
+                Communal._b_getFile_sec = true;
+
+            }
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.Message, "insert", MessageBoxButtons.OK, true);
+                Communal._b_getFile_sec = true;
+            }
+        }
+
+        private void insert3(object arg)
+        {
+            try
+            {
+                string[] rcp = (string[])arg;
+                int currentIndex = 0;
+
+            label:
+                string formulaCode = null;
+                int versionNum = 0;
+                int num = 0;
+                string formulaName = null;
+                double clothWeight = 0;
+                double totalWeight = 0;
+                double bathRatio = 0;
+                double allW = 0;
+                double d_non_AnhydrationWR = Lib_Card.Configure.Parameter.Other_Default_Non_AnhydrationWR;
+                double d_anhydrationWR = Lib_Card.Configure.Parameter.Other_Default_AnhydrationWR;
+                string sOperator = null;
+
+                for (; currentIndex < rcp.Length; currentIndex++)
+                {
+                    if (rcp[currentIndex].Substring(0, 4) == "500M" && rcp[currentIndex].Length == 86)
+                    {
+                        //表头资料
+                        formulaName = rcp[currentIndex].Substring(4, 12).Trim();
+                        num = Convert.ToInt16(rcp[currentIndex].Substring(18, 2));
+                        formulaCode = rcp[currentIndex].Substring(24, 24).Trim();
+                        clothWeight = Convert.ToDouble(rcp[currentIndex].Substring(48, 8));
+                        totalWeight = Convert.ToDouble(rcp[currentIndex].Substring(56, 8));
+                        sOperator = rcp[currentIndex].Substring(76, 8).Trim();
+                        bathRatio = Convert.ToDouble(string.Format("{0:F}", totalWeight / clothWeight));
+                        DataTable data = FADM_Object.Communal._fadmSqlserver.GetData(
+                            "SELECT * FROM formula_head WHERE FormulaCode ='" +
+                            formulaCode + "' ORDER BY VersionNum DESC");
+                        if (data.Rows.Count > 0)
+                        {
+                            versionNum = (Convert.ToInt16(data.Rows[0]["VersionNum"])) + 1;
+                        }
+                        break;
+                    }
+                }
+
+
+                List<recipe> list = new List<recipe>();
+                for (; currentIndex < rcp.Length; currentIndex++)
+                {
+                    if (rcp[currentIndex].Substring(0, 4) == "500C" && rcp[currentIndex].Length == 41 &&
+                        rcp[currentIndex].Substring(4, 12).Trim() == formulaName)
+                    {
+                        if (rcp[currentIndex].Substring(24, 8) != "WATER   ")
+                        {
+                            recipe re = new recipe();
+                            re._i_indexNum = Convert.ToInt16(rcp[currentIndex].Substring(18, 2));
+                            re._s_assistantCode = rcp[currentIndex].Substring(24, 8);
+                            re._s_formulaDosage = Convert.ToDouble(rcp[currentIndex].Substring(32, 9));
+
+                            DataTable data = FADM_Object.Communal._fadmSqlserver.GetData(
+                                "SELECT *  FROM assistant_details WHERE " +
+                                 "AssistantCode = '" + re._s_assistantCode + "';");
+
+                            if (data.Rows.Count == 0)
+                            {
+                                throw new Exception("未找到" + re._s_assistantCode + "染助剂代码");
+                            }
+
+                            re._s_assistantName = Convert.ToString(data.Rows[0]["AssistantName"]);
+                            re._s_unitOfAccount = Convert.ToString(data.Rows[0]["UnitOfAccount"]);
+
+                            data = FADM_Object.Communal._fadmSqlserver.GetData(
+                                "SELECT *  FROM bottle_details WHERE " +
+                                 "AssistantCode = '" + re._s_assistantCode + "' AND " +
+                                 "RealConcentration != 0 Order BY SettingConcentration DESC;");
+                            if (data.Rows.Count == 0)
+                            {
+                                throw new Exception("未找到" + re._s_assistantCode + "染助剂代码的瓶号");
+                            }
+                            for (int i = 0; i < data.Rows.Count; i++)
+                            {
+                                double objectW = 0;
+                                if (re._s_unitOfAccount == "%")
+                                {
+                                    objectW = Convert.ToDouble(string.Format("{0:F}",
+                                        clothWeight * re._s_formulaDosage / Convert.ToDouble(data.Rows[i]["RealConcentration"])));
+                                }
+                                else if (re._s_unitOfAccount == "g/l")
+                                {
+                                    objectW = Convert.ToDouble(string.Format("{0:F}",
+                                        totalWeight * re._s_formulaDosage / Convert.ToDouble(data.Rows[i]["RealConcentration"])));
+                                }
+                                else
+                                {
+                                    throw new Exception(re._s_assistantCode + "染助剂的计算单位设置异常");
+                                }
+
+                                if (objectW >= Convert.ToDouble(string.Format("{0:F}", data.Rows[i]["DropMinWeight"])))
+                                {
+                                    re._i_bottleNum = Convert.ToInt16(data.Rows[i]["BottleNum"]);
+                                    re._d_settingConcentration = Convert.ToDouble(string.Format("{0:F}", data.Rows[i]["SettingConcentration"]));
+                                    re._d_realConcentration = Convert.ToDouble(string.Format("{0:F}", data.Rows[i]["RealConcentration"]));
+                                    re._d_objectDropWeight = objectW;
+                                    break;
+                                }
+                                else
+                                {
+                                    if (i == data.Rows.Count - 1)
+                                    {
+                                        if (objectW > 0.1)
+                                        {
+                                            re._i_bottleNum = Convert.ToInt16(data.Rows[i]["BottleNum"]);
+                                            re._d_settingConcentration = Convert.ToDouble(string.Format("{0:F}", data.Rows[i]["SettingConcentration"]));
+                                            re._d_realConcentration = Convert.ToDouble(string.Format("{0:F}", data.Rows[i]["RealConcentration"]));
+                                            re._d_objectDropWeight = objectW;
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            throw new Exception(re._s_assistantCode + "染助剂滴液量小于0.1克");
+                                        }
+                                    }
+                                }
+                            }
+                            allW += re._d_objectDropWeight;
+                            list.Add(re);
+                        }
+                        if (list.Count >= num)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                //添加配方表
+                string sql = "INSERT INTO formula_head (" +
+                    " FormulaCode, VersionNum, FormulaName," +
+                    " AddWaterChoose,ClothWeight," +
+                    " BathRatio,TotalWeight,CreateTime," +
+                    " ObjectAddWaterWeight,Non_AnhydrationWR,AnhydrationWR,Operator,Stage,HandleBathRatio) VALUES('" + formulaCode + "'," +
+                    " '" + versionNum + "', '" + formulaName + "', 1, " +
+                    " '" + clothWeight + "', '" + bathRatio + "', '" + totalWeight + "', " +
+                    " '" + DateTime.Now + "', '" + string.Format("{0:F}", (totalWeight - allW)) + "', '" + d_non_AnhydrationWR + "', '" + d_anhydrationWR + "', '" + sOperator + "', '" + "滴液" + "', '" + "0" + "');";
+                FADM_Object.Communal._fadmSqlserver.ReviseData(sql);
+
+                foreach (recipe rc in list)
+                {
+                    sql = "INSERT INTO formula_details (" +
+                          " FormulaCode, VersionNum, IndexNum, AssistantCode," +
+                          " FormulaDosage, UnitOfAccount, BottleNum, SettingConcentration," +
+                          " RealConcentration, AssistantName, ObjectDropWeight) VALUES( '" +
+                          formulaCode + "', '" + versionNum + "', " +
+                          "'" + rc._i_indexNum + "', '" + rc._s_assistantCode + "', '" +
+                          rc._s_formulaDosage + "', '" + rc._s_unitOfAccount + "'," +
+                          " '" + rc._i_bottleNum + "', '" + rc._d_settingConcentration + "', '" +
+                          rc._d_realConcentration + "', '" + rc._s_assistantName + "'," +
+                          " '" + rc._d_objectDropWeight + "');";
+
+                    FADM_Object.Communal._fadmSqlserver.ReviseData(sql);
+                }
+
+
+                if (currentIndex < rcp.Length - 1)
+                {
+                    goto label;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.Message, "insert", MessageBoxButtons.OK, true);
             }
         }
 
@@ -2345,20 +4167,7 @@ namespace SmartDyeing.FADM_Form
 
         private void BtnLimitSet_Click(object sender, EventArgs e)
         {
-            FADM_Form.LimitSet limitSet = new FADM_Form.LimitSet();
-
-            limitSet.Show();
-            limitSet.Focus();
-        }
-
-        private void MiLimitSet_Click(object sender, EventArgs e)
-        {
-            IntPtr ptr;
-            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                ptr = FindWindow(null, "限值设置");
-            else
-                ptr = FindWindow(null, "LimitSettings");
-            if (ptr == IntPtr.Zero)
+            try
             {
                 FADM_Form.LimitSet limitSet = new FADM_Form.LimitSet();
 
@@ -2366,108 +4175,193 @@ namespace SmartDyeing.FADM_Form
                 limitSet.Focus();
             }
 
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
+        }
+
+        private void MiLimitSet_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                IntPtr ptr;
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                    ptr = FindWindow(null, "限值设置");
+                else
+                    ptr = FindWindow(null, "LimitSettings");
+                if (ptr == IntPtr.Zero)
+                {
+                    FADM_Form.LimitSet limitSet = new FADM_Form.LimitSet();
+
+                    limitSet.Show();
+                    limitSet.Focus();
+                }
+            }
+
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
+
         }
 
         private void MiHistoryPage_Click(object sender, EventArgs e)
         {
-            foreach (Control control in this.PnlMain.Controls)
+            try
             {
-                this.PnlMain.Controls.Remove(control);
-                control.Dispose();
+                foreach (Control control in this.PnlMain.Controls)
+                {
+                    this.PnlMain.Controls.Remove(control);
+                    control.Dispose();
+                }
+                FADM_Control.HistoryData historyData = new FADM_Control.HistoryData(this);
+                this.PnlMain.Controls.Add(historyData);
+                historyData.Focus();
             }
-            FADM_Control.HistoryData historyData = new FADM_Control.HistoryData(this);
-            this.PnlMain.Controls.Add(historyData);
-            historyData.Focus();
+
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
         }
 
         private void MiFormulaPage_Click(object sender, EventArgs e)
         {
-            foreach (Control control in this.PnlMain.Controls)
+            try
             {
-                this.PnlMain.Controls.Remove(control);
-                control.Dispose();
+                foreach (Control control in this.PnlMain.Controls)
+                {
+                    this.PnlMain.Controls.Remove(control);
+                    control.Dispose();
+                }
+                FADM_Control.AllFormulas allFormulas = new FADM_Control.AllFormulas();
+                this.PnlMain.Controls.Add(allFormulas);
+                allFormulas.Focus();
             }
-            FADM_Control.AllFormulas allFormulas = new FADM_Control.AllFormulas();
-            this.PnlMain.Controls.Add(allFormulas);
-            allFormulas.Focus();
+
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
         }
 
         private void MiOperator_Click(object sender, EventArgs e)
         {
-            IntPtr ptr;
-            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                ptr = FindWindow(null, "操作员总览");
-            else
-                ptr = FindWindow(null, "OperatorOverview");
-            if (ptr == IntPtr.Zero)
+            try
             {
-                FADM_Form.Operator op = new FADM_Form.Operator();
+                IntPtr ptr;
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                    ptr = FindWindow(null, "操作员总览");
+                else
+                    ptr = FindWindow(null, "OperatorOverview");
+                if (ptr == IntPtr.Zero)
+                {
+                    FADM_Form.Operator op = new FADM_Form.Operator();
 
-                op.Show();
-                op.Focus();
+                    op.Show();
+                    op.Focus();
+                }
+            }
+
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
             }
         }
 
         private void toolStripSplitButton5_DropDownOpening(object sender, EventArgs e)
         {
-            toolStripSplitButton5.DropDownItems.Clear();
-            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+            try
             {
-                if (BtnUserSwitching.Text == "普通用户")
+                toolStripSplitButton5.DropDownItems.Clear();
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
                 {
-                    string P_str_sql = "SELECT * FROM operator_table ;";
-                    DataTable P_dt = FADM_Object.Communal._fadmSqlserver.GetData(P_str_sql);
-                    foreach (DataRow dr in P_dt.Rows)
+                    if (BtnUserSwitching.Text == "普通用户")
                     {
-                        toolStripSplitButton5.DropDownItems.Add(dr[0].ToString());
+                        string P_str_sql = "SELECT * FROM operator_table ;";
+                        DataTable P_dt = FADM_Object.Communal._fadmSqlserver.GetData(P_str_sql);
+                        foreach (DataRow dr in P_dt.Rows)
+                        {
+                            toolStripSplitButton5.DropDownItems.Add(dr[0].ToString());
+                        }
                     }
+                }
+                else
+                {
+                    if (BtnUserSwitching.Text == "OrdinaryUsers")
+                    {
+                        string P_str_sql = "SELECT * FROM operator_table ;";
+                        DataTable P_dt = FADM_Object.Communal._fadmSqlserver.GetData(P_str_sql);
+                        foreach (DataRow dr in P_dt.Rows)
+                        {
+                            toolStripSplitButton5.DropDownItems.Add(dr[0].ToString());
+                        }
+                    }
+
                 }
             }
-          else
-            {
-                if (BtnUserSwitching.Text == "OrdinaryUsers")
-                {
-                    string P_str_sql = "SELECT * FROM operator_table ;";
-                    DataTable P_dt = FADM_Object.Communal._fadmSqlserver.GetData(P_str_sql);
-                    foreach (DataRow dr in P_dt.Rows)
-                    {
-                        toolStripSplitButton5.DropDownItems.Add(dr[0].ToString());
-                    }
-                }
 
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
             }
 
         }
 
         private void toolStripSplitButton5_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            FADM_Object.Communal._s_operator = e.ClickedItem.ToString();
-
-            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                BtnUserSwitching.Text = "普通用户";
-            else
-                BtnUserSwitching.Text = "OrdinaryUsers";
-            toolStripSplitButton1.Enabled = false;
-            toolStripSplitButton2.Enabled = false;
-            toolStripSplitButton6.Enabled = false;
-
-            foreach (Control control in this.PnlMain.Controls)
+            try
             {
-                this.PnlMain.Controls.Remove(control);
-                control.Dispose();
+                FADM_Object.Communal._s_operator = e.ClickedItem.ToString();
+
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                    BtnUserSwitching.Text = "普通用户";
+                else
+                    BtnUserSwitching.Text = "OrdinaryUsers";
+                toolStripSplitButton1.Enabled = false;
+                toolStripSplitButton2.Enabled = false;
+                toolStripSplitButton6.Enabled = false;
+                if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1)
+                {
+                    foreach (Control control in this.PnlMain.Controls)
+                    {
+                        this.PnlMain.Controls.Remove(control);
+                        control.Dispose();
+                    }
+                }
+
+                if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1)
+                {
+                    FADM_Control.P_Formula formula = new P_Formula(this, FADM_Object.Communal._s_operator);
+                    this.PnlMain.Controls.Add(formula);
+                    formula.Focus();
+                }
+                else
+                {
+                    if (FADM_Control.Formula._b_showRun == false)
+                    {
+
+                        FADM_Control.Formula formula = new Formula(this);
+                        //this.PnlMain.Controls.Add(formula);
+                        formula.Show();
+                        formula.Focus();
+                        IntPtr p1 = formula.Handle;
+                        FADM_Control.Formula.HANDER = p1.ToInt32();
+                    }
+                    else
+                    {
+                        //WindowsForms10.Window.8.app.0.2804c64_r8_ad1
+                        IntPtr ptr1 = new IntPtr(FADM_Control.Formula.HANDER);
+                        SetForegroundWindow(ptr1);
+                        ShowWindow(ptr1, 3);
+                    }
+                }
             }
 
-            if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1)
+            catch (Exception ex)
             {
-                FADM_Control.P_Formula formula = new P_Formula(this, FADM_Object.Communal._s_operator);
-                this.PnlMain.Controls.Add(formula);
-                formula.Focus();
-            }
-            else
-            {
-                FADM_Control.Formula formula = new Formula(this);
-                this.PnlMain.Controls.Add(formula);
-                formula.Focus();
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
             }
         }
 
@@ -2532,25 +4426,50 @@ namespace SmartDyeing.FADM_Form
 
         private void toolStripSplitButton5_Click(object sender, EventArgs e)
         {
-            if (FADM_Object.Communal._s_operator == "管理用户" || FADM_Object.Communal._s_operator == "工程师")
+            try
+
             {
-                foreach (Control control in this.PnlMain.Controls)
+                if (FADM_Object.Communal._s_operator == "管理用户" || FADM_Object.Communal._s_operator == "工程师")
                 {
-                    this.PnlMain.Controls.Remove(control);
-                    control.Dispose();
+                    if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1)
+                    {
+                        foreach (Control control in this.PnlMain.Controls)
+                        {
+                            this.PnlMain.Controls.Remove(control);
+                            control.Dispose();
+                        }
+                    }
+                    if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1)
+                    {
+                        FADM_Control.P_Formula formula = new P_Formula(this, FADM_Object.Communal._s_operator);
+                        this.PnlMain.Controls.Add(formula);
+                        formula.Focus();
+                    }
+                    else
+                    {
+                        if (FADM_Control.Formula._b_showRun == false)
+                        {
+
+                            FADM_Control.Formula formula = new Formula(this);
+                            //this.PnlMain.Controls.Add(formula);
+                            formula.Show();
+                            formula.Focus();
+                            IntPtr p1 = formula.Handle;
+                            FADM_Control.Formula.HANDER = p1.ToInt32();
+                        }
+                        else
+                        {
+                            //WindowsForms10.Window.8.app.0.2804c64_r8_ad1
+                            IntPtr ptr1 = new IntPtr(FADM_Control.Formula.HANDER);
+                            SetForegroundWindow(ptr1);
+                            ShowWindow(ptr1, 3);
+                        }
+                    }
                 }
-                if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1)
-                {
-                    FADM_Control.P_Formula formula = new P_Formula(this, FADM_Object.Communal._s_operator);
-                    this.PnlMain.Controls.Add(formula);
-                    formula.Focus();
-                }
-                else
-                {
-                    FADM_Control.Formula formula = new Formula(this);
-                    this.PnlMain.Controls.Add(formula);
-                    formula.Focus();
-                }
+            }
+            catch(Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
             }
         }
 
@@ -2598,167 +4517,333 @@ namespace SmartDyeing.FADM_Form
 
         private void BtnNTD_Click(object sender, EventArgs e)
         {
-
-            if (NeedToDo._b_showRun == false)
+            try
             {
+                if (NeedToDo._b_showRun == false)
+                {
 
-                NeedToDo need = new NeedToDo();
-                need.Owner = this;
-                need.Show();
-                need.Focus();
+                    NeedToDo need = new NeedToDo();
+                    need.Owner = this;
+                    need.Show();
+                    need.Focus();
+                    NeedToDo.HANDER = need.Handle.ToInt32();
+                }
+                else
+                {
+                    IntPtr ptr1 = new IntPtr(NeedToDo.HANDER);
+                    SetForegroundWindow(ptr1);
+                    ShowWindow(ptr1, 1);
+                }
+            }
+
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
             }
 
         }
 
         private void MiFormulaGroup_Click(object sender, EventArgs e)
         {
-            foreach (Control control in this.PnlMain.Controls)
+            try
             {
-                this.PnlMain.Controls.Remove(control);
-                control.Dispose();
+                foreach (Control control in this.PnlMain.Controls)
+                {
+                    this.PnlMain.Controls.Remove(control);
+                    control.Dispose();
+                }
+
+                FADM_Control.FormulaGroup formulaGroup = new FormulaGroup();
+                this.PnlMain.Controls.Add(formulaGroup);
+                formulaGroup.Focus();
             }
 
-            FADM_Control.FormulaGroup formulaGroup = new FormulaGroup();
-            this.PnlMain.Controls.Add(formulaGroup);
-            formulaGroup.Focus();
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
         }
 
         private void DyeingAndFixationProcessConfiguration_Click(object sender, EventArgs e)
         {
-            foreach (Control control in this.PnlMain.Controls)
+            try
             {
-                this.PnlMain.Controls.Remove(control);
-                control.Dispose();
+                foreach (Control control in this.PnlMain.Controls)
+                {
+                    this.PnlMain.Controls.Remove(control);
+                    control.Dispose();
+                }
+
+                FADM_Control.DyeingAndFixationProcessConfiguration dyeingAndFixationProcessConfiguration = new DyeingAndFixationProcessConfiguration();
+                this.PnlMain.Controls.Add(dyeingAndFixationProcessConfiguration);
+                dyeingAndFixationProcessConfiguration.Focus();
             }
 
-            FADM_Control.DyeingAndFixationProcessConfiguration dyeingAndFixationProcessConfiguration = new DyeingAndFixationProcessConfiguration();
-            this.PnlMain.Controls.Add(dyeingAndFixationProcessConfiguration);
-            dyeingAndFixationProcessConfiguration.Focus();
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
         }
 
         private void DyeingProcessConfiguration_Click(object sender, EventArgs e)
         {
-            foreach (Control control in this.PnlMain.Controls)
+            try
             {
-                this.PnlMain.Controls.Remove(control);
-                control.Dispose();
+                foreach (Control control in this.PnlMain.Controls)
+                {
+                    this.PnlMain.Controls.Remove(control);
+                    control.Dispose();
+                }
+
+                FADM_Control.DyeingConfiguration dyeingConfiguration = new DyeingConfiguration();
+                this.PnlMain.Controls.Add(dyeingConfiguration);
+                dyeingConfiguration.Focus();
             }
 
-            FADM_Control.DyeingConfiguration dyeingConfiguration = new DyeingConfiguration();
-            this.PnlMain.Controls.Add(dyeingConfiguration);
-            dyeingConfiguration.Focus();
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
         }
 
         private void PostTreatmentProcessConfiguration_Click(object sender, EventArgs e)
         {
-            foreach (Control control in this.PnlMain.Controls)
+            try
             {
-                this.PnlMain.Controls.Remove(control);
-                control.Dispose();
+                foreach (Control control in this.PnlMain.Controls)
+                {
+                    this.PnlMain.Controls.Remove(control);
+                    control.Dispose();
+                }
+
+                FADM_Control.PostTreatmentConfiguration postTreatment = new PostTreatmentConfiguration();
+                this.PnlMain.Controls.Add(postTreatment);
+                postTreatment.Focus();
             }
 
-            FADM_Control.PostTreatmentConfiguration postTreatment = new PostTreatmentConfiguration();
-            this.PnlMain.Controls.Add(postTreatment);
-            postTreatment.Focus();
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
         }
 
         private void MiBrewPage_Click(object sender, EventArgs e)
         {
-            foreach (Control control in this.PnlMain.Controls)
+            try
             {
-                this.PnlMain.Controls.Remove(control);
-                control.Dispose();
+                foreach (Control control in this.PnlMain.Controls)
+                {
+                    this.PnlMain.Controls.Remove(control);
+                    control.Dispose();
+                }
+                FADM_Control.BrewRun brewRun = new FADM_Control.BrewRun();
+                this.PnlMain.Controls.Add(brewRun);
+                brewRun.Focus();
             }
-            FADM_Control.BrewRun brewRun = new FADM_Control.BrewRun();
-            this.PnlMain.Controls.Add(brewRun);
-            brewRun.Focus();
+
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
         }
 
         private void MiOut1_Click(object sender, EventArgs e)
         {
-            if ((LabStatus.Text == "待机" || LabStatus.Text == "Standby") && null == FADM_Object.Communal.ReadDyeThread())
+            try
             {
-                if (MiOut1.Checked)
+                if ((LabStatus.Text == "待机" || LabStatus.Text == "Standby") && null == FADM_Object.Communal.ReadDyeThread())
                 {
-                    MiOut1.Checked = false;
-                    string s_path = Environment.CurrentDirectory + "\\Config\\Config.ini";
-                    Lib_File.Ini.WriteIni("Setting", "IsOutDrip", "0", s_path);
-                    FADM_Object.Communal._b_isOutDrip = false;
+                    if (MiOut1.Checked)
+                    {
+                        MiOut1.Checked = false;
+                        string s_path = Environment.CurrentDirectory + "\\Config\\Config.ini";
+                        Lib_File.Ini.WriteIni("Setting", "IsOutDrip", "0", s_path);
+                        FADM_Object.Communal._b_isOutDrip = false;
+                    }
+                    else
+                    {
+                        MiOut1.Checked = true;
+                        string s_path = Environment.CurrentDirectory + "\\Config\\Config.ini";
+                        Lib_File.Ini.WriteIni("Setting", "IsOutDrip", "1", s_path);
+                        FADM_Object.Communal._b_isOutDrip = true;
+                    }
                 }
                 else
                 {
-                    MiOut1.Checked = true;
-                    string s_path = Environment.CurrentDirectory + "\\Config\\Config.ini";
-                    Lib_File.Ini.WriteIni("Setting", "IsOutDrip", "1", s_path);
-                    FADM_Object.Communal._b_isOutDrip = true;
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+
+                        FADM_Form.CustomMessageBox.Show("待机状态下才能修改", "温馨提示", MessageBoxButtons.OK, false);
+                    else
+                        FADM_Form.CustomMessageBox.Show("Can only be modified in standby mode", "Tips", MessageBoxButtons.OK, false);
+
                 }
             }
-            else
+
+            catch (Exception ex)
             {
-                if (Lib_Card.Configure.Parameter.Other_Language == 0)
-
-                    FADM_Form.CustomMessageBox.Show("待机状态下才能修改", "温馨提示", MessageBoxButtons.OK, false);
-                else
-                    FADM_Form.CustomMessageBox.Show("Can only be modified in standby mode", "Tips", MessageBoxButtons.OK, false);
-
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
             }
         }
 
         private void MiLow1_Click(object sender, EventArgs e)
         {
-            if ((LabStatus.Text == "待机" || LabStatus.Text == "Standby") && null == FADM_Object.Communal.ReadDyeThread())
+            try
             {
-                if (MiLow1.Checked)
+                if ((LabStatus.Text == "待机" || LabStatus.Text == "Standby") && null == FADM_Object.Communal.ReadDyeThread())
                 {
-                    MiLow1.Checked = false;
-                    string s_path = Environment.CurrentDirectory + "\\Config\\Config.ini";
-                    Lib_File.Ini.WriteIni("Setting", "IsLowDrip", "0", s_path);
-                    FADM_Object.Communal._b_isLowDrip = false;
+                    if (MiLow1.Checked)
+                    {
+                        MiLow1.Checked = false;
+                        string s_path = Environment.CurrentDirectory + "\\Config\\Config.ini";
+                        Lib_File.Ini.WriteIni("Setting", "IsLowDrip", "0", s_path);
+                        FADM_Object.Communal._b_isLowDrip = false;
+                    }
+                    else
+                    {
+                        MiLow1.Checked = true;
+                        string s_path = Environment.CurrentDirectory + "\\Config\\Config.ini";
+                        Lib_File.Ini.WriteIni("Setting", "IsLowDrip", "1", s_path);
+                        FADM_Object.Communal._b_isLowDrip = true;
+                    }
                 }
                 else
                 {
-                    MiLow1.Checked = true;
-                    string s_path = Environment.CurrentDirectory + "\\Config\\Config.ini";
-                    Lib_File.Ini.WriteIni("Setting", "IsLowDrip", "1", s_path);
-                    FADM_Object.Communal._b_isLowDrip = true;
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+
+                        FADM_Form.CustomMessageBox.Show("待机状态下才能修改", "温馨提示", MessageBoxButtons.OK, false);
+                    else
+                        FADM_Form.CustomMessageBox.Show("Can only be modified in standby mode", "Tips", MessageBoxButtons.OK, false);
                 }
             }
-            else
-            {
-                if (Lib_Card.Configure.Parameter.Other_Language == 0)
 
-                    FADM_Form.CustomMessageBox.Show("待机状态下才能修改", "温馨提示", MessageBoxButtons.OK, false);
-                else
-                    FADM_Form.CustomMessageBox.Show("Can only be modified in standby mode", "Tips", MessageBoxButtons.OK, false);
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
             }
         }
 
         private void MiFullDrip1_Click(object sender, EventArgs e)
         {
-            if ((LabStatus.Text == "待机" || LabStatus.Text == "Standby") && null == FADM_Object.Communal.ReadDyeThread())
+            try
             {
-                if (MiFullDrip1.Checked)
+                if ((LabStatus.Text == "待机" || LabStatus.Text == "Standby") && null == FADM_Object.Communal.ReadDyeThread())
                 {
-                    MiFullDrip1.Checked = false;
-                    string s_path = Environment.CurrentDirectory + "\\Config\\Config.ini";
-                    Lib_File.Ini.WriteIni("Setting", "IsFullDrip", "0", s_path);
-                    FADM_Object.Communal._b_isFullDrip = false;
+                    if (MiFullDrip1.Checked)
+                    {
+                        MiFullDrip1.Checked = false;
+                        string s_path = Environment.CurrentDirectory + "\\Config\\Config.ini";
+                        Lib_File.Ini.WriteIni("Setting", "IsFullDrip", "0", s_path);
+                        FADM_Object.Communal._b_isFullDrip = false;
+                    }
+                    else
+                    {
+                        MiFullDrip1.Checked = true;
+                        string s_path = Environment.CurrentDirectory + "\\Config\\Config.ini";
+                        Lib_File.Ini.WriteIni("Setting", "IsFullDrip", "1", s_path);
+                        FADM_Object.Communal._b_isFullDrip = true;
+                    }
                 }
                 else
                 {
-                    MiFullDrip1.Checked = true;
-                    string s_path = Environment.CurrentDirectory + "\\Config\\Config.ini";
-                    Lib_File.Ini.WriteIni("Setting", "IsFullDrip", "1", s_path);
-                    FADM_Object.Communal._b_isFullDrip = true;
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+
+                        FADM_Form.CustomMessageBox.Show("待机状态下才能修改", "温馨提示", MessageBoxButtons.OK, false);
+                    else
+                        FADM_Form.CustomMessageBox.Show("Can only be modified in standby mode", "Tips", MessageBoxButtons.OK, false);
                 }
             }
-            else
-            {
-                if (Lib_Card.Configure.Parameter.Other_Language == 0)
 
-                    FADM_Form.CustomMessageBox.Show("待机状态下才能修改", "温馨提示", MessageBoxButtons.OK, false);
-                else
-                    FADM_Form.CustomMessageBox.Show("Can only be modified in standby mode", "Tips", MessageBoxButtons.OK, false);
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
+        }
+
+        private void toolStripSplitButton4_DropDownOpening(object sender, EventArgs e)
+        {
+            if (Lib_Card.Configure.Parameter.Other_UseAbs == 0)
+                MiAbsPage.Visible = false;
+        }
+
+        private void MiAbsPage_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                foreach (Control control in this.PnlMain.Controls)
+                {
+                    this.PnlMain.Controls.Remove(control);
+                    control.Dispose();
+                }
+                FADM_Control.HistoryAbsData historyAbsData = new FADM_Control.HistoryAbsData(this);
+                this.PnlMain.Controls.Add(historyAbsData);
+                historyAbsData.Focus();
+            }
+
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
+        }
+
+        private void BtnResetAbs_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FADM_Object.Communal._b_absErr = false;
+                Thread P_thd_abs = new Thread(SmartDyeing.FADM_Auto.MyAbsorbance.Absorbance);
+                P_thd_abs.IsBackground = true;
+                P_thd_abs.Start();
+            }
+
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
+        }
+        private string _s_m_route_ASL = null;
+        static ReaderWriterLockSlim _logWriteLock2 = new ReaderWriterLockSlim();
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (Communal._b_getFile_sec)
+            {
+                try
+                {
+                    try
+                    {
+                        if (!_logWriteLock2.IsWriteLockHeld)
+                        {
+                            _logWriteLock2.EnterWriteLock(); //进入写入锁
+                            string[] files = Directory.GetFiles(this._s_m_route_ASL, "DripMachine*.txt");
+                            if (files.Length > 0)
+                            {
+                                Communal._b_getFile_sec = false;
+                                Thread th = new Thread(insert2);
+                                th.IsBackground = true;
+                                th.Start(files);
+                                //TmrFGY.Enabled = false;
+                            }
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        if (_logWriteLock2.IsWriteLockHeld)
+                            _logWriteLock2.ExitWriteLock(); //退出写入锁
+                    }
+                    finally
+                    {
+                        if (_logWriteLock2.IsWriteLockHeld)
+                            _logWriteLock2.ExitWriteLock(); //退出写入锁
+
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+                    FADM_Form.CustomMessageBox.Show(ex.Message, "TmrFGY_Tick", MessageBoxButtons.OK, true);
+                    //TmrFGY.Enabled = false;
+                }
             }
         }
     }

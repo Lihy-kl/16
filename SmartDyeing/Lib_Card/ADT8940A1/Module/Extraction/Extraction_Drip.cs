@@ -20,7 +20,7 @@ namespace Lib_Card.ADT8940A1.Module.Extraction
                 cylinder = new OutPut.Cylinder.SingleControl.Cylinder_Condition();
             else
                 cylinder = new OutPut.Cylinder.DualControl.Cylinder_Condition();
-            if (-1 == cylinder.CylinderDown())
+            if (-1 == cylinder.CylinderDown(0))
                 return -1;
 
 
@@ -44,6 +44,10 @@ namespace Lib_Card.ADT8940A1.Module.Extraction
 
                 Thread.Sleep(1);
                 iSyringe = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Syringe);
+                if (Lib_Card.Configure.Parameter.Machine_isSyringe == 1)
+                {
+                    iSyringe = 1;
+                }
                 if (-1 == iSyringe)
                     return -1;
                 else if (1 == iSyringe)
@@ -102,6 +106,10 @@ namespace Lib_Card.ADT8940A1.Module.Extraction
                 {
                     Thread.Sleep(1);
                     iSyringe = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Syringe);
+                    if (Lib_Card.Configure.Parameter.Machine_isSyringe == 1)
+                    {
+                        iSyringe = 1;
+                    }
                     if (-1 == iSyringe)
                         return -1;
                     else if (1 == iSyringe)
@@ -116,12 +124,13 @@ namespace Lib_Card.ADT8940A1.Module.Extraction
                 {
                     if (-1 == tongs.Tongs_Off())
                         return -1;
-                    if (-1 == cylinder.CylinderUp())
+                    if (-1 == cylinder.CylinderUp(0))
                         return -1;
 
                     Home.Home home = new Home.Home_Condition();
                     if (-1 == home.Home_Z(iCylinderVersion))
                         throw new Exception("驱动异常");
+                    //当没发现针筒时，先打搅拌打开，继续搅拌
                     if (-1 == blender.Blender_Off())
                         return -1;
                     throw new Exception("未发现针筒");
@@ -148,7 +157,7 @@ namespace Lib_Card.ADT8940A1.Module.Extraction
                 }
             }
 
-            int iTotalPulse = iPulse - Configure.Parameter.Other_Z_BackPulse;
+            int iTotalPulse = iPulse /*- Configure.Parameter.Other_Z_BackPulse*/;
             int iZRes = CardObject.OA1Axis.Absolute_Z(iSyringeType, iTotalPulse, 0);
             if (0 != iZRes)
                 return iZRes;
@@ -164,7 +173,7 @@ namespace Lib_Card.ADT8940A1.Module.Extraction
                 {
                     try
                     {
-                        iCRes = cylinder.CylinderUp();
+                        iCRes = cylinder.CylinderUp(0);
                     }
                     catch (Exception ex)
                     {
@@ -195,7 +204,7 @@ namespace Lib_Card.ADT8940A1.Module.Extraction
                 {
                     try
                     {
-                        iCRes = cylinder.CylinderUp();
+                        iCRes = cylinder.CylinderUp(0);
                     }
                     catch (Exception ex)
                     {

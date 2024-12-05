@@ -1,4 +1,7 @@
-﻿namespace Lib_Card.ADT8940A1.Module.Put
+﻿using static Lib_Card.Base.Card;
+using System;
+
+namespace Lib_Card.ADT8940A1.Module.Put
 {
     public class Put_Condition : Put
     {
@@ -14,10 +17,9 @@
             else
                 cylinder = new OutPut.Cylinder.DualControl.Cylinder_Condition();
 
-            if(-1 == cylinder.CylinderDown())
+            if(-1 == cylinder.CylinderDown(0))
                 return -1;
 
-           
 
             int iZRes = CardObject.OA1Axis.Absolute_Z(iSyringeType, 0, 0);
             if (0 != iZRes)
@@ -27,7 +29,7 @@
             if(-1 == tongs.Tongs_Off())
                 return -1;
 
-            if(-1 == cylinder.CylinderUp())
+            if(-1 == cylinder.CylinderUp(0))
                 return -1;
 
             return 0;

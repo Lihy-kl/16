@@ -268,6 +268,26 @@ namespace SmartDyeing.FADM_Control
             lis_data.Add(txt_Intensity.Text);
             lis_data.Add(txt_Cost.Text);
 
+            //判断是否只有多于一个 G/L或WATER
+
+            if (lis_data[4] == "G/L" || lis_data[4] == "Water")
+            {
+                string s_sql_assistant_details = "Select * from assistant_details where UnitOfAccount  collate Chinese_PRC_CS_AS ='" + lis_data[4]+ "' ;";
+                DataTable dt_ass = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_assistant_details);
+                if(dt_ass.Rows.Count>0)
+                {
+                    //判断是否助剂代码一样(修改时需要判断，新增时，助剂代码重复已判断)
+                    if (dt_ass.Rows[0]["AssistantCode"].ToString() != txt_AssistantCode.Text)
+                    {
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            FADM_Form.CustomMessageBox.Show("只能存在一个此单位助剂代码!", "温馨提示", MessageBoxButtons.OK, false);
+                        else
+                            FADM_Form.CustomMessageBox.Show("Only one agent code for this unit can exist", "Tips", MessageBoxButtons.OK, false);
+                        return;
+                    }
+                }
+            }
+
             if (_b_insert)
             {
                 //如果是新增

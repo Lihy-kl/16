@@ -11,7 +11,7 @@ namespace Lib_Card.ADT8940A1.OutPut.Tongs
         public override int Tongs_Off()
         {
 
-
+            lable:
             int iTongsA = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Tongs_A);
             if (-1 == iTongsA)
                 return -1;
@@ -64,28 +64,57 @@ namespace Lib_Card.ADT8940A1.OutPut.Tongs
                     {
                         if (1 == iTongsA)
                         {
-                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                s1 = CardObject.InsertD("抓手A打开超时", "Tongs_Off");
+                            //s1 = CardObject.InsertD("抓手A打开超时", "Tongs_Off");
+                            s1 = CardObject.InsertD("抓手A打开超时，请检查，排除异常请点是，退出运行请点否", " Tongs_Off");
+                            while (true)
+                            {
+                                Thread.Sleep(1);
+                                if (Lib_Card.CardObject.keyValuePairs[s1].Choose != 0)
+                                    break;
+
+                            }
+                            int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s1].Choose;
+                            CardObject.DeleteD(s1);
+                            if (Alarm_Choose == 1)
+                            {
+                                goto lable;
+                            }
                             else
-                                s1 = CardObject.InsertD("Grip A opening timeout", "Tongs_Off");
+                            {
+                                throw new Exception("抓手A打开超时");
+                            }
                         }
                         else if (1 == iTongsB)
                         {
-                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                s2 = CardObject.InsertD("抓手B打开超时", "Tongs_Off");
-                            else
-                                s2 = CardObject.InsertD("Grip A opening timeout", "Tongs_Off");
+                            //s2 = CardObject.InsertD("抓手B打开超时", "Tongs_Off");
+                            s2 = CardObject.InsertD("抓手B打开超时，请检查，排除异常请点是，退出运行请点否", " Tongs_Off");
+                            while (true)
+                            {
+                                Thread.Sleep(1);
+                                if (Lib_Card.CardObject.keyValuePairs[s2].Choose != 0)
+                                    break;
 
+                            }
+                            int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s2].Choose;
+                            CardObject.DeleteD(s2);
+                            if (Alarm_Choose == 1)
+                            {
+                                goto lable;
+                            }
+                            else
+                            {
+                                throw new Exception("抓手B打开超时");
+                            }
                         }
                     }
 
                 }
 
-                if (bDelay)
-                {
-                    Lib_Card.CardObject.DeleteD(s1);
-                    Lib_Card.CardObject.DeleteD(s2);
-                }
+                //if (bDelay)
+                //{
+                //    Lib_Card.CardObject.DeleteD(s1);
+                //    Lib_Card.CardObject.DeleteD(s2);
+                //}
                 return 0;
             }
         }
@@ -93,7 +122,7 @@ namespace Lib_Card.ADT8940A1.OutPut.Tongs
         public override int Tongs_On()
         {
 
-
+            lable:
             int iTongsA = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Tongs_A);
             if (-1 == iTongsA)
                 return -1;
@@ -146,28 +175,55 @@ namespace Lib_Card.ADT8940A1.OutPut.Tongs
                     {
                         if (1 == iTongsA)
                         {
-                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                s1 = CardObject.InsertD("抓手A打开超时", "Tongs_On");
+                            s1 = CardObject.InsertD("抓手A关闭超时，请检查，排除异常请点是，退出运行请点否", " Tongs_On");
+                            while (true)
+                            {
+                                Thread.Sleep(1);
+                                if (Lib_Card.CardObject.keyValuePairs[s1].Choose != 0)
+                                    break;
+
+                            }
+                            int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s1].Choose;
+                            CardObject.DeleteD(s1);
+                            if (Alarm_Choose == 1)
+                            {
+                                goto lable;
+                            }
                             else
-                                s1 = CardObject.InsertD("Grip A opening timeout", "Tongs_On");
+                            {
+                                throw new Exception("抓手A关闭超时");
+                            }
                         }
                         else if (1 == iTongsB)
                         {
-                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                s2 = CardObject.InsertD("抓手B打开超时", "Tongs_On");
-                            else
-                                s2 = CardObject.InsertD("Grip A opening timeout", "Tongs_On");
+                            s2 = CardObject.InsertD("抓手B关闭超时，请检查，排除异常请点是，退出运行请点否", " Tongs_On");
+                            while (true)
+                            {
+                                Thread.Sleep(1);
+                                if (Lib_Card.CardObject.keyValuePairs[s2].Choose != 0)
+                                    break;
 
+                            }
+                            int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s2].Choose;
+                            CardObject.DeleteD(s2);
+                            if (Alarm_Choose == 1)
+                            {
+                                goto lable;
+                            }
+                            else
+                            {
+                                throw new Exception("抓手B关闭超时");
+                            }
                         }
                     }
 
                 }
 
-                if (bDelay)
-                {
-                    Lib_Card.CardObject.DeleteD(s1);
-                    Lib_Card.CardObject.DeleteD(s2);
-                }
+                //if (bDelay)
+                //{
+                //    Lib_Card.CardObject.DeleteD(s1);
+                //    Lib_Card.CardObject.DeleteD(s2);
+                //}
                 return 0;
             }
         }

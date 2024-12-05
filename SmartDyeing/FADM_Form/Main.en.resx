@@ -322,6 +322,12 @@
   <data name="MiBrewPage.Text" xml:space="preserve">
     <value>BrewPage</value>
   </data>
+  <data name="absPageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
+  </data>
+  <data name="absPageToolStripMenuItem.Text" xml:space="preserve">
+    <value>AbsPage</value>
+  </data>
   <data name="toolStripSplitButton4.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft YaHei UI, 7.5pt</value>
   </data>

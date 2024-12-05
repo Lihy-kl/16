@@ -19,10 +19,20 @@ namespace SmartDyeing.FADM_Form
     public partial class NeedToDo : Form
     {
         public static bool _b_showRun = false;
+
+        public static int HANDER = 0;
+
         public NeedToDo()
         {
-            _b_showRun = true;
-            InitializeComponent();
+            try
+            {
+                _b_showRun = true;
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                Lib_Log.Log.writeLogException("NeedToDo 构造函数：" + ex.ToString());
+            }
 
         }
      
@@ -36,6 +46,19 @@ namespace SmartDyeing.FADM_Form
 
                 foreach (string i in Lib_Card.CardObject.keyValuePairs.Keys)
                 {
+                    if (i == null)
+                    {
+                        try
+                        {
+                            Lib_Card.CardObject.keyValuePairs.Remove(i);
+
+                        }
+                        catch {
+                            Lib_Log.Log.writeLogException("keyValuePairs 空值不能删除：" );
+                        }
+                        continue;
+                    }
+
                     if (Lib_Card.Configure.Parameter.Other_Language == 0)
                     {
                         if ((!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("放布")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("出布")))
@@ -50,19 +73,28 @@ namespace SmartDyeing.FADM_Form
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Lib_Log.Log.writeLogException("NeedToDo InfoUpdate：" + ex.ToString());
+            }
 
 
         }
 
         private void NeedToDo_Load(object sender, EventArgs e)
         {
-            dataGridView1.AllowUserToResizeColumns = false;
-            dataGridView1.AllowUserToResizeRows = false;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dataGridView1.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            InfoUpdate();
-
+            try
+            {
+                dataGridView1.AllowUserToResizeColumns = false;
+                dataGridView1.AllowUserToResizeRows = false;
+                dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+                dataGridView1.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+                InfoUpdate();
+            }
+            catch (Exception ex)
+            {
+                Lib_Log.Log.writeLogException("NeedToDo NeedToDo_Load：" + ex.ToString());
+            }
         }
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
@@ -109,7 +141,10 @@ namespace SmartDyeing.FADM_Form
                 }
 
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Lib_Log.Log.writeLogException("NeedToDo dataGridView1_SelectionChanged：" + ex.ToString());
+            }
             finally
             {
                 timer1.Enabled = true;
@@ -134,12 +169,18 @@ namespace SmartDyeing.FADM_Form
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            dataGridView1.AllowUserToResizeColumns = false;
-            dataGridView1.AllowUserToResizeRows = false;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dataGridView1.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            InfoUpdate();
-
+            try
+            {
+                dataGridView1.AllowUserToResizeColumns = false;
+                dataGridView1.AllowUserToResizeRows = false;
+                dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+                dataGridView1.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+                InfoUpdate();
+            }
+            catch (Exception ex)
+            {
+                Lib_Log.Log.writeLogException("NeedToDo timer1_Tick：" + ex.ToString());
+            }
 
         }
 

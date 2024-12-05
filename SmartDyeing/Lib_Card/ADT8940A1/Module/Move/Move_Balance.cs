@@ -10,7 +10,7 @@ namespace Lib_Card.ADT8940A1.Module.Move
     public class Move_Balance : Move
     {
 
-        public override int TargetMove(int iCylinderVersion, int iNo)
+        public override int TargetMove(int iCylinderVersion, int iNo, int iX, int iY, int iType)
         {
             if (!Home.Home.Home_XYZFinish)
             {
@@ -18,8 +18,8 @@ namespace Lib_Card.ADT8940A1.Module.Move
                 if (-1 == home.Home_XYZ(iCylinderVersion))
                     return -1;
             }
-           
 
+            
 
             int iXRes = -1;
             Thread threadX = new Thread(() =>

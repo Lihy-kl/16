@@ -30,7 +30,7 @@ namespace Lib_Card.ADT8940A1.Module.Infusion
 
             Thread.Sleep(500);
 
-            if (-1 == cylinder.CylinderUp())
+            if (-1 == cylinder.CylinderUp(0))
                 return -1;
 
             if (-1 == tray.Tray_On())

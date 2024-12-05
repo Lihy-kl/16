@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib_Log", "Lib_Log\Lib_Log.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interact", "Interact\Interact.csproj", "{18C8DEB2-9683-4FDB-8DD6-A44C2273C5BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib_SerialPort", "Lib_SerialPort\Lib_SerialPort.csproj", "{DA975BBC-BD34-45CE-906E-74FA32AD4D92}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{18C8DEB2-9683-4FDB-8DD6-A44C2273C5BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18C8DEB2-9683-4FDB-8DD6-A44C2273C5BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18C8DEB2-9683-4FDB-8DD6-A44C2273C5BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA975BBC-BD34-45CE-906E-74FA32AD4D92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA975BBC-BD34-45CE-906E-74FA32AD4D92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA975BBC-BD34-45CE-906E-74FA32AD4D92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA975BBC-BD34-45CE-906E-74FA32AD4D92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

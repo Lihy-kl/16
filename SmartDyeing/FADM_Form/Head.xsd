@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Head" targetNamespace="http://tempuri.org/Head.xsd" xmlns:mstns="http://tempuri.org/Head.xsd" xmlns="http://tempuri.org/Head.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="Head" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_UserDSName="Head" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="Head">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="FormulaCode" msprop:Generator_UserColumnName="FormulaCode" msprop:Generator_ColumnPropNameInTable="FormulaCodeColumn" msprop:Generator_ColumnPropNameInRow="FormulaCode" msprop:Generator_ColumnVarNameInTable="columnFormulaCode" type="xs:string" minOccurs="0" />
+              <xs:element name="FormulaName" msprop:Generator_UserColumnName="FormulaName" msprop:Generator_ColumnPropNameInTable="FormulaNameColumn" msprop:Generator_ColumnPropNameInRow="FormulaName" msprop:Generator_ColumnVarNameInTable="columnFormulaName" type="xs:string" minOccurs="0" />
+              <xs:element name="FinishTime" msprop:Generator_UserColumnName="FinishTime" msprop:Generator_ColumnPropNameInTable="FinishTimeColumn" msprop:Generator_ColumnPropNameInRow="FinishTime" msprop:Generator_ColumnVarNameInTable="columnFinishTime" type="xs:string" minOccurs="0" />
+              <xs:element name="CreateTime" msprop:Generator_UserColumnName="CreateTime" msprop:Generator_ColumnPropNameInTable="CreateTimeColumn" msprop:Generator_ColumnPropNameInRow="CreateTime" msprop:Generator_ColumnVarNameInTable="columnCreateTime" type="xs:string" minOccurs="0" />
+              <xs:element name="PrintTime" msprop:Generator_ColumnPropNameInRow="PrintTime" msprop:Generator_ColumnPropNameInTable="PrintTimeColumn" msprop:Generator_ColumnVarNameInTable="columnPrintTime" msprop:Generator_UserColumnName="PrintTime" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

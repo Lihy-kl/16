@@ -475,7 +475,7 @@ namespace SmartDyeing.FADM_Auto
 
                 //记录初始天平读数
                 la:
-                d_blBalanceValue0 = Convert.ToDouble(string.Format("{0:F3}", FADM_Object.Communal._s_balanceValue));
+                d_blBalanceValue0 = FADM_Object.Communal.SteBalance();
                 if (d_blBalanceValue0 > 6000)
                     goto la;
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平读数：" + d_blBalanceValue0);
@@ -487,14 +487,14 @@ namespace SmartDyeing.FADM_Auto
                 if ("小针筒" == Convert.ToString(dt_temp.Rows[0][0])||"Little Syringe" == Convert.ToString(dt_temp.Rows[0][0]))
                 {
                     FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注液启动(" + i_pulse + ")");
-                    i_mRes = MyModbusFun.Shove(i_pulse);
+                    i_mRes = MyModbusFun.Shove(i_pulse,0);
                     if (-2 == i_mRes)
                         throw new Exception("收到退出消息");
                 }
                 else
                 {
                     FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注液启动(" + i_pulse + ")");
-                    i_mRes = MyModbusFun.Shove(i_pulse);
+                    i_mRes = MyModbusFun.Shove(i_pulse,1);
                     if (-2 == i_mRes)
                         throw new Exception("收到退出消息");
                 }
@@ -564,13 +564,13 @@ namespace SmartDyeing.FADM_Auto
 
             if ("小针筒" == Convert.ToString(dt_temp.Rows[0][0])||"Little Syringe" == Convert.ToString(dt_temp.Rows[0][0]))
             {
-                i_mRes = MyModbusFun.Put();
+                i_mRes = MyModbusFun.Put(0);
                 if (-2 == i_mRes)
                     throw new Exception("收到退出消息");
             }
             else
             {
-                i_mRes = MyModbusFun.Put();
+                i_mRes = MyModbusFun.Put(1);
                 if (-2 == i_mRes)
                     throw new Exception("收到退出消息");
             }

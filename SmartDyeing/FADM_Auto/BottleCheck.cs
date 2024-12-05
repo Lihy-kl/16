@@ -479,7 +479,7 @@ namespace SmartDyeing.FADM_Auto
             if ("小针筒" == Convert.ToString(dt_bottle_details.Rows[0][0]) || "Little Syringe" == Convert.ToString(dt_bottle_details.Rows[0][0]))
             {
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注废液5000到天平启动(" + (Lib_Card.Configure.Parameter.Correcting_S_Pulse + 10000).ToString() + ")");
-                i_mRes = MyModbusFun.Shove(Lib_Card.Configure.Parameter.Correcting_S_Pulse + 10000);//天平位注液5000
+                i_mRes = MyModbusFun.Shove(Lib_Card.Configure.Parameter.Correcting_S_Pulse + 10000,0);//天平位注液5000
                 if (-2 == i_mRes)
                     throw new Exception("收到退出消息");
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注废液5000完成");
@@ -488,7 +488,7 @@ namespace SmartDyeing.FADM_Auto
             else
             {
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注废液5000到天平启动(" + (Lib_Card.Configure.Parameter.Correcting_B_Pulse + 10000).ToString() + ")");
-                i_mRes = MyModbusFun.Shove(Lib_Card.Configure.Parameter.Correcting_B_Pulse + 10000);//天平位注液5000
+                i_mRes = MyModbusFun.Shove(Lib_Card.Configure.Parameter.Correcting_B_Pulse + 10000,1);//天平位注液5000
                 if (-2 == i_mRes)
                     throw new Exception("收到退出消息");
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注废液5000完成");
@@ -504,14 +504,14 @@ namespace SmartDyeing.FADM_Auto
             {
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注液启动(10000)");
 
-                i_mRes = MyModbusFun.Shove(10000);//z轴走到-10000的位置
+                i_mRes = MyModbusFun.Shove(10000,0);//z轴走到-10000的位置
                 if (-2 == i_mRes)
                     throw new Exception("收到退出消息");
             }
             else
             {
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注液启动(10000)");
-                i_mRes = MyModbusFun.Shove(10000);//z轴走到-10000的位置
+                i_mRes = MyModbusFun.Shove(10000,1);//z轴走到-10000的位置
                
                 if (-2 == i_mRes)
                     throw new Exception("收到退出消息");
@@ -544,7 +544,7 @@ namespace SmartDyeing.FADM_Auto
                 if (0 >= i_rPulse)
                     i_rPulse = 0;
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "验证启动(" + i_rPulse + ")");
-                i_mRes = MyModbusFun.Shove(i_rPulse);
+                i_mRes = MyModbusFun.Shove(i_rPulse, 0);
                 if (-2 == i_mRes)
                     throw new Exception("收到退出消息");
             }
@@ -556,7 +556,7 @@ namespace SmartDyeing.FADM_Auto
                 if (0 >= i_rPulse)
                     i_rPulse = 0;
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "验证启动(" + i_rPulse + ")");
-                i_mRes = MyModbusFun.Shove(i_rPulse);
+                i_mRes = MyModbusFun.Shove(i_rPulse,1);
                 if (-2 == i_mRes)
                     throw new Exception("收到退出消息");
             }
@@ -623,13 +623,13 @@ namespace SmartDyeing.FADM_Auto
 
             if ("小针筒" == Convert.ToString(dt_bottle_details.Rows[0][0]) || "Little Syringe" == Convert.ToString(dt_bottle_details.Rows[0][0]))
             {
-                i_mRes = MyModbusFun.Put();
+                i_mRes = MyModbusFun.Put(0);
                 if (-2 == i_mRes)
                     throw new Exception("收到退出消息");
             }
             else
             {
-                i_mRes = MyModbusFun.Put();
+                i_mRes = MyModbusFun.Put(1);
                 if (-2 == i_mRes)
                     throw new Exception("收到退出消息");
             }
@@ -834,7 +834,7 @@ namespace SmartDyeing.FADM_Auto
             if ("小针筒" == Convert.ToString(dt_bottle_details.Rows[0][0]) || "Little Syringe" == Convert.ToString(dt_bottle_details.Rows[0][0]))
             {
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注废液5000到天平启动("+ (Lib_Card.Configure.Parameter.Correcting_S_Pulse + 10000).ToString()+")");
-                i_mRes = MyModbusFun.Shove(Lib_Card.Configure.Parameter.Correcting_S_Pulse + 10000);//天平位注液5000
+                i_mRes = MyModbusFun.Shove(Lib_Card.Configure.Parameter.Correcting_S_Pulse + 10000, 0);//天平位注液5000
                 if (-2 == i_mRes)
                     throw new Exception("收到退出消息");
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注废液5000完成");
@@ -843,7 +843,7 @@ namespace SmartDyeing.FADM_Auto
             else
             {
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注废液5000到天平启动(" + (Lib_Card.Configure.Parameter.Correcting_B_Pulse + 10000).ToString() + ")");
-                i_mRes = MyModbusFun.Shove(Lib_Card.Configure.Parameter.Correcting_B_Pulse + 10000);//天平位注液5000
+                i_mRes = MyModbusFun.Shove(Lib_Card.Configure.Parameter.Correcting_B_Pulse + 10000,1);//天平位注液5000
                 if (-2 == i_mRes)
                     throw new Exception("收到退出消息");
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注废液5000完成");
@@ -871,14 +871,14 @@ namespace SmartDyeing.FADM_Auto
             {
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注液启动(10000)");
 
-                i_mRes = MyModbusFun.Shove(10000);//z轴走到-100000的位置
+                i_mRes = MyModbusFun.Shove(10000, 0);//z轴走到-100000的位置
                 if (-2 == i_mRes)
                     throw new Exception("收到退出消息");
             }
             else
             {
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注液启动(10000)");
-                i_mRes = MyModbusFun.Shove(10000);//z轴走到-100000的位置
+                i_mRes = MyModbusFun.Shove(10000,1);//z轴走到-100000的位置
                 if (-2 == i_mRes)
                     throw new Exception("收到退出消息");
             }
@@ -940,7 +940,7 @@ namespace SmartDyeing.FADM_Auto
                 MyModbusFun.Shove(index - 600);
                 Thread.Sleep(1000);*/
 
-                i_mRes = MyModbusFun.Shove(iRPulse);
+                i_mRes = MyModbusFun.Shove(iRPulse,0);
                 if (-2 == i_mRes)
                     throw new Exception("收到退出消息");
             }
@@ -952,7 +952,7 @@ namespace SmartDyeing.FADM_Auto
                 if (0 >= iRPulse)
                     iRPulse = 0;
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "验证启动(" + iRPulse + ")");
-                i_mRes = MyModbusFun.Shove(iRPulse);
+                i_mRes = MyModbusFun.Shove(iRPulse, 1);
                 if (-2 == i_mRes)
                     throw new Exception("收到退出消息");
             }
@@ -1020,13 +1020,13 @@ namespace SmartDyeing.FADM_Auto
 
             if ("小针筒" == Convert.ToString(dt_bottle_details.Rows[0][0])||"Little Syringe" == Convert.ToString(dt_bottle_details.Rows[0][0]))
             {
-                i_mRes = MyModbusFun.Put();
+                i_mRes = MyModbusFun.Put(0);
                 if (-2 == i_mRes)
                     throw new Exception("收到退出消息");
             }
             else
             {
-                i_mRes = MyModbusFun.Put();
+                i_mRes = MyModbusFun.Put(1);
                 if (-2 == i_mRes)
                     throw new Exception("收到退出消息");
             }

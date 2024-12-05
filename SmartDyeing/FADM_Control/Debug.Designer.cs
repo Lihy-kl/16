@@ -69,6 +69,7 @@ namespace SmartDyeing.FADM_Control
             this.btn_reset_a = new System.Windows.Forms.Button();
             this.LabBalanceValue = new System.Windows.Forms.Label();
             this.grp_in = new System.Windows.Forms.GroupBox();
+            this.ChkInPut_Back = new System.Windows.Forms.CheckBox();
             this.ChkInPut_Slow_Mid = new System.Windows.Forms.CheckBox();
             this.ChkInPut_Block = new System.Windows.Forms.CheckBox();
             this.ChkInPut_Apocenosis_Up = new System.Windows.Forms.CheckBox();
@@ -364,6 +365,7 @@ namespace SmartDyeing.FADM_Control
             // grp_in
             // 
             resources.ApplyResources(this.grp_in, "grp_in");
+            this.grp_in.Controls.Add(this.ChkInPut_Back);
             this.grp_in.Controls.Add(this.ChkInPut_Slow_Mid);
             this.grp_in.Controls.Add(this.ChkInPut_Block);
             this.grp_in.Controls.Add(this.ChkInPut_Apocenosis_Up);
@@ -396,6 +398,12 @@ namespace SmartDyeing.FADM_Control
             this.grp_in.Controls.Add(this.ChkInPut_X_Corotation);
             this.grp_in.Name = "grp_in";
             this.grp_in.TabStop = false;
+            // 
+            // ChkInPut_Back
+            // 
+            resources.ApplyResources(this.ChkInPut_Back, "ChkInPut_Back");
+            this.ChkInPut_Back.Name = "ChkInPut_Back";
+            this.ChkInPut_Back.UseVisualStyleBackColor = true;
             // 
             // ChkInPut_Slow_Mid
             // 
@@ -938,5 +946,6 @@ namespace SmartDyeing.FADM_Control
         private CheckBox ChkInPut_Block;
         private Button BtnOutPut_Slow;
         private Button BtnOutPut_Block_Cylinder;
+        private CheckBox ChkInPut_Back;
     }
 }

@@ -9,7 +9,7 @@ namespace Lib_Card.ADT8940A1.OutPut.Cylinder.SingleControl
     /// </summary>
     public class Cylinder_Condition : Cylinder
     {
-        public override int CylinderDown()
+        public override int CylinderDown(int i_judge)
         {
             /* 条件
              *    1：X轴未运行
@@ -89,16 +89,39 @@ namespace Lib_Card.ADT8940A1.OutPut.Cylinder.SingleControl
                             break;
                         if (bDelay)
                         {
-                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                s = CardObject.InsertD("气缸下超时", " CylinderDown");
+                            // 用于开关盖判断
+                            if (i_judge == 1)
+                            {
+                                return -9;
+                            }
                             else
-                                s = CardObject.InsertD("气缸下超时", " CylinderDown");
+                            {
+                                //s = CardObject.InsertD("气缸下超时", " CylinderDown");
+                                s = CardObject.InsertD("气缸下超时，请检查，排除异常请点是，退出运行请点否", " CylinderUp");
+                                while (true)
+                                {
+                                    Thread.Sleep(1);
+                                    if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
+                                        break;
+
+                                }
+                                int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                                CardObject.DeleteD(s);
+                                if (Alarm_Choose == 1)
+                                {
+                                    goto lable;
+                                }
+                                else
+                                {
+                                    throw new Exception("气缸下超时");
+                                }
+                            }
                         }
 
                     }
 
-                    if (bDelay)
-                        Lib_Card.CardObject.DeleteD(s);
+                    //if (bDelay)
+                    //    Lib_Card.CardObject.DeleteD(s);
 
 
                     return 0;
@@ -128,12 +151,7 @@ namespace Lib_Card.ADT8940A1.OutPut.Cylinder.SingleControl
                         }
                         else
                         {
-                            string s;
-                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                s = CardObject.InsertD("接液盘未收回，请检查，确定收回请点是，退出运行请点否", " CylinderDown");
-                            else
-                                s = CardObject.InsertD("The liquid tray has not been retracted. Please check if it has been retracted. If it has been confirmed, please click Yes. If it has been withdrawn, please click No", " CylinderDown");
-
+                            string s = CardObject.InsertD("接液盘未收回，请检查，确定收回请点是，退出运行请点否", " CylinderDown");
                             while (true)
                             {
                                 Thread.Sleep(1);
@@ -141,8 +159,8 @@ namespace Lib_Card.ADT8940A1.OutPut.Cylinder.SingleControl
                                     break;
 
                             }
-                            CardObject.DeleteD(s);
                             int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                            CardObject.DeleteD(s);
                             if (Alarm_Choose == 1)
                             {
                                 bReset = false;
@@ -158,10 +176,10 @@ namespace Lib_Card.ADT8940A1.OutPut.Cylinder.SingleControl
             }
         }
 
-        public override int CylinderUp()
+        public override int CylinderUp(int i_judge)
         {
-            
-            
+
+            lable:
             int iCylinderUp = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Up);
             if (-1 == iCylinderUp)
                 return -1;
@@ -200,16 +218,39 @@ namespace Lib_Card.ADT8940A1.OutPut.Cylinder.SingleControl
                         break;
                     if (bDelay)
                     {
-                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                            s = CardObject.InsertD("气缸上超时", "CylinderUp");
+                        // 用于开关盖判断
+                        if (i_judge == 1)
+                        {
+                            return -9;
+                        }
                         else
-                            s = CardObject.InsertD("Cylinder Up timeout", "CylinderUp");
+                        {
+                            //s = CardObject.InsertD("气缸上超时", " CylinderUp");
+
+                            s = CardObject.InsertD("气缸上超时，请检查，排除异常请点是，退出运行请点否", " CylinderUp");
+                            while (true)
+                            {
+                                Thread.Sleep(1);
+                                if (Lib_Card.CardObject.keyValuePairs[s].Choose != 0)
+                                    break;
+
+                            }
+                            int Alarm_Choose = Lib_Card.CardObject.keyValuePairs[s].Choose;
+                            CardObject.DeleteD(s);
+                            if (Alarm_Choose == 1)
+                            {
+                                goto lable;
+                            }
+                            else
+                            {
+                                throw new Exception("气缸上超时");
+                            }
+                        }
                     }
-                    
                 }
 
-                if (bDelay)
-                    Lib_Card.CardObject.DeleteD(s);
+                //if (bDelay)
+                //    Lib_Card.CardObject.DeleteD(s);
 
                 return 0;
             }

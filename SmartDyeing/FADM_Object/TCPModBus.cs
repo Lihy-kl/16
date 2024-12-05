@@ -105,6 +105,7 @@ namespace SmartDyeing.FADM_Object
                 catch (Exception ex)
                 {
                     Console.WriteLine("写寄存器数据异常" + ex.Message);
+                    ReConnect();
                     goto labRewrite;
                     return -1;
                 }
