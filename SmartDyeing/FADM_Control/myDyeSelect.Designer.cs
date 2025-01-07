@@ -42,7 +42,7 @@
             this.panel1.Location = new System.Drawing.Point(3, 2);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1890, 86);
+            this.panel1.Size = new System.Drawing.Size(1680, 72);
             this.panel1.TabIndex = 0;
             // 
             // groupBox1
@@ -54,7 +54,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(1872, 82);
+            this.groupBox1.Size = new System.Drawing.Size(1664, 68);
             this.groupBox1.TabIndex = 52;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "工艺:";
@@ -69,30 +69,31 @@
             "",
             "染色工艺",
             "后处理工艺"});
-            this.dy_type_comboBox1.Location = new System.Drawing.Point(26, 25);
-            this.dy_type_comboBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.dy_type_comboBox1.Location = new System.Drawing.Point(23, 21);
+            this.dy_type_comboBox1.Margin = new System.Windows.Forms.Padding(4);
             this.dy_type_comboBox1.Name = "dy_type_comboBox1";
-            this.dy_type_comboBox1.Size = new System.Drawing.Size(300, 32);
+            this.dy_type_comboBox1.Size = new System.Drawing.Size(320, 32);
             this.dy_type_comboBox1.TabIndex = 49;
             // 
             // dy_nodelist_comboBox2
             // 
             this.dy_nodelist_comboBox2.Font = new System.Drawing.Font("宋体", 14.25F);
             this.dy_nodelist_comboBox2.FormattingEnabled = true;
-            this.dy_nodelist_comboBox2.Location = new System.Drawing.Point(349, 25);
-            this.dy_nodelist_comboBox2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.dy_nodelist_comboBox2.Location = new System.Drawing.Point(381, 21);
+            this.dy_nodelist_comboBox2.Margin = new System.Windows.Forms.Padding(4);
             this.dy_nodelist_comboBox2.Name = "dy_nodelist_comboBox2";
-            this.dy_nodelist_comboBox2.Size = new System.Drawing.Size(300, 32);
+            this.dy_nodelist_comboBox2.Size = new System.Drawing.Size(320, 32);
             this.dy_nodelist_comboBox2.TabIndex = 50;
+            this.dy_nodelist_comboBox2.KeyUp += new System.Windows.Forms.KeyEventHandler(this.dy_nodelist_comboBox2_KeyUp);
             // 
             // myDyeSelect
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panel1);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "myDyeSelect";
-            this.Size = new System.Drawing.Size(1905, 101);
+            this.Size = new System.Drawing.Size(1693, 84);
             this.panel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);

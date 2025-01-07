@@ -157,6 +157,12 @@
   <data name="cbo_AssistantType.Items7" xml:space="preserve">
     <value>Additives</value>
   </data>
+  <data name="cbo_AssistantType.Items8" xml:space="preserve">
+    <value>Direct dye</value>
+  </data>
+  <data name="cbo_AssistantType.Items9" xml:space="preserve">
+    <value>Acetic acid dye</value>
+  </data>
   <data name="cbo_AssistantType.Location" type="System.Drawing.Point, System.Drawing">
     <value>331, 318</value>
   </data>

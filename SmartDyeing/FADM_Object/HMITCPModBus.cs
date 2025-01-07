@@ -40,6 +40,8 @@ namespace SmartDyeing.FADM_Object
         public bool _b_isSendCoverStatus12 = false;
         //是否已经发送过开关盖状态（用于12杯）
         public bool[] _b_isSendCoverStatus= { false, false, false, false, false, false, false, false, false, false, false, false};
+        //是否已经读取版本号
+        public bool _b_isGetVer = false;
 
 
         //连接
@@ -77,6 +79,35 @@ namespace SmartDyeing.FADM_Object
             }
             catch { return -1; }
         }
+        /// <summary>
+        /// 读取打板机版本号
+        /// </summary>
+        /// <param name="i_type">打板机类型 0 转子机 1 摇摆机 </param>
+        /// <returns></returns>
+        public int ReadVer(ref int[] ia_values)
+        {
+            lock (this)
+            {
+                try
+                {
+                    int i_ret = -1;
+                    i_ret = Read(4, 6, ref ia_values);
+                    if (i_ret == 0)
+                    {
+                        return 0;
+                    }
+                    else
+                    {
+                        return -1;
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
+        }
 
 
         //读寄存器数据
@@ -112,6 +143,12 @@ namespace SmartDyeing.FADM_Object
                 {
                     //_modbusClient.Connect(); // 连接到服务器
                     _modbusClient.WriteMultipleRegisters(i_startingAddress, ia_values);
+                    string s = null;
+                    for (int i = 0; i < ia_values.Length; i++)
+                    {
+                        s += ia_values[i].ToString() + " ";
+                    }
+                    Lib_Log.Log.writeLogExceptionHMI("开始地址:" + i_startingAddress + " 数据:" + s);
                     // _modbusClient.Disconnect(); // 断开连接
                     return 0;
                 }

@@ -137,7 +137,7 @@ namespace SmartDyeing.FADM_Control
             this.SetStyle(ControlStyles.UserPaint, true);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.SizeChanged += UCBottle_SizeChanged;
-            this.Size = new Size(50, 95);
+            this.Size = new Size(50, 93);
             this.BackColor = Color.Transparent;
 
         }

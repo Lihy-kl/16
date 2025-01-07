@@ -74,7 +74,8 @@ namespace SmartDyeing.FADM_Object
                 lis_head.Add(dt_formula_head.Rows[0]["Handle_Rev5"].ToString());
                 lis_head.Add(dt_formula_head.Rows[0]["Stage"].ToString());
                 lis_head.Add(dt_formula_head.Rows[0]["HandleBRList"].ToString());
-
+                if (Communal._b_isUseCloth)
+                    lis_head.Add(dt_formula_head.Rows[0]["ClothNum"].ToString());
                 string s_li = dt_formula_head.Rows[0]["HandleBRList"] is DBNull ? "" : dt_formula_head.Rows[0]["HandleBRList"].ToString();
                 if (s_li != "")
                 {
@@ -99,9 +100,22 @@ namespace SmartDyeing.FADM_Object
                 FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
 
                 {
-
-                    // 添加进批次表头
-                    s_sql = "INSERT INTO drop_head (" +
+                    if (Communal._b_isUseCloth)
+                        // 添加进批次表头
+                        s_sql = "INSERT INTO drop_head (" +
+                                " CupNum, FormulaCode, VersionNum, State ,FormulaName, ClothType," +
+                                " Customer, AddWaterChoose, CompoundBoardChoose, ClothWeight, BathRatio, TotalWeight," +
+                                " Operator, CupCode, CreateTime, ObjectAddWaterWeight, TestTubeObjectAddWaterWeight,DyeingCode,Non_AnhydrationWR,AnhydrationWR,HandleBathRatio,Handle_Rev1,Handle_Rev2,Handle_Rev3,Handle_Rev4,Handle_Rev5,Stage,HandleBRList,ClothNum) VALUES(" +
+                                " '" + lis_head[0] + "', '" + lis_head[1] + "', '" + lis_head[2] + "'," +
+                                " '" + lis_head[3] + "', '" + lis_head[4] + "', '" + lis_head[5] + "'," +
+                                " '" + lis_head[6] + "', '" + lis_head[7] + "', '" + lis_head[8] + "'," +
+                                " '" + lis_head[9] + "', '" + lis_head[10] + "', '" + lis_head[11] + "'," +
+                               " '" + lis_head[12] + "', '" + lis_head[13] + "', '" + lis_head[14] + "'," +
+                                " '" + lis_head[15] + "','" + lis_head[16] + "','" + lis_head[17] + "', '" + lis_head[18] + "', '" + lis_head[19]
+                                         + "', '" + lis_head[20] + "', '" + lis_head[21] + "', '" + lis_head[22] + "', '" + lis_head[23] + "', '" + lis_head[24] + "', '" + lis_head[25] + "', '" + lis_head[26] + "', '" + lis_head[27] + "', '" + lis_head[28] + "');";
+                    else
+                        // 添加进批次表头
+                        s_sql = "INSERT INTO drop_head (" +
                                 " CupNum, FormulaCode, VersionNum, State ,FormulaName, ClothType," +
                                 " Customer, AddWaterChoose, CompoundBoardChoose, ClothWeight, BathRatio, TotalWeight," +
                                 " Operator, CupCode, CreateTime, ObjectAddWaterWeight, TestTubeObjectAddWaterWeight,DyeingCode,Non_AnhydrationWR,AnhydrationWR,HandleBathRatio,Handle_Rev1,Handle_Rev2,Handle_Rev3,Handle_Rev4,Handle_Rev5,Stage,HandleBRList) VALUES(" +
@@ -111,7 +125,7 @@ namespace SmartDyeing.FADM_Object
                                 " '" + lis_head[9] + "', '" + lis_head[10] + "', '" + lis_head[11] + "'," +
                                " '" + lis_head[12] + "', '" + lis_head[13] + "', '" + lis_head[14] + "'," +
                                 " '" + lis_head[15] + "','" + lis_head[16] + "','" + lis_head[17] + "', '" + lis_head[18] + "', '" + lis_head[19]
-                                         + "', '" + lis_head[20] + "', '" + lis_head[21] + "', '" + lis_head[22] + "', '" + lis_head[23] + "', '" + lis_head[24] + "', '" + lis_head[25] + "', '" + lis_head[26] + "', '" + lis_head[27] + "');";
+                                         + "', '" + lis_head[20] + "', '" + lis_head[21] + "', '" + lis_head[22] + "', '" + lis_head[23] + "', '" + lis_head[24] + "', '" + lis_head[25] + "', '" + lis_head[26] + "', '" + lis_head[27]  + "');";
                     FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
                 }
 
@@ -156,18 +170,18 @@ namespace SmartDyeing.FADM_Object
                     {
                         List<string> strList = new List<string>();
 
-                        for (int i = 0; i < 36; i++)
+                        for (int i = 0; i < 37; i++)
                         { //这个为一行
-                            if (!ccList.ContainsKey(dr["Code"].ToString()))
+                            if (!ccList.ContainsKey(dr["Code"].ToString() + "-" + dr["No"].ToString()))
                             { //不包含工艺名字
-                                ccList.Add(dr["Code"].ToString(), pcc);//Code
+                                ccList.Add(dr["Code"].ToString() + "-" + dr["No"].ToString(), pcc);//Code
                                 pcc++;
                             }
                             object unknownTypeValue = dr[i];
                             string valueAsString = Convert.ChangeType(unknownTypeValue, typeof(string)) as string;
                             strList.Add(valueAsString);
                         }
-                        int v = ccList[strList[25]];
+                        int v = ccList[strList[25] + "-" + strList[36]];
                         if (map.ContainsKey(v))
                         {
                             map[v].Add(strList);
@@ -328,6 +342,10 @@ namespace SmartDyeing.FADM_Object
                                     lis_dropWeight.Add(d_dropWeight);
 
                                     d_dropWeight = 0.0;
+                                }
+                                if (bb.Last() == dr1 && !dr1[17].ToString().Equals("排液"))
+                                {
+                                    lis_dropWeight.Add(0.0);
                                 }
                             }
 

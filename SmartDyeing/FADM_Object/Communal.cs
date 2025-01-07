@@ -262,6 +262,17 @@ namespace SmartDyeing.FADM_Object
         /// </summary>
         public static HMITCPModBus _tcpDyeHMI6 { get; set; } = null;
 
+
+        /// <summary>
+        /// 称布触摸屏对象
+        /// </summary>
+        public static HMITCPModBus HMIBaClo { get; set; } = null;
+        
+
+
+
+
+
         /// <summary>
         /// 开料机对象
         /// </summary>
@@ -460,6 +471,12 @@ namespace SmartDyeing.FADM_Object
         /// </summary>
         public static List<int> _lis_dripCupNum = new List<int>();
 
+
+        /// <summary>
+        /// 逻辑滴液区杯号 为了配合称布
+        /// </summary>
+        public static Dictionary<int, List<int>> my_lis_dripCupNum = new Dictionary<int, List<int>>();
+
         /// <summary>
         /// 后处理杯号
         /// </summary>
@@ -491,6 +508,11 @@ namespace SmartDyeing.FADM_Object
         public static Dictionary<int, int> _dic_cup_index = new Dictionary<int, int>();
 
         /// <summary>
+        /// 后处理杯号和序号对应（用于后处理杯号状态显示）
+        /// </summary>
+        public static Dictionary<int, int> _dic_dyecup_index = new Dictionary<int, int>();
+
+        /// <summary>
         /// 后处理杯号类型
         /// </summary>
         public static Dictionary<int, int> _dic_dyeType = new Dictionary<int, int>();
@@ -515,15 +537,21 @@ namespace SmartDyeing.FADM_Object
 
         public static bool _b_isBalanceInDrip = true;//天平是否放置滴液区
 
+        public static bool _b_isCupAreaOnly = false;//配液杯是否独立页面
+
         public static bool _b_isNewSet = true;//母液区摆设(0:以前传统滴液机母液区摆设 1:PLC版母液区摆设,原点在10号母液瓶)
 
         public static bool _b_isGetDryClamp = false;//是否拿着干布夹子
 
         public static bool _b_isGetWetClamp = false;//是否拿着湿布夹子
 
+        public static bool _b_isGetSyringes = false;//是否拿着针筒(ABS抽液针筒)
+
         public static bool _b_isSaveRealConcentration = false;//保存时是否将设定浓度保存到实际浓度中
 
         public static bool _b_isUseClamp = false;//是否使用夹子自动放布
+
+        public static bool _b_isUseClampOut = false;//是否使用夹子自动出布
 
         public static bool _b_isUseAuto = true;//是否使用自动启动
 
@@ -555,6 +583,216 @@ namespace SmartDyeing.FADM_Object
         public static bool _b_isWaitDrip = false;//是否等待滴液
 
         public static double _d_abs_sub = 40;//吸光度白点差值判断范围
+
+        public static double _d_abs_mixture = 0;//混合液计算的浓度
+
+        public static bool _b_isUnitChange = false;//助剂可以切换%单位
+
+        public static string URL = ""; //服务器url
+
+        public static int _b_isDyMin = 0; //滴液位置从多少开始
+
+
+        public static int _b_DyeCupNum = 0; //打板的杯数
+
+
+        public static int _i_Head_Ip = 40;//表头开始识别码开始位置
+        public static int _i_Head_Ip_Len = 40;//表头开始识别码长度
+
+        public static int _i_Head_FormulaCode = 40;//表头配方代码开始位置
+        public static int _i_Head_FormulaCode_Len = 40;//表头配方代码长度
+
+        public static int _i_Head_VersionNum = 40;//表头配方版本开始位置
+        public static int _i_Head_VersionNum_Len = 40;//表头配方版本长度
+
+        public static int _i_Head_Count = 40;//表头染助劑支數开始位置
+        public static int _i_Head_Count_Len = 40;//表头染助劑支數长度
+
+        public static int _i_Head_Unit = 40;//表头配方單位开始位置
+        public static int _i_Head_Unit_Len = 40;//表头配方單位长度
+
+        public static int _i_Head_Index = 40;//表头滴定序號开始位置
+        public static int _i_Head_Index_Len = 40;//表头滴定序號长度
+
+        public static int _i_Head_FormulaName = 40;//表头配方名称开始位置
+        public static int _i_Head_FormulaName_Len = 40;//表头配方名称长度
+
+        public static int _i_Head_ClothWeight = 40;//表头布重开始位置
+        public static int _i_Head_ClothWeight_Len = 40;//表头布重长度
+
+        public static int _i_Head_TotalWeight = 40;//表头总浴量开始位置
+        public static int _i_Head_TotalWeight_Len = 40;//表头总浴量长度
+
+        public static int _i_Head_AddWater = 40;//表头是否加水开始位置
+        public static int _i_Head_AddWater_Len = 40;//表头是否加水长度
+
+        public static int _i_Head_ConAdd = 40;//表头是否续加开始位置
+        public static int _i_Head_ConAdd_Len = 40;//表头是否续加长度
+
+        public static int _i_Head_MNum = 40;//表头机台编号开始位置
+        public static int _i_Head_MNum_Len = 40;//表头机台编号长度
+
+        public static int _i_Head_Date = 40;//表头日期开始位置
+        public static int _i_Head_Date_Len = 40;//表头日期长度
+
+        public static int _i_Head_Code = 40;//表头染程开始位置
+        public static int _i_Head_Code_Len = 40;//表头染程长度
+
+        public static int _i_Head_Type = 40;//表头配方類型开始位置
+        public static int _i_Head_Type_Len = 40;//表头配方類型长度
+
+        public static int _i_Head_Drip = 40;//表头是否滴過开始位置
+        public static int _i_Head_Drip_Len = 40;//表头是否滴過长度
+
+        public static int _i_Head_SIN = 40;//表头结束识别码开始位置
+        public static int _i_Head_SIN_Len = 40;//表头结束识别码长度
+
+        public static int _i_Detail_Ip = 40;//详情开始识别码开始位置
+        public static int _i_Detail_Ip_Len = 40;//详情开始识别码长度
+
+        public static int _i_Detail_FormulaCode = 40;//详情配方代码开始位置
+        public static int _i_Detail_FormulaCode_Len = 40;//详情配方代码长度
+
+        public static int _i_Detail_VersionNum = 40;//详情配方版本开始位置
+        public static int _i_Detail_VersionNum_Len = 40;//详情配方版本长度
+
+        public static int _i_Detail_Index = 40;//详情滴定序號开始位置
+        public static int _i_Detail_Index_Len = 40;//详情滴定序號长度
+
+        public static int _i_Detail_Unit = 40;//详情配方單位开始位置
+        public static int _i_Detail_Unit_Len = 40;//详情配方單位长度
+
+        public static int _i_Detail_Num = 40;//详情库存编号开始位置
+        public static int _i_Detail_Num_Len = 40;//详情库存编号长度
+
+        public static int _i_Detail_AssistantCode = 40;//详情助剂代码开始位置
+        public static int _i_Detail_AssistantCode_Len = 40;//详情助剂代码长度
+
+        public static int _i_Detail_RealConcentration = 40;//详情助剂浓度开始位置
+        public static int _i_Detail_RealConcentration_Len = 40;//详情助剂浓度长度
+
+        public static int _i_Detail_SIN = 40;//详情结束识别码开始位置
+        public static int _i_Detail_SIN_Len = 40;//详情结束识别码长度
+
+        /// <summary>
+        /// 滴液过程是否先加水后加染料
+        /// </summary>
+        public static bool _b_isAddWaterFirst = true;
+
+        /// <summary>
+        /// 排序
+        /// </summary>
+        public static bool _b_isSort = true;
+
+        /// <summary>
+        /// 滴液区需要手动输入杯号
+        /// </summary>
+        public static bool _b_isDripNeedCupNum = false;
+
+        /// <summary>
+        /// 是否使用称布系统
+        /// </summary>
+        public static bool _b_isUseCloth = false;
+
+        /// <summary>
+        /// 区域1触摸屏版本
+        /// </summary>
+        public static string _s_TouchVer1 = "";
+
+        /// <summary>
+        /// 区域1板卡1版本
+        /// </summary>
+        public static string _s_CardOneVer1 = "";
+
+        /// <summary>
+        /// 区域2板卡2版本
+        /// </summary>
+        public static string _s_CardTwoVer1 = "";
+
+        /// <summary>
+        /// 区域2触摸屏版本
+        /// </summary>
+        public static string _s_TouchVer2 = "";
+
+        /// <summary>
+        /// 区域2板卡1版本
+        /// </summary>
+        public static string _s_CardOneVer2 = "";
+
+        /// <summary>
+        /// 区域2板卡2版本
+        /// </summary>
+        public static string _s_CardTwoVer2 = "";
+
+        /// <summary>
+        /// 区域3触摸屏版本
+        /// </summary>
+        public static string _s_TouchVer3 = "";
+
+        /// <summary>
+        /// 区域3板卡1版本
+        /// </summary>
+        public static string _s_CardOneVer3 = "";
+
+        /// <summary>
+        /// 区域3板卡2版本
+        /// </summary>
+        public static string _s_CardTwoVer3 = "";
+
+        /// <summary>
+        /// 区域4触摸屏版本
+        /// </summary>
+        public static string _s_TouchVer4 = "";
+
+        /// <summary>
+        /// 区域4板卡1版本
+        /// </summary>
+        public static string _s_CardOneVer4 = "";
+
+        /// <summary>
+        /// 区域4板卡2版本
+        /// </summary>
+        public static string _s_CardTwoVer4 = "";
+
+        /// <summary>
+        /// 区域5触摸屏版本
+        /// </summary>
+        public static string _s_TouchVer5 = "";
+
+        /// <summary>
+        /// 区域5板卡1版本
+        /// </summary>
+        public static string _s_CardOneVer5 = "";
+
+        /// <summary>
+        /// 区域5板卡2版本
+        /// </summary>
+        public static string _s_CardTwoVer5 = "";
+
+        /// <summary>
+        /// 区域6触摸屏版本
+        /// </summary>
+        public static string _s_TouchVer6 = "";
+
+        /// <summary>
+        /// 区域6板卡1版本
+        /// </summary>
+        public static string _s_CardOneVer6 = "";
+
+        /// <summary>
+        /// 区域6板卡2版本
+        /// </summary>
+        public static string _s_CardTwoVer6 = "";
+
+        /// <summary>
+        /// 最大母液瓶Y轴坐标
+        /// </summary>
+        public static int _i_Max_Y = 0;
+
+        /// <summary>
+        /// 是否显示取小样测PH工艺
+        /// </summary>
+        public static bool _b_isShowSample = false;
 
         /// <summary>
         /// 抛出异常中英文对接
@@ -615,7 +853,12 @@ namespace SmartDyeing.FADM_Object
         /// <summary>
         /// PLC版本号
         /// </summary>
-        public static string _s_plcVersion = null;
+        public static string _s_plcVersion = "";
+
+        /// <summary>
+        /// 开料机版本号
+        /// </summary>
+        public static string _s_brewVersion = "";
 
 
 
@@ -730,18 +973,75 @@ namespace SmartDyeing.FADM_Object
             Dictionary<int, double> dic_water = o._dic_water;
 
             Thread thread = null;
+
+            //如果是母液瓶999就先去拿针筒
+            if (i_minBottleNo == 999)
+            {
+                int i_xStart = 0, i_yStart = 0;
+                if (Communal._b_isGetWetClamp)
+                {
+                    //3.放夹子
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "放夹子启动");
+                    //int i_xStart = 0, i_yStart = 0;
+                    //计算湿布布夹子位置
+                    MyModbusFun.CalTarget(9, 0, ref i_xStart, ref i_yStart);
+                    int i_mRes2 = MyModbusFun.PutClamp(i_xStart, i_yStart);
+                    if (-2 == i_mRes2)
+                        throw new Exception("收到退出消息");
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "放夹子完成");
+                }
+
+                if (Communal._b_isGetDryClamp)
+                {
+                    //3.放夹子
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "放夹子启动");
+                    //int i_xStart = 0, i_yStart = 0;
+                    //计算干布夹子位置
+                    MyModbusFun.CalTarget(8, 0, ref i_xStart, ref i_yStart);
+                    int iMRes1 = MyModbusFun.PutClamp(i_xStart, i_yStart);
+                    if (-2 == iMRes1)
+                        throw new Exception("收到退出消息");
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "放夹子完成");
+                }
+
+                if (!Communal._b_isGetSyringes)
+                {
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "拿针筒启动");
+                    //计算针筒位置
+                    MyModbusFun.CalTarget(11, 0, ref i_xStart, ref i_yStart);
+                    int i_mRes3 = MyModbusFun.GetSyringes(i_xStart, i_yStart);
+                    if (-2 == i_mRes3)
+                        throw new Exception("收到退出消息");
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "拿针筒完成");
+                }
+            }
+
         label9:
             //移动到母液瓶
             if (FADM_Auto.Drip._b_dripStop)
             {
                 FADM_Object.Communal._b_stop = true;
             }
-            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找" + i_minBottleNo + "号母液瓶");
-            FADM_Object.Communal._i_optBottleNum = i_minBottleNo;
-            int i_mRes = MyModbusFun.TargetMove(0, i_minBottleNo, 1);
-            if (-2 == i_mRes)
-                throw new Exception("收到退出消息");
-            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达" + i_minBottleNo + "号母液瓶");
+            int i_mRes;
+            if (i_minBottleNo == 999)
+            {
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找1号(吸光度杯)");
+                FADM_Object.Communal._i_optBottleNum = i_minBottleNo;
+                i_mRes = MyModbusFun.TargetMove(10, 1, 0);
+                if (-2 == i_mRes)
+                    throw new Exception("收到退出消息");
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达1号(吸光度杯)");
+            }
+            else
+            {
+
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找" + i_minBottleNo + "号母液瓶");
+                FADM_Object.Communal._i_optBottleNum = i_minBottleNo;
+                i_mRes = MyModbusFun.TargetMove(0, i_minBottleNo, 1);
+                if (-2 == i_mRes)
+                    throw new Exception("收到退出消息");
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达" + i_minBottleNo + "号母液瓶");
+            }
 
             //抽液
             if (FADM_Auto.Drip._b_dripStop)
@@ -806,7 +1106,32 @@ namespace SmartDyeing.FADM_Object
                     if (i_type == 1)
                         i_mRes = MyModbusFun.Extract(iExtractionPulse, s_unitOfAccount.Equals("g/l") ? true : false, 0); //抽液
                     else
-                        i_mRes = MyModbusFun.Extract(iExtractionPulse, true, 0); //抽液
+                    {
+                        if (i_minBottleNo == 999)
+                        {
+                            //1号吸光度杯停止搅拌
+                            int[] values = new int[1];
+                            values[0] = 1;
+                            if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                            {
+                                FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                            }
+
+                            FADM_Object.Communal._tcpModBusAbs.Write(806, values);
+
+                            i_mRes = MyModbusFun.AbsExtract(iExtractionPulse, true, 0); //抽液
+
+                            values[0] = 0;
+                            if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                            {
+                                FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                            }
+                            FADM_Object.Communal._tcpModBusAbs.Write(806, values);
+                        }
+
+                        else
+                            i_mRes = MyModbusFun.Extract(iExtractionPulse, true, 0); //抽液
+                    }
 
                     if (-2 == i_mRes)
                         throw new Exception("收到退出消息");
@@ -878,7 +1203,32 @@ namespace SmartDyeing.FADM_Object
                     if (i_type == 1)
                         i_mRes = MyModbusFun.Extract(iExtractionPulse, s_unitOfAccount.Equals("g/l") ? true : false, 1); //抽液
                     else
-                        i_mRes = MyModbusFun.Extract(iExtractionPulse, true, 1); //抽液
+                    {
+                        if (i_minBottleNo == 999)
+                        {
+                            //1号吸光度杯停止搅拌
+                            int[] values = new int[1];
+                            values[0] = 1;
+                            if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                            {
+                                FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                            }
+
+                            FADM_Object.Communal._tcpModBusAbs.Write(806, values);
+
+                            i_mRes = MyModbusFun.AbsExtract(iExtractionPulse, true, 1); //抽液
+
+                            values[0] = 0;
+                            if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                            {
+                                FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                            }
+
+                            FADM_Object.Communal._tcpModBusAbs.Write(806, values);
+                        }
+                        else
+                            i_mRes = MyModbusFun.Extract(iExtractionPulse, true, 1); //抽液
+                    }
                     if (-2 == i_mRes)
                         throw new Exception("收到退出消息");
                 }
@@ -1307,12 +1657,26 @@ namespace SmartDyeing.FADM_Object
             {
                 FADM_Object.Communal._b_stop = true;
             }
-            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找" + i_minBottleNo + "号母液瓶");
-            FADM_Object.Communal._i_optBottleNum = i_minBottleNo;
-            i_mRes = MyModbusFun.TargetMove(0, i_minBottleNo, 0);
-            if (-2 == i_mRes)
-                throw new Exception("收到退出消息");
-            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达" + i_minBottleNo + "号母液瓶");
+            if (i_minBottleNo == 999)
+            {
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找放针母液瓶");
+                FADM_Object.Communal._i_optBottleNum = i_minBottleNo;
+                i_mRes = MyModbusFun.TargetMove(11, 0, 0);
+                if (-2 == i_mRes)
+                    throw new Exception("收到退出消息");
+
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达放针母液瓶");
+
+            }
+            else
+            {
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找" + i_minBottleNo + "号母液瓶");
+                FADM_Object.Communal._i_optBottleNum = i_minBottleNo;
+                i_mRes = MyModbusFun.TargetMove(0, i_minBottleNo, 0);
+                if (-2 == i_mRes)
+                    throw new Exception("收到退出消息");
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达" + i_minBottleNo + "号母液瓶");
+            }
 
             //放针
             if (FADM_Auto.Drip._b_dripStop)
@@ -1334,7 +1698,7 @@ namespace SmartDyeing.FADM_Object
                     throw new Exception("收到退出消息");
             }
             FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", i_minBottleNo + "号母液瓶放针完成");
-
+            Communal._b_isGetSyringes = false;
             if (null != thread)
                 thread.Join();
             for (int i = 0; i < lis_data.Count; i++)

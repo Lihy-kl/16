@@ -63,6 +63,8 @@ namespace SmartDyeing.FADM_Form
             this.DetailInfo = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSplitButton5 = new System.Windows.Forms.ToolStripSplitButton();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSplitButton4 = new System.Windows.Forms.ToolStripSplitButton();
             this.MiHistoryPage = new System.Windows.Forms.ToolStripMenuItem();
@@ -105,6 +107,8 @@ namespace SmartDyeing.FADM_Form
             this.DetailInfo,
             this.toolStripSeparator9,
             this.toolStripSplitButton5,
+            this.toolStripSeparator10,
+            this.toolStripButton1,
             this.toolStripSeparator8,
             this.toolStripSplitButton4,
             this.toolStripSeparator6,
@@ -314,6 +318,18 @@ namespace SmartDyeing.FADM_Form
             this.toolStripSplitButton5.DropDownOpening += new System.EventHandler(this.toolStripSplitButton5_DropDownOpening);
             this.toolStripSplitButton5.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolStripSplitButton5_DropDownItemClicked);
             this.toolStripSplitButton5.Click += new System.EventHandler(this.toolStripSplitButton5_Click);
+            // 
+            // toolStripSeparator10
+            // 
+            this.toolStripSeparator10.Name = "toolStripSeparator10";
+            resources.ApplyResources(this.toolStripSeparator10, "toolStripSeparator10");
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            resources.ApplyResources(this.toolStripButton1, "toolStripButton1");
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // toolStripSeparator8
             // 
@@ -534,5 +550,7 @@ namespace SmartDyeing.FADM_Form
         private ToolStripMenuItem MiAbsPage;
         private ToolStripButton BtnResetAbs;
         private Timer timer1;
+        private ToolStripSeparator toolStripSeparator10;
+        private ToolStripButton toolStripButton1;
     }
 }

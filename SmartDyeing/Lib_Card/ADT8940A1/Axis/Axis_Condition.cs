@@ -201,7 +201,7 @@ namespace Lib_Card.ADT8940A1.Axis
                 else if (1 == iStop)
                 {
 
-                    if (iPositionNowY > Configure.Parameter.Coordinate_Balance_Y)
+                    if (iPositionNowY > SmartDyeing.FADM_Object.Communal._i_Max_Y)
                     {
                         if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
                             return -1;
@@ -549,20 +549,20 @@ namespace Lib_Card.ADT8940A1.Axis
                         if (iPulse > iPositionNowY)
                         {
                             //前移
-                            if (iPulse > Configure.Parameter.Coordinate_Balance_Y)
+                            if (iPulse > SmartDyeing.FADM_Object.Communal._i_Max_Y)
                             {
-                                if (iPulse != Configure.Parameter.Coordinate_Balance_Y)
+                                if (iPulse != SmartDyeing.FADM_Object.Communal._i_Max_Y)
                                 {
                                     if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_Y))
                                         return -1;
                                     iPositionRes = CardObject.OA1.ReadAxisCommandPosition(ADT8940A1_IO.Axis_Y, ref iPositionNowY);
                                     if (-1 == iPositionRes)
                                         return -1;
-                                    if (iPositionNowY < Configure.Parameter.Coordinate_Balance_Y)
+                                    if (iPositionNowY < SmartDyeing.FADM_Object.Communal._i_Max_Y)
                                     {
                                         //在母液区
 
-                                        s_MoveArg.Pulse = Configure.Parameter.Coordinate_Balance_Y;
+                                        s_MoveArg.Pulse = SmartDyeing.FADM_Object.Communal._i_Max_Y;
 
                                     }
                                     continue;
@@ -578,7 +578,7 @@ namespace Lib_Card.ADT8940A1.Axis
                         else if (iPulse < iPositionNowY)
                         {
                             //后移
-                            if (iPositionNowY > Configure.Parameter.Coordinate_Balance_Y)
+                            if (iPositionNowY > SmartDyeing.FADM_Object.Communal._i_Max_Y)
                             {
                                 //在配液区
                                 if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_Y))
@@ -727,7 +727,7 @@ namespace Lib_Card.ADT8940A1.Axis
         public override int Absolute_Z(int iType, int iPulse, int iReserve)
         {
             /* 条件：
-             *     1：Z轴正限位未通
+             *     1：Z轴反限位未通
              *     2：Z轴未运行
              *     3：急停未通
              *     4：抓手A关闭
@@ -783,7 +783,7 @@ namespace Lib_Card.ADT8940A1.Axis
                 {
                     if (-1 == CardObject.OA1.SuddnStop(ADT8940A1_IO.Axis_Z))
                         return -1;
-                    throw new Exception("Z轴正限位已通");
+                    throw new Exception("Z轴反限位已通");
                 }
 
                 int iPositionNowY = 0;
@@ -797,7 +797,7 @@ namespace Lib_Card.ADT8940A1.Axis
                 else if (1 == iStop)
                 {
 
-                    if (iPositionNowY > Configure.Parameter.Coordinate_Balance_Y)
+                    if (iPositionNowY > SmartDyeing.FADM_Object.Communal._i_Max_Y)
                     {
                         if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_Z))
                             return -1;
@@ -988,7 +988,7 @@ namespace Lib_Card.ADT8940A1.Axis
                 else if (1 == iStop)
                 {
 
-                    if (iPositionNowY > Configure.Parameter.Coordinate_Balance_Y)
+                    if (iPositionNowY > SmartDyeing.FADM_Object.Communal._i_Max_Y)
                     {
                         if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
                             return -1;
@@ -1235,7 +1235,7 @@ namespace Lib_Card.ADT8940A1.Axis
                 else if (1 == iStop)
                 {
 
-                    if (iPositionNowY > Configure.Parameter.Coordinate_Balance_Y)
+                    if (iPositionNowY > SmartDyeing.FADM_Object.Communal._i_Max_Y)
                     {
                         if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_Y))
                             return -1;
@@ -1449,7 +1449,7 @@ namespace Lib_Card.ADT8940A1.Axis
                 else if (1 == iStop)
                 {
 
-                    if (iPositionNowY > Configure.Parameter.Coordinate_Balance_Y)
+                    if (iPositionNowY > SmartDyeing.FADM_Object.Communal._i_Max_Y)
                     {
                         if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_Z))
                             return -1;
@@ -1608,7 +1608,7 @@ namespace Lib_Card.ADT8940A1.Axis
                 else if (1 == iStop)
                 {
 
-                    if (iPositionNowY > Configure.Parameter.Coordinate_Balance_Y)
+                    if (iPositionNowY > SmartDyeing.FADM_Object.Communal._i_Max_Y)
                     {
                         if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_X))
                             return -1;
@@ -1855,7 +1855,7 @@ namespace Lib_Card.ADT8940A1.Axis
                 else if (1 == iStop)
                 {
 
-                    if (iPositionNowY > Configure.Parameter.Coordinate_Balance_Y)
+                    if (iPositionNowY > SmartDyeing.FADM_Object.Communal._i_Max_Y)
                     {
                         if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_Y))
                             return -1;
@@ -1978,7 +1978,7 @@ namespace Lib_Card.ADT8940A1.Axis
         public override int Relative_Z(Card.MoveArg s_MoveArg, int iReserve)
         {
             /* 条件：
-             *     1：Z轴正限位未通
+             *     1：Z轴反限位未通
              *     2：Z轴未运行
              *     3：急停未通
              * 
@@ -2004,7 +2004,7 @@ namespace Lib_Card.ADT8940A1.Axis
                 {
                     if (-1 == CardObject.OA1.SuddnStop(ADT8940A1_IO.Axis_Z))
                         return -1;
-                    throw new Exception("Z轴正限位已通");
+                    throw new Exception("Z轴反限位已通");
                 }
 
                 int iPositionNowY = 0;
@@ -2018,7 +2018,7 @@ namespace Lib_Card.ADT8940A1.Axis
                 else if (1 == iStop)
                 {
 
-                    if (iPositionNowY > Configure.Parameter.Coordinate_Balance_Y)
+                    if (iPositionNowY > SmartDyeing.FADM_Object.Communal._i_Max_Y)
                     {
                         if (-1 == CardObject.OA1.DecStop(ADT8940A1_IO.Axis_Z))
                             return -1;

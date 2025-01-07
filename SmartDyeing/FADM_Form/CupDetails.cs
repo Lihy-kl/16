@@ -130,6 +130,7 @@ namespace SmartDyeing.FADM_Form
                     legendItem.Cells.Add(LegendCellType.Text, $"{series.Name} - 总计: {totalTimeFormatted}", ContentAlignment.MiddleLeft);
                     chart.Legends[0].CustomItems.Add(legendItem);
 
+
                     /*if (_maxTimes.Length < _times.Length)
                     {
                         _maxTimes = _times;
@@ -174,12 +175,16 @@ namespace SmartDyeing.FADM_Form
                     DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
                     foreach (DataRow dr in dt_data.Rows)
                     {
-                        ProcessStep processSte = new ProcessStep();
+                        string DyeType = dr["DyeType"].ToString();
+                        string Code = dr["Code"].ToString();
 
+                        ProcessStep processSte = new ProcessStep();
                         processSte.StepName = dr["TechnologyName"].ToString();
 
                         if (dr["TechnologyName"].ToString().Trim().Equals("加A") || dr["TechnologyName"].ToString().Trim().Equals("加B") || dr["TechnologyName"].ToString().Trim().Equals("加C") || dr["TechnologyName"].ToString().Trim().Equals("加D") || dr["TechnologyName"].ToString().Trim().Equals("加E") || dr["TechnologyName"].ToString().Trim().Equals("加F") || dr["TechnologyName"].ToString().Trim().Equals("加G") || dr["TechnologyName"].ToString().Trim().Equals("加H") || dr["TechnologyName"].ToString().Trim().Equals("加I") || dr["TechnologyName"].ToString().Trim().Equals("加J") || dr["TechnologyName"].ToString().Trim().Equals("加K") || dr["TechnologyName"].ToString().Trim().Equals("加L") || dr["TechnologyName"].ToString().Trim().Equals("加M") || dr["TechnologyName"].ToString().Trim().Equals("加N"))
                         {
+
+
                             //processSte.Duration = 5;
                             list.Add(processSte);
                             continue;
@@ -254,6 +259,8 @@ namespace SmartDyeing.FADM_Form
                     legendItem.Cells.Add(LegendCellType.Text, $"{series.Name} - 总计: {totalTimeFormatted}", ContentAlignment.MiddleLeft);
                     chart.Legends[0].CustomItems.Add(legendItem);
 
+                    chart.MouseClick += Chart1_MouseClick;
+
                     sa_arr = craft.Split('@');
                     for (int i = 0; i < sa_arr.Count(); i++)
                     {
@@ -280,6 +287,34 @@ namespace SmartDyeing.FADM_Form
                 Lib_Log.Log.writeLogException("CupDetails：" + ex.ToString());
             }
         }
+        private void Chart1_MouseClick(object sender, MouseEventArgs e)
+        {
+            //MessageBox.Show("点击了图例！");
+            var legend = chart.Legends[0];
+             var legendPosition = legend.Position;
+             var legendRect = new RectangleF(
+                 legendPosition.X,
+                 legendPosition.Y,
+                 50,
+                 50);
+            //e.Location.X+190
+
+            //MessageBox.Show(e.Location.X.ToString()+"--"+ e.Location.Y.ToString());
+            if (e.Location.X >351 && e.Location.Y<40)
+             {
+                //MessageBox.Show("隐藏！");
+                chart.Series[1].Points.Clear();
+             }
+            /*if (legendRect.Contains(e.Location))
+            {
+                // 用户点击了图例
+                MessageBox.Show("点击了图例！");
+            }*/
+        }
+
+
+
+
         public chartData GenerateChartData(ProcessStep[] processSteps)
         {
             StringBuilder temperatureBuilder = new StringBuilder();

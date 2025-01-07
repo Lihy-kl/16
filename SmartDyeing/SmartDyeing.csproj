@@ -120,6 +120,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FADM_Auto\ABS_Drip.cs" />
     <Compile Include="FADM_Auto\BottleCheck.cs" />
     <Compile Include="FADM_Auto\BottleSelf.cs" />
     <Compile Include="FADM_Auto\Drip.cs" />
@@ -133,6 +134,12 @@
     </Compile>
     <Compile Include="FADM_Control\AbsBeater.Designer.cs">
       <DependentUpon>AbsBeater.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\ABS_Formula.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\ABS_Formula.Designer.cs">
+      <DependentUpon>ABS_Formula.cs</DependentUpon>
     </Compile>
     <Compile Include="FADM_Control\Alarm.cs">
       <SubType>UserControl</SubType>
@@ -169,6 +176,12 @@
     </Compile>
     <Compile Include="FADM_Control\CurveControl.Designer.cs">
       <DependentUpon>CurveControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\Formula_Cloth.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\Formula_Cloth.Designer.cs">
+      <DependentUpon>Formula_Cloth.cs</DependentUpon>
     </Compile>
     <Compile Include="FADM_Control\FourBeater.cs">
       <SubType>UserControl</SubType>
@@ -296,6 +309,12 @@
     <Compile Include="FADM_Control\MainBottle.Designer.cs">
       <DependentUpon>MainBottle.cs</DependentUpon>
     </Compile>
+    <Compile Include="FADM_Control\MainBottle_Only.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\MainBottle_Only.Designer.cs">
+      <DependentUpon>MainBottle_Only.cs</DependentUpon>
+    </Compile>
     <Compile Include="FADM_Control\myDyeingConfiguration.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -350,6 +369,12 @@
     <Compile Include="FADM_Control\Run.Designer.cs">
       <DependentUpon>Run.cs</DependentUpon>
     </Compile>
+    <Compile Include="FADM_Control\S_MainBottle_Only.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\S_MainBottle_Only.Designer.cs">
+      <DependentUpon>S_MainBottle_Only.cs</DependentUpon>
+    </Compile>
     <Compile Include="FADM_Control\TenBeater.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -367,6 +392,12 @@
     </Compile>
     <Compile Include="FADM_Control\TwelveBeater.Designer.cs">
       <DependentUpon>TwelveBeater.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\AAndB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\AAndB.Designer.cs">
+      <DependentUpon>AAndB.cs</DependentUpon>
     </Compile>
     <Compile Include="FADM_Form\Abort.cs">
       <SubType>Form</SubType>
@@ -409,6 +440,12 @@
     </Compile>
     <Compile Include="FADM_Form\Cup.Designer.cs">
       <DependentUpon>Cup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\CupArea.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\CupArea.Designer.cs">
+      <DependentUpon>CupArea.cs</DependentUpon>
     </Compile>
     <Compile Include="FADM_Form\CupDetails.cs">
       <SubType>Form</SubType>
@@ -486,6 +523,9 @@
     <Compile Include="FADM_Form\NeedToDo.Designer.cs">
       <DependentUpon>NeedToDo.cs</DependentUpon>
     </Compile>
+    <Compile Include="FADM_Form\NoActivateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FADM_Form\NotDripList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -542,6 +582,7 @@
     </Compile>
     <Compile Include="FADM_Object\AddDropList.cs" />
     <Compile Include="FADM_Object\Communal.cs" />
+    <Compile Include="FADM_Object\DatabaseUpdater.cs" />
     <Compile Include="FADM_Object\DrawingCurve.cs" />
     <Compile Include="FADM_Object\HMITCPModBus.cs" />
     <Compile Include="FADM_Object\HttpUtil.cs" />
@@ -633,6 +674,12 @@
     <EmbeddedResource Include="FADM_Control\AbsBeater.resx">
       <DependentUpon>AbsBeater.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\ABS_Formula.en.resx">
+      <DependentUpon>ABS_Formula.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\ABS_Formula.resx">
+      <DependentUpon>ABS_Formula.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FADM_Control\Alarm.en.resx">
       <DependentUpon>Alarm.cs</DependentUpon>
     </EmbeddedResource>
@@ -662,6 +709,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FADM_Control\CurveControl.resx">
       <DependentUpon>CurveControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\Formula_Cloth.en.resx">
+      <DependentUpon>Formula_Cloth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\Formula_Cloth.resx">
+      <DependentUpon>Formula_Cloth.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FADM_Control\FourBeater.en.resx">
       <DependentUpon>FourBeater.cs</DependentUpon>
@@ -766,6 +819,12 @@
     <EmbeddedResource Include="FADM_Control\MainBottle.resx">
       <DependentUpon>MainBottle.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\MainBottle_Only.en.resx">
+      <DependentUpon>MainBottle_Only.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\MainBottle_Only.resx">
+      <DependentUpon>MainBottle_Only.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FADM_Control\myDyeingConfiguration.resx">
       <DependentUpon>myDyeingConfiguration.cs</DependentUpon>
     </EmbeddedResource>
@@ -808,6 +867,12 @@
     <EmbeddedResource Include="FADM_Control\Run.resx">
       <DependentUpon>Run.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\S_MainBottle_Only.en.resx">
+      <DependentUpon>S_MainBottle_Only.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\S_MainBottle_Only.resx">
+      <DependentUpon>S_MainBottle_Only.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FADM_Control\TenBeater.resx">
       <DependentUpon>TenBeater.cs</DependentUpon>
     </EmbeddedResource>
@@ -816,6 +881,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FADM_Control\TwelveBeater.resx">
       <DependentUpon>TwelveBeater.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\AAndB.resx">
+      <DependentUpon>AAndB.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FADM_Form\Abort.en.resx">
       <DependentUpon>Abort.cs</DependentUpon>
@@ -855,6 +923,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FADM_Form\Cup.resx">
       <DependentUpon>Cup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\CupArea.resx">
+      <DependentUpon>CupArea.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FADM_Form\CupDetails.en.resx">
       <DependentUpon>CupDetails.cs</DependentUpon>
@@ -910,6 +981,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FADM_Form\NeedToDo.resx">
       <DependentUpon>NeedToDo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\NoActivateForm.resx">
+      <DependentUpon>NoActivateForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FADM_Form\NotDripList.en.resx">
       <DependentUpon>NotDripList.cs</DependentUpon>

@@ -257,6 +257,7 @@ namespace SmartDyeing.FADM_Form
                         i_num++;
                     }
                     FADM_Control.Formula._b_updateWait = true;
+                    FADM_Control.Formula_Cloth._b_updateWait = true;
                 }
             }
             catch
@@ -404,6 +405,7 @@ namespace SmartDyeing.FADM_Form
                         i_num++;
                     }
                     FADM_Control.Formula._b_updateWait = true;
+                    FADM_Control.Formula_Cloth._b_updateWait = true;
                 }
             }
             catch

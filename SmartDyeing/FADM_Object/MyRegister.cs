@@ -337,7 +337,7 @@ namespace SmartDyeing.FADM_Object
                 dic_parameters.Add("msg", s_enstrCodeBase64);
                 dic_parameters.Add("sendtime", s_formattedDateTime);
                 dic_parameters.Add("Version", FADM_Object.Communal._s_version);
-                HttpWebResponse response = HttpUtil.CreatePostHttpResponse("https://www.gz-kelian.com/outer/product/getDySyn", dic_parameters, 15000, null, null);
+                HttpWebResponse response = HttpUtil.CreatePostHttpResponse(FADM_Object.Communal.URL + "sss/outer/product/getDySyn", dic_parameters, 15000, null, null);
                 Stream st = response.GetResponseStream();
                 StreamReader reader = new StreamReader(st);
                 string s_msg = reader.ReadToEnd();

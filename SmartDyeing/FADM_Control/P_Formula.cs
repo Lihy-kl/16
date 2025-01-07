@@ -929,6 +929,18 @@ namespace SmartDyeing.FADM_Control
                 case Keys.Delete:
                     try
                     {
+                        string s_sql1 = "SELECT * FROM drop_head  where BatchName != '0' and Stage = '滴液'   order by CupNum  ;";
+                        DataTable dt_head_Drip = FADM_Object.Communal._fadmSqlserver.GetData(s_sql1);
+
+                        if (dt_head_Drip.Rows.Count > 0)
+                        {
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                FADM_Form.CustomMessageBox.Show("滴液过程不能删除", "温馨提示", MessageBoxButtons.OK, false);
+                            else
+                                FADM_Form.CustomMessageBox.Show("The dripping process cannot be deleted", "Tips", MessageBoxButtons.OK, false);
+                            return;
+                        }
+
                         _i_delect_index = Convert.ToInt16(dgv_BatchData.CurrentRow.Index);
                         string s_sql = null;
                         foreach (DataGridViewRow dr in dgv_BatchData.SelectedRows)
@@ -973,7 +985,17 @@ namespace SmartDyeing.FADM_Control
                     }
                     break;
                 case Keys.Insert:
+                    string s_sql2 = "SELECT * FROM drop_head  where BatchName != '0' and Stage = '滴液'   order by CupNum  ;";
+                    DataTable dt_head_Drip2 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql2);
 
+                    if (dt_head_Drip2.Rows.Count > 0)
+                    {
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            FADM_Form.CustomMessageBox.Show("滴液过程不能插入", "温馨提示", MessageBoxButtons.OK, false);
+                        else
+                            FADM_Form.CustomMessageBox.Show("The liquid drop process cannot be interrupted", "Tips", MessageBoxButtons.OK, false);
+                        return;
+                    }
                     dgv_BatchData_RowsAdded();
                     break;
                 default:

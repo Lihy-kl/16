@@ -92,7 +92,7 @@ namespace Lib_Card.ADT8940A1.Module.Extraction
                 }
                 catch (Exception ex)
                 {
-                    if ("Z轴正限位已通" != ex.Message)
+                    if ("Z轴反限位已通" != ex.Message)
                         throw;
                 }
 
@@ -155,7 +155,7 @@ namespace Lib_Card.ADT8940A1.Module.Extraction
             }
             catch (Exception ex)
             {
-                if ("Z轴正限位已通" != ex.Message)
+                if ("Z轴反限位已通" != ex.Message)
                     throw;
             }
 

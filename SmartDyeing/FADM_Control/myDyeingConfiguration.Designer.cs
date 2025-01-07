@@ -36,6 +36,16 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.grp_Dye = new System.Windows.Forms.GroupBox();
             this.dgv_Dye = new SmartDyeing.FADM_Object.MyDataGridView();
+            this.dgv_dyconfiglisg = new SmartDyeing.FADM_Object.MyDataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.txt_HandleBathRatio = new System.Windows.Forms.TextBox();
+            this.lab_HandleBathRatio = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -47,16 +57,6 @@
             this.dataGridViewTextBoxColumn14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn15 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewCheckBoxColumn1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.dgv_dyconfiglisg = new SmartDyeing.FADM_Object.MyDataGridView();
-            this.txt_HandleBathRatio = new System.Windows.Forms.TextBox();
-            this.lab_HandleBathRatio = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.grp_Dye.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Dye)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_dyconfiglisg)).BeginInit();
@@ -134,99 +134,6 @@
             this.dgv_Dye.Size = new System.Drawing.Size(1646, 70);
             this.dgv_Dye.TabIndex = 51;
             // 
-            // dataGridViewTextBoxColumn6
-            // 
-            this.dataGridViewTextBoxColumn6.FillWeight = 87.13462F;
-            this.dataGridViewTextBoxColumn6.HeaderText = "序号";
-            this.dataGridViewTextBoxColumn6.MinimumWidth = 8;
-            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
-            this.dataGridViewTextBoxColumn6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // dataGridViewTextBoxColumn8
-            // 
-            this.dataGridViewTextBoxColumn8.FillWeight = 104.0983F;
-            this.dataGridViewTextBoxColumn8.HeaderText = "染助剂代码";
-            this.dataGridViewTextBoxColumn8.MinimumWidth = 8;
-            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
-            this.dataGridViewTextBoxColumn8.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // dataGridViewTextBoxColumn9
-            // 
-            this.dataGridViewTextBoxColumn9.FillWeight = 151.3145F;
-            this.dataGridViewTextBoxColumn9.HeaderText = "染助剂名称";
-            this.dataGridViewTextBoxColumn9.MinimumWidth = 8;
-            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
-            this.dataGridViewTextBoxColumn9.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // dataGridViewTextBoxColumn10
-            // 
-            this.dataGridViewTextBoxColumn10.FillWeight = 74.84899F;
-            this.dataGridViewTextBoxColumn10.HeaderText = "配方用量";
-            this.dataGridViewTextBoxColumn10.MinimumWidth = 8;
-            this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
-            this.dataGridViewTextBoxColumn10.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // dataGridViewTextBoxColumn11
-            // 
-            this.dataGridViewTextBoxColumn11.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.Nothing;
-            this.dataGridViewTextBoxColumn11.FillWeight = 79.19863F;
-            this.dataGridViewTextBoxColumn11.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.dataGridViewTextBoxColumn11.HeaderText = "单位";
-            this.dataGridViewTextBoxColumn11.MinimumWidth = 8;
-            this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
-            this.dataGridViewTextBoxColumn11.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // dataGridViewComboBoxColumn1
-            // 
-            this.dataGridViewComboBoxColumn1.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.Nothing;
-            this.dataGridViewComboBoxColumn1.FillWeight = 59.8322F;
-            this.dataGridViewComboBoxColumn1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.dataGridViewComboBoxColumn1.HeaderText = "瓶号";
-            this.dataGridViewComboBoxColumn1.Items.AddRange(new object[] {
-            "5",
-            "6"});
-            this.dataGridViewComboBoxColumn1.MinimumWidth = 8;
-            this.dataGridViewComboBoxColumn1.Name = "dataGridViewComboBoxColumn1";
-            // 
-            // dataGridViewTextBoxColumn12
-            // 
-            this.dataGridViewTextBoxColumn12.FillWeight = 115.9869F;
-            this.dataGridViewTextBoxColumn12.HeaderText = "设定浓度";
-            this.dataGridViewTextBoxColumn12.MinimumWidth = 8;
-            this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
-            this.dataGridViewTextBoxColumn12.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // dataGridViewTextBoxColumn13
-            // 
-            this.dataGridViewTextBoxColumn13.FillWeight = 121.0969F;
-            this.dataGridViewTextBoxColumn13.HeaderText = "实际浓度";
-            this.dataGridViewTextBoxColumn13.MinimumWidth = 8;
-            this.dataGridViewTextBoxColumn13.Name = "dataGridViewTextBoxColumn13";
-            this.dataGridViewTextBoxColumn13.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // dataGridViewTextBoxColumn14
-            // 
-            this.dataGridViewTextBoxColumn14.FillWeight = 137.3994F;
-            this.dataGridViewTextBoxColumn14.HeaderText = "目标滴液量";
-            this.dataGridViewTextBoxColumn14.MinimumWidth = 8;
-            this.dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
-            this.dataGridViewTextBoxColumn14.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // dataGridViewTextBoxColumn15
-            // 
-            this.dataGridViewTextBoxColumn15.FillWeight = 145.9742F;
-            this.dataGridViewTextBoxColumn15.HeaderText = "实际滴液量";
-            this.dataGridViewTextBoxColumn15.MinimumWidth = 8;
-            this.dataGridViewTextBoxColumn15.Name = "dataGridViewTextBoxColumn15";
-            this.dataGridViewTextBoxColumn15.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // dataGridViewCheckBoxColumn1
-            // 
-            this.dataGridViewCheckBoxColumn1.FillWeight = 67.48329F;
-            this.dataGridViewCheckBoxColumn1.HeaderText = "手动选瓶";
-            this.dataGridViewCheckBoxColumn1.MinimumWidth = 8;
-            this.dataGridViewCheckBoxColumn1.Name = "dataGridViewCheckBoxColumn1";
-            // 
             // dgv_dyconfiglisg
             // 
             this.dgv_dyconfiglisg.AllowUserToAddRows = false;
@@ -277,38 +184,6 @@
             this.dgv_dyconfiglisg.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dgv_dyconfiglisg.Size = new System.Drawing.Size(1646, 155);
             this.dgv_dyconfiglisg.TabIndex = 50;
-            // 
-            // txt_HandleBathRatio
-            // 
-            this.txt_HandleBathRatio.Font = new System.Drawing.Font("宋体", 14.25F);
-            this.txt_HandleBathRatio.Location = new System.Drawing.Point(115, 32);
-            this.txt_HandleBathRatio.Margin = new System.Windows.Forms.Padding(5);
-            this.txt_HandleBathRatio.Name = "txt_HandleBathRatio";
-            this.txt_HandleBathRatio.Size = new System.Drawing.Size(108, 35);
-            this.txt_HandleBathRatio.TabIndex = 49;
-            this.txt_HandleBathRatio.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // lab_HandleBathRatio
-            // 
-            this.lab_HandleBathRatio.Font = new System.Drawing.Font("宋体", 14.25F);
-            this.lab_HandleBathRatio.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lab_HandleBathRatio.Location = new System.Drawing.Point(39, 25);
-            this.lab_HandleBathRatio.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.lab_HandleBathRatio.Name = "lab_HandleBathRatio";
-            this.lab_HandleBathRatio.Size = new System.Drawing.Size(77, 43);
-            this.lab_HandleBathRatio.TabIndex = 48;
-            this.lab_HandleBathRatio.Text = "浴比:";
-            this.lab_HandleBathRatio.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 38);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(849, 20);
-            this.label1.TabIndex = 52;
-            this.label1.Text = "▼                                                                                " +
-    "  ";
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -364,6 +239,137 @@
             this.dataGridViewTextBoxColumn5.ReadOnly = true;
             this.dataGridViewTextBoxColumn5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
+            // txt_HandleBathRatio
+            // 
+            this.txt_HandleBathRatio.Font = new System.Drawing.Font("宋体", 14.25F);
+            this.txt_HandleBathRatio.Location = new System.Drawing.Point(115, 32);
+            this.txt_HandleBathRatio.Margin = new System.Windows.Forms.Padding(5);
+            this.txt_HandleBathRatio.Name = "txt_HandleBathRatio";
+            this.txt_HandleBathRatio.Size = new System.Drawing.Size(108, 35);
+            this.txt_HandleBathRatio.TabIndex = 49;
+            this.txt_HandleBathRatio.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // lab_HandleBathRatio
+            // 
+            this.lab_HandleBathRatio.Font = new System.Drawing.Font("宋体", 14.25F);
+            this.lab_HandleBathRatio.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.lab_HandleBathRatio.Location = new System.Drawing.Point(39, 25);
+            this.lab_HandleBathRatio.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lab_HandleBathRatio.Name = "lab_HandleBathRatio";
+            this.lab_HandleBathRatio.Size = new System.Drawing.Size(77, 43);
+            this.lab_HandleBathRatio.TabIndex = 48;
+            this.lab_HandleBathRatio.Text = "浴比:";
+            this.lab_HandleBathRatio.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(8, 38);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(849, 20);
+            this.label1.TabIndex = 52;
+            this.label1.Text = "▼                                                                                " +
+    "  ";
+            // 
+            // dataGridViewTextBoxColumn6
+            // 
+            this.dataGridViewTextBoxColumn6.FillWeight = 87.13462F;
+            this.dataGridViewTextBoxColumn6.HeaderText = "序号";
+            this.dataGridViewTextBoxColumn6.MinimumWidth = 8;
+            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.ReadOnly = true;
+            this.dataGridViewTextBoxColumn6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn8
+            // 
+            this.dataGridViewTextBoxColumn8.FillWeight = 104.0983F;
+            this.dataGridViewTextBoxColumn8.HeaderText = "染助剂代码";
+            this.dataGridViewTextBoxColumn8.MinimumWidth = 8;
+            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
+            this.dataGridViewTextBoxColumn8.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn9
+            // 
+            this.dataGridViewTextBoxColumn9.FillWeight = 151.3145F;
+            this.dataGridViewTextBoxColumn9.HeaderText = "染助剂名称";
+            this.dataGridViewTextBoxColumn9.MinimumWidth = 8;
+            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
+            this.dataGridViewTextBoxColumn9.ReadOnly = true;
+            this.dataGridViewTextBoxColumn9.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn10
+            // 
+            this.dataGridViewTextBoxColumn10.FillWeight = 74.84899F;
+            this.dataGridViewTextBoxColumn10.HeaderText = "配方用量";
+            this.dataGridViewTextBoxColumn10.MinimumWidth = 8;
+            this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
+            this.dataGridViewTextBoxColumn10.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn11
+            // 
+            this.dataGridViewTextBoxColumn11.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.Nothing;
+            this.dataGridViewTextBoxColumn11.FillWeight = 79.19863F;
+            this.dataGridViewTextBoxColumn11.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.dataGridViewTextBoxColumn11.HeaderText = "单位";
+            this.dataGridViewTextBoxColumn11.MinimumWidth = 8;
+            this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
+            this.dataGridViewTextBoxColumn11.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // dataGridViewComboBoxColumn1
+            // 
+            this.dataGridViewComboBoxColumn1.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.Nothing;
+            this.dataGridViewComboBoxColumn1.FillWeight = 59.8322F;
+            this.dataGridViewComboBoxColumn1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.dataGridViewComboBoxColumn1.HeaderText = "瓶号";
+            this.dataGridViewComboBoxColumn1.Items.AddRange(new object[] {
+            "5",
+            "6"});
+            this.dataGridViewComboBoxColumn1.MinimumWidth = 8;
+            this.dataGridViewComboBoxColumn1.Name = "dataGridViewComboBoxColumn1";
+            // 
+            // dataGridViewTextBoxColumn12
+            // 
+            this.dataGridViewTextBoxColumn12.FillWeight = 115.9869F;
+            this.dataGridViewTextBoxColumn12.HeaderText = "设定浓度";
+            this.dataGridViewTextBoxColumn12.MinimumWidth = 8;
+            this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
+            this.dataGridViewTextBoxColumn12.ReadOnly = true;
+            this.dataGridViewTextBoxColumn12.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn13
+            // 
+            this.dataGridViewTextBoxColumn13.FillWeight = 121.0969F;
+            this.dataGridViewTextBoxColumn13.HeaderText = "实际浓度";
+            this.dataGridViewTextBoxColumn13.MinimumWidth = 8;
+            this.dataGridViewTextBoxColumn13.Name = "dataGridViewTextBoxColumn13";
+            this.dataGridViewTextBoxColumn13.ReadOnly = true;
+            this.dataGridViewTextBoxColumn13.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn14
+            // 
+            this.dataGridViewTextBoxColumn14.FillWeight = 137.3994F;
+            this.dataGridViewTextBoxColumn14.HeaderText = "目标滴液量";
+            this.dataGridViewTextBoxColumn14.MinimumWidth = 8;
+            this.dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
+            this.dataGridViewTextBoxColumn14.ReadOnly = true;
+            this.dataGridViewTextBoxColumn14.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn15
+            // 
+            this.dataGridViewTextBoxColumn15.FillWeight = 145.9742F;
+            this.dataGridViewTextBoxColumn15.HeaderText = "实际滴液量";
+            this.dataGridViewTextBoxColumn15.MinimumWidth = 8;
+            this.dataGridViewTextBoxColumn15.Name = "dataGridViewTextBoxColumn15";
+            this.dataGridViewTextBoxColumn15.ReadOnly = true;
+            this.dataGridViewTextBoxColumn15.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewCheckBoxColumn1
+            // 
+            this.dataGridViewCheckBoxColumn1.FillWeight = 67.48329F;
+            this.dataGridViewCheckBoxColumn1.HeaderText = "手动选瓶";
+            this.dataGridViewCheckBoxColumn1.MinimumWidth = 8;
+            this.dataGridViewCheckBoxColumn1.Name = "dataGridViewCheckBoxColumn1";
+            // 
             // myDyeingConfiguration
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -387,6 +393,13 @@
         private System.Windows.Forms.Label lab_HandleBathRatio;
         public FADM_Object.MyDataGridView dgv_dyconfiglisg;
         public FADM_Object.MyDataGridView dgv_Dye;
+        public System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
@@ -398,12 +411,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn14;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn15;
         private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn1;
-        public System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
     }
 }

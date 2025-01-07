@@ -23,8 +23,9 @@ namespace SmartDyeing.FADM_Auto
         {
             try
             {
-                //用于标记是否有发送过
-                FADM_Object.Communal._tcpModBusBrew._b_Connect=false;
+                if (0 == Lib_Card.Configure.Parameter.Machine_Opening_Type|| 1 == Lib_Card.Configure.Parameter.Machine_Opening_Type)
+                    //用于标记是否有发送过
+                    FADM_Object.Communal._tcpModBusBrew._b_Connect=false;
                 _i_errCount = 0;
                 //开料机通讯
                 while (true)
@@ -828,6 +829,18 @@ namespace SmartDyeing.FADM_Auto
                                 else
                                 {
                                     continue;
+                                }
+                            }
+
+                            if(FADM_Object.Communal._s_brewVersion == "")
+                            {
+                                //获取开料机版本
+
+                                int[] ia_array_v = new int[2];
+                                int i_state_v = FADM_Object.Communal._tcpModBusBrew.Read(2802, 2, ref ia_array_v);
+                                if (i_state_v != -1)
+                                {
+                                    FADM_Object.Communal._s_brewVersion = ia_array_v[0].ToString("d4")+ ia_array_v[1].ToString("d4");
                                 }
                             }
 
@@ -2973,13 +2986,17 @@ namespace SmartDyeing.FADM_Auto
             catch (Exception ex)
             {
                 FADM_Object.Communal._b_brewErr = true;
+                if (1 == Lib_Card.Configure.Parameter.Machine_Opening_Type)
+                {
+                    FADM_Object.Communal._s_brewVersion = "";
+                }
 
                 if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                    new SmartDyeing.FADM_Object.MyAlarm(ex.Message, "开料机通讯" , false, 1);
+                    new SmartDyeing.FADM_Object.MyAlarm(ex.Message, "开料机通讯", false, 1);
                 else
                     new SmartDyeing.FADM_Object.MyAlarm(ex.Message, "Cutting machine communication", false, 1);
 
-                
+
             }
         }
     }

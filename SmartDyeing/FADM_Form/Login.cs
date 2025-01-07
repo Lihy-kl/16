@@ -1,10 +1,13 @@
-﻿using SmartDyeing.FADM_Object;
+﻿using Newtonsoft.Json.Linq;
+using SmartDyeing.FADM_Object;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
@@ -38,7 +41,7 @@ namespace SmartDyeing.FADM_Form
             SmartDyeing.FADM_Object.Communal._dic_warning.Add("Y轴正限位已通", "The Y-axis positive limit has been activated");
             SmartDyeing.FADM_Object.Communal._dic_warning.Add("Y轴反限位已通", "Y-axis reverse limit has been activated");
             SmartDyeing.FADM_Object.Communal._dic_warning.Add("Y轴准备信号未接通", "Y-axis preparation signal not connected");
-            SmartDyeing.FADM_Object.Communal._dic_warning.Add("Z轴正限位已通", "Z-axis positive limit has been activated");
+            SmartDyeing.FADM_Object.Communal._dic_warning.Add("Z轴反限位已通", "Z-axis positive limit has been activated");
             SmartDyeing.FADM_Object.Communal._dic_warning.Add("X轴矢能未接通", "X-axis vector energy not connected");
             SmartDyeing.FADM_Object.Communal._dic_warning.Add("Y轴矢能未接通", "Y-axis vector energy not connected");
             SmartDyeing.FADM_Object.Communal._dic_warning.Add("气缸上超时", "Cylinder Up timeout");
@@ -81,7 +84,7 @@ namespace SmartDyeing.FADM_Form
             SmartDyeing.FADM_Object.Communal._dic_errModbusNo.Add(74, "Y轴设置回零信号异常。");
             SmartDyeing.FADM_Object.Communal._dic_errModbusNo.Add(75, "接液盘伸出异常");
             SmartDyeing.FADM_Object.Communal._dic_errModbusNo.Add(76, "接液盘收回异常。");
-            SmartDyeing.FADM_Object.Communal._dic_errModbusNo.Add(77, "Z轴正限位异常");
+            SmartDyeing.FADM_Object.Communal._dic_errModbusNo.Add(77, "Z轴反限位异常");
             SmartDyeing.FADM_Object.Communal._dic_errModbusNo.Add(78, "未发现针筒，继续执行请点 是，退出执行请点 否。(等待用户选择)");
             SmartDyeing.FADM_Object.Communal._dic_errModbusNo.Add(79, "未检测到针筒");
             SmartDyeing.FADM_Object.Communal._dic_errModbusNo.Add(80, "Z轴设置回零信号异常。");
@@ -543,6 +546,16 @@ namespace SmartDyeing.FADM_Form
                 //FADM_Object.Communal._fadmSqlserver = new Lib_DataBank.SQLServer(scsb.ToString());
                 //FADM_Object.Communal._fadmSqlserver.Open();
                 //FADM_Object.Communal._fadmSqlserver.Close();
+
+                string s_path2 = Environment.CurrentDirectory + "\\Config\\Config.ini";
+                string url = Lib_File.Ini.GetIni("info", "url", "0", s_path2);
+                FADM_Object.Communal.URL = url;
+
+                //开启线程 校验表和表字段
+                Thread P_thd = new Thread(new ParameterizedThreadStart(verifyTableSuccess));
+                P_thd.IsBackground = false;
+                P_thd.Start(con);
+                
             }
             catch (Exception ex)
             {
@@ -907,7 +920,12 @@ namespace SmartDyeing.FADM_Form
                 int i_d82_82 = 0;
                 this.ComParment(i_coordinate_Balance_X, ref i_d82, ref i_d82_82);
 
-                int i_coordinate_Balance_Y = Convert.ToInt32(Lib_Card.Configure.Parameter.Coordinate_Balance_Y);//天平Y坐标
+                int x = 0;
+                int y = 0;
+                MyModbusFun.CalTarget(0, Lib_Card.Configure.Parameter.Machine_Bottle_Total, ref x, ref y);
+                FADM_Object.Communal._i_Max_Y = y;
+
+                int i_coordinate_Balance_Y = Convert.ToInt32(FADM_Object.Communal._i_Max_Y);//天平Y坐标
                 int i_d84 = 0;
                 int i_d84_84 = 0;
                 this.ComParment(i_coordinate_Balance_Y, ref i_d84, ref i_d84_84);
@@ -1217,7 +1235,7 @@ namespace SmartDyeing.FADM_Form
                 int i_i36_36 = 0;
                 this.ComParment(i_inPut_Z_Corotation, ref i_i36, ref i_i36_36);
 
-                int i_inPut_Z_Reverse = Convert.ToInt32(IOMapping.InPut_Z_Reverse);//Z轴正限位
+                int i_inPut_Z_Reverse = Convert.ToInt32(IOMapping.InPut_Z_Reverse);//Z轴反限位
                 int i_i38 = 0;
                 int i_i38_38 = 0;
                 this.ComParment(i_inPut_Z_Reverse, ref i_i38, ref i_i38_38);
@@ -1570,6 +1588,15 @@ namespace SmartDyeing.FADM_Form
                 string s_port5 = Lib_File.Ini.GetIni("HMI5", "Port", s_path);
                 string s_server6 = Lib_File.Ini.GetIni("HMI6", "IP", s_path);
                 string s_port6 = Lib_File.Ini.GetIni("HMI6", "Port", s_path);
+                string HMIBaClo_IP = Lib_File.Ini.GetIni("HMIBaClo", "IP", s_path);
+                string HMIBaClo_s_port6 = Lib_File.Ini.GetIni("HMIBaClo", "Port", s_path);
+
+                string s_isUseCloth = Lib_File.Ini.GetIni("Setting", "IsUseCloth", "0", s_path);
+                if (s_isUseCloth == "1")
+                {
+                    FADM_Object.Communal._b_isUseCloth = true;
+                }
+
                 if (Lib_Card.Configure.Parameter.Machine_Area1_Type == 3)
                 {
                     FADM_Object.Communal._tcpDyeHMI1 = new HMITCPModBus();
@@ -1612,6 +1639,18 @@ namespace SmartDyeing.FADM_Form
                     FADM_Object.Communal._tcpDyeHMI6._s_ip = s_server6;
                     FADM_Object.Communal._tcpDyeHMI6.Connect();
                 }
+                if (HMIBaClo_IP != "" && HMIBaClo_IP.Length > 0 && HMIBaClo_s_port6 != "" && HMIBaClo_s_port6.Length > 0)
+                {
+                    if (Communal._b_isUseCloth) {
+                        FADM_Object.Communal.HMIBaClo = new HMITCPModBus();
+                        FADM_Object.Communal.HMIBaClo._i_port = Convert.ToInt32(HMIBaClo_s_port6);
+                        FADM_Object.Communal.HMIBaClo._s_ip = HMIBaClo_IP;
+                        FADM_Object.Communal.HMIBaClo.Connect();
+                    }
+                    
+                }
+
+
             }
             catch (Exception ex)
             {
@@ -2284,6 +2323,14 @@ namespace SmartDyeing.FADM_Form
                     Communal._fadmSqlserver.ReviseData("ALTER TABLE abs_wait_list ADD Type int null ");
                     Communal._fadmSqlserver.ReviseData("Update abs_wait_list set Type =0 ");
                 }
+
+
+                dt_head = Communal._fadmSqlserver.GetData("SELECT *FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'dyeing_details' AND COLUMN_NAME = 'No'");
+                if (dt_head.Rows.Count == 0)
+                {
+                    Communal._fadmSqlserver.ReviseData("ALTER TABLE dyeing_details ADD No int null ");
+                }
+
             }
             catch { }
 
@@ -2295,6 +2342,7 @@ namespace SmartDyeing.FADM_Form
             SmartDyeing.FADM_Object.Communal._dic_first_second.Clear();
             SmartDyeing.FADM_Object.Communal._dic_big_small_cup.Clear();
             SmartDyeing.FADM_Object.Communal._dic_cup_index.Clear();
+            Communal._dic_dyecup_index.Clear();
             int i_cupmin = 0;
             int i_cupmax = 0;
             List<int> lis_cup = new List<int>();
@@ -2336,6 +2384,14 @@ namespace SmartDyeing.FADM_Form
                     }
                     if (Lib_Card.Configure.Parameter.Machine_Area1_Type == 3)
                     {
+                        if (Communal._dic_dyecup_index.Count == 0)
+                        {
+                            Communal._dic_dyecup_index.Add(i, 0);
+                        }
+                        else
+                        {
+                            Communal._dic_dyecup_index.Add(i, Communal._dic_dyecup_index.Count);
+                        }
                         SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Add(i);
                         SmartDyeing.FADM_Object.Communal._dic_dyeType.Add(i, Lib_Card.Configure.Parameter.Machine_Area1_DyeType);
                         if(Lib_Card.Configure.Parameter.Machine_Area1_DyeType==2)
@@ -2443,6 +2499,14 @@ namespace SmartDyeing.FADM_Form
                     }
                     if (Lib_Card.Configure.Parameter.Machine_Area2_Type == 3)
                     {
+                        if (Communal._dic_dyecup_index.Count == 0)
+                        {
+                            Communal._dic_dyecup_index.Add(i, 0);
+                        }
+                        else
+                        {
+                            Communal._dic_dyecup_index.Add(i, Communal._dic_dyecup_index.Count);
+                        }
                         SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Add(i);
                         SmartDyeing.FADM_Object.Communal._dic_dyeType.Add(i, Lib_Card.Configure.Parameter.Machine_Area2_DyeType);
                         if (Lib_Card.Configure.Parameter.Machine_Area2_DyeType == 2)
@@ -2553,6 +2617,14 @@ namespace SmartDyeing.FADM_Form
                     }
                     if (Lib_Card.Configure.Parameter.Machine_Area3_Type == 3)
                     {
+                        if (Communal._dic_dyecup_index.Count == 0)
+                        {
+                            Communal._dic_dyecup_index.Add(i, 0);
+                        }
+                        else
+                        {
+                            Communal._dic_dyecup_index.Add(i, Communal._dic_dyecup_index.Count);
+                        }
                         SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Add(i);
                         SmartDyeing.FADM_Object.Communal._dic_dyeType.Add(i, Lib_Card.Configure.Parameter.Machine_Area3_DyeType);
                         if (Lib_Card.Configure.Parameter.Machine_Area3_DyeType == 2)
@@ -2663,6 +2735,14 @@ namespace SmartDyeing.FADM_Form
                     }
                     if (Lib_Card.Configure.Parameter.Machine_Area4_Type == 3)
                     {
+                        if (Communal._dic_dyecup_index.Count == 0)
+                        {
+                            Communal._dic_dyecup_index.Add(i, 0);
+                        }
+                        else
+                        {
+                            Communal._dic_dyecup_index.Add(i, Communal._dic_dyecup_index.Count);
+                        }
                         SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Add(i);
                         SmartDyeing.FADM_Object.Communal._dic_dyeType.Add(i, Lib_Card.Configure.Parameter.Machine_Area4_DyeType);
                         if (Lib_Card.Configure.Parameter.Machine_Area4_DyeType == 2)
@@ -2774,6 +2854,14 @@ namespace SmartDyeing.FADM_Form
                     }
                     if (Lib_Card.Configure.Parameter.Machine_Area5_Type == 3)
                     {
+                        if (Communal._dic_dyecup_index.Count == 0)
+                        {
+                            Communal._dic_dyecup_index.Add(i, 0);
+                        }
+                        else
+                        {
+                            Communal._dic_dyecup_index.Add(i, Communal._dic_dyecup_index.Count);
+                        }
                         SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Add(i);
                         SmartDyeing.FADM_Object.Communal._dic_dyeType.Add(i, Lib_Card.Configure.Parameter.Machine_Area5_DyeType);
                         if (Lib_Card.Configure.Parameter.Machine_Area5_DyeType == 2)
@@ -2883,6 +2971,14 @@ namespace SmartDyeing.FADM_Form
                     }
                     if (Lib_Card.Configure.Parameter.Machine_Area6_Type == 3)
                     {
+                        if (Communal._dic_dyecup_index.Count == 0)
+                        {
+                            Communal._dic_dyecup_index.Add(i, 0);
+                        }
+                        else
+                        {
+                            Communal._dic_dyecup_index.Add(i, Communal._dic_dyecup_index.Count);
+                        }
                         SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Add(i);
                         SmartDyeing.FADM_Object.Communal._dic_dyeType.Add(i, Lib_Card.Configure.Parameter.Machine_Area6_DyeType);
                         if (Lib_Card.Configure.Parameter.Machine_Area6_DyeType == 2)
@@ -3125,6 +3221,78 @@ namespace SmartDyeing.FADM_Form
                                           "UPDATE dye_details SET Cooperate = 0 WHERE Cooperate in(5,6,7,8,9) ;");
             FADM_Object.Communal._fadmSqlserver.ReviseData(
                                           "UPDATE cup_details SET Cooperate = 0  ;");
+            if (Communal._b_isUseCloth) {
+                //跟称布那里对接下
+                //滴料区区域数量
+                int dyCount = 0;
+                int[] ia_values2 = new int[19];
+                //ia_values2[0] 滴料区区域数量
+                int cc = 1;
+                int cc2 = 11;
+
+                if (Lib_Card.Configure.Parameter.Machine_Area1_Type == 2)
+                {
+
+                    ia_values2[cc] = Lib_Card.Configure.Parameter.Machine_Area1_CupMax - Lib_Card.Configure.Parameter.Machine_Area1_CupMin + 1;
+                    ia_values2[cc2] = Lib_Card.Configure.Parameter.Machine_Area1_CupMin;
+                    dyCount++;
+                    Communal.my_lis_dripCupNum.Add(cc, new List<int>() { cc, ia_values2[cc] });
+                    cc = cc + 1;
+                    cc2 = cc2 + 1;
+                }
+                if (Lib_Card.Configure.Parameter.Machine_Area2_Type == 2)
+                {
+                    ia_values2[cc] = Lib_Card.Configure.Parameter.Machine_Area2_CupMax - Lib_Card.Configure.Parameter.Machine_Area2_CupMin + 1;
+                    ia_values2[cc2] = Lib_Card.Configure.Parameter.Machine_Area2_CupMin;
+                    Communal.my_lis_dripCupNum.Add(cc, new List<int>() { Communal.my_lis_dripCupNum.ContainsKey(cc - 1) ? Communal.my_lis_dripCupNum[cc - 1][1] + 1 : 1, Communal.my_lis_dripCupNum.ContainsKey(cc - 1) ? Communal.my_lis_dripCupNum[cc - 1][1] + ia_values2[cc] : ia_values2[cc] });
+                    cc = cc + 1;
+                    cc2 = cc2 + 1;
+                    dyCount++;
+                }
+                if (Lib_Card.Configure.Parameter.Machine_Area3_Type == 2)
+                {
+                    ia_values2[cc] = Lib_Card.Configure.Parameter.Machine_Area3_CupMax - Lib_Card.Configure.Parameter.Machine_Area3_CupMin + 1;
+                    ia_values2[cc2] = Lib_Card.Configure.Parameter.Machine_Area3_CupMin;
+                    Communal.my_lis_dripCupNum.Add(cc, new List<int>() { Communal.my_lis_dripCupNum.ContainsKey(cc - 1) ? Communal.my_lis_dripCupNum[cc - 1][1] + 1 : 1, Communal.my_lis_dripCupNum.ContainsKey(cc - 1) ? Communal.my_lis_dripCupNum[cc - 1][1] + ia_values2[cc] : ia_values2[cc] });
+                    cc = cc + 1;
+                    cc2 = cc2 + 1;
+                    dyCount++;
+                }
+                if (Lib_Card.Configure.Parameter.Machine_Area4_Type == 2)
+                {
+                    ia_values2[cc] = Lib_Card.Configure.Parameter.Machine_Area4_CupMax - Lib_Card.Configure.Parameter.Machine_Area4_CupMin + 1;
+                    ia_values2[cc2] = Lib_Card.Configure.Parameter.Machine_Area4_CupMin;
+                    Communal.my_lis_dripCupNum.Add(cc, new List<int>() { Communal.my_lis_dripCupNum.ContainsKey(cc - 1) ? Communal.my_lis_dripCupNum[cc - 1][1] + 1 : 1, Communal.my_lis_dripCupNum.ContainsKey(cc - 1) ? Communal.my_lis_dripCupNum[cc - 1][1] + ia_values2[cc] : ia_values2[cc] });
+                    cc = cc + 1;
+                    cc2 = cc2 + 1;
+                    dyCount++;
+                }
+                if (Lib_Card.Configure.Parameter.Machine_Area5_Type == 2)
+                {
+                    ia_values2[cc] = Lib_Card.Configure.Parameter.Machine_Area5_CupMax - Lib_Card.Configure.Parameter.Machine_Area5_CupMin + 1;
+                    ia_values2[cc2] = Lib_Card.Configure.Parameter.Machine_Area5_CupMin;
+                    Communal.my_lis_dripCupNum.Add(cc, new List<int>() { Communal.my_lis_dripCupNum.ContainsKey(cc - 1) ? Communal.my_lis_dripCupNum[cc - 1][1] + 1 : 1, Communal.my_lis_dripCupNum.ContainsKey(cc - 1) ? Communal.my_lis_dripCupNum[cc - 1][1] + ia_values2[cc] : ia_values2[cc] });
+                    cc = cc + 1;
+                    cc2 = cc2 + 1;
+                    dyCount++;
+                }
+                if (Lib_Card.Configure.Parameter.Machine_Area6_Type == 2)
+                {
+                    ia_values2[cc] = Lib_Card.Configure.Parameter.Machine_Area6_CupMax - Lib_Card.Configure.Parameter.Machine_Area6_CupMin + 1;
+                    ia_values2[cc2] = Lib_Card.Configure.Parameter.Machine_Area6_CupMin;
+                    Communal.my_lis_dripCupNum.Add(cc, new List<int>() { Communal.my_lis_dripCupNum.ContainsKey(cc - 1) ? Communal.my_lis_dripCupNum[cc - 1][1] + 1 : 1, Communal.my_lis_dripCupNum.ContainsKey(cc - 1) ? Communal.my_lis_dripCupNum[cc - 1][1] + ia_values2[cc] : ia_values2[cc] });
+                    cc = cc + 1;
+                    cc2 = cc2 + 1;
+                    dyCount++;
+                }
+                ia_values2[0] = dyCount; //滴料区区域数量
+                int statte = FADM_Object.Communal.HMIBaClo.Write(10000 + 10100 - 1, ia_values2);
+                if (statte == -1)
+                {
+                    FADM_Form.CustomMessageBox.Show("写入滴液区配置参数表失败", "温馨提示", MessageBoxButtons.OK, false);
+                }
+            }
+            
 
         }
 
@@ -3138,6 +3306,118 @@ namespace SmartDyeing.FADM_Form
                 default:
                     break;
             }
+        }
+
+        //读取云端数据库表字段
+        private void verifyTableSuccess(object oo)
+        {
+            try
+            {
+                string s_path = Environment.CurrentDirectory + "\\DataBase.json";
+                if (!File.Exists(s_path))
+                {
+                    FileStream fs = File.Create(s_path);
+                    fs.Close();
+                }
+                string content = File.ReadAllText(s_path);
+                JObject oldobj = null;
+                if (content.Length > 0)
+                {
+                    oldobj = JObject.Parse(content);
+                }
+                JObject obj = null;
+                Boolean isNetWork = true;
+                IDictionary<string, string> dic_parameters = new Dictionary<string, string>();
+                try
+                {
+                    HttpWebResponse response = HttpUtil.CreatePostHttpResponse(FADM_Object.Communal.URL+"/outer/product/getDyDataTC", dic_parameters, 15000, null, null);
+                    Stream st = response.GetResponseStream();
+                    StreamReader reader = new StreamReader(st);
+                    string s_msg = reader.ReadToEnd();
+                    obj = JObject.Parse(s_msg);
+                    obj = JObject.Parse((string)obj["msg"]);
+                }
+                catch (Exception ex)
+                {
+                    isNetWork = false;
+                    if (oldobj == null)
+                    {
+                        return;
+                    }
+                    obj = oldobj;
+                }
+
+                string updateTime = (string)obj["updateTime"]; //最后一次更新的时间
+                string oldupdateTime = "";
+                if (oldobj != null)
+                {
+                    oldupdateTime = (string)oldobj["updateTime"]; //最后一次更新的时间
+                }
+                if (!isNetWork && ((string)oldobj["verifySuccess"]).Equals("0"))
+                {
+                    disJson(obj, oo);
+                }
+                else
+                {
+
+                    if (updateTime != oldupdateTime)
+                    {
+                        disJson(obj, oo);
+                    }
+                }
+            }
+            catch (WebException ex)
+            {
+
+                //没网读取本地配置文件吧
+                Console.WriteLine(ex.ToString());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
+        private void disJson(JObject obj, Object oo)
+        {
+
+            Console.WriteLine(DateTime.Now);
+            JArray array = (JArray)obj["tableList"];
+            foreach (JObject o in array)
+            {
+                string key = o.Properties().Select(p => p.Name).FirstOrDefault();
+                JArray array2 = (JArray)o[key];
+                string columnStr = "";
+                List<string> list = new List<string>();
+                foreach (JObject o2 in array2)
+                {
+                    string key2 = o2.Properties().Select(p => p.Name).FirstOrDefault();
+                    string value = (string)o2[key2];
+                    columnStr += key2.Replace("[", "").Replace("]", "") + " " + value.Replace("[", "").Replace("]", "");
+                    list.Add(key2.Replace("[", "").Replace("]", "") + "-" + value.Replace("[", "").Replace("]", ""));
+                    columnStr += ",";
+                }
+                columnStr = columnStr.Substring(0, columnStr.Length - 1);
+                Lib_DataBank.SQLServer.SQLServerCon sQLServerCon = (Lib_DataBank.SQLServer.SQLServerCon)oo;
+                //DatabaseUpdater databaseUpdater = new DatabaseUpdater(oo.ToString());
+                DatabaseUpdater databaseUpdater = new DatabaseUpdater(sQLServerCon);
+                databaseUpdater.CreateTableIfNotExists(key, columnStr); //表是否存在
+                foreach (string columnS in list)
+                {
+                    if (columnS.Contains("PRIMARY KEY"))
+                    {
+                        continue;
+                    }
+                    string[] array3 = columnS.Split('-');
+                    databaseUpdater.AddColumnIfNotExists(key, array3[0], array3[1]); //表是否存在
+                    //Console.WriteLine(columnS);
+                    Thread.Sleep(3);
+                }
+            }
+            obj["verifySuccess"] = "1";
+            Console.WriteLine("=======数据库字段全部完成");
+            Console.WriteLine(DateTime.Now);
+            File.WriteAllText(Environment.CurrentDirectory + "\\DataBase.json", obj.ToString());
         }
     }
 }

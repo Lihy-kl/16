@@ -777,8 +777,8 @@ namespace SmartDyeing.FADM_Control
                                     break;
                                 }
                             }
-                            double[] doublesS = new double[sa_arr1.Count()- i_index];
-                            double[] doublesT = new double[sa_arr1.Count()- i_index];
+                            double[] doublesS = new double[sa_arr.Count()- i_index];
+                            double[] doublesT = new double[sa_arr.Count()- i_index];
                             for (int i = 0; i < sa_arr.Count() - i_index; i++)
                             {
                                 doublesS[i] = Convert.ToDouble(sa_arr[i + i_index]);

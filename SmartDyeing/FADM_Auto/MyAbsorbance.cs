@@ -601,7 +601,7 @@ namespace SmartDyeing.FADM_Auto
                                                 string s_assistantType = dt_temp_2.Rows[0]["AssistantType"].ToString();
                                                 string s_realConcentration = dt_temp_2.Rows[0]["RealConcentration"].ToString();
                                                 string s_settingConcentration = dt_temp_2.Rows[0]["SettingConcentration"].ToString();
-                                                string s_compensate = dt_temp_2.Rows[0]["Compensate"].ToString();
+                                                string s_compensate = dt_temp_2.Rows[0]["Compensate"].ToString()==""?"0": dt_temp_2.Rows[0]["Compensate"].ToString();
 
                                                 //活性用水稀释
                                                 if (s_assistantType.Contains("活性"))
@@ -626,7 +626,9 @@ namespace SmartDyeing.FADM_Auto
 
                                                         if (dt_temp_1.Rows[0]["Type"].ToString() == "2")
                                                         {
+                                                            double d_t = d_dosage * Convert.ToDouble(s_compensate);
                                                             d_dosage = d_dosage * (1 + Convert.ToDouble(s_compensate));
+                                                            d_water -= d_t;
                                                             //更新数据库
                                                             s_sql_3 = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + dt_temp_1.Rows[0]["BottleNum"].ToString() + ",SampleDosage='" + string.Format("{0:F3}", d_dosage) + "',AdditivesNum = '" + dt_temp_3.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water) + "',Pulse=0,Cooperate=5,Type =5,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
                                                         }
@@ -709,7 +711,9 @@ namespace SmartDyeing.FADM_Auto
                                                         double d_water = FADM_Object.Communal._d_abs_total - d_dosage;
                                                         if (dt_temp_1.Rows[0]["Type"].ToString() == "2")
                                                         {
+                                                            double d_t = d_dosage * Convert.ToDouble(s_compensate);
                                                             d_dosage = d_dosage * (1 + Convert.ToDouble(s_compensate));
+                                                            d_water -= d_t;
                                                             //更新数据库
                                                             s_sql_3 = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + dt_temp_1.Rows[0]["BottleNum"].ToString() + ",SampleDosage='" + string.Format("{0:F3}", d_dosage) + "',AdditivesNum = '" + dt_temp_3.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water) + "',Pulse=0,Cooperate=5,Type =5,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
                                                         }
@@ -843,7 +847,7 @@ namespace SmartDyeing.FADM_Auto
                                                 string s_assistantType = dt_temp_2.Rows[0]["AssistantType"].ToString();
                                                 string s_realConcentration = dt_temp_2.Rows[0]["RealConcentration"].ToString();
                                                 string s_settingConcentration = dt_temp_2.Rows[0]["SettingConcentration"].ToString();
-                                                string s_compensate = dt_temp_2.Rows[0]["Compensate"].ToString();
+                                                string s_compensate = dt_temp_2.Rows[0]["Compensate"].ToString() == "" ? "0" : dt_temp_2.Rows[0]["Compensate"].ToString();
 
                                                 //活性用水稀释
                                                 if (s_assistantType.Contains("活性"))
@@ -867,7 +871,9 @@ namespace SmartDyeing.FADM_Auto
                                                         double d_water = FADM_Object.Communal._d_abs_total - d_dosage;
                                                         if (dt_temp_1.Rows[0]["Type"].ToString() == "2")
                                                         {
+                                                            double d_t = d_dosage * Convert.ToDouble(s_compensate);
                                                             d_dosage = d_dosage * (1 + Convert.ToDouble(s_compensate));
+                                                            d_water -= d_t;
                                                             //更新数据库
                                                             s_sql_3 = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + dt_temp_1.Rows[0]["BottleNum"].ToString() + ",SampleDosage='" + string.Format("{0:F3}", d_dosage) + "',AdditivesNum = '" + dt_temp_3.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water) + "',Pulse=0,Cooperate=5,Type =5,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
                                                         }
@@ -950,7 +956,9 @@ namespace SmartDyeing.FADM_Auto
                                                         double d_water = FADM_Object.Communal._d_abs_total - d_dosage;
                                                         if (dt_temp_1.Rows[0]["Type"].ToString() == "2")
                                                         {
+                                                            double d_t = d_dosage * Convert.ToDouble(s_compensate);
                                                             d_dosage = d_dosage * (1 + Convert.ToDouble(s_compensate));
+                                                            d_water -= d_t;
                                                             //更新数据库
                                                             s_sql_3 = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + dt_temp_1.Rows[0]["BottleNum"].ToString() + ",SampleDosage='" + string.Format("{0:F3}", d_dosage) + "',AdditivesNum = '" + dt_temp_3.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water) + "',Pulse=0,Cooperate=5,Type =5,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
                                                         }
@@ -1302,7 +1310,7 @@ namespace SmartDyeing.FADM_Auto
                                         string s_assistantType = dt_temp_2.Rows[0]["AssistantType"].ToString();
                                         string s_realConcentration = dt_temp_2.Rows[0]["RealConcentration"].ToString();
                                         string s_settingConcentration = dt_temp_2.Rows[0]["SettingConcentration"].ToString();
-                                        string s_compensate = dt_temp_2.Rows[0]["Compensate"].ToString();
+                                        string s_compensate = dt_temp_2.Rows[0]["Compensate"].ToString() == "" ? "0" : dt_temp_2.Rows[0]["Compensate"].ToString();
 
                                         //活性用水稀释
                                         if (s_assistantType.Contains("活性"))
@@ -1326,7 +1334,9 @@ namespace SmartDyeing.FADM_Auto
                                                 double d_water = FADM_Object.Communal._d_abs_total - d_dosage;
                                                 if (dt_temp_1.Rows[0]["Type"].ToString() == "5")
                                                 {
+                                                    double d_t = d_dosage * Convert.ToDouble(s_compensate);
                                                     d_dosage = d_dosage * (1 + Convert.ToDouble(s_compensate));
+                                                    d_water -= d_t;
                                                     //更新数据库
                                                     s_sql_3 = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + dt_temp_1.Rows[0]["BottleNum"].ToString() + ",SampleDosage='" + string.Format("{0:F3}", d_dosage) + "',AdditivesNum = '" + dt_temp_3.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water) + "',Pulse=0,Cooperate=5,Type =1,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
                                                 }
@@ -1406,7 +1416,9 @@ namespace SmartDyeing.FADM_Auto
                                                 double d_water = FADM_Object.Communal._d_abs_total - d_dosage;
                                                 if (dt_temp_1.Rows[0]["Type"].ToString() == "5")
                                                 {
+                                                    double d_t = d_dosage * Convert.ToDouble(s_compensate);
                                                     d_dosage = d_dosage * (1 + Convert.ToDouble(s_compensate));
+                                                    d_water -= d_t;
                                                     //更新数据库
                                                     s_sql_3 = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + dt_temp_1.Rows[0]["BottleNum"].ToString() + ",SampleDosage='" + string.Format("{0:F3}", d_dosage) + "',AdditivesNum = '" + dt_temp_3.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water) + "',Pulse=0,Cooperate=5,Type =1,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
                                                 }
@@ -2212,12 +2224,14 @@ namespace SmartDyeing.FADM_Auto
                                             {
                                                 if (dt_bottle_detail.Rows[0]["OriginalBottleNum"].ToString() == "0")
                                                 {
-                                                    d_compensate = 0.0;
+                                                    //d_compensate = 0.0;
+                                                    d_compensate = Convert.ToDouble(dt_bottle_detail.Rows[0]["RealConcentration"].ToString());
                                                 }
                                                 else
                                                 {
-                                                    //获取标准曲线，然后计算补偿值
-                                                    s_sql = "SELECT *  FROM assistant_details WHERE AssistantCode = '" + dt_bottle_detail.Rows[0]["AssistantCode"].ToString() + "';";
+                                                    
+                                                        //获取标准曲线，然后计算补偿值
+                                                        s_sql = "SELECT *  FROM assistant_details WHERE AssistantCode = '" + dt_bottle_detail.Rows[0]["AssistantCode"].ToString() + "';";
                                                     DataTable dt_assistant_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
                                                     double d_max_temp = -999;
                                                     if (dt_assistant_details.Rows.Count > 0)
@@ -2238,14 +2252,33 @@ namespace SmartDyeing.FADM_Auto
                                                             }
 
                                                             //计算补偿系数
-                                                            d_compensate=(d_max_temp- d_max) / d_max_temp;
+                                                            //d_compensate=(d_max_temp- d_max) / d_max_temp;
+
+                                                            d_compensate = 1- (d_max_temp - d_max)/d_max_temp;
+
+                                                            d_compensate = Convert.ToDouble(dt_bottle_detail.Rows[0]["RealConcentration"].ToString()) * d_compensate;
+
                                                         }
+                                                    }
+                                                    else
+                                                    {
+                                                        d_compensate = Convert.ToDouble(dt_bottle_detail.Rows[0]["RealConcentration"].ToString());
                                                     }
                                                 }
                                             }
-                                        
-
-                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Update  bottle_details Set Abs = '" + s_xgd + "',L='" + L.ToString() + "',A='" + A.ToString() + "',B='" + B.ToString() + "',Compensate='" + d_compensate.ToString("f3") + "' where BottleNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "';");
+                                            else
+                                            {
+                                                d_compensate = Convert.ToDouble(dt_bottle_detail.Rows[0]["RealConcentration"].ToString());
+                                            }
+                                            //当正常测量时，不再保存修正系数
+                                            if (dt_temp.Rows[0]["Type"].ToString() == "11")
+                                            {
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData("Update  bottle_details Set Abs = '" + s_xgd + "',L='" + L.ToString() + "',A='" + A.ToString() + "',B='" + B.ToString() + "',RealConcentration='" + d_compensate.ToString("f6") + "' where BottleNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "';");
+                                            }
+                                            else
+                                            {
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData("Update  bottle_details Set Abs = '" + s_xgd + "',L='" + L.ToString() + "',A='" + A.ToString() + "',B='" + B.ToString()  + "' where BottleNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "';");
+                                            }
 
                                             //拷贝到历史表
                                             DataTable dt_Temp = FADM_Object.Communal._fadmSqlserver.GetData(

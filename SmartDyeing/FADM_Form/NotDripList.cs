@@ -199,6 +199,7 @@ namespace SmartDyeing.FADM_Form
             }
             catch { }
             FADM_Control.Formula._b_updateWait = true;
+            FADM_Control.Formula_Cloth._b_updateWait = true;
             FormulaHeadShow();
         }
 

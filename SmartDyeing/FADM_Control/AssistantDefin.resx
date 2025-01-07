@@ -121,39 +121,33 @@
   <data name="cbo_AssistantType.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
+  <data name="&gt;&gt;txt_AllowMinColoringConcentration.Name" xml:space="preserve">
+    <value>txt_AllowMinColoringConcentration</value>
+  </data>
   <data name="btn_Delete.Text" xml:space="preserve">
     <value>删除</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="lab_Cost.Size" type="System.Drawing.Size, System.Drawing">
+    <value>203, 23</value>
+  </data>
   <data name="rdo_3.Location" type="System.Drawing.Point, System.Drawing">
     <value>839, 399</value>
-  </data>
-  <data name="&gt;&gt;lab_AssistantType.Name" xml:space="preserve">
-    <value>lab_AssistantType</value>
-  </data>
-  <data name="&gt;&gt;txt_Cost.Parent" xml:space="preserve">
-    <value>grp_AssistantDetails</value>
-  </data>
-  <data name="&gt;&gt;lab_UnitOfAccount.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dgv_Assistant.RowHeadersWidth" type="System.Int32, mscorlib">
     <value>62</value>
   </data>
-  <data name="rdo_4.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;txt_AllowMinColoringConcentration.ZOrder" xml:space="preserve">
+    <value>13</value>
   </data>
-  <data name="lab_AllowMinColoringConcentration.Location" type="System.Drawing.Point, System.Drawing">
-    <value>28, 474</value>
+  <data name="&gt;&gt;lab_AssistantType.Name" xml:space="preserve">
+    <value>lab_AssistantType</value>
   </data>
   <data name="grp_Browse.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 10.5pt</value>
   </data>
-  <data name="lab_UnitOfAccount.Text" xml:space="preserve">
-    <value>计算单位:</value>
-  </data>
-  <data name="lab_AssistantName.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="rdo_2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="cbo_AssistantType.Items4" xml:space="preserve">
     <value>冰染料</value>
@@ -161,14 +155,14 @@
   <data name="cbo_AssistantType.Items" xml:space="preserve">
     <value>酸性染料</value>
   </data>
-  <data name="lab_Intensity.Text" xml:space="preserve">
-    <value>力度:</value>
+  <data name="lab_TermOfValidity.Location" type="System.Drawing.Point, System.Drawing">
+    <value>28, 645</value>
   </data>
   <data name="lab_TermOfValidity.Size" type="System.Drawing.Size, System.Drawing">
     <value>203, 23</value>
   </data>
-  <data name="&gt;&gt;txt_AssistantName.Parent" xml:space="preserve">
-    <value>grp_AssistantDetails</value>
+  <data name="&gt;&gt;txt_AssistantCode.Name" xml:space="preserve">
+    <value>txt_AssistantCode</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="txt_TermOfValidity.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
@@ -180,23 +174,20 @@
   <data name="btn_Insert.Location" type="System.Drawing.Point, System.Drawing">
     <value>262, 891</value>
   </data>
+  <data name="rdo_2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
   <data name="&gt;&gt;dgv_Assistant.Name" xml:space="preserve">
     <value>dgv_Assistant</value>
   </data>
   <data name="&gt;&gt;lab_AllowMinColoringConcentration.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lab_AssistantName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="cbo_AssistantType.Items9" xml:space="preserve">
+    <value>助剂</value>
   </data>
   <data name="lab_AssistantCode.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
-  </data>
-  <data name="&gt;&gt;lab_UnitOfAccount.Name" xml:space="preserve">
-    <value>lab_UnitOfAccount</value>
-  </data>
-  <data name="lab_AssistantType.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
   </data>
   <data name="&gt;&gt;rdo_4.Type" xml:space="preserve">
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -213,20 +204,14 @@
   <data name="&gt;&gt;rdo_1.Parent" xml:space="preserve">
     <value>grp_AssistantDetails</value>
   </data>
-  <data name="&gt;&gt;txt_AllowMinColoringConcentration.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
   <data name="&gt;&gt;lab_Intensity.ZOrder" xml:space="preserve">
     <value>17</value>
   </data>
-  <data name="rdo_1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>277, 399</value>
+  <data name="&gt;&gt;lab_AllowMinColoringConcentration.Name" xml:space="preserve">
+    <value>lab_AllowMinColoringConcentration</value>
   </data>
   <data name="rdo_2.Size" type="System.Drawing.Size, System.Drawing">
     <value>57, 23</value>
-  </data>
-  <data name="lab_AssistantType.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleRight</value>
   </data>
   <data name="txt_AllowMinColoringConcentration.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 4, 3, 4</value>
@@ -261,20 +246,23 @@
   <data name="&gt;&gt;lab_UnitOfAccount.Parent" xml:space="preserve">
     <value>grp_AssistantDetails</value>
   </data>
-  <data name="grp_Browse.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+  <data name="&gt;&gt;btn_Save.Parent" xml:space="preserve">
+    <value>grp_AssistantDetails</value>
   </data>
   <data name="&gt;&gt;dgv_Assistant.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="txt_AllowMaxColoringConcentration.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="cbo_AssistantType.Items7" xml:space="preserve">
+    <value>醋酸染料</value>
+  </data>
   <data name="&gt;&gt;btn_Delete.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;lab_AssistantType.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txt_AssistantCode.Name" xml:space="preserve">
-    <value>txt_AssistantCode</value>
+  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1904, 980</value>
   </data>
   <data name="dgv_Assistant.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -285,14 +273,11 @@
   <data name="&gt;&gt;txt_TermOfValidity.Name" xml:space="preserve">
     <value>txt_TermOfValidity</value>
   </data>
-  <data name="grp_Browse.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 4, 3, 4</value>
+  <data name="&gt;&gt;lab_AssistantName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="lab_Cost.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;grp_AssistantDetails.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="cbo_AssistantType.Items8" xml:space="preserve">
+    <value>直接染料</value>
   </data>
   <data name="&gt;&gt;lab_Cost.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -303,17 +288,11 @@
   <data name="grp_AssistantDetails.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 5, 4, 5</value>
   </data>
-  <data name="lab_AllowMaxColoringConcentration.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 23</value>
-  </data>
   <data name="btn_Save.Location" type="System.Drawing.Point, System.Drawing">
     <value>606, 891</value>
   </data>
-  <data name="lab_AssistantBarCode.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 14.25pt</value>
-  </data>
-  <data name="lab_UnitOfAccount.Location" type="System.Drawing.Point, System.Drawing">
-    <value>24, 399</value>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>AssistantDefin</value>
   </data>
   <data name="lab_UnitOfAccount.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -324,17 +303,11 @@
   <data name="&gt;&gt;btn_Insert.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1904, 980</value>
-  </data>
-  <data name="&gt;&gt;txt_AssistantBarCode.ZOrder" xml:space="preserve">
-    <value>8</value>
+  <data name="grp_Browse.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
   <data name="&gt;&gt;rdo_2.Name" xml:space="preserve">
     <value>rdo_2</value>
-  </data>
-  <data name="&gt;&gt;txt_AssistantCode.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="btn_Save.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -342,20 +315,20 @@
   <data name="rdo_4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 4, 3, 4</value>
   </data>
+  <data name="txt_TermOfValidity.Location" type="System.Drawing.Point, System.Drawing">
+    <value>277, 642</value>
+  </data>
   <data name="rdo_1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 4, 3, 4</value>
   </data>
   <data name="&gt;&gt;lab_AssistantCode.Parent" xml:space="preserve">
     <value>grp_AssistantDetails</value>
   </data>
-  <data name="lab_Intensity.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
   <data name="dgv_Assistant.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="btn_Insert.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 59</value>
+  <data name="lab_AssistantCode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>28, 67</value>
   </data>
   <data name="&gt;&gt;rdo_1.Name" xml:space="preserve">
     <value>rdo_1</value>
@@ -369,9 +342,6 @@
   <data name="lab_AllowMinColoringConcentration.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
   </data>
-  <data name="lab_AssistantCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>28, 67</value>
-  </data>
   <data name="&gt;&gt;dgv_Assistant.Parent" xml:space="preserve">
     <value>grp_Browse</value>
   </data>
@@ -381,20 +351,17 @@
   <data name="cbo_AssistantType.Items2" xml:space="preserve">
     <value>分散染料</value>
   </data>
-  <data name="&gt;&gt;txt_AllowMinColoringConcentration.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lab_AssistantName.Parent" xml:space="preserve">
-    <value>grp_AssistantDetails</value>
+  <data name="&gt;&gt;lab_UnitOfAccount.Name" xml:space="preserve">
+    <value>lab_UnitOfAccount</value>
   </data>
   <data name="lab_Cost.Text" xml:space="preserve">
     <value>每公斤成本:</value>
   </data>
-  <data name="txt_AllowMinColoringConcentration.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="txt_Intensity.Size" type="System.Drawing.Size, System.Drawing">
     <value>945, 29</value>
   </data>
-  <data name="&gt;&gt;txt_AllowMaxColoringConcentration.Name" xml:space="preserve">
-    <value>txt_AllowMaxColoringConcentration</value>
+  <data name="lab_AllowMinColoringConcentration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>28, 474</value>
   </data>
   <data name="txt_AssistantBarCode.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -402,35 +369,41 @@
   <data name="txt_AssistantCode.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 4, 3, 4</value>
   </data>
-  <data name="lab_Intensity.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 33</value>
+  <data name="&gt;&gt;lab_UnitOfAccount.ZOrder" xml:space="preserve">
+    <value>21</value>
   </data>
-  <data name="&gt;&gt;grp_Browse.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;txt_AllowMaxColoringConcentration.Name" xml:space="preserve">
+    <value>txt_AllowMaxColoringConcentration</value>
   </data>
-  <data name="txt_Intensity.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 14.25pt</value>
+  <data name="&gt;&gt;rdo_3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="grp_Browse.Text" xml:space="preserve">
-    <value>浏览</value>
+  <data name="&gt;&gt;txt_AssistantCode.Parent" xml:space="preserve">
+    <value>grp_AssistantDetails</value>
   </data>
   <data name="&gt;&gt;txt_Cost.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;btn_Delete.Parent" xml:space="preserve">
-    <value>grp_AssistantDetails</value>
+  <data name="lab_AssistantType.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
   </data>
-  <data name="txt_AllowMinColoringConcentration.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 14.25pt</value>
+  <data name="lab_Intensity.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
   </data>
   <data name="rdo_4.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
   </data>
-  <data name="&gt;&gt;lab_AssistantCode.Name" xml:space="preserve">
-    <value>lab_AssistantCode</value>
+  <data name="dgv_Assistant.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
   </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>AssistantDefin</value>
+  <data name="grp_AssistantDetails.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
+  </data>
+  <data name="rdo_1.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;txt_AllowMinColoringConcentration.Parent" xml:space="preserve">
+    <value>grp_AssistantDetails</value>
   </data>
   <data name="grp_Browse.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -444,6 +417,9 @@
   <data name="&gt;&gt;txt_Intensity.Parent" xml:space="preserve">
     <value>grp_AssistantDetails</value>
   </data>
+  <data name="&gt;&gt;lab_TermOfValidity.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;txt_TermOfValidity.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -453,11 +429,8 @@
   <data name="rdo_1.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
   </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 5, 4, 5</value>
-  </data>
-  <data name="&gt;&gt;txt_AssistantCode.Parent" xml:space="preserve">
-    <value>grp_AssistantDetails</value>
+  <data name="lab_AssistantBarCode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>24, 155</value>
   </data>
   <data name="dgv_Assistant.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 4, 3, 4</value>
@@ -465,23 +438,17 @@
   <data name="txt_Intensity.Location" type="System.Drawing.Point, System.Drawing">
     <value>277, 725</value>
   </data>
-  <data name="rdo_4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>77, 23</value>
+  <data name="lab_Cost.Location" type="System.Drawing.Point, System.Drawing">
+    <value>28, 728</value>
   </data>
-  <data name="txt_Intensity.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 4, 3, 4</value>
-  </data>
-  <data name="lab_AssistantName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>24, 238</value>
-  </data>
-  <data name="lab_TermOfValidity.Location" type="System.Drawing.Point, System.Drawing">
-    <value>28, 645</value>
-  </data>
-  <data name="&gt;&gt;grp_Browse.Name" xml:space="preserve">
-    <value>grp_Browse</value>
+  <data name="lab_AssistantBarCode.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
   </data>
   <data name="&gt;&gt;txt_Intensity.ZOrder" xml:space="preserve">
     <value>10</value>
+  </data>
+  <data name="rdo_3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="txt_AssistantName.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -492,8 +459,8 @@
   <data name="&gt;&gt;rdo_1.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="&gt;&gt;txt_AssistantBarCode.Name" xml:space="preserve">
-    <value>txt_AssistantBarCode</value>
+  <data name="&gt;&gt;btn_Save.Name" xml:space="preserve">
+    <value>btn_Save</value>
   </data>
   <data name="&gt;&gt;btn_Delete.Name" xml:space="preserve">
     <value>btn_Delete</value>
@@ -501,32 +468,32 @@
   <data name="grp_AssistantDetails.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="lab_Cost.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleRight</value>
+  <data name="grp_Browse.Text" xml:space="preserve">
+    <value>浏览</value>
   </data>
   <data name="txt_AssistantName.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;btn_Save.Name" xml:space="preserve">
-    <value>btn_Save</value>
+  <data name="&gt;&gt;grp_AssistantDetails.Name" xml:space="preserve">
+    <value>grp_AssistantDetails</value>
   </data>
   <data name="txt_Cost.Size" type="System.Drawing.Size, System.Drawing">
     <value>945, 29</value>
   </data>
-  <data name="lab_AssistantType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 23</value>
-  </data>
   <data name="cbo_AssistantType.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Popup</value>
   </data>
-  <data name="txt_AllowMinColoringConcentration.Location" type="System.Drawing.Point, System.Drawing">
-    <value>277, 476</value>
+  <data name="&gt;&gt;rdo_2.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
-  <data name="&gt;&gt;lab_AssistantType.Parent" xml:space="preserve">
-    <value>grp_AssistantDetails</value>
+  <data name="lab_AssistantCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>203, 33</value>
   </data>
-  <data name="&gt;&gt;lab_AllowMinColoringConcentration.Name" xml:space="preserve">
-    <value>lab_AllowMinColoringConcentration</value>
+  <data name="lab_AssistantBarCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>203, 23</value>
+  </data>
+  <data name="&gt;&gt;txt_AssistantCode.ZOrder" xml:space="preserve">
+    <value>15</value>
   </data>
   <data name="lab_AssistantCode.Text" xml:space="preserve">
     <value>染助剂代码:</value>
@@ -540,11 +507,11 @@
   <data name="btn_Save.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 4, 3, 4</value>
   </data>
+  <data name="dgv_Assistant.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 20</value>
+  </data>
   <data name="&gt;&gt;rdo_4.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="lab_Intensity.Location" type="System.Drawing.Point, System.Drawing">
-    <value>28, 806</value>
   </data>
   <data name="&gt;&gt;grp_AssistantDetails.Parent" xml:space="preserve">
     <value>$this</value>
@@ -555,14 +522,14 @@
   <data name="&gt;&gt;lab_AssistantBarCode.ZOrder" xml:space="preserve">
     <value>24</value>
   </data>
-  <data name="&gt;&gt;btn_Save.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="txt_AllowMinColoringConcentration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>945, 29</value>
   </data>
-  <data name="rdo_4.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 14.25pt</value>
+  <data name="&gt;&gt;lab_AssistantType.Parent" xml:space="preserve">
+    <value>grp_AssistantDetails</value>
   </data>
-  <data name="lab_TermOfValidity.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleRight</value>
+  <data name="lab_AssistantName.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
   <data name="lab_Intensity.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -570,8 +537,8 @@
   <data name="&gt;&gt;btn_Insert.Name" xml:space="preserve">
     <value>btn_Insert</value>
   </data>
-  <data name="rdo_1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>37, 23</value>
+  <data name="txt_Intensity.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
   </data>
   <data name="&gt;&gt;rdo_3.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -579,11 +546,8 @@
   <data name="btn_Delete.Location" type="System.Drawing.Point, System.Drawing">
     <value>956, 891</value>
   </data>
-  <data name="lab_AssistantBarCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>24, 155</value>
-  </data>
-  <data name="&gt;&gt;lab_AssistantBarCode.Name" xml:space="preserve">
-    <value>lab_AssistantBarCode</value>
+  <data name="&gt;&gt;rdo_1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="lab_TermOfValidity.Text" xml:space="preserve">
     <value>有效期限(小时):</value>
@@ -591,20 +555,17 @@
   <data name="&gt;&gt;lab_AssistantBarCode.Parent" xml:space="preserve">
     <value>grp_AssistantDetails</value>
   </data>
-  <data name="cbo_AssistantType.Items1" xml:space="preserve">
-    <value>活性染料</value>
+  <data name="&gt;&gt;lab_UnitOfAccount.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txt_AllowMaxColoringConcentration.Parent" xml:space="preserve">
+    <value>grp_AssistantDetails</value>
   </data>
   <data name="grp_AssistantDetails.Text" xml:space="preserve">
     <value>染助剂基本资料</value>
   </data>
-  <data name="&gt;&gt;lab_AllowMinColoringConcentration.ZOrder" xml:space="preserve">
-    <value>20</value>
-  </data>
-  <data name="grp_AssistantDetails.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 5, 4, 5</value>
-  </data>
-  <data name="cbo_AssistantType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>945, 27</value>
+  <data name="&gt;&gt;lab_AssistantType.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -612,17 +573,26 @@
   <data name="btn_Delete.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
   </data>
-  <data name="lab_AssistantType.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="cbo_AssistantType.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
   </data>
-  <data name="lab_AssistantBarCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 23</value>
+  <data name="&gt;&gt;txt_Cost.ZOrder" xml:space="preserve">
+    <value>9</value>
   </data>
   <data name="rdo_3.Size" type="System.Drawing.Size, System.Drawing">
     <value>57, 23</value>
   </data>
+  <data name="rdo_2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 4, 3, 4</value>
+  </data>
   <data name="&gt;&gt;lab_AllowMaxColoringConcentration.ZOrder" xml:space="preserve">
     <value>19</value>
+  </data>
+  <data name="lab_TermOfValidity.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="lab_AssistantName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>24, 238</value>
   </data>
   <data name="grp_Browse.Size" type="System.Drawing.Size, System.Drawing">
     <value>580, 975</value>
@@ -630,41 +600,41 @@
   <data name="&gt;&gt;lab_AssistantName.Name" xml:space="preserve">
     <value>lab_AssistantName</value>
   </data>
-  <data name="&gt;&gt;btn_Insert.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="grp_Browse.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 4, 3, 4</value>
   </data>
-  <data name="btn_Insert.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 14.25pt</value>
+  <data name="&gt;&gt;lab_AssistantName.Parent" xml:space="preserve">
+    <value>grp_AssistantDetails</value>
   </data>
-  <data name="txt_AssistantBarCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>945, 29</value>
+  <data name="rdo_4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 23</value>
   </data>
   <data name="lab_TermOfValidity.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="&gt;&gt;btn_Save.Parent" xml:space="preserve">
-    <value>grp_AssistantDetails</value>
+  <data name="&gt;&gt;txt_AllowMinColoringConcentration.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="rdo_1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="&gt;&gt;txt_AssistantBarCode.Parent" xml:space="preserve">
+    <value>grp_AssistantDetails</value>
+  </data>
   <data name="lab_AssistantName.Size" type="System.Drawing.Size, System.Drawing">
     <value>203, 23</value>
   </data>
-  <data name="lab_AllowMinColoringConcentration.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+  <data name="&gt;&gt;grp_AssistantDetails.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="lab_AllowMaxColoringConcentration.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
   </data>
-  <data name="dgv_Assistant.Size" type="System.Drawing.Size, System.Drawing">
-    <value>574, 951</value>
+  <data name="&gt;&gt;grp_Browse.Name" xml:space="preserve">
+    <value>grp_Browse</value>
   </data>
   <data name="&gt;&gt;rdo_2.Parent" xml:space="preserve">
     <value>grp_AssistantDetails</value>
-  </data>
-  <data name="lab_UnitOfAccount.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
   </data>
   <data name="lab_AssistantType.Text" xml:space="preserve">
     <value>染助剂种类:</value>
@@ -672,14 +642,17 @@
   <data name="lab_AssistantType.Location" type="System.Drawing.Point, System.Drawing">
     <value>24, 320</value>
   </data>
-  <data name="&gt;&gt;grp_AssistantDetails.Name" xml:space="preserve">
-    <value>grp_AssistantDetails</value>
+  <data name="rdo_1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>37, 23</value>
   </data>
-  <data name="txt_AssistantName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>277, 235</value>
+  <data name="lab_UnitOfAccount.Text" xml:space="preserve">
+    <value>计算单位:</value>
   </data>
   <data name="grp_AssistantDetails.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 10.5pt</value>
+  </data>
+  <data name="txt_Intensity.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 4, 3, 4</value>
   </data>
   <data name="lab_AllowMaxColoringConcentration.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 562</value>
@@ -690,80 +663,89 @@
   <data name="&gt;&gt;lab_AllowMaxColoringConcentration.Parent" xml:space="preserve">
     <value>grp_AssistantDetails</value>
   </data>
-  <data name="btn_Save.Text" xml:space="preserve">
-    <value>存档</value>
-  </data>
   <data name="txt_Cost.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 4, 3, 4</value>
   </data>
-  <data name="&gt;&gt;txt_AssistantBarCode.Parent" xml:space="preserve">
-    <value>grp_AssistantDetails</value>
+  <data name="btn_Save.Text" xml:space="preserve">
+    <value>存档</value>
   </data>
   <data name="rdo_4.Text" xml:space="preserve">
     <value>Water</value>
   </data>
-  <data name="&gt;&gt;lab_TermOfValidity.Type" xml:space="preserve">
+  <data name="&gt;&gt;lab_AssistantBarCode.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="lab_AssistantBarCode.Text" xml:space="preserve">
-    <value>染助剂条形码:</value>
+  <data name="cbo_AssistantType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>945, 27</value>
   </data>
-  <data name="txt_AllowMaxColoringConcentration.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+  <data name="lab_Intensity.Text" xml:space="preserve">
+    <value>力度:</value>
+  </data>
+  <data name="txt_AssistantName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>277, 235</value>
   </data>
   <data name="&gt;&gt;lab_Cost.Name" xml:space="preserve">
     <value>lab_Cost</value>
   </data>
-  <data name="rdo_3.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="lab_Intensity.Size" type="System.Drawing.Size, System.Drawing">
+    <value>203, 33</value>
   </data>
   <data name="txt_AssistantCode.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="txt_Cost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>277, 808</value>
+  <data name="lab_AssistantType.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
   </data>
   <data name="&gt;&gt;lab_Intensity.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="txt_AssistantName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>945, 29</value>
+  <data name="btn_Insert.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="lab_AssistantName.Text" xml:space="preserve">
+    <value>染助剂名称:</value>
+  </data>
+  <data name="dgv_Assistant.Size" type="System.Drawing.Size, System.Drawing">
+    <value>574, 951</value>
   </data>
   <data name="&gt;&gt;cbo_AssistantType.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="txt_TermOfValidity.Location" type="System.Drawing.Point, System.Drawing">
-    <value>277, 642</value>
+  <data name="btn_Insert.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
   </data>
   <data name="&gt;&gt;rdo_3.Parent" xml:space="preserve">
     <value>grp_AssistantDetails</value>
   </data>
-  <data name="lab_UnitOfAccount.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleRight</value>
-  </data>
-  <data name="lab_AssistantCode.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="lab_AllowMinColoringConcentration.Size" type="System.Drawing.Size, System.Drawing">
     <value>203, 33</value>
+  </data>
+  <data name="rdo_4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="lab_AssistantCode.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
   </data>
+  <data name="&gt;&gt;rdo_3.Name" xml:space="preserve">
+    <value>rdo_3</value>
+  </data>
   <data name="&gt;&gt;txt_Intensity.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;txt_Cost.ZOrder" xml:space="preserve">
-    <value>9</value>
+  <data name="txt_AllowMinColoringConcentration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>277, 476</value>
   </data>
-  <data name="&gt;&gt;txt_AssistantCode.ZOrder" xml:space="preserve">
-    <value>15</value>
+  <data name="lab_AssistantType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>203, 23</value>
   </data>
-  <data name="&gt;&gt;txt_TermOfValidity.Parent" xml:space="preserve">
-    <value>grp_AssistantDetails</value>
+  <data name="lab_UnitOfAccount.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
   </data>
   <data name="txt_TermOfValidity.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
-  <data name="&gt;&gt;txt_Cost.Name" xml:space="preserve">
-    <value>txt_Cost</value>
+  <data name="&gt;&gt;txt_Cost.Parent" xml:space="preserve">
+    <value>grp_AssistantDetails</value>
   </data>
   <data name="txt_AssistantBarCode.Location" type="System.Drawing.Point, System.Drawing">
     <value>277, 152</value>
@@ -771,29 +753,35 @@
   <data name="cbo_AssistantType.Location" type="System.Drawing.Point, System.Drawing">
     <value>277, 318</value>
   </data>
-  <data name="&gt;&gt;txt_AssistantBarCode.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="lab_UnitOfAccount.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;txt_AssistantName.Parent" xml:space="preserve">
+    <value>grp_AssistantDetails</value>
   </data>
   <data name="txt_AssistantBarCode.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
   </data>
-  <data name="&gt;&gt;lab_AssistantType.ZOrder" xml:space="preserve">
-    <value>22</value>
+  <data name="txt_Cost.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
   </data>
   <data name="&gt;&gt;lab_TermOfValidity.Parent" xml:space="preserve">
     <value>grp_AssistantDetails</value>
   </data>
-  <data name="grp_AssistantDetails.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1312, 965</value>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
+  </data>
+  <data name="lab_AssistantName.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="txt_AllowMinColoringConcentration.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_AssistantBarCode.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 4, 3, 4</value>
   </data>
-  <data name="lab_AssistantBarCode.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="cbo_AssistantType.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 14.25pt</value>
+  <data name="lab_AssistantType.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
   <data name="&gt;&gt;txt_TermOfValidity.ZOrder" xml:space="preserve">
     <value>11</value>
@@ -804,32 +792,32 @@
   <data name="&gt;&gt;rdo_4.Parent" xml:space="preserve">
     <value>grp_AssistantDetails</value>
   </data>
-  <data name="lab_Cost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>28, 728</value>
+  <data name="txt_Cost.Location" type="System.Drawing.Point, System.Drawing">
+    <value>277, 808</value>
   </data>
-  <data name="lab_AssistantName.Text" xml:space="preserve">
-    <value>染助剂名称:</value>
+  <data name="cbo_AssistantType.Items1" xml:space="preserve">
+    <value>活性染料</value>
   </data>
   <data name="&gt;&gt;lab_AllowMinColoringConcentration.Parent" xml:space="preserve">
     <value>grp_AssistantDetails</value>
   </data>
+  <data name="txt_AssistantName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>945, 29</value>
+  </data>
   <data name="lab_AllowMinColoringConcentration.Text" xml:space="preserve">
     <value>补偿系数:</value>
-  </data>
-  <data name="lab_AssistantName.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 14.25pt</value>
-  </data>
-  <data name="lab_AllowMinColoringConcentration.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 33</value>
   </data>
   <data name="txt_AllowMaxColoringConcentration.Size" type="System.Drawing.Size, System.Drawing">
     <value>945, 29</value>
   </data>
-  <data name="&gt;&gt;txt_AllowMinColoringConcentration.Name" xml:space="preserve">
-    <value>txt_AllowMinColoringConcentration</value>
+  <data name="lab_Intensity.Location" type="System.Drawing.Point, System.Drawing">
+    <value>28, 806</value>
   </data>
   <data name="&gt;&gt;txt_AssistantName.ZOrder" xml:space="preserve">
     <value>14</value>
+  </data>
+  <data name="&gt;&gt;txt_Cost.Name" xml:space="preserve">
+    <value>txt_Cost</value>
   </data>
   <data name="&gt;&gt;lab_AssistantCode.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -843,20 +831,20 @@
   <data name="&gt;&gt;txt_AssistantName.Name" xml:space="preserve">
     <value>txt_AssistantName</value>
   </data>
-  <data name="&gt;&gt;rdo_4.Name" xml:space="preserve">
-    <value>rdo_4</value>
+  <data name="lab_UnitOfAccount.Location" type="System.Drawing.Point, System.Drawing">
+    <value>24, 399</value>
   </data>
-  <data name="txt_AllowMaxColoringConcentration.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 14.25pt</value>
+  <data name="rdo_1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>277, 399</value>
   </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 12</value>
   </data>
-  <data name="&gt;&gt;rdo_2.ZOrder" xml:space="preserve">
-    <value>5</value>
+  <data name="&gt;&gt;btn_Insert.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
-  <data name="&gt;&gt;rdo_3.Name" xml:space="preserve">
-    <value>rdo_3</value>
+  <data name="&gt;&gt;txt_AssistantBarCode.ZOrder" xml:space="preserve">
+    <value>8</value>
   </data>
   <data name="txt_AssistantCode.Location" type="System.Drawing.Point, System.Drawing">
     <value>277, 69</value>
@@ -864,11 +852,14 @@
   <data name="&gt;&gt;grp_Browse.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
+  <data name="&gt;&gt;txt_AssistantBarCode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;lab_TermOfValidity.ZOrder" xml:space="preserve">
     <value>18</value>
   </data>
-  <data name="&gt;&gt;rdo_3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="lab_AllowMaxColoringConcentration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>203, 23</value>
   </data>
   <data name="txt_AssistantName.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 4, 3, 4</value>
@@ -879,8 +870,8 @@
   <data name="txt_Intensity.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
-  <data name="&gt;&gt;grp_AssistantDetails.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;txt_TermOfValidity.Parent" xml:space="preserve">
+    <value>grp_AssistantDetails</value>
   </data>
   <data name="&gt;&gt;cbo_AssistantType.Name" xml:space="preserve">
     <value>cbo_AssistantType</value>
@@ -894,23 +885,23 @@
   <data name="&gt;&gt;rdo_2.Type" xml:space="preserve">
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;txt_AllowMaxColoringConcentration.ZOrder" xml:space="preserve">
-    <value>12</value>
+  <data name="grp_AssistantDetails.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1312, 965</value>
   </data>
   <data name="txt_TermOfValidity.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
   </data>
-  <data name="rdo_2.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="rdo_4.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_AllowMinColoringConcentration.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="lab_Cost.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 23</value>
+  <data name="&gt;&gt;txt_AllowMaxColoringConcentration.ZOrder" xml:space="preserve">
+    <value>12</value>
   </data>
-  <data name="rdo_2.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="lab_AssistantName.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
   </data>
   <data name="&gt;&gt;lab_AllowMaxColoringConcentration.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -924,11 +915,20 @@
   <data name="cbo_AssistantType.Items6" xml:space="preserve">
     <value>其他染料</value>
   </data>
+  <data name="txt_AllowMaxColoringConcentration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>277, 559</value>
+  </data>
+  <data name="lab_Cost.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
   <data name="&gt;&gt;lab_Cost.Parent" xml:space="preserve">
     <value>grp_AssistantDetails</value>
   </data>
-  <data name="&gt;&gt;txt_AllowMaxColoringConcentration.Parent" xml:space="preserve">
-    <value>grp_AssistantDetails</value>
+  <data name="&gt;&gt;lab_AllowMinColoringConcentration.ZOrder" xml:space="preserve">
+    <value>20</value>
+  </data>
+  <data name="txt_AllowMaxColoringConcentration.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
   </data>
   <data name="&gt;&gt;lab_Intensity.Parent" xml:space="preserve">
     <value>grp_AssistantDetails</value>
@@ -936,11 +936,14 @@
   <data name="rdo_2.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="rdo_1.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+  <data name="&gt;&gt;lab_AssistantCode.Name" xml:space="preserve">
+    <value>lab_AssistantCode</value>
   </data>
   <data name="txt_AssistantCode.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
+  </data>
+  <data name="txt_AssistantCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>945, 29</value>
   </data>
   <data name="lab_AssistantBarCode.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -951,8 +954,8 @@
   <data name="rdo_3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 4, 3, 4</value>
   </data>
-  <data name="&gt;&gt;btn_Save.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="lab_AssistantBarCode.Text" xml:space="preserve">
+    <value>染助剂条形码:</value>
   </data>
   <data name="lab_Intensity.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -960,14 +963,14 @@
   <data name="cbo_AssistantType.Items3" xml:space="preserve">
     <value>硫化染料</value>
   </data>
-  <data name="dgv_Assistant.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 20</value>
+  <data name="&gt;&gt;btn_Delete.Parent" xml:space="preserve">
+    <value>grp_AssistantDetails</value>
   </data>
   <data name="btn_Insert.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 4, 3, 4</value>
   </data>
-  <data name="btn_Insert.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+  <data name="txt_AssistantBarCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>945, 29</value>
   </data>
   <data name="rdo_4.Location" type="System.Drawing.Point, System.Drawing">
     <value>1130, 399</value>
@@ -975,35 +978,38 @@
   <data name="&gt;&gt;btn_Insert.Parent" xml:space="preserve">
     <value>grp_AssistantDetails</value>
   </data>
-  <data name="lab_TermOfValidity.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 14.25pt</value>
+  <data name="lab_AllowMinColoringConcentration.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
   </data>
-  <data name="txt_Intensity.Size" type="System.Drawing.Size, System.Drawing">
-    <value>945, 29</value>
+  <data name="&gt;&gt;grp_Browse.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;txt_AllowMinColoringConcentration.Parent" xml:space="preserve">
-    <value>grp_AssistantDetails</value>
+  <data name="&gt;&gt;txt_AssistantCode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="txt_AllowMaxColoringConcentration.Location" type="System.Drawing.Point, System.Drawing">
-    <value>277, 559</value>
+  <data name="&gt;&gt;btn_Save.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;grp_AssistantDetails.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="btn_Save.Size" type="System.Drawing.Size, System.Drawing">
     <value>97, 59</value>
   </data>
-  <data name="&gt;&gt;lab_AssistantBarCode.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;txt_AssistantBarCode.Name" xml:space="preserve">
+    <value>txt_AssistantBarCode</value>
   </data>
-  <data name="lab_AssistantName.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleRight</value>
+  <data name="&gt;&gt;lab_AssistantBarCode.Name" xml:space="preserve">
+    <value>lab_AssistantBarCode</value>
   </data>
   <data name="&gt;&gt;lab_AssistantCode.ZOrder" xml:space="preserve">
     <value>25</value>
   </data>
-  <data name="&gt;&gt;lab_UnitOfAccount.ZOrder" xml:space="preserve">
-    <value>21</value>
+  <data name="lab_AssistantBarCode.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="&gt;&gt;rdo_1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="lab_TermOfValidity.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_AssistantCode.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1011,23 +1017,23 @@
   <data name="btn_Delete.Size" type="System.Drawing.Size, System.Drawing">
     <value>97, 59</value>
   </data>
-  <data name="txt_AssistantCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>945, 29</value>
+  <data name="&gt;&gt;rdo_4.Name" xml:space="preserve">
+    <value>rdo_4</value>
   </data>
-  <data name="rdo_2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 4, 3, 4</value>
+  <data name="&gt;&gt;lab_AssistantType.ZOrder" xml:space="preserve">
+    <value>22</value>
   </data>
-  <data name="dgv_Assistant.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
-    <value>Vertical</value>
+  <data name="&gt;&gt;btn_Save.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;dgv_Assistant.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="txt_Cost.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 14.25pt</value>
+  <data name="lab_Cost.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
   </data>
-  <data name="cbo_AssistantType.Items7" xml:space="preserve">
-    <value>助剂</value>
+  <data name="btn_Insert.Size" type="System.Drawing.Size, System.Drawing">
+    <value>97, 59</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

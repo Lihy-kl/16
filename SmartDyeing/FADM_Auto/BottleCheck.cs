@@ -302,7 +302,405 @@ namespace SmartDyeing.FADM_Auto
 
             }
         }
-        
+
+        /// <summary>
+        /// ABS针检流程
+        /// </summary>
+        /// <param name="i_bottleNo">瓶号</param>
+        /// <returns>0：成功；-1：失败</returns>
+        /// <exception cref="Exception"></exception>
+        private int MyABSDripCheckProcess(int i_bottleNo, bool b_drip, int i_lowSrart)
+        {
+            int i_xStart = 0, i_yStart = 0;
+            if (Communal._b_isGetWetClamp)
+            {
+                //3.放夹子
+                FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "放夹子启动");
+                //int i_xStart = 0, i_yStart = 0;
+                //计算湿布布夹子位置
+                MyModbusFun.CalTarget(9, 0, ref i_xStart, ref i_yStart);
+                int i_mRes2 = MyModbusFun.PutClamp(i_xStart, i_yStart);
+                if (-2 == i_mRes2)
+                    throw new Exception("收到退出消息");
+                FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "放夹子完成");
+            }
+
+            if (Communal._b_isGetDryClamp)
+            {
+                //3.放夹子
+                FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "放夹子启动");
+                //int i_xStart = 0, i_yStart = 0;
+                //计算干布夹子位置
+                MyModbusFun.CalTarget(8, 0, ref i_xStart, ref i_yStart);
+                int iMRes1 = MyModbusFun.PutClamp(i_xStart, i_yStart);
+                if (-2 == iMRes1)
+                    throw new Exception("收到退出消息");
+                FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "放夹子完成");
+            }
+
+            if (!Communal._b_isGetSyringes)
+            {
+                FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "拿针筒启动");
+                //计算针筒位置
+                MyModbusFun.CalTarget(11, 0, ref i_xStart, ref i_yStart);
+                int i_mRes3 = MyModbusFun.GetSyringes(i_xStart, i_yStart);
+                if (-2 == i_mRes3)
+                    throw new Exception("收到退出消息");
+                FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "拿针筒完成");
+            }
+
+            int i_res = 0;
+        label11:
+            //移动到母液瓶
+            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找1号(吸光度杯)");
+            FADM_Object.Communal._i_optBottleNum = i_bottleNo;
+            int i_mRes = MyModbusFun.TargetMove(10, 1, 0);
+            if (-2 == i_mRes)
+                throw new Exception("收到退出消息");
+            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达1号(吸光度杯)");
+
+            //抽液
+            DataTable dt_bottle_details = FADM_Object.Communal._fadmSqlserver.GetData(
+                "SELECT SyringeType FROM bottle_details WHERE BottleNum = '" + i_bottleNo + "';");
+
+
+            if ("小针筒" == Convert.ToString(dt_bottle_details.Rows[0][0]) || "Little Syringe" == Convert.ToString(dt_bottle_details.Rows[0][0]))
+            {
+                int i_pulse = Lib_Card.Configure.Parameter.Correcting_S_Pulse + 10000;
+                //label2:
+                try
+                {
+                    //多抽5000脉冲用于到天平滴掉
+                    int i_totalPulse = i_pulse - Lib_Card.Configure.Parameter.Other_Z_BackPulse + 5000;
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抽液启动(" + i_totalPulse + ")");
+
+                    //1号吸光度杯停止搅拌
+                    int[] values = new int[1];
+                    values[0] = 1;
+                    if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                    {
+                        FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                    }
+
+                    FADM_Object.Communal._tcpModBusAbs.Write(806, values);
+
+                    i_mRes = MyModbusFun.AbsExtract(i_totalPulse, true, 0); //抽液 排空
+
+                    values[0] = 0;
+                    if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                    {
+                        FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                    }
+
+                    FADM_Object.Communal._tcpModBusAbs.Write(806, values);
+
+                    if (-2 == i_mRes)
+                        throw new Exception("收到退出消息");
+                }
+                catch (Exception ex)
+                {
+                    if ("未发现针筒" == ex.Message)
+                    {
+                        //滴液时针检处理
+                        if (i_lowSrart == 2)
+                        {
+                            FADM_Object.MyAlarm myAlarm;
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                myAlarm = new FADM_Object.MyAlarm(i_bottleNo + "号母液瓶未找到针筒，是否继续执行?(继续寻找请点是，退出针检请点否)", "普通针检", true, 1);
+                            else
+                                myAlarm = new FADM_Object.MyAlarm("The syringe for bottle " + i_bottleNo + " was not found.Do you want to continue? " +
+                                    "(To continue searching, please click Yes.To exit the needle test, please click No)", "Regular needle examination", true, 1);
+                            while (true)
+                            {
+                                if (0 != myAlarm._i_alarm_Choose)
+                                    break;
+                                Thread.Sleep(1);
+                            }
+
+                            if (1 == myAlarm._i_alarm_Choose)
+                                goto label11;
+                            else
+                                return -3;
+                        }
+                        //后处理时针检处理
+                        else if (false == b_drip)
+                        {
+                            return -3;
+                        }
+                        else
+                        {
+                            return -2;
+                        }
+                    }
+                    else
+                        throw;
+
+                }
+            }
+            else
+            {
+                int i_pulse = Lib_Card.Configure.Parameter.Correcting_B_Pulse + 10000;
+                //FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抽液启动(" + i_pulse + ")");
+                //label3:
+                try
+                {
+                    //多抽5000脉冲用于到天平滴掉
+                    int i_totalPulse = i_pulse - Lib_Card.Configure.Parameter.Other_Z_BackPulse + 5000;
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抽液启动(" + i_totalPulse + ")");
+                    //1号吸光度杯停止搅拌
+                    int[] values = new int[1];
+                    values[0] = 1;
+                    if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                    {
+                        FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                    }
+
+                    FADM_Object.Communal._tcpModBusAbs.Write(806, values);
+
+                    i_mRes = MyModbusFun.AbsExtract(i_totalPulse, true, 1);
+
+                    values[0] = 0;
+                    if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                    {
+                        FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                    }
+
+                    FADM_Object.Communal._tcpModBusAbs.Write(806, values);
+
+                    if (-2 == i_mRes)
+                        throw new Exception("收到退出消息");
+                }
+                catch (Exception ex)
+                {
+
+                    if ("未发现针筒" == ex.Message)
+                    {
+                        if (false == b_drip || i_lowSrart == 2)
+                        {
+                            FADM_Object.MyAlarm myAlarm;
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                myAlarm = new FADM_Object.MyAlarm(i_bottleNo + "号母液瓶未找到针筒，是否继续执行?(继续寻找请点是，退出针检请点否)", "普通针检", true, 1);
+                            else
+                                myAlarm = new FADM_Object.MyAlarm("The syringe for bottle " + i_bottleNo + " was not found.Do you want to continue? " +
+                                    "(To continue searching, please click Yes.To exit the needle test, please click No)", "Regular needle examination", true, 1);
+
+                            while (true)
+                            {
+                                if (0 != myAlarm._i_alarm_Choose)
+                                    break;
+                                Thread.Sleep(1);
+                            }
+
+                            if (1 == myAlarm._i_alarm_Choose)
+                                goto label11;
+                            else
+                                //throw new Exception("收到退出消息");
+                                return -3;
+                        }
+                        else
+                        {
+                            return -2;
+                        }
+
+                    }
+                    else
+                        throw;
+
+
+                }
+            }
+
+
+
+
+            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抽液完成");
+
+            //移动到天平位
+
+            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找天平位");
+
+            //判断是否异常
+            FADM_Object.Communal.BalanceState("针检");
+
+            //调零
+            //Lib_SerialPort.Balance.METTLER.bZeroSign = true;
+
+            i_mRes = MyModbusFun.TargetMove(2, 0, 0);
+            if (-2 == i_mRes)
+                throw new Exception("收到退出消息");
+
+            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达天平位");
+
+
+
+
+            if ("小针筒" == Convert.ToString(dt_bottle_details.Rows[0][0]) || "Little Syringe" == Convert.ToString(dt_bottle_details.Rows[0][0]))
+            {
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注废液5000到天平启动(" + (Lib_Card.Configure.Parameter.Correcting_S_Pulse + 10000).ToString() + ")");
+                i_mRes = MyModbusFun.Shove(Lib_Card.Configure.Parameter.Correcting_S_Pulse + 10000, 0);//天平位注液5000
+                if (-2 == i_mRes)
+                    throw new Exception("收到退出消息");
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注废液5000完成");
+
+            }
+            else
+            {
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注废液5000到天平启动(" + (Lib_Card.Configure.Parameter.Correcting_B_Pulse + 10000).ToString() + ")");
+                i_mRes = MyModbusFun.Shove(Lib_Card.Configure.Parameter.Correcting_B_Pulse + 10000, 1);//天平位注液5000
+                if (-2 == i_mRes)
+                    throw new Exception("收到退出消息");
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注废液5000完成");
+            }
+
+            //记录初始天平读数
+            double d_balanceValue0 = FADM_Object.Communal.SteBalance();
+            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平读数：" + d_balanceValue0);
+
+            //注液
+            //Lib_Card.ADT8940A1.Module.Infusion.Infusion infusion = new Lib_Card.ADT8940A1.Module.Infusion.Infusion_Up();
+            if ("小针筒" == Convert.ToString(dt_bottle_details.Rows[0][0]) || "Little Syringe" == Convert.ToString(dt_bottle_details.Rows[0][0]))
+            {
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注液启动(10000)");
+
+                i_mRes = MyModbusFun.Shove(10000, 0);//z轴走到-10000的位置
+                if (-2 == i_mRes)
+                    throw new Exception("收到退出消息");
+            }
+            else
+            {
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注液启动(10000)");
+                i_mRes = MyModbusFun.Shove(10000, 1);//z轴走到-10000的位置
+
+                if (-2 == i_mRes)
+                    throw new Exception("收到退出消息");
+            }
+            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "注液完成");
+
+            //读取天平数据
+            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数启动");
+            double d_blRRead = FADM_Object.Communal.SteBalance();
+            double d_blWeight = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", d_blRRead - d_balanceValue0)) : Convert.ToDouble(string.Format("{0:F3}", d_blRRead - d_balanceValue0));
+            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数：" + d_blRRead + ",实际重量：" + d_blWeight);
+
+
+            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                "UPDATE bottle_details SET CurrentWeight = CurrentWeight - " + d_blWeight + " WHERE BottleNum = '" + i_bottleNo + "';");
+
+
+
+            //验证
+            int i_adjust = 0;
+
+
+
+            if ("小针筒" == Convert.ToString(dt_bottle_details.Rows[0][0]) || "Little Syringe" == Convert.ToString(dt_bottle_details.Rows[0][0]))
+            {
+                if (0 < d_blWeight)
+                    i_adjust = Convert.ToInt32(Lib_Card.Configure.Parameter.Correcting_S_Pulse / d_blWeight);
+
+                int i_rPulse = 10000 - Convert.ToInt32(i_adjust * Lib_Card.Configure.Parameter.Correcting_S_Weight);
+                if (0 >= i_rPulse)
+                    i_rPulse = 0;
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "验证启动(" + i_rPulse + ")");
+                i_mRes = MyModbusFun.Shove(i_rPulse, 0);
+                if (-2 == i_mRes)
+                    throw new Exception("收到退出消息");
+            }
+            else
+            {
+                if (0 < d_blWeight)
+                    i_adjust = Convert.ToInt32(Lib_Card.Configure.Parameter.Correcting_B_Pulse / d_blWeight);
+                int i_rPulse = 10000 - Convert.ToInt32(i_adjust * Lib_Card.Configure.Parameter.Correcting_B_Weight);
+                if (0 >= i_rPulse)
+                    i_rPulse = 0;
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "验证启动(" + i_rPulse + ")");
+                i_mRes = MyModbusFun.Shove(i_rPulse, 1);
+                if (-2 == i_mRes)
+                    throw new Exception("收到退出消息");
+            }
+
+            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "验证完成");
+
+
+            //读取验证重量
+            Thread thread = new Thread(() =>
+            {
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数启动");
+
+                double d_blReRead = FADM_Object.Communal.SteBalance();
+                double d_blRWeight = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", d_blReRead - d_blRRead)) : Convert.ToDouble(string.Format("{0:F3}", d_blReRead - d_blRRead));
+
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数：" + d_blReRead + ",实际重量：" + d_blRWeight);
+
+                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                    "UPDATE bottle_details SET CurrentWeight = CurrentWeight - '" + d_blRWeight + "' WHERE BottleNum = '" + i_bottleNo + "';");
+                double d_blRErr = 0;
+                if ("小针筒" == Convert.ToString(dt_bottle_details.Rows[0][0]) || "Little Syringe" == Convert.ToString(dt_bottle_details.Rows[0][0]))
+                {
+                    d_blRErr = Convert.ToDouble(string.Format("{0:F3}", d_blRWeight - Lib_Card.Configure.Parameter.Correcting_S_Weight));
+                }
+                else
+                {
+                    d_blRErr = Convert.ToDouble(string.Format("{0:F3}", d_blRWeight - Lib_Card.Configure.Parameter.Correcting_B_Weight));
+                }
+
+                d_blRErr = d_blRErr < 0 ? -d_blRErr : d_blRErr;
+
+                if (d_blRErr > Lib_Card.Configure.Parameter.Other_AErr_Correcting)
+                {
+                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                        "UPDATE bottle_details SET AdjustSuccess = 0 WHERE BottleNum = '" + i_bottleNo + "';");
+                    i_res = -1;
+                }
+                else
+                {
+                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                        "UPDATE bottle_details SET  LastAdjustWeight = CurrentAdjustWeight, " +
+                        "CurrentAdjustWeight =" + d_blWeight + ", " + "AdjustValue = " + i_adjust + ", " +
+                        "AdjustSuccess = 1 WHERE BottleNum = '" + i_bottleNo + "';");
+
+
+                    i_res = 0;
+                }
+
+            });
+            thread.Start();
+            //移动到母液瓶
+
+            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找放针母液瓶");
+            FADM_Object.Communal._i_optBottleNum = i_bottleNo;
+            i_mRes = MyModbusFun.TargetMove(11, 0, 0);
+            if (-2 == i_mRes)
+                throw new Exception("收到退出消息");
+
+            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达放针母液瓶");
+
+            //放瓶
+
+            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand",  "放针启动");
+
+            if ("小针筒" == Convert.ToString(dt_bottle_details.Rows[0][0]) || "Little Syringe" == Convert.ToString(dt_bottle_details.Rows[0][0]))
+            {
+                i_mRes = MyModbusFun.Put(0);
+                if (-2 == i_mRes)
+                    throw new Exception("收到退出消息");
+            }
+            else
+            {
+                i_mRes = MyModbusFun.Put(1);
+                if (-2 == i_mRes)
+                    throw new Exception("收到退出消息");
+            }
+            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand",  "放针完成");
+            Communal._b_isGetSyringes = false;
+            thread.Join();
+            //复位
+            //Lib_SerialPort.Balance.METTLER.bReSetSign = true;
+            return i_res;
+
+        }
+
+
         /// <summary>
         /// 针检流程
         /// </summary>
@@ -650,7 +1048,15 @@ namespace SmartDyeing.FADM_Auto
         public int MyDripCheck(int i_bottleNo, bool b_drip, int i_lowSrart)
         {
             FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", i_bottleNo + "号母液瓶针检启动");
-            int iRes = MyDripCheckProcess(i_bottleNo, b_drip, i_lowSrart);
+            int iRes;
+            if (i_bottleNo == 999)
+            {
+                iRes = MyABSDripCheckProcess(i_bottleNo, b_drip, i_lowSrart);
+            }
+            else
+            {
+                iRes = MyDripCheckProcess(i_bottleNo, b_drip, i_lowSrart);
+            }
             if (-2 == iRes)
             {
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", i_bottleNo + "号母液瓶未发现针筒，针检退出");

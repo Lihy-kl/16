@@ -149,9 +149,6 @@
   <data name="lab_TechnologyName.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
   </data>
-  <data name="cbo_TechnologyName.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
   <data name="txt_ProportionOrTime.Size" type="System.Drawing.Size, System.Drawing">
     <value>202, 29</value>
   </data>
@@ -221,11 +218,14 @@
   <data name="btn_Save.Location" type="System.Drawing.Point, System.Drawing">
     <value>167, 268</value>
   </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>DyeingStep</value>
+  <data name="&gt;&gt;lab_Rate.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="lab_ProportionOrTime.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="cbo_TechnologyName.Items14" xml:space="preserve">
+    <value>测PH</value>
   </data>
   <data name="&gt;&gt;txt_StepNum.Parent" xml:space="preserve">
     <value>$this</value>
@@ -270,6 +270,9 @@
   <data name="lab_Rev.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 231</value>
   </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>DyeingStep</value>
+  </data>
   <data name="txt_Rate.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
   </data>
@@ -313,7 +316,7 @@
     <value>冷行</value>
   </data>
   <data name="cbo_TechnologyName.Items13" xml:space="preserve">
-    <value />
+    <value>取小样</value>
   </data>
   <data name="lab_Rate.Text" xml:space="preserve">
     <value>温度速率:</value>
@@ -335,9 +338,6 @@
   </data>
   <data name="cbo_TechnologyName.Items9" xml:space="preserve">
     <value>搅拌</value>
-  </data>
-  <data name="&gt;&gt;lab_TechnologyName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;btn_Save.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -396,8 +396,8 @@
   <data name="&gt;&gt;txt_ProportionOrTime.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;lab_Rate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="cbo_TechnologyName.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
   </data>
   <data name="&gt;&gt;txt_Rate.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -426,6 +426,9 @@
   <data name="&gt;&gt;lab_Rev.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="&gt;&gt;txt_StepNum.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
   <data name="lab_Temp.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
   </data>
@@ -443,6 +446,9 @@
   </data>
   <data name="lab_TechnologyName.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="&gt;&gt;lab_Rate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="lab_StepNum.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -465,14 +471,11 @@
   <data name="&gt;&gt;lab_ProportionOrTime.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lab_Rate.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="txt_StepNum.Location" type="System.Drawing.Point, System.Drawing">
     <value>198, 18</value>
   </data>
-  <data name="&gt;&gt;txt_StepNum.ZOrder" xml:space="preserve">
-    <value>9</value>
+  <data name="&gt;&gt;lab_TechnologyName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="lab_Rev.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -554,5 +557,8 @@
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
+  </metadata>
+  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>en</value>
   </metadata>
 </root>

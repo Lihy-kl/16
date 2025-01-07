@@ -243,6 +243,12 @@
         /// 抓手关闭
         /// </summary>
         public static int OutPut_Tongs { get; set; }
+
+        /// <summary>
+        /// 抓手关闭
+        /// </summary>
+        public static int OutPut_TongsOff { get; set; }
+
         #endregion
 
         #region 接液盘

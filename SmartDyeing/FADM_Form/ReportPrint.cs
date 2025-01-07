@@ -39,7 +39,7 @@ namespace SmartDyeing.FADM_Form
             //FADM_Object.Communal._fadmSqlserver.Open();
             //FADM_Object.Communal._fadmSqlserver.Close();
 
-            string s_sql = "SELECT AssistantCode,AssistantName,FormulaDosage as SettingConcentration,RealConcentration,UnitOfAccount  FROM history_details WHERE BatchName = '" + _s_batchName + "' And CupNum = '" + _s_cupNum + "';";
+            string s_sql = "SELECT AssistantCode,AssistantName,SettingConcentration,FormulaDosage as RealConcentration,UnitOfAccount  FROM history_details WHERE BatchName = '" + _s_batchName + "' And CupNum = '" + _s_cupNum + "';";
 
             DataTable dt = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
             reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("Details", dt));

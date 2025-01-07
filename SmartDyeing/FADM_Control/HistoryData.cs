@@ -1671,5 +1671,30 @@ namespace SmartDyeing.FADM_Control
                 }
             }
         }
+
+        private void btn_Record_Print_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dgv_DropRecord.CurrentRow != null)
+                {
+                    if (dgv_DropRecord.SelectedRows.Count > 0)
+                    {
+                        string s_formulaCode = dgv_DropRecord.CurrentRow.Cells[0].Value.ToString();
+                        string s_versionNum = dgv_DropRecord.CurrentRow.Cells[1].Value.ToString();
+                        string s_finishTime = dgv_DropRecord.CurrentRow.Cells[2].Value.ToString();
+                        string s_cupNum = dgv_DropRecord.CurrentRow.Cells[3].Value.ToString();
+                        string s_batch = dgv_DropRecord.CurrentRow.Cells[4].Value.ToString();
+
+                        FADM_Form.ReportPrint r = new ReportPrint(s_batch, s_cupNum);
+                        r.ShowDialog();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.Message, "btn_Record_Print_Click", MessageBoxButtons.OK, true);
+            }
+        }
     }
 }

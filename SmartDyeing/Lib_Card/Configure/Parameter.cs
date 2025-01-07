@@ -469,6 +469,152 @@
         /// </summary>
         public static int Machine_Area6_Big { get; set; }
 
+
+        /// <summary>
+        /// 干布区域1类型
+        /// 0：无
+        /// 1：有
+        /// </summary>
+        public static int Machine_AreaDryCloth1_Type { get; set; }
+
+
+        /// <summary>
+        /// 干布区域1行数
+        /// </summary>
+        public static int Machine_AreaDryCloth1_Row { get; set; }
+        
+
+        /// <summary>
+        /// 干布区域1最小杯号
+        /// </summary>
+        public static int Machine_AreaDryCloth1_CupMin { get; set; }
+
+        /// <summary>
+        /// 干布区域1最大杯号
+        /// </summary>
+        public static int Machine_AreaDryCloth1_CupMax { get; set; }
+
+
+        /// <summary>
+        /// 干布区域2类型
+        /// 0：无
+        /// 1：有
+        /// </summary>
+        public static int Machine_AreaDryCloth2_Type { get; set; }
+
+
+        /// <summary>
+        /// 干布区域2行数
+        /// </summary>
+        public static int Machine_AreaDryCloth2_Row { get; set; }
+
+
+        /// <summary>
+        /// 干布区域2最小杯号
+        /// </summary>
+        public static int Machine_AreaDryCloth2_CupMin { get; set; }
+
+        /// <summary>
+        /// 干布区域2最大杯号
+        /// </summary>
+        public static int Machine_AreaDryCloth2_CupMax { get; set; }
+
+        /// <summary>
+        /// 干布区域3类型
+        /// 0：无
+        /// 1：有
+        /// </summary>
+        public static int Machine_AreaDryCloth3_Type { get; set; }
+
+
+        /// <summary>
+        /// 干布区域3行数
+        /// </summary>
+        public static int Machine_AreaDryCloth3_Row { get; set; }
+
+
+        /// <summary>
+        /// 干布区域3最小杯号
+        /// </summary>
+        public static int Machine_AreaDryCloth3_CupMin { get; set; }
+
+        /// <summary>
+        /// 干布区域3最大杯号
+        /// </summary>
+        public static int Machine_AreaDryCloth3_CupMax { get; set; }
+
+        /// <summary>
+        /// 湿布区域1类型
+        /// 0：无
+        /// 1：有
+        /// </summary>
+        public static int Machine_AreaWetCloth1_Type { get; set; }
+
+
+        /// <summary>
+        /// 湿布区域1行数
+        /// </summary>
+        public static int Machine_AreaWetCloth1_Row { get; set; }
+
+
+        /// <summary>
+        /// 湿布区域1最小杯号
+        /// </summary>
+        public static int Machine_AreaWetCloth1_CupMin { get; set; }
+
+        /// <summary>
+        /// 湿布区域1最大杯号
+        /// </summary>
+        public static int Machine_AreaWetCloth1_CupMax { get; set; }
+
+        /// <summary>
+        /// 湿布区域2类型
+        /// 0：无
+        /// 1：有
+        /// </summary>
+        public static int Machine_AreaWetCloth2_Type { get; set; }
+
+
+        /// <summary>
+        /// 湿布区域2行数
+        /// </summary>
+        public static int Machine_AreaWetCloth2_Row { get; set; }
+
+
+        /// <summary>
+        /// 湿布区域2最小杯号
+        /// </summary>
+        public static int Machine_AreaWetCloth2_CupMin { get; set; }
+
+        /// <summary>
+        /// 湿布区域2最大杯号
+        /// </summary>
+        public static int Machine_AreaWetCloth2_CupMax { get; set; }
+
+        /// <summary>
+        /// 湿布区域3类型
+        /// 0：无
+        /// 1：有
+        /// </summary>
+        public static int Machine_AreaWetCloth3_Type { get; set; }
+
+
+        /// <summary>
+        /// 湿布区域3行数
+        /// </summary>
+        public static int Machine_AreaWetCloth3_Row { get; set; }
+
+
+        /// <summary>
+        /// 湿布区域3最小杯号
+        /// </summary>
+        public static int Machine_AreaWetCloth3_CupMin { get; set; }
+
+        /// <summary>
+        /// 湿布区域3最大杯号
+        /// </summary>
+        public static int Machine_AreaWetCloth3_CupMax { get; set; }
+
         #endregion
 
         #region 回零参数
@@ -894,6 +1040,16 @@
         /// 湿布夹子Y轴坐标
         /// </summary>
         public static int Coordinate_WetClamp_Y { get; set; }
+
+        /// <summary>
+        /// 抽液针筒X轴坐标
+        /// </summary>
+        public static int Coordinate_Syringes_X { get; set; }
+
+        /// <summary>
+        /// 抽液针筒Y轴坐标
+        /// </summary>
+        public static int Coordinate_Syringes_Y { get; set; }
 
         /// <summary>
         /// 吸光度1号杯X轴坐标
@@ -1643,6 +1799,127 @@
         public static int Coordinate_CupCover36_IntervalY { get; set; }
 
         /// <summary>
+        /// 干布区域1最小配液杯X轴坐标
+        /// </summary>
+        public static int Coordinate_AreaDryCloth1_X { get; set; }
+
+        /// <summary>
+        /// 干布区域1最小配液杯Y轴坐标
+        /// </summary>
+        public static int Coordinate_AreaDryCloth1_Y { get; set; }
+
+        /// <summary>
+        /// 干布区域1X轴间隔
+        /// </summary>
+        public static int Coordinate_AreaDryCloth1_IntervalX { get; set; }
+
+        /// <summary>
+        /// 干布区域1Y轴间隔
+        /// </summary>
+        public static int Coordinate_AreaDryCloth1_IntervalY { get; set; }
+
+        /// <summary>
+        /// 干布区域2最小配液杯X轴坐标
+        /// </summary>
+        public static int Coordinate_AreaDryCloth2_X { get; set; }
+
+        /// <summary>
+        /// 干布区域2最小配液杯Y轴坐标
+        /// </summary>
+        public static int Coordinate_AreaDryCloth2_Y { get; set; }
+
+        /// <summary>
+        /// 干布区域2X轴间隔
+        /// </summary>
+        public static int Coordinate_AreaDryCloth2_IntervalX { get; set; }
+
+        /// <summary>
+        /// 干布区域2Y轴间隔
+        /// </summary>
+        public static int Coordinate_AreaDryCloth2_IntervalY { get; set; }
+
+        /// <summary>
+        /// 干布区域3最小配液杯X轴坐标
+        /// </summary>
+        public static int Coordinate_AreaDryCloth3_X { get; set; }
+
+        /// <summary>
+        /// 干布区域3最小配液杯Y轴坐标
+        /// </summary>
+        public static int Coordinate_AreaDryCloth3_Y { get; set; }
+
+        /// <summary>
+        /// 干布区域3X轴间隔
+        /// </summary>
+        public static int Coordinate_AreaDryCloth3_IntervalX { get; set; }
+
+        /// <summary>
+        /// 干布区域3Y轴间隔
+        /// </summary>
+        public static int Coordinate_AreaDryCloth3_IntervalY { get; set; }
+
+        /// <summary>
+        /// 湿布区域1最小配液杯X轴坐标
+        /// </summary>
+        public static int Coordinate_AreaWetCloth1_X { get; set; }
+
+        /// <summary>
+        /// 湿布区域1最小配液杯Y轴坐标
+        /// </summary>
+        public static int Coordinate_AreaWetCloth1_Y { get; set; }
+
+        /// <summary>
+        /// 湿布区域1X轴间隔
+        /// </summary>
+        public static int Coordinate_AreaWetCloth1_IntervalX { get; set; }
+
+        /// <summary>
+        /// 湿布区域1Y轴间隔
+        /// </summary>
+        public static int Coordinate_AreaWetCloth1_IntervalY { get; set; }
+
+        /// <summary>
+        /// 湿布区域2最小配液杯X轴坐标
+        /// </summary>
+        public static int Coordinate_AreaWetCloth2_X { get; set; }
+
+        /// <summary>
+        /// 湿布区域2最小配液杯Y轴坐标
+        /// </summary>
+        public static int Coordinate_AreaWetCloth2_Y { get; set; }
+
+        /// <summary>
+        /// 湿布区域2X轴间隔
+        /// </summary>
+        public static int Coordinate_AreaWetCloth2_IntervalX { get; set; }
+
+        /// <summary>
+        /// 湿布区域2Y轴间隔
+        /// </summary>
+        public static int Coordinate_AreaWetCloth2_IntervalY { get; set; }
+
+        /// <summary>
+        /// 湿布区域3最小配液杯X轴坐标
+        /// </summary>
+        public static int Coordinate_AreaWetCloth3_X { get; set; }
+
+        /// <summary>
+        /// 湿布区域3最小配液杯Y轴坐标
+        /// </summary>
+        public static int Coordinate_AreaWetCloth3_Y { get; set; }
+
+        /// <summary>
+        /// 湿布区域3X轴间隔
+        /// </summary>
+        public static int Coordinate_AreaWetCloth3_IntervalX { get; set; }
+
+        /// <summary>
+        /// 湿布区域3Y轴间隔
+        /// </summary>
+        public static int Coordinate_AreaWetCloth3_IntervalY { get; set; }
+
+
+        /// <summary>
         /// 杯盖区域行数
         /// </summary>
         public static int Machine_AreaCover_Row { get; set; }
@@ -1815,6 +2092,11 @@
         /// 加水系数
         /// </summary>
         public static double Other_Coefficient_Water { get; set; }
+
+        /// <summary>
+        /// 加水系数(小值)
+        /// </summary>
+        public static double Other_Coefficient_Water_Low { get; set; }
 
 
         /// <summary>

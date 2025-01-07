@@ -78,5 +78,38 @@ namespace Lib_Log
 
             };
         }
+
+        public static void writeLogExceptionHMI(string s) //异常信息写入日志
+        {
+            lock (m_object)
+            {
+                //加锁 防止多用户同时写入
+                //获取异常信息的类、行号、异常 信息
+                string exceptionStr = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss:fff") + "  " + s;
+                //自己定义一个存储日志文件的位置
+                string sFilePath = Environment.CurrentDirectory + "\\Logs";
+                string sFileName = DateTime.Now.ToString("yyyy-MM-dd") + "_HMI.log";
+                sFileName = sFilePath + @"\\" + sFileName; //文件
+                if (!Directory.Exists(sFilePath))
+                {
+                    Directory.CreateDirectory(sFilePath);
+                }
+                FileStream fs;
+                StreamWriter sw;
+                if (System.IO.File.Exists(sFileName))
+                {
+                    fs = new FileStream(sFileName, FileMode.Append, FileAccess.Write);
+                }
+                else
+                {
+                    fs = new FileStream(sFileName, FileMode.Create, FileAccess.Write);
+                }
+                sw = new StreamWriter(fs);
+                sw.WriteLine(exceptionStr);
+                sw.Close();
+                fs.Close();
+
+            };
+        }
     }
 }

@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Data;
 using System.Windows.Forms.VisualStyles;
 using SmartDyeing.FADM_Control;
+using System.Drawing;
 
 namespace SmartDyeing.FADM_Object
 {
@@ -16,6 +17,7 @@ namespace SmartDyeing.FADM_Object
             switch (keyData)
             {
                 case Keys.Enter:
+                    
                     this.EndEdit();
                     if (this.Name == "dgv_FormulaData")
                     {
@@ -52,6 +54,10 @@ namespace SmartDyeing.FADM_Object
 
                                         }
                                     }
+                                    //把手动选瓶去掉
+                                    DataGridViewCheckBoxCell dc = (DataGridViewCheckBoxCell)this[10, this.CurrentRow.Index];
+                                    dc.Value = 0;
+
                                 }
                             }
                             i_col = 0;
@@ -174,21 +180,56 @@ namespace SmartDyeing.FADM_Object
                                         string UnitOfAccount = dt_assistant.Rows[0]["UnitOfAccount"].ToString();
 
                                         DataGridViewComboBoxCell dd = (DataGridViewComboBoxCell)this[4, i_row];
-                                        if (UnitOfAccount.Equals("%"))
+
+                                        if (FADM_Object.Communal._b_isUnitChange)
                                         {
-                                            lis_bottleNum.Add("%");
+                                            if (UnitOfAccount.Equals("%"))
+                                            {
+                                                lis_bottleNum.Add("%");
+                                                dd.Value = null;
+                                                dd.DataSource = lis_bottleNum;
+                                                dd.Value = lis_bottleNum[0].ToString();
+                                            }
+                                            else if (UnitOfAccount.Equals("g/l"))
+                                            {
+                                                if (dd.Value == null)
+                                                {
+                                                    lis_bottleNum.Add("g/l");
+                                                    lis_bottleNum.Add("%");
+                                                    dd.DataSource = lis_bottleNum;
+                                                    dd.Value = lis_bottleNum[0].ToString();
+                                                }
+                                                else
+                                                {
+                                                    if (dd.Value.Equals("%"))
+                                                    {
+                                                        lis_bottleNum.Add("%");
+                                                        lis_bottleNum.Add("g/l");
+                                                        dd.DataSource = lis_bottleNum;
+                                                        dd.Value = lis_bottleNum[0].ToString();
+                                                    }
+
+
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                lis_bottleNum.Add(UnitOfAccount);
+                                                dd.DataSource = lis_bottleNum;
+                                                dd.Value = lis_bottleNum[0].ToString();
+                                            }
                                         }
-                                        else if (UnitOfAccount.Equals("g/l"))
-                                        {
-                                            lis_bottleNum.Add("g/l");
-                                            lis_bottleNum.Add("%");
-                                        }
-                                        else
-                                        {
+                                        else {
                                             lis_bottleNum.Add(UnitOfAccount);
+                                            dd.DataSource = lis_bottleNum;
+                                            dd.Value = lis_bottleNum[0].ToString();
                                         }
-                                        dd.DataSource = lis_bottleNum;
-                                        dd.Value = lis_bottleNum[0].ToString();
+                                        
+                                        
+
+
+                                       
 
                                     }
                                 }
@@ -329,7 +370,7 @@ namespace SmartDyeing.FADM_Object
                     }
                     else if (this.Name.Contains("dgv_dyconfiglisg")) //工艺步骤这里跳表格要判断下 不同工艺
                     {  //处理工艺步骤填写内容
-                        Console.WriteLine(1);
+                        //Console.WriteLine(1);
                         int i_col = this.CurrentCell.ColumnIndex;  //列
                         int i_row = this.CurrentCell.RowIndex;  //行
                         ;
@@ -501,22 +542,44 @@ namespace SmartDyeing.FADM_Object
                         {
                             //最后一行最后一个格子结束
                             //this.Enabled = false;
+                            if (Communal._b_isUseCloth)
+                            {
+                                string s_temp = this.Name.Split('_')[2];
+                                FADM_Control.myDyeingConfiguration s = FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp) - 1).ToString()];
+                                if (s.dgv_Dye.Rows.Count != 0)
+                                {
+                                    s.dgv_Dye.Enabled = true;
+                                    s.dgv_Dye.CurrentCell = s.dgv_Dye[1, 0];
+                                    s.dgv_Dye.Focus();
+                                }
+                                else
+                                {
+                                    //没有需要填写加A加B 就跳到下一个工艺选择 com上
+                                    //==0个
+                                    myDyeSelect d = FADM_Control.Formula_Cloth.myDyeSelectList[Convert.ToInt32(s_temp)];
+                                    d.dy_type_comboBox1.Focus();
+                                }
+                            }
+                            else {
+                                string s_temp = this.Name.Split('_')[2];
+                                FADM_Control.myDyeingConfiguration s = FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp) - 1).ToString()];
+                                if (s.dgv_Dye.Rows.Count != 0)
+                                {
+                                    s.dgv_Dye.Enabled = true;
+                                    s.dgv_Dye.CurrentCell = s.dgv_Dye[1, 0];
+                                    s.dgv_Dye.Focus();
+                                }
+                                else
+                                {
+                                    //没有需要填写加A加B 就跳到下一个工艺选择 com上
+                                    //==0个
+                                    myDyeSelect d = FADM_Control.Formula.myDyeSelectList[Convert.ToInt32(s_temp)];
+                                    d.dy_type_comboBox1.Focus();
+                                }
 
-                            string s_temp = this.Name.Split('_')[2];
-                            FADM_Control.myDyeingConfiguration s = FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp) - 1).ToString()];
-                            if (s.dgv_Dye.Rows.Count != 0)
-                            {
-                                s.dgv_Dye.Enabled = true;
-                                s.dgv_Dye.CurrentCell = s.dgv_Dye[1, 0];
-                                s.dgv_Dye.Focus();
                             }
-                            else
-                            {
-                                //没有需要填写加A加B 就跳到下一个工艺选择 com上
-                                //==0个
-                                myDyeSelect d = FADM_Control.Formula.myDyeSelectList[Convert.ToInt32(s_temp)];
-                                d.dy_type_comboBox1.Focus();
-                            }
+
+                           
 
                         }
                         else
@@ -560,6 +623,11 @@ namespace SmartDyeing.FADM_Object
 
                                         }
                                     }
+
+                                    //把手动选瓶去掉
+                                    DataGridViewCheckBoxCell dc = (DataGridViewCheckBoxCell)this[10, this.CurrentRow.Index];
+                                    dc.Value = 0;
+
                                 }
                             }
 
@@ -605,29 +673,83 @@ namespace SmartDyeing.FADM_Object
                                     else
                                     {
                                         //是不是直接跳到保存上
+                                        if (Communal._b_isUseCloth)
+                                        {
+                                            string s_temp = this.Name;
+                                            myDyeSelect d = FADM_Control.Formula_Cloth.myDyeSelectList[Convert.ToInt32(s_temp)];
+                                            d.dy_type_comboBox1.Focus();
 
-                                        string s_temp = this.Name;
-                                        myDyeSelect d = FADM_Control.Formula.myDyeSelectList[Convert.ToInt32(s_temp)];
-                                        d.dy_type_comboBox1.Focus();
-
-                                        if (FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp) - 1).ToString()].Visible)
-                                        { //隐藏
-
-                                            Label la = (Label)FADM_Control.Formula.isHiSo[Convert.ToInt32(s_temp) - 1];
-                                            string s_temp2 = la.Name;
-                                            if (FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Visible)
+                                            if (FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp) - 1).ToString()].dgv_dyconfiglisg.Visible)
                                             { //隐藏
-                                                FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Hide();
-                                                la.Text = "▲                                                                                  ";
+
+                                                Label la = (Label)FADM_Control.Formula_Cloth.isHiSo[Convert.ToInt32(s_temp) - 1];
+                                                string s_temp2 = la.Name;
+                                                if (FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Visible)
+                                                { //隐藏
+                                                    /*FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Hide();
+                                                    la.Text = "▲                                                                                  ";*/
+
+                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Hide();
+                                                    Point xy = FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Location;
+                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_Dye.Location = xy;
+                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height = FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height - FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
+                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height = FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height - FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
+                                                    la.Text = "▲                                                                                  ";
+
+                                                }
+                                                else
+                                                {
+                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height = FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height + FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
+                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height = FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height + FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
+                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Show();
+                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_Dye.Location = new Point(FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_Dye.Location.X, FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Location.Y + FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height);
+
+                                                    //FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Show();
+                                                    la.Text = "▼                                                                                  ";
+                                                }
+                                                // FADM_Control.Formula_Cloth.DyeingConHS(FADM_Control.Formula_Cloth.isHiSo[Convert.ToInt32(s_temp)-1], null);
+
                                             }
-                                            else
-                                            {
-                                                FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Show();
-                                                la.Text = "▼                                                                                  ";
+                                        }
+                                        else {
+                                            string s_temp = this.Name;
+                                            myDyeSelect d = FADM_Control.Formula.myDyeSelectList[Convert.ToInt32(s_temp)];
+                                            d.dy_type_comboBox1.Focus();
+
+                                            if (FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp) - 1).ToString()].dgv_dyconfiglisg.Visible)
+                                            { //隐藏
+
+                                                Label la = (Label)FADM_Control.Formula.isHiSo[Convert.ToInt32(s_temp) - 1];
+                                                string s_temp2 = la.Name;
+                                                if (FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Visible)
+                                                { //隐藏
+                                                    /*FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Hide();
+                                                    la.Text = "▲                                                                                  ";*/
+
+                                                    FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Hide();
+                                                    Point xy = FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Location;
+                                                    FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_Dye.Location = xy;
+                                                    FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height = FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height - FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
+                                                    FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height = FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height - FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
+                                                    la.Text = "▲                                                                                  ";
+
+                                                }
+                                                else
+                                                {
+                                                    FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height = FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height + FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
+                                                    FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height = FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height + FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
+                                                    FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Show();
+                                                    FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_Dye.Location = new Point(FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_Dye.Location.X, FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Location.Y + FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height);
+
+                                                    //FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Show();
+                                                    la.Text = "▼                                                                                  ";
+                                                }
+                                                // FADM_Control.Formula.DyeingConHS(FADM_Control.Formula.isHiSo[Convert.ToInt32(s_temp)-1], null);
+
                                             }
-                                            // FADM_Control.Formula.DyeingConHS(FADM_Control.Formula.isHiSo[Convert.ToInt32(s_temp)-1], null);
 
                                         }
+                                        
 
                                     }
                                 }
@@ -654,29 +776,82 @@ namespace SmartDyeing.FADM_Object
                                 {
                                     this.CurrentCell.Selected = false;
 
-                                    if (this.Parent.Text.Contains("染色工艺")) {
-                                        string s_temp = this.Name;
-                                        myDyeSelect d = FADM_Control.Formula.myDyeSelectList[Convert.ToInt32(s_temp)];
-                                        d.dy_type_comboBox1.Focus();
-                                        if (FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp) - 1).ToString()].Visible)
-                                        { //隐藏
+                                    if (this.Parent.Text.Contains("染色工艺"))
+                                    {
+                                        if (Communal._b_isUseCloth)
+                                        {
 
-                                            Label la = (Label)FADM_Control.Formula.isHiSo[Convert.ToInt32(s_temp) - 1];
-                                            string s_temp2 = la.Name;
-                                            if (FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Visible)
+                                            string s_temp = this.Name;
+                                            myDyeSelect d = FADM_Control.Formula_Cloth.myDyeSelectList[Convert.ToInt32(s_temp)];
+                                            d.dy_type_comboBox1.Focus();
+                                            if (FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp) - 1).ToString()].dgv_dyconfiglisg.Visible)
                                             { //隐藏
-                                                FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Hide();
-                                                la.Text = "▲                                                                                  ";
+
+                                                Label la = (Label)FADM_Control.Formula_Cloth.isHiSo[Convert.ToInt32(s_temp) - 1];
+                                                string s_temp2 = la.Name;
+                                                if (FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Visible)
+                                                { //隐藏
+                                                  //FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Hide();
+                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Hide();
+                                                    Point xy = FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Location;
+                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_Dye.Location = xy;
+                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height = FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height - FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
+                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height = FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height - FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
+
+                                                    la.Text = "▲                                                                                  ";
+                                                }
+                                                else
+                                                {
+
+                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height = FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height + FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
+                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height = FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height + FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
+                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Show();
+                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_Dye.Location = new Point(FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_Dye.Location.X, FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Location.Y + FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height);
+                                                    //FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Show();
+                                                    la.Text = "▼                                                                                  ";
+                                                }
                                             }
-                                            else
-                                            {
-                                                FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Show();
-                                                la.Text = "▼                                                                                  ";
+
+                                        }
+                                        else {
+
+                                            string s_temp = this.Name;
+                                            myDyeSelect d = FADM_Control.Formula.myDyeSelectList[Convert.ToInt32(s_temp)];
+                                            d.dy_type_comboBox1.Focus();
+                                            if (FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp) - 1).ToString()].dgv_dyconfiglisg.Visible)
+                                            { //隐藏
+
+                                                Label la = (Label)FADM_Control.Formula.isHiSo[Convert.ToInt32(s_temp) - 1];
+                                                string s_temp2 = la.Name;
+                                                if (FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Visible)
+                                                { //隐藏
+                                                  //FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Hide();
+                                                    FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Hide();
+                                                    Point xy = FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Location;
+                                                    FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_Dye.Location = xy;
+                                                    FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height = FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height - FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
+                                                    FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height = FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height - FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
+
+                                                    la.Text = "▲                                                                                  ";
+                                                }
+                                                else
+                                                {
+
+                                                    FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height = FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height + FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
+                                                    FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height = FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height + FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
+                                                    FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Show();
+                                                    FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_Dye.Location = new Point(FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_Dye.Location.X, FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Location.Y + FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height);
+                                                    //FADM_Control.Formula.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Show();
+                                                    la.Text = "▼                                                                                  ";
+                                                }
                                             }
                                         }
 
+
+                                        
+
                                     }
-                                   
+
 
                                 }
                             }
@@ -743,21 +918,51 @@ namespace SmartDyeing.FADM_Object
                                     this.CurrentRow.Cells[2].Value = dt_assistant.Rows[0]["AssistantName"].ToString();
                                     string UnitOfAccount = dt_assistant.Rows[0]["UnitOfAccount"].ToString();
                                     DataGridViewComboBoxCell dd = (DataGridViewComboBoxCell)this[4, i_row];
-                                    if (UnitOfAccount.Equals("%"))
+
+                                    if (FADM_Object.Communal._b_isUnitChange)
                                     {
-                                        lis_bottleNum.Add("%");
+                                        if (UnitOfAccount.Equals("%"))
+                                        {
+                                            lis_bottleNum.Add("%");
+                                            dd.Value = null;
+                                            dd.DataSource = lis_bottleNum;
+                                            dd.Value = lis_bottleNum[0].ToString();
+                                        }
+                                        else if (UnitOfAccount.Equals("g/l"))
+                                        {
+                                            if (dd.Value == null)
+                                            {
+                                                lis_bottleNum.Add("g/l");
+                                                lis_bottleNum.Add("%");
+                                                dd.DataSource = lis_bottleNum;
+                                                dd.Value = lis_bottleNum[0].ToString();
+                                            }
+                                            else
+                                            {
+                                                if (dd.Value.Equals("%"))
+                                                {
+                                                    lis_bottleNum.Add("%");
+                                                    lis_bottleNum.Add("g/l");
+                                                    dd.DataSource = lis_bottleNum;
+                                                    dd.Value = lis_bottleNum[0].ToString();
+                                                }
+
+
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            lis_bottleNum.Add(UnitOfAccount);
+                                            dd.DataSource = lis_bottleNum;
+                                            dd.Value = lis_bottleNum[0].ToString();
+                                        }
                                     }
-                                    else if (UnitOfAccount.Equals("g/l"))
-                                    {
-                                        lis_bottleNum.Add("g/l");
-                                        lis_bottleNum.Add("%");
-                                    }
-                                    else
-                                    {
+                                    else {
                                         lis_bottleNum.Add(UnitOfAccount);
+                                        dd.DataSource = lis_bottleNum;
+                                        dd.Value = lis_bottleNum[0].ToString();
                                     }
-                                    dd.DataSource = lis_bottleNum;
-                                    dd.Value = lis_bottleNum[0].ToString();
                                 }
 
                                 this.CurrentCell = this[i_col + 2, i_row];
@@ -804,32 +1009,39 @@ namespace SmartDyeing.FADM_Object
                 case Keys.Delete:
                     try
                     {
-                        if (this.Name == "dgv_FormulaData" || this.Name == "dgv_FormulaGroup") {
+                        if (this.Name == "dgv_FormulaData" || this.Name == "dgv_FormulaGroup")
+                        {
                             this.Rows.Remove(this.CurrentRow);
-                        } else if (this.AccessibleName == "dye" && this.Parent.Text.Contains("后处理") ) { //第一个单元格没有加A 就证明可以删除
+                        }
+                        else if (this.AccessibleName == "dye" && this.Parent.Text.Contains("后处理"))
+                        { //第一个单元格没有加A 就证明可以删除
                             int i_col = this.CurrentCell.ColumnIndex;
                             int i_row = this.CurrentCell.RowIndex;
                             if (this.CurrentRow.Cells[0].Value == null || this.CurrentRow.Cells[0].Value.ToString().Length == 0)
                             {
                                 this.Rows.Remove(this.CurrentRow);
                             }
-                            else {
+                            else
+                            {
                                 //遍历看下 是否有重复的
                                 string cellV = this.CurrentRow.Cells[0].Value.ToString();
                                 int count = 0;
-                                foreach (DataGridViewRow dgvr in this.Rows) {
-                                    if (dgvr.Cells[0].Value!=null && dgvr.Cells[0].Value.ToString().Length>0 && dgvr.Cells[0].Value.ToString().Equals(cellV)) {
+                                foreach (DataGridViewRow dgvr in this.Rows)
+                                {
+                                    if (dgvr.Cells[0].Value != null && dgvr.Cells[0].Value.ToString().Length > 0 && dgvr.Cells[0].Value.ToString().Equals(cellV))
+                                    {
                                         count++;
                                     }
                                 }
-                                if (count >= 2) {
+                                if (count >= 2)
+                                {
                                     this.Rows.Remove(this.CurrentRow);
                                 }
                             }
                         }
 
 
-                            
+
                     }
                     catch
                     {

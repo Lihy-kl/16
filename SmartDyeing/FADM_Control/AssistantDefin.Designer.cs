@@ -187,7 +187,9 @@ namespace SmartDyeing.FADM_Control
             resources.GetString("cbo_AssistantType.Items4"),
             resources.GetString("cbo_AssistantType.Items5"),
             resources.GetString("cbo_AssistantType.Items6"),
-            resources.GetString("cbo_AssistantType.Items7")});
+            resources.GetString("cbo_AssistantType.Items7"),
+            resources.GetString("cbo_AssistantType.Items8"),
+            resources.GetString("cbo_AssistantType.Items9")});
             this.cbo_AssistantType.Name = "cbo_AssistantType";
             // 
             // txt_AssistantBarCode

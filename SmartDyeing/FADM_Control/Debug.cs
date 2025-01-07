@@ -242,7 +242,7 @@ namespace SmartDyeing.FADM_Control
                         }
                         if (i_state != -1)
                         {
-                            Communal._s_plcVersion = "V" + ia_array[27].ToString("d4") + ia_array[28].ToString("d4");
+                            Communal._s_plcVersion =  ia_array[27].ToString("d4") + ia_array[28].ToString("d4");
 
                             _i_count = 0;
 

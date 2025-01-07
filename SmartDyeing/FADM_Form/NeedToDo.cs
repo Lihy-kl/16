@@ -159,7 +159,7 @@ namespace SmartDyeing.FADM_Form
                 parameters.Add("time", time);
                 parameters.Add("state", Convert.ToString(choose));
                 await Task.Run(() => {
-                    HttpWebResponse response = HttpUtil.CreatePostHttpResponse("https://www.gz-kelian.com/outer/product/updateBroadcastD", parameters, 15000, null, null);
+                    HttpWebResponse response = HttpUtil.CreatePostHttpResponse(FADM_Object.Communal.URL+"/outer/product/updateBroadcastD", parameters, 15000, null, null);
                 });
             }
             catch

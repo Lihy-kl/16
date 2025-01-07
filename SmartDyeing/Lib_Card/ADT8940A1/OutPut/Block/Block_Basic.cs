@@ -10,7 +10,11 @@ namespace Lib_Card.ADT8940A1.OutPut.Block
     {
         public override int Block_In()
         {
-           
+            if (Lib_Card.Configure.Parameter.Machine_BlockCylinder == 0)
+            {
+                return 0;
+            }
+
             if (-1 == CardObject.OA1.WriteOutPut(ADT8940A1_IO.OutPut_Block, 0))
                 return -1;
             return 0;
@@ -18,7 +22,11 @@ namespace Lib_Card.ADT8940A1.OutPut.Block
 
         public override int Block_Out()
         {
-           
+            if (Lib_Card.Configure.Parameter.Machine_BlockCylinder == 0)
+            {
+                return 0;
+            }
+
             if (-1 == CardObject.OA1.WriteOutPut(ADT8940A1_IO.OutPut_Block, 1))
                 return -1;
             return 0;

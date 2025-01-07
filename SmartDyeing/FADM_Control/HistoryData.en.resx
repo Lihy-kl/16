@@ -130,6 +130,15 @@
   <data name="txt_Record_Operator.Location" type="System.Drawing.Point, System.Drawing">
     <value>105, 63</value>
   </data>
+  <data name="btn_Record_Print.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 10.5pt</value>
+  </data>
+  <data name="btn_Record_Print.Location" type="System.Drawing.Point, System.Drawing">
+    <value>346, 137</value>
+  </data>
+  <data name="btn_Record_Print.Text" xml:space="preserve">
+    <value>Print</value>
+  </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="txt_Record_CupNum.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -202,7 +211,7 @@
     <value>宋体, 10.5pt</value>
   </data>
   <data name="btn_Record_Delete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>346, 161</value>
+    <value>346, 174</value>
   </data>
   <data name="btn_Record_Delete.Text" xml:space="preserve">
     <value>Delete</value>
@@ -211,7 +220,7 @@
     <value>宋体, 10.5pt</value>
   </data>
   <data name="btn_Record_Select.Location" type="System.Drawing.Point, System.Drawing">
-    <value>346, 111</value>
+    <value>346, 100</value>
   </data>
   <data name="btn_Record_Select.Text" xml:space="preserve">
     <value>Query</value>
@@ -450,6 +459,9 @@
   <data name="lab_BathRatio.Text" xml:space="preserve">
     <value>BathRatio:</value>
   </data>
+  <data name="grp_FormulaData.Text" xml:space="preserve">
+    <value>FormulaInformation</value>
+  </data>
   <data name="txt_CreateTime.Location" type="System.Drawing.Point, System.Drawing">
     <value>542, 169</value>
   </data>
@@ -611,8 +623,5 @@
   </data>
   <data name="lab_HandleBathRatio.Text" xml:space="preserve">
     <value>PTBathRatio:</value>
-  </data>
-  <data name="grp_FormulaData.Text" xml:space="preserve">
-    <value>FormulaInformation</value>
   </data>
 </root>

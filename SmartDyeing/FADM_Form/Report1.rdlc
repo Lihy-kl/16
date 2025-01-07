@@ -326,7 +326,7 @@
         <Top>3.35703cm</Top>
         <Left>13.68338cm</Left>
         <Height>0.57354cm</Height>
-        <Width>5.6044cm</Width>
+        <Width>5.49857cm</Width>
         <ZIndex>9</ZIndex>
         <Style>
           <Border>
@@ -342,16 +342,13 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>4.04633cm</Width>
+              <Width>4.70779cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>5.15708cm</Width>
+              <Width>6.39176cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.38841cm</Width>
-            </TablixColumn>
-            <TablixColumn>
-              <Width>3.35549cm</Width>
+              <Width>4.44962cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>2.3395cm</Width>
@@ -429,39 +426,6 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox18">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>目标浓度</Value>
-                              <Style>
-                                <FontFamily>宋体</FontFamily>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Center</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox18</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
                     <Textbox Name="Textbox20">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
@@ -469,7 +433,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>实际浓度</Value>
+                              <Value>实际配方</Value>
                               <Style>
                                 <FontFamily>宋体</FontFamily>
                               </Style>
@@ -599,39 +563,6 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="SettingConcentration">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>=Fields!SettingConcentration.Value</Value>
-                              <Style>
-                                <FontFamily>宋体</FontFamily>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Center</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>SettingConcentration</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
                     <Textbox Name="RealConcentration">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
@@ -706,7 +637,6 @@
             <TablixMember />
             <TablixMember />
             <TablixMember />
-            <TablixMember />
           </TablixMembers>
         </TablixColumnHierarchy>
         <TablixRowHierarchy>
@@ -723,7 +653,7 @@
         <Top>5.55308cm</Top>
         <Left>1.29328cm</Left>
         <Height>1.14708cm</Height>
-        <Width>18.28681cm</Width>
+        <Width>17.88867cm</Width>
         <ZIndex>10</ZIndex>
         <Style>
           <Border>

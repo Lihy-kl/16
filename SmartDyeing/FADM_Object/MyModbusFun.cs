@@ -1231,25 +1231,79 @@ namespace SmartDyeing.FADM_Object
                         i_xPules -= Lib_Card.Configure.Parameter.Coordinate_Cup_Decompression;
                         break;
                     case 6:
-                        if (0 >= i_no || i_no > Lib_Card.Configure.Parameter.Machine_Cup_Total)
+                        if (i_no >= Lib_Card.Configure.Parameter.Machine_AreaDryCloth1_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_AreaDryCloth1_CupMax)
                         {
-                            throw new Exception("4");
+                                //在区域1
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth1_X +
+                                    ((i_no - Lib_Card.Configure.Parameter.Machine_AreaDryCloth1_CupMin) % Lib_Card.Configure.Parameter.Machine_AreaDryCloth1_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth1_IntervalX;
+
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth1_Y +
+                                    ((i_no - Lib_Card.Configure.Parameter.Machine_AreaDryCloth1_CupMin) / Lib_Card.Configure.Parameter.Machine_AreaDryCloth1_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth1_IntervalY;
+
+                            
                         }
-                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth_X - (i_no - 1) %
-                        Lib_Card.Configure.Parameter.Machine_AreaDryCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth_IntervalX;
-                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth_Y + (i_no - 1) /
-                            Lib_Card.Configure.Parameter.Machine_AreaDryCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth_IntervalY;
+                        else if (i_no >= Lib_Card.Configure.Parameter.Machine_AreaDryCloth2_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_AreaDryCloth2_CupMax)
+                        {
+
+                            //在区域2
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth2_X +
+                                ((i_no - Lib_Card.Configure.Parameter.Machine_AreaDryCloth2_CupMin) % Lib_Card.Configure.Parameter.Machine_AreaDryCloth2_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth2_IntervalX;
+
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth2_Y +
+                                ((i_no - Lib_Card.Configure.Parameter.Machine_AreaDryCloth2_CupMin) / Lib_Card.Configure.Parameter.Machine_AreaDryCloth2_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth2_IntervalY;
+
+
+                        }
+                        else if (i_no >= Lib_Card.Configure.Parameter.Machine_AreaDryCloth3_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_AreaDryCloth3_CupMax)
+                        {
+
+                            //在区域3
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth3_X +
+                                 ((i_no - Lib_Card.Configure.Parameter.Machine_AreaDryCloth3_CupMin) % Lib_Card.Configure.Parameter.Machine_AreaDryCloth3_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth3_IntervalX;
+
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth3_Y +
+                                ((i_no - Lib_Card.Configure.Parameter.Machine_AreaDryCloth3_CupMin) / Lib_Card.Configure.Parameter.Machine_AreaDryCloth3_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth3_IntervalY;
+
+
+                        }
 
                         break;
                     case 7:
-                        if (0 >= i_no || i_no > Lib_Card.Configure.Parameter.Machine_Cup_Total)
+                        if (i_no >= Lib_Card.Configure.Parameter.Machine_AreaWetCloth1_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_AreaWetCloth1_CupMax)
                         {
-                            throw new Exception("4");
+                            //在区域1
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth1_X +
+                                ((i_no - Lib_Card.Configure.Parameter.Machine_AreaWetCloth1_CupMin) % Lib_Card.Configure.Parameter.Machine_AreaWetCloth1_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth1_IntervalX;
+
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth1_Y +
+                                ((i_no - Lib_Card.Configure.Parameter.Machine_AreaWetCloth1_CupMin) / Lib_Card.Configure.Parameter.Machine_AreaWetCloth1_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth1_IntervalY;
+
+
                         }
-                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_X - (i_no - 1) %
-                        Lib_Card.Configure.Parameter.Machine_AreaWetCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalX - ((i_no - 1) / 2) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalX_S;
-                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_Y + (i_no - 1) /
-                            Lib_Card.Configure.Parameter.Machine_AreaWetCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalY + ((i_no - 1) / 2) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalY_S;
+                        else if (i_no >= Lib_Card.Configure.Parameter.Machine_AreaWetCloth2_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_AreaWetCloth2_CupMax)
+                        {
+
+                            //在区域2
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth2_X +
+                                ((i_no - Lib_Card.Configure.Parameter.Machine_AreaWetCloth2_CupMin) % Lib_Card.Configure.Parameter.Machine_AreaWetCloth2_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth2_IntervalX;
+
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth2_Y +
+                                ((i_no - Lib_Card.Configure.Parameter.Machine_AreaWetCloth2_CupMin) / Lib_Card.Configure.Parameter.Machine_AreaWetCloth2_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth2_IntervalY;
+
+
+                        }
+                        else if (i_no >= Lib_Card.Configure.Parameter.Machine_AreaWetCloth3_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_AreaWetCloth3_CupMax)
+                        {
+
+                            //在区域3
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth3_X +
+                                 ((i_no - Lib_Card.Configure.Parameter.Machine_AreaWetCloth3_CupMin) % Lib_Card.Configure.Parameter.Machine_AreaWetCloth3_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth3_IntervalX;
+
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth3_Y +
+                                ((i_no - Lib_Card.Configure.Parameter.Machine_AreaWetCloth3_CupMin) / Lib_Card.Configure.Parameter.Machine_AreaWetCloth3_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth3_IntervalY;
+
+
+                        }
 
                         break;
                     case 8:
@@ -1271,6 +1325,10 @@ namespace SmartDyeing.FADM_Object
                             i_xPules = Lib_Card.Configure.Parameter.Coordinate_Abs2_X;
                             i_yPules = Lib_Card.Configure.Parameter.Coordinate_Abs2_Y;
                         }
+                        break;
+                    case 11:
+                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Syringes_X;
+                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Syringes_Y;
                         break;
                     default:
                         throw new Exception("5");
@@ -2254,25 +2312,79 @@ namespace SmartDyeing.FADM_Object
                         i_xPules -= Lib_Card.Configure.Parameter.Coordinate_Cup_Decompression;
                         break;
                     case 6:
-                        if (0 >= i_no || i_no > Lib_Card.Configure.Parameter.Machine_Cup_Total)
+                        if (i_no >= Lib_Card.Configure.Parameter.Machine_AreaDryCloth1_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_AreaDryCloth1_CupMax)
                         {
-                            throw new Exception("4");
+                            //在区域1
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth1_X +
+                                ((i_no - Lib_Card.Configure.Parameter.Machine_AreaDryCloth1_CupMin) % Lib_Card.Configure.Parameter.Machine_AreaDryCloth1_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth1_IntervalX;
+
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth1_Y +
+                                ((i_no - Lib_Card.Configure.Parameter.Machine_AreaDryCloth1_CupMin) / Lib_Card.Configure.Parameter.Machine_AreaDryCloth1_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth1_IntervalY;
+
+
                         }
-                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth_X - (i_no - 1) %
-                        Lib_Card.Configure.Parameter.Machine_AreaDryCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth_IntervalX;
-                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth_Y + (i_no - 1) /
-                            Lib_Card.Configure.Parameter.Machine_AreaDryCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth_IntervalY;
+                        else if (i_no >= Lib_Card.Configure.Parameter.Machine_AreaDryCloth2_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_AreaDryCloth2_CupMax)
+                        {
+
+                            //在区域2
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth2_X +
+                                ((i_no - Lib_Card.Configure.Parameter.Machine_AreaDryCloth2_CupMin) % Lib_Card.Configure.Parameter.Machine_AreaDryCloth2_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth2_IntervalX;
+
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth2_Y +
+                                ((i_no - Lib_Card.Configure.Parameter.Machine_AreaDryCloth2_CupMin) / Lib_Card.Configure.Parameter.Machine_AreaDryCloth2_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth2_IntervalY;
+
+
+                        }
+                        else if (i_no >= Lib_Card.Configure.Parameter.Machine_AreaDryCloth3_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_AreaDryCloth3_CupMax)
+                        {
+
+                            //在区域3
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth3_X +
+                                 ((i_no - Lib_Card.Configure.Parameter.Machine_AreaDryCloth3_CupMin) % Lib_Card.Configure.Parameter.Machine_AreaDryCloth3_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth3_IntervalX;
+
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth3_Y +
+                                ((i_no - Lib_Card.Configure.Parameter.Machine_AreaDryCloth3_CupMin) / Lib_Card.Configure.Parameter.Machine_AreaDryCloth3_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth3_IntervalY;
+
+
+                        }
 
                         break;
                     case 7:
-                        if (0 >= i_no || i_no > Lib_Card.Configure.Parameter.Machine_Cup_Total)
+                        if (i_no >= Lib_Card.Configure.Parameter.Machine_AreaWetCloth1_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_AreaWetCloth1_CupMax)
                         {
-                            throw new Exception("4");
+                            //在区域1
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth1_X +
+                                ((i_no - Lib_Card.Configure.Parameter.Machine_AreaWetCloth1_CupMin) % Lib_Card.Configure.Parameter.Machine_AreaWetCloth1_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth1_IntervalX;
+
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth1_Y +
+                                ((i_no - Lib_Card.Configure.Parameter.Machine_AreaWetCloth1_CupMin) / Lib_Card.Configure.Parameter.Machine_AreaWetCloth1_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth1_IntervalY;
+
+
                         }
-                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_X - (i_no - 1) %
-                        Lib_Card.Configure.Parameter.Machine_AreaWetCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalX - ((i_no - 1) / 2) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalX_S;
-                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_Y + (i_no - 1) /
-                            Lib_Card.Configure.Parameter.Machine_AreaWetCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalY + ((i_no - 1) / 2) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalY_S;
+                        else if (i_no >= Lib_Card.Configure.Parameter.Machine_AreaWetCloth2_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_AreaWetCloth2_CupMax)
+                        {
+
+                            //在区域2
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth2_X +
+                                ((i_no - Lib_Card.Configure.Parameter.Machine_AreaWetCloth2_CupMin) % Lib_Card.Configure.Parameter.Machine_AreaWetCloth2_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth2_IntervalX;
+
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth2_Y +
+                                ((i_no - Lib_Card.Configure.Parameter.Machine_AreaWetCloth2_CupMin) / Lib_Card.Configure.Parameter.Machine_AreaWetCloth2_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth2_IntervalY;
+
+
+                        }
+                        else if (i_no >= Lib_Card.Configure.Parameter.Machine_AreaWetCloth3_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_AreaWetCloth3_CupMax)
+                        {
+
+                            //在区域3
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth3_X +
+                                 ((i_no - Lib_Card.Configure.Parameter.Machine_AreaWetCloth3_CupMin) % Lib_Card.Configure.Parameter.Machine_AreaWetCloth3_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth3_IntervalX;
+
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth3_Y +
+                                ((i_no - Lib_Card.Configure.Parameter.Machine_AreaWetCloth3_CupMin) / Lib_Card.Configure.Parameter.Machine_AreaWetCloth3_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth3_IntervalY;
+
+
+                        }
 
                         break;
                     case 8:
@@ -2294,6 +2406,10 @@ namespace SmartDyeing.FADM_Object
                             i_xPules = Lib_Card.Configure.Parameter.Coordinate_Abs2_X;
                             i_yPules = Lib_Card.Configure.Parameter.Coordinate_Abs2_Y;
                         }
+                        break;
+                    case 11:
+                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Syringes_X;
+                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Syringes_Y;
                         break;
                     default:
                         throw new Exception("5");
@@ -3247,25 +3363,79 @@ namespace SmartDyeing.FADM_Object
                             i_xPules -= Lib_Card.Configure.Parameter.Coordinate_Cup_Decompression;
                             break;
                         case 6:
-                            if (0 >= i_no || i_no > Lib_Card.Configure.Parameter.Machine_Cup_Total)
+                            if (i_no >= Lib_Card.Configure.Parameter.Machine_AreaDryCloth1_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_AreaDryCloth1_CupMax)
                             {
-                                throw new Exception("4");
+                                //在区域1
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth1_X +
+                                    ((i_no - Lib_Card.Configure.Parameter.Machine_AreaDryCloth1_CupMin) % Lib_Card.Configure.Parameter.Machine_AreaDryCloth1_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth1_IntervalX;
+
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth1_Y +
+                                    ((i_no - Lib_Card.Configure.Parameter.Machine_AreaDryCloth1_CupMin) / Lib_Card.Configure.Parameter.Machine_AreaDryCloth1_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth1_IntervalY;
+
+
                             }
-                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth_X - (i_no - 1) %
-                            Lib_Card.Configure.Parameter.Machine_AreaDryCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth_IntervalX;
-                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth_Y + (i_no - 1) /
-                                Lib_Card.Configure.Parameter.Machine_AreaDryCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth_IntervalY;
+                            else if (i_no >= Lib_Card.Configure.Parameter.Machine_AreaDryCloth2_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_AreaDryCloth2_CupMax)
+                            {
+
+                                //在区域2
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth2_X +
+                                    ((i_no - Lib_Card.Configure.Parameter.Machine_AreaDryCloth2_CupMin) % Lib_Card.Configure.Parameter.Machine_AreaDryCloth2_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth2_IntervalX;
+
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth2_Y +
+                                    ((i_no - Lib_Card.Configure.Parameter.Machine_AreaDryCloth2_CupMin) / Lib_Card.Configure.Parameter.Machine_AreaDryCloth2_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth2_IntervalY;
+
+
+                            }
+                            else if (i_no >= Lib_Card.Configure.Parameter.Machine_AreaDryCloth3_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_AreaDryCloth3_CupMax)
+                            {
+
+                                //在区域3
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth3_X +
+                                     ((i_no - Lib_Card.Configure.Parameter.Machine_AreaDryCloth3_CupMin) % Lib_Card.Configure.Parameter.Machine_AreaDryCloth3_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth3_IntervalX;
+
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth3_Y +
+                                    ((i_no - Lib_Card.Configure.Parameter.Machine_AreaDryCloth3_CupMin) / Lib_Card.Configure.Parameter.Machine_AreaDryCloth3_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth3_IntervalY;
+
+
+                            }
 
                             break;
                         case 7:
-                            if (0 >= i_no || i_no > Lib_Card.Configure.Parameter.Machine_Cup_Total)
+                            if (i_no >= Lib_Card.Configure.Parameter.Machine_AreaWetCloth1_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_AreaWetCloth1_CupMax)
                             {
-                                throw new Exception("4");
+                                //在区域1
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth1_X +
+                                    ((i_no - Lib_Card.Configure.Parameter.Machine_AreaWetCloth1_CupMin) % Lib_Card.Configure.Parameter.Machine_AreaWetCloth1_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth1_IntervalX;
+
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth1_Y +
+                                    ((i_no - Lib_Card.Configure.Parameter.Machine_AreaWetCloth1_CupMin) / Lib_Card.Configure.Parameter.Machine_AreaWetCloth1_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth1_IntervalY;
+
+
                             }
-                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_X - (i_no - 1) %
-                            Lib_Card.Configure.Parameter.Machine_AreaWetCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalX - ((i_no - 1) / 2) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalX_S;
-                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_Y + (i_no - 1) /
-                                Lib_Card.Configure.Parameter.Machine_AreaWetCloth_Col * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalY + ((i_no - 1) / 2) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth_IntervalY_S;
+                            else if (i_no >= Lib_Card.Configure.Parameter.Machine_AreaWetCloth2_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_AreaWetCloth2_CupMax)
+                            {
+
+                                //在区域2
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth2_X +
+                                    ((i_no - Lib_Card.Configure.Parameter.Machine_AreaWetCloth2_CupMin) % Lib_Card.Configure.Parameter.Machine_AreaWetCloth2_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth2_IntervalX;
+
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth2_Y +
+                                    ((i_no - Lib_Card.Configure.Parameter.Machine_AreaWetCloth2_CupMin) / Lib_Card.Configure.Parameter.Machine_AreaWetCloth2_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth2_IntervalY;
+
+
+                            }
+                            else if (i_no >= Lib_Card.Configure.Parameter.Machine_AreaWetCloth3_CupMin && i_no <= Lib_Card.Configure.Parameter.Machine_AreaWetCloth3_CupMax)
+                            {
+
+                                //在区域3
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth3_X +
+                                     ((i_no - Lib_Card.Configure.Parameter.Machine_AreaWetCloth3_CupMin) % Lib_Card.Configure.Parameter.Machine_AreaWetCloth3_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth3_IntervalX;
+
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth3_Y +
+                                    ((i_no - Lib_Card.Configure.Parameter.Machine_AreaWetCloth3_CupMin) / Lib_Card.Configure.Parameter.Machine_AreaWetCloth3_Row) * Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth3_IntervalY;
+
+
+                            }
 
                             break;
                         case 8:
@@ -3287,6 +3457,10 @@ namespace SmartDyeing.FADM_Object
                                 i_xPules = Lib_Card.Configure.Parameter.Coordinate_Abs2_X;
                                 i_yPules = Lib_Card.Configure.Parameter.Coordinate_Abs2_Y;
                             }
+                            break;
+                        case 11:
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Syringes_X;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Syringes_Y;
                             break;
                         default:
                             throw new Exception("5");
@@ -3432,6 +3606,137 @@ namespace SmartDyeing.FADM_Object
                     }
                     i_extract_Pulse = i_extract_Pulse % 65536;
                     int[] ia_array = { 3, 0, 0, 0, 0, i_extract_Pulse, d_1, 0, 0, 0, 1, 0, b_isTrue ? 1 : 0, i_syringeType };
+                    int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
+                    if (i_state != -1)
+                    {
+                        //判断错误返回值
+                        if (GetReturn(1) == -2)
+                        {
+                            return -2;
+                        }
+                    }
+                    else
+                    {
+                        Lib_Log.Log.writeLogException("写入抽液编号返回失败,继续写入");
+                        Console.WriteLine("写入抽液编号返回失败,继续写入");
+                        if (b_istrue)
+                        {
+                            b_istrue = false;
+                            FADM_Object.Communal._tcpModBus.ReConnect();
+                            goto lableTop;
+                        }
+                        b_istrue = true;
+                        goto lableTop;
+                        //throw new Exception("7");
+                    }
+                    return 0;
+                }
+                catch (Exception e)
+                {
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                    if (e.Message.Equals("3") || e.Message.Equals("7") || e.Message.Equals("-2") || e.Message.Equals("未发现针筒"))
+                    {
+                        string msg = "";
+                        int[] ia_errArray = new int[100];
+                    Label123:
+                        int i_state1 = MyModbusFun.GetErrMsgNew(ref ia_errArray);
+                        if (i_state1 == -1)
+                            goto Label123;
+                        for (int i = 0; i < ia_errArray.Length; i++)
+                        {
+                            if (ia_errArray[i] == 2101)
+                            {
+                                throw new Exception("未发现针筒");
+                            }
+
+                        }
+                        throw e;
+                    }
+                    else
+                    {
+                        throw new Exception("-1");
+                    }
+                }
+                finally
+                {
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                }
+            }
+        }
+
+        /// <summary>
+        /// 混合液抽液
+        /// </summary>
+        /// <param name="i_extract_Pulse">脉冲数</param>
+        /// <param name="b_isTrue">排空动作</param>
+        /// <param name="isBM">大小针筒 0小针筒 大针筒</param>
+        /// <returns></returns>
+        public static int AbsExtract(int i_extract_Pulse, bool b_isTrue, int i_syringeType)
+        {
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
+            {
+                int iMRes = 0;
+                Lib_Card.ADT8940A1.Module.Extraction.Extraction extraction = new Lib_Card.ADT8940A1.Module.Extraction.Extraction_Drip();
+                if (b_isTrue)
+                {
+                    iMRes = extraction.FluidExtraction(Lib_Card.Configure.Parameter.Machine_CylinderVersion, i_syringeType, i_extract_Pulse, 1);
+                }
+                else
+                {
+                    iMRes = extraction.FluidExtraction(Lib_Card.Configure.Parameter.Machine_CylinderVersion, i_syringeType, i_extract_Pulse, 0);
+                }
+                if (-1 == iMRes)
+                    throw new Exception("驱动异常");
+                else if (-2 == iMRes)
+                    throw new Exception("收到退出消息");
+
+                return 0;
+            }
+            else
+            {
+                try
+                {
+
+                Label1:
+                    if (!FADM_Object.Communal._b_auto)
+                    {//在手动页面 等待手动页面退出
+                        goto Label1;
+                    }
+
+                    Lib_Log.Log.writeLogException("执行抽液方法Extract_Pulse=" + i_extract_Pulse.ToString());
+
+                    Console.WriteLine("开始抽液Extract_Pulse=" + i_extract_Pulse.ToString());
+                    bool b_istrue = false;
+                    FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
+                    ClearSuccessState();//先清除标志位
+                    Console.WriteLine("清除完标志位");
+                    Lib_Log.Log.writeLogException("清除标志位结束");
+
+
+
+                lableTop:
+                    int d_1 = 0;
+                    d_1 = i_extract_Pulse / 65536;
+                    if (i_extract_Pulse < 0) //负数脉冲
+                    {
+                        if (d_1 == 0)
+                        {
+                            d_1 = -1;
+                        }
+                        else
+                        {
+                            if (Math.Abs(i_extract_Pulse) > 65536)
+                            {
+                                d_1 = d_1 + -1;
+                            }
+                        }
+                    }
+                    else
+                    {  //正数脉冲
+                        d_1 = i_extract_Pulse / 65536;
+                    }
+                    i_extract_Pulse = i_extract_Pulse % 65536;
+                    int[] ia_array = { 19, 0, 0, 0, 0, i_extract_Pulse, d_1, 0, 0, 0, 1, 0, b_isTrue ? 1 : 0, i_syringeType };
                     int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
                     if (i_state != -1)
                     {
@@ -4880,6 +5185,114 @@ namespace SmartDyeing.FADM_Object
         }
 
         /// <summary>
+        /// 拿针筒，用于ABS抽混合液 
+        /// </summary>
+        /// <returns></returns>
+        public static int GetSyringes(int i_xStartPules, int i_yStartPules)
+        {
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                try
+                {
+                Label1:
+                    if (!FADM_Object.Communal._b_auto)
+                    {//在手动页面 等待手动页面退出
+                        goto Label1;
+                    }
+                    Lib_Log.Log.writeLogException("执行拿针筒方法");
+
+                    bool b_istrue = false;
+                    FADM_Object.Communal.WriteTcpStatus(false); //天平先不要轮询
+                    ClearSuccessState();//先清除标志位
+                    Lib_Log.Log.writeLogException("清除标志位结束");
+
+                lableTop:
+                    int d_1 = 0;
+                    if (i_xStartPules > 65536)
+                    {
+                        d_1 = i_xStartPules / 65536;
+                        i_xStartPules = i_xStartPules % 65536;
+                    }
+                    int d_2 = 0;
+                    if (i_yStartPules > 65536)
+                    {
+                        d_2 = i_yStartPules / 65536;
+                        i_yStartPules = i_yStartPules % 65536;
+                    }
+
+                    int[] ia_array = { 14, i_xStartPules, d_1, i_yStartPules, d_2, 0, 0, 0, 0, 0, 1 };
+                    int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
+                    if (i_state != -1)
+                    {
+                        //判断错误返回值
+                        if (GetReturn(1) == -2)
+                        {
+                            return -2;
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                    else
+                    {
+                        Lib_Log.Log.writeLogException("写入拿针筒动作编号返回失败,继续写入");
+                        Console.WriteLine("拿针筒编号返回失败,继续写入");
+                        if (b_istrue)
+                        {
+                            b_istrue = false;
+                            FADM_Object.Communal._tcpModBus.ReConnect();
+                            goto lableTop;
+                        }
+                        b_istrue = true;
+                        goto lableTop;
+                        //throw new Exception("10");
+                    }
+
+                    FADM_Object.Communal._b_isGetSyringes = true;
+                    return 0;
+                }
+                catch (Exception e)
+                {
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                    if (e.Message.Equals("-2") || e.Message.Equals("10") || e.Message.Equals("未发现杯盖") || e.Message.Equals("发现杯盖或针筒") || e.Message.Equals("抓手A夹紧异常") || e.Message.Equals("抓手B夹紧异常"))
+                    {
+                        int[] ia_errArray = new int[100];
+                    Label123:
+                        int i_state1 = MyModbusFun.GetErrMsgNew(ref ia_errArray);
+                        if (i_state1 == -1)
+                            goto Label123;
+                        for (int i = 0; i < ia_errArray.Length; i++)
+                        {
+                            if (ia_errArray[i] == 4501)
+                            {
+                                throw new Exception("未发现抓手");
+                            }
+                            else if (ia_errArray[i] == 2701)
+                            {
+                                throw new Exception("发现杯盖或针筒");
+                            }
+
+                        }
+                        throw e;
+                    }
+                    else
+                    {
+                        throw new Exception("-1");
+                    }
+                }
+                finally
+                {
+                    FADM_Object.Communal.WriteTcpStatus(true); //恢复
+                }
+            }
+        }
+
+        /// <summary>
         /// 放夹子 1:干布夹子 2:湿布夹子
         /// </summary>
         /// <returns></returns>
@@ -5191,9 +5604,9 @@ namespace SmartDyeing.FADM_Object
             else
             {
                 if (d_water > 13)
-                    d_blTime = (d_water - Lib_Card.Configure.Parameter.Correcting_Water_FWeight) / Lib_Card.Configure.Parameter.Correcting_Water_Value + 1;
+                    d_blTime = ((d_water - Lib_Card.Configure.Parameter.Correcting_Water_FWeight) / Lib_Card.Configure.Parameter.Correcting_Water_Value + 1) * (1 + Lib_Card.Configure.Parameter.Other_Coefficient_Water);
                 else
-                    d_blTime = d_water / Lib_Card.Configure.Parameter.Correcting_Water_Value + Lib_Card.Configure.Parameter.Other_Coefficient_Water;
+                    d_blTime = d_water / Lib_Card.Configure.Parameter.Correcting_Water_Value + Lib_Card.Configure.Parameter.Other_Coefficient_Water_Low;
             }
             return d_blTime;
         }
@@ -5255,7 +5668,7 @@ namespace SmartDyeing.FADM_Object
 
                 Communal._b_isUpdateNewData = true;
 
-                Communal._s_plcVersion = "V" + ia_array[27].ToString("d4") + ia_array[28].ToString("d4");
+                Communal._s_plcVersion = ia_array[27].ToString("d4") + ia_array[28].ToString("d4");
 
                 double d_b = 0.0;
                 if (ia_array[1] < 0)
@@ -5526,6 +5939,11 @@ namespace SmartDyeing.FADM_Object
                                 * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
                         }
                     }
+                    if (FADM_Object.Communal._i_optBottleNum == 999)
+                    {
+                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Syringes_X;
+                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Syringes_Y;
+                    }
                     if (FADM_Object.Communal._i_optBottleNum == 0)
                     {
                         FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "复位完成");
@@ -5678,6 +6096,11 @@ namespace SmartDyeing.FADM_Object
                                 (iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
                                 * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
                         }
+                    }
+                    if (FADM_Object.Communal._i_optBottleNum == 999)
+                    {
+                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Syringes_X;
+                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Syringes_Y;
                     }
                     if (FADM_Object.Communal._i_optBottleNum == 0)
                     {

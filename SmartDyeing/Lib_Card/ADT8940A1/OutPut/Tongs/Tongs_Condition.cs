@@ -22,9 +22,21 @@ namespace Lib_Card.ADT8940A1.OutPut.Tongs
                 return 0;
             else
             {
-                int iRes = CardObject.OA1.WriteOutPut(ADT8940A1_IO.OutPut_Tongs, 0);
-                if (-1 == iRes)
-                    return -1;
+                if (Lib_Card.Configure.Parameter.Machine_TongsVersion == 0)
+                {
+                    int iRes = CardObject.OA1.WriteOutPut(ADT8940A1_IO.OutPut_Tongs, 0);
+                    if (-1 == iRes)
+                        return -1;
+                }
+                else
+                {
+                    int iRes = CardObject.OA1.WriteOutPut(ADT8940A1_IO.OutPut_Tongs, 0);
+                    if (-1 == iRes)
+                        return -1;
+                    int iRes1 = CardObject.OA1.WriteOutPut(ADT8940A1_IO.OutPut_TongsOff, 1);
+                    if (-1 == iRes1)
+                        return -1;
+                }
 
                 bool bDelay = false;
                 Thread thread = new Thread(() =>
@@ -133,9 +145,22 @@ namespace Lib_Card.ADT8940A1.OutPut.Tongs
                 return 0;
             else
             {
-                int iRes = CardObject.OA1.WriteOutPut(ADT8940A1_IO.OutPut_Tongs, 1);
-                if (-1 == iRes)
-                    return -1;
+                if (Lib_Card.Configure.Parameter.Machine_TongsVersion == 0)
+                {
+                    int iRes = CardObject.OA1.WriteOutPut(ADT8940A1_IO.OutPut_Tongs, 1);
+                    if (-1 == iRes)
+                        return -1;
+                }
+                else
+                {
+                    int iRes = CardObject.OA1.WriteOutPut(ADT8940A1_IO.OutPut_Tongs, 1);
+                    if (-1 == iRes)
+                        return -1;
+
+                    int iRes1 = CardObject.OA1.WriteOutPut(ADT8940A1_IO.OutPut_TongsOff, 0);
+                    if (-1 == iRes1)
+                        return -1;
+                }
 
                 bool bDelay = false;
                 Thread thread = new Thread(() =>

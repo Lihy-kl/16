@@ -666,6 +666,108 @@ namespace SmartDyeing.FADM_Auto
             }
         }
 
+        public static void MoveData_ABS(string s_batchName)
+        {
+            if (Convert.ToString(s_batchName) != "0")
+            {
+                //if (FADM_Object.Communal._b_isDripAll)
+                {
+                    //添加历史表
+                    DataTable dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(
+                     "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'abs_drop_head';");
+                    string s_columnHead = null;
+                    foreach (DataRow row in dt_temp.Rows)
+                    {
+                        string s_curName = Convert.ToString(row[0]);
+                        if ("TestTubeFinish" != s_curName && "TestTubeWaterLower" != s_curName && "AddWaterFinish" != s_curName &&
+                            "CupFinish" != s_curName && "TestTubeWaterLower" != s_curName)
+                            s_columnHead += s_curName + ", ";
+                    }
+                    s_columnHead = s_columnHead.Remove(s_columnHead.Length - 2);
+
+                    dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(
+                       "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'abs_drop_details';");
+                    string s_columnDetails = null;
+                    foreach (DataRow row in dt_temp.Rows)
+                    {
+                        string s_curName = Convert.ToString(row[0]);
+                        if ("MinWeight" != s_curName && "Finish" != s_curName && "IsShow" != s_curName)
+                            s_columnDetails += Convert.ToString(row[0]) + ", ";
+                    }
+                    s_columnDetails = s_columnDetails.Remove(s_columnDetails.Length - 2);
+
+                    dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(
+                       "SELECT * FROM abs_drop_head WHERE BatchName = '" + s_batchName + "'  And CupFinish = 0   ORDER BY CupNum;");
+
+                    foreach (DataRow dataRow in dt_temp.Rows)
+                    {
+                        //先删除已有记录
+                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                           "DELETE FROM abs_history_head WHERE BatchName = '" + s_batchName + "' AND CupNum = " + dataRow["CupNum"].ToString() + ";");
+                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                            "DELETE FROM abs_history_details WHERE BatchName = '" + s_batchName + "' AND CupNum = " + dataRow["CupNum"].ToString() + ";");
+
+                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                            "INSERT INTO abs_history_head (" + s_columnHead + ") (SELECT " + s_columnHead + " FROM abs_drop_head " +
+                            "WHERE BatchName = '" + s_batchName + "' AND CupNum = " + dataRow["CupNum"].ToString() + ";");
+
+                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                           "INSERT INTO abs_history_details (" + s_columnDetails + ") (SELECT " + s_columnDetails + " FROM abs_drop_details " +
+                           "WHERE BatchName = '" + s_batchName + "' AND CupNum = " + dataRow["CupNum"].ToString() + ";");
+
+                        //if (SmartDyeing.FADM_Object.Communal._lis_dripCupNum.Contains(Convert.ToInt32(dataRow["CupNum"].ToString())))
+                        {
+                            //滴液记录重新添加到批次
+                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                   "Update abs_drop_head set BatchName = '0',Step=0,RealAddWaterWeight=0.0,AddWaterFinish=0,CupFinish=0 WHERE CupNum = " + dataRow["CupNum"].ToString() + "  AND BatchName = '" + s_batchName + "' ;");
+                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                "Update  abs_drop_details set BatchName = '0',Finish=0,RealDropWeight=0.00,MinWeight=0 WHERE CupNum = " + dataRow["CupNum"].ToString() + "  AND BatchName = '" + s_batchName + "';");
+
+                           // FADM_Object.Communal._fadmSqlserver.ReviseData(
+                           //"UPDATE cup_details SET FormulaCode = null, " +
+                           //"DyeingCode = null, IsUsing = 1, Statues = '待机', " +
+                           //"StartTime = null, SetTemp = null, StepNum = null, TotalWeight = null, " +
+                           //"TotalStep = null, TechnologyName = null, StepStartTime = null, SetTime = null,RecordIndex = 0 WHERE CupNum = " +
+                           //dataRow["CupNum"].ToString() + "  ;");
+                        }
+                    }
+
+                    dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(
+                      "SELECT * FROM abs_drop_head WHERE BatchName = '" + s_batchName + "'  And CupFinish = 1 And Stage = '滴液'   ORDER BY CupNum;");
+                    foreach (DataRow dataRow in dt_temp.Rows)
+                    {
+                        //先删除已有记录
+                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                           "DELETE FROM abs_history_head WHERE BatchName = '" + s_batchName + "' AND CupNum = " + dataRow["CupNum"].ToString() + ";");
+                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                            "DELETE FROM abs_history_details WHERE BatchName = '" + s_batchName + "' AND CupNum = " + dataRow["CupNum"].ToString() + ";");
+
+                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                            "INSERT INTO abs_history_head (" + s_columnHead + ") (SELECT " + s_columnHead + " FROM drop_head " +
+                            "WHERE BatchName = '" + s_batchName + "' AND CupNum = " + dataRow["CupNum"].ToString() + ";");
+
+                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                           "INSERT INTO history_details (" + s_columnDetails + ") (SELECT " + s_columnDetails + " FROM abs_drop_details " +
+                           "WHERE BatchName = '" + s_batchName + "' AND CupNum = " + dataRow["CupNum"].ToString() + ";");
+
+                        //原来删除记录
+                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                               "DELETE FROM abs_drop_head WHERE CupNum = " + dataRow["CupNum"].ToString() + "  AND BatchName = '" + s_batchName + "' ;");
+                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                            "DELETE FROM abs_drop_details WHERE CupNum = " + dataRow["CupNum"].ToString() + "  AND BatchName = '" + s_batchName + "';");
+
+                        ////复位当前杯使用状态
+                        //FADM_Object.Communal._fadmSqlserver.ReviseData(
+                        //    "UPDATE cup_details SET FormulaCode = null, " +
+                        //    "DyeingCode = null, IsUsing = 0, Statues = '待机', " +
+                        //    "StartTime = null, SetTemp = null, StepNum = null, TotalWeight = null, " +
+                        //    "TotalStep = null, TechnologyName = null, StepStartTime = null, SetTime = null,RecordIndex = 0, Cooperate = 0 WHERE CupNum = " + dataRow["CupNum"].ToString() + " AND Statues != '下线';");
+                    }
+                }
+                
+            }
+        }
+
         public static void IOReset()
         {
             Lib_Card.CardObject.OA1.SuddnStop(Lib_Card.ADT8940A1.ADT8940A1_IO.Axis_X);

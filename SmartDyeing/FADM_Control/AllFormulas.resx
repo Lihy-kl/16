@@ -238,7 +238,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_CupNum.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>6</value>
   </data>
   <data name="txt_ClothType.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -268,7 +268,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_ClothType.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>7</value>
   </data>
   <data name="txt_CreateTime.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -298,7 +298,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_CreateTime.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>8</value>
   </data>
   <data name="txt_TotalWeight.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -328,7 +328,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_TotalWeight.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>9</value>
   </data>
   <data name="txt_BathRatio.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -358,7 +358,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_BathRatio.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>10</value>
   </data>
   <data name="txt_ClothWeight.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -388,7 +388,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_ClothWeight.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>11</value>
   </data>
   <data name="chk_AddWaterChoose.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -424,7 +424,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;chk_AddWaterChoose.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>12</value>
   </data>
   <data name="txt_Customer.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -454,7 +454,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_Customer.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>13</value>
   </data>
   <data name="txt_FormulaName.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -484,7 +484,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_FormulaName.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>14</value>
   </data>
   <data name="txt_State.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -514,7 +514,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_State.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>15</value>
   </data>
   <data name="txt_FormulaCode.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -547,7 +547,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_FormulaCode.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>17</value>
   </data>
   <data name="txt_Record_Operator.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -999,33 +999,6 @@
   <data name="&gt;&gt;grp_BatchData.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="txt_DyeingCode.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="txt_DyeingCode.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 14.25pt</value>
-  </data>
-  <data name="txt_DyeingCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>297, 94</value>
-  </data>
-  <data name="txt_DyeingCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 27</value>
-  </data>
-  <data name="txt_DyeingCode.TabIndex" type="System.Int32, mscorlib">
-    <value>50</value>
-  </data>
-  <data name="&gt;&gt;txt_DyeingCode.Name" xml:space="preserve">
-    <value>txt_DyeingCode</value>
-  </data>
-  <data name="&gt;&gt;txt_DyeingCode.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txt_DyeingCode.Parent" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;txt_DyeingCode.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="txt_Operator.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -1051,7 +1024,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_Operator.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="dataGridViewTextBoxColumn55.HeaderText" xml:space="preserve">
     <value>序号/名称</value>
@@ -1108,7 +1081,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;dgv_FormulaData.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="txt_AnhydrationWR.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1138,7 +1111,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_AnhydrationWR.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="lab_AnhydrationWR.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1171,7 +1144,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_AnhydrationWR.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="txt_Non_AnhydrationWR.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1201,7 +1174,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_Non_AnhydrationWR.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="lab_txt_Non_AnhydrationWR.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1234,40 +1207,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_txt_Non_AnhydrationWR.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="lab_DyeingCode.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 14.25pt</value>
-  </data>
-  <data name="lab_DyeingCode.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lab_DyeingCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>148, 93</value>
-  </data>
-  <data name="lab_DyeingCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 29</value>
-  </data>
-  <data name="lab_DyeingCode.TabIndex" type="System.Int32, mscorlib">
-    <value>36</value>
-  </data>
-  <data name="lab_DyeingCode.Text" xml:space="preserve">
-    <value>染固色工艺代码:</value>
-  </data>
-  <data name="lab_DyeingCode.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
-  </data>
-  <data name="&gt;&gt;lab_DyeingCode.Name" xml:space="preserve">
-    <value>lab_DyeingCode</value>
-  </data>
-  <data name="&gt;&gt;lab_DyeingCode.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lab_DyeingCode.Parent" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;lab_DyeingCode.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>5</value>
   </data>
   <data name="txt_VersionNum.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1297,7 +1237,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_VersionNum.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>16</value>
   </data>
   <data name="lab_CreateTime.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1330,7 +1270,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_CreateTime.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>18</value>
   </data>
   <data name="lab_CupNum.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1363,7 +1303,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_CupNum.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>19</value>
   </data>
   <data name="lab_Operator.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1396,7 +1336,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_Operator.ZOrder" xml:space="preserve">
-    <value>22</value>
+    <value>20</value>
   </data>
   <data name="lab_TotalWeight.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1429,7 +1369,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_TotalWeight.ZOrder" xml:space="preserve">
-    <value>23</value>
+    <value>21</value>
   </data>
   <data name="lab_BathRatio.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1462,7 +1402,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_BathRatio.ZOrder" xml:space="preserve">
-    <value>24</value>
+    <value>22</value>
   </data>
   <data name="lab_ClothWeight.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1495,7 +1435,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_ClothWeight.ZOrder" xml:space="preserve">
-    <value>25</value>
+    <value>23</value>
   </data>
   <data name="lab_Customer.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1528,7 +1468,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_Customer.ZOrder" xml:space="preserve">
-    <value>26</value>
+    <value>24</value>
   </data>
   <data name="lab_ClothType.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1561,7 +1501,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_ClothType.ZOrder" xml:space="preserve">
-    <value>27</value>
+    <value>25</value>
   </data>
   <data name="lab_FormulaName.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1594,7 +1534,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_FormulaName.ZOrder" xml:space="preserve">
-    <value>28</value>
+    <value>26</value>
   </data>
   <data name="lab_FormulaCode.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1627,7 +1567,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_FormulaCode.ZOrder" xml:space="preserve">
-    <value>29</value>
+    <value>27</value>
   </data>
   <data name="grp_FormulaData.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 10.5pt</value>
@@ -1890,32 +1830,35 @@
   <metadata name="tmr.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="panel1.AutoScroll" type="System.Boolean, mscorlib">
+  <data name="panel2.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>309, 426</value>
+  <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>317, 426</value>
   </data>
-  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1312, 545</value>
+  <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1298, 545</value>
   </data>
-  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
+  <data name="panel2.TabIndex" type="System.Int32, mscorlib">
     <value>52</value>
   </data>
-  <data name="&gt;&gt;panel1.Name" xml:space="preserve">
-    <value>panel1</value>
+  <data name="&gt;&gt;panel2.Name" xml:space="preserve">
+    <value>panel2</value>
   </data>
-  <data name="&gt;&gt;panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;panel2.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;panel2.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
+  </metadata>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>25</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 12</value>
@@ -1958,6 +1901,72 @@
   </data>
   <data name="&gt;&gt;Column7.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewTextBoxColumn55.Name" xml:space="preserve">
+    <value>dataGridViewTextBoxColumn55</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewTextBoxColumn55.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewTextBoxColumn56.Name" xml:space="preserve">
+    <value>dataGridViewTextBoxColumn56</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewTextBoxColumn56.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewTextBoxColumn57.Name" xml:space="preserve">
+    <value>dataGridViewTextBoxColumn57</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewTextBoxColumn57.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewTextBoxColumn58.Name" xml:space="preserve">
+    <value>dataGridViewTextBoxColumn58</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewTextBoxColumn58.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewComboBoxColumn7.Name" xml:space="preserve">
+    <value>dataGridViewComboBoxColumn7</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewComboBoxColumn7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewComboBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewTextBoxColumn59.Name" xml:space="preserve">
+    <value>dataGridViewTextBoxColumn59</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewTextBoxColumn59.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewTextBoxColumn60.Name" xml:space="preserve">
+    <value>dataGridViewTextBoxColumn60</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewTextBoxColumn60.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewTextBoxColumn61.Name" xml:space="preserve">
+    <value>dataGridViewTextBoxColumn61</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewTextBoxColumn61.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewTextBoxColumn62.Name" xml:space="preserve">
+    <value>dataGridViewTextBoxColumn62</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewTextBoxColumn62.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewTextBoxColumn63.Name" xml:space="preserve">
+    <value>dataGridViewTextBoxColumn63</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewTextBoxColumn63.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewCheckBoxColumn7.Name" xml:space="preserve">
+    <value>dataGridViewCheckBoxColumn7</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewCheckBoxColumn7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewCheckBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;Index.Name" xml:space="preserve">
     <value>Index</value>
@@ -2426,72 +2435,6 @@
   </data>
   <data name="&gt;&gt;tmr.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewTextBoxColumn55.Name" xml:space="preserve">
-    <value>dataGridViewTextBoxColumn55</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewTextBoxColumn55.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewTextBoxColumn56.Name" xml:space="preserve">
-    <value>dataGridViewTextBoxColumn56</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewTextBoxColumn56.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewTextBoxColumn57.Name" xml:space="preserve">
-    <value>dataGridViewTextBoxColumn57</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewTextBoxColumn57.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewTextBoxColumn58.Name" xml:space="preserve">
-    <value>dataGridViewTextBoxColumn58</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewTextBoxColumn58.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewComboBoxColumn7.Name" xml:space="preserve">
-    <value>dataGridViewComboBoxColumn7</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewComboBoxColumn7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewComboBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewTextBoxColumn59.Name" xml:space="preserve">
-    <value>dataGridViewTextBoxColumn59</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewTextBoxColumn59.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewTextBoxColumn60.Name" xml:space="preserve">
-    <value>dataGridViewTextBoxColumn60</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewTextBoxColumn60.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewTextBoxColumn61.Name" xml:space="preserve">
-    <value>dataGridViewTextBoxColumn61</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewTextBoxColumn61.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewTextBoxColumn62.Name" xml:space="preserve">
-    <value>dataGridViewTextBoxColumn62</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewTextBoxColumn62.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewTextBoxColumn63.Name" xml:space="preserve">
-    <value>dataGridViewTextBoxColumn63</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewTextBoxColumn63.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewCheckBoxColumn7.Name" xml:space="preserve">
-    <value>dataGridViewCheckBoxColumn7</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewCheckBoxColumn7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewCheckBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>AllFormulas</value>

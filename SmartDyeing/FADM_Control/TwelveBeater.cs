@@ -217,26 +217,164 @@ namespace SmartDyeing.FADM_Control
             if (this.groupBox1.Text.Contains("一号"))
             {
                 FADM_Object.Communal._ia_dyeStatus[0] = 0;
+
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus12 = false;
+
+                for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus.Length; pp++)
+                {
+                    FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus[pp] = false;
+                }
+
+                FADM_Object.Communal._tcpDyeHMI1._b_isGetVer = false;
+                FADM_Object.Communal._s_TouchVer1 = "";
+                FADM_Object.Communal._s_CardOneVer1 = "";
+                FADM_Object.Communal._s_CardTwoVer1 = "";
             }
             else if (this.groupBox1.Text.Contains("二号"))
             {
                 FADM_Object.Communal._ia_dyeStatus[1] = 0;
+
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus12 = false;
+
+                for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus.Length; pp++)
+                {
+                    FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus[pp] = false;
+                }
+
+                FADM_Object.Communal._tcpDyeHMI2._b_isGetVer = false;
+                FADM_Object.Communal._s_TouchVer2 = "";
+                FADM_Object.Communal._s_CardOneVer2 = "";
+                FADM_Object.Communal._s_CardTwoVer2 = "";
             }
             else if (this.groupBox1.Text.Contains("三号"))
             {
                 FADM_Object.Communal._ia_dyeStatus[2] = 0;
+
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus12 = false;
+
+                for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus.Length; pp++)
+                {
+                    FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus[pp] = false;
+                }
+
+                FADM_Object.Communal._tcpDyeHMI3._b_isGetVer = false;
+                FADM_Object.Communal._s_TouchVer3 = "";
+                FADM_Object.Communal._s_CardOneVer3 = "";
+                FADM_Object.Communal._s_CardTwoVer3 = "";
             }
             else if (this.groupBox1.Text.Contains("四号"))
             {
                 FADM_Object.Communal._ia_dyeStatus[3] = 0;
+
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus12 = false;
+
+                for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus.Length; pp++)
+                {
+                    FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus[pp] = false;
+                }
+
+                FADM_Object.Communal._tcpDyeHMI4._b_isGetVer = false;
+                FADM_Object.Communal._s_TouchVer4 = "";
+                FADM_Object.Communal._s_CardOneVer4 = "";
+                FADM_Object.Communal._s_CardTwoVer4 = "";
             }
             else if (this.groupBox1.Text.Contains("五号"))
             {
                 FADM_Object.Communal._ia_dyeStatus[4] = 0;
+
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus12 = false;
+
+                for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus.Length; pp++)
+                {
+                    FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus[pp] = false;
+                }
+
+                FADM_Object.Communal._tcpDyeHMI5._b_isGetVer = false;
+                FADM_Object.Communal._s_TouchVer5 = "";
+                FADM_Object.Communal._s_CardOneVer5 = "";
+                FADM_Object.Communal._s_CardTwoVer5 = "";
             }
             else
             {
                 FADM_Object.Communal._ia_dyeStatus[5] = 0;
+
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus12 = false;
+
+                for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus.Length; pp++)
+                {
+                    FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus[pp] = false;
+                }
+
+                FADM_Object.Communal._tcpDyeHMI6._b_isGetVer = false;
+                FADM_Object.Communal._s_TouchVer6 = "";
+                FADM_Object.Communal._s_CardOneVer6 = "";
+                FADM_Object.Communal._s_CardTwoVer6 = "";
             }
 
             Thread.Sleep(2000);
@@ -399,6 +537,29 @@ namespace SmartDyeing.FADM_Control
                 FADM_Object.Communal._ia_dyeStatus[0] = 0;
                 Thread.Sleep(2000);
                 Lib_Card.CardObject.DeleteD(FADM_Object.Communal._sa_dyeConFTime[0]);
+
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus12 = false;
+
+                for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus.Length; pp++)
+                {
+                    FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus[pp] = false;
+                }
+
+                FADM_Object.Communal._tcpDyeHMI1._b_isGetVer = false;
+                FADM_Object.Communal._s_TouchVer1 = "";
+                FADM_Object.Communal._s_CardOneVer1 = "";
+                FADM_Object.Communal._s_CardTwoVer1 = "";
             }
             else if (this.groupBox1.Text.Contains("二号"))
             {
@@ -415,6 +576,29 @@ namespace SmartDyeing.FADM_Control
                 FADM_Object.Communal._ia_dyeStatus[1] = 0;
                 Thread.Sleep(2000);
                 Lib_Card.CardObject.DeleteD(FADM_Object.Communal._sa_dyeConFTime[1]);
+
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus12 = false;
+
+                for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus.Length; pp++)
+                {
+                    FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus[pp] = false;
+                }
+
+                FADM_Object.Communal._tcpDyeHMI2._b_isGetVer = false;
+                FADM_Object.Communal._s_TouchVer2 = "";
+                FADM_Object.Communal._s_CardOneVer2 = "";
+                FADM_Object.Communal._s_CardTwoVer2 = "";
             }
             else if (this.groupBox1.Text.Contains("三号"))
             {
@@ -431,6 +615,29 @@ namespace SmartDyeing.FADM_Control
                 FADM_Object.Communal._ia_dyeStatus[2] = 0;
                 Thread.Sleep(2000);
                 Lib_Card.CardObject.DeleteD(FADM_Object.Communal._sa_dyeConFTime[2]);
+
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus12 = false;
+
+                for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus.Length; pp++)
+                {
+                    FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus[pp] = false;
+                }
+
+                FADM_Object.Communal._tcpDyeHMI3._b_isGetVer = false;
+                FADM_Object.Communal._s_TouchVer3 = "";
+                FADM_Object.Communal._s_CardOneVer3 = "";
+                FADM_Object.Communal._s_CardTwoVer3 = "";
             }
             else if (this.groupBox1.Text.Contains("四号"))
             {
@@ -447,6 +654,29 @@ namespace SmartDyeing.FADM_Control
                 FADM_Object.Communal._ia_dyeStatus[3] = 0;
                 Thread.Sleep(2000);
                 Lib_Card.CardObject.DeleteD(FADM_Object.Communal._sa_dyeConFTime[3]);
+
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus12 = false;
+
+                for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus.Length; pp++)
+                {
+                    FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus[pp] = false;
+                }
+
+                FADM_Object.Communal._tcpDyeHMI4._b_isGetVer = false;
+                FADM_Object.Communal._s_TouchVer4 = "";
+                FADM_Object.Communal._s_CardOneVer4 = "";
+                FADM_Object.Communal._s_CardTwoVer4 = "";
             }
             else if (this.groupBox1.Text.Contains("五号"))
             {
@@ -463,6 +693,29 @@ namespace SmartDyeing.FADM_Control
                 FADM_Object.Communal._ia_dyeStatus[4] = 0;
                 Thread.Sleep(2000);
                 Lib_Card.CardObject.DeleteD(FADM_Object.Communal._sa_dyeConFTime[4]);
+
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus12 = false;
+
+                for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus.Length; pp++)
+                {
+                    FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus[pp] = false;
+                }
+
+                FADM_Object.Communal._tcpDyeHMI5._b_isGetVer = false;
+                FADM_Object.Communal._s_TouchVer5 = "";
+                FADM_Object.Communal._s_CardOneVer5 = "";
+                FADM_Object.Communal._s_CardTwoVer5 = "";
             }
             else 
             {
@@ -479,6 +732,29 @@ namespace SmartDyeing.FADM_Control
                 FADM_Object.Communal._ia_dyeStatus[5] = 0;
                 Thread.Sleep(2000);
                 Lib_Card.CardObject.DeleteD(FADM_Object.Communal._sa_dyeConFTime[5]);
+
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus12 = false;
+
+                for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus.Length; pp++)
+                {
+                    FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus[pp] = false;
+                }
+
+                FADM_Object.Communal._tcpDyeHMI6._b_isGetVer = false;
+                FADM_Object.Communal._s_TouchVer6 = "";
+                FADM_Object.Communal._s_CardOneVer6 = "";
+                FADM_Object.Communal._s_CardTwoVer6 = "";
             }
         }
 

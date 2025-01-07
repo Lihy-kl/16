@@ -39,6 +39,7 @@ namespace SmartDyeing.FADM_Control
             this.txt_ClothType = new System.Windows.Forms.TextBox();
             this.txt_Record_Operator = new System.Windows.Forms.ComboBox();
             this.grp_DropRecord = new System.Windows.Forms.GroupBox();
+            this.btn_Record_Print = new System.Windows.Forms.Button();
             this.txt_Record_CupNum = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.Btn_Derive = new System.Windows.Forms.Button();
@@ -130,6 +131,7 @@ namespace SmartDyeing.FADM_Control
             // grp_DropRecord
             // 
             resources.ApplyResources(this.grp_DropRecord, "grp_DropRecord");
+            this.grp_DropRecord.Controls.Add(this.btn_Record_Print);
             this.grp_DropRecord.Controls.Add(this.txt_Record_CupNum);
             this.grp_DropRecord.Controls.Add(this.label10);
             this.grp_DropRecord.Controls.Add(this.Btn_Derive);
@@ -151,6 +153,14 @@ namespace SmartDyeing.FADM_Control
             this.grp_DropRecord.Name = "grp_DropRecord";
             this.grp_DropRecord.TabStop = false;
             this.toolTip1.SetToolTip(this.grp_DropRecord, resources.GetString("grp_DropRecord.ToolTip"));
+            // 
+            // btn_Record_Print
+            // 
+            resources.ApplyResources(this.btn_Record_Print, "btn_Record_Print");
+            this.btn_Record_Print.Name = "btn_Record_Print";
+            this.toolTip1.SetToolTip(this.btn_Record_Print, resources.GetString("btn_Record_Print.ToolTip"));
+            this.btn_Record_Print.UseVisualStyleBackColor = true;
+            this.btn_Record_Print.Click += new System.EventHandler(this.btn_Record_Print_Click);
             // 
             // txt_Record_CupNum
             // 
@@ -712,5 +722,6 @@ namespace SmartDyeing.FADM_Control
         private System.Windows.Forms.Label lab_CreateTime;
         private System.Windows.Forms.TextBox txt_Record_CupNum;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button btn_Record_Print;
     }
 }

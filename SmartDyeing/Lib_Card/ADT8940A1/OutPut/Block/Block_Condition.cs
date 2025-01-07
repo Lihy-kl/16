@@ -16,7 +16,10 @@ namespace Lib_Card.ADT8940A1.OutPut.Block
              */
 
 
-
+            if (Lib_Card.Configure.Parameter.Machine_BlockCylinder == 0)
+            {
+                return 0;
+            }
 
 
             lable:
@@ -93,7 +96,10 @@ namespace Lib_Card.ADT8940A1.OutPut.Block
             /* 条件
              *    1：气缸在上限位
              */
-
+            if (Lib_Card.Configure.Parameter.Machine_BlockCylinder == 0)
+            {
+                return 0;
+            }
 
             bool bReset = false;
         lable:

@@ -46,6 +46,8 @@ namespace SmartDyeing.FADM_Form
                 }
             }
 
+            
+
             foreach (Control c in this.Controls)
             {
                 if (c is TextBox)
@@ -100,7 +102,20 @@ namespace SmartDyeing.FADM_Form
                 }
             }
 
-            
+            if (!FADM_Object.Communal._b_isShowSample)
+            {
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                {
+                    cbo_TechnologyName.Items.Remove("取小样");
+                    cbo_TechnologyName.Items.Remove("测PH");
+                }
+                else
+                {
+                    cbo_TechnologyName.Items.Remove("Sample");
+                    cbo_TechnologyName.Items.Remove("Test PH");
+                }
+            }
+
         }
 
         //输入检查
@@ -182,7 +197,7 @@ namespace SmartDyeing.FADM_Form
                     }
                 }
 
-                else if (cbo_TechnologyName.Text == "放布" || cbo_TechnologyName.Text == "出布")
+                else if (cbo_TechnologyName.Text == "放布" || cbo_TechnologyName.Text == "出布" || cbo_TechnologyName.Text == "取小样" || cbo_TechnologyName.Text == "测PH")
                 {
                     if (txt_StepNum.Text != "" && txt_StepNum.Text != null && cbo_TechnologyName.Text != "" &&
                         cbo_TechnologyName.Text != null)
@@ -415,7 +430,7 @@ namespace SmartDyeing.FADM_Form
                     }
                 }
 
-                else if (cbo_TechnologyName.Text == "Entering the fabric" || cbo_TechnologyName.Text == "Outgoing fabric")
+                else if (cbo_TechnologyName.Text == "Entering the fabric" || cbo_TechnologyName.Text == "Outgoing fabric" || cbo_TechnologyName.Text == "Sample" || cbo_TechnologyName.Text == "Test PH")
                 {
                     if (txt_StepNum.Text != "" && txt_StepNum.Text != null && cbo_TechnologyName.Text != "" &&
                         cbo_TechnologyName.Text != null)
@@ -608,7 +623,9 @@ namespace SmartDyeing.FADM_Form
             //排液
             //出布
             //洗杯
-            if (cbo_TechnologyName.Text == "放布"  || cbo_TechnologyName.Text == "出布" || cbo_TechnologyName.Text == "Entering the fabric" || cbo_TechnologyName.Text == "Outgoing fabric")
+            if (cbo_TechnologyName.Text == "放布"  || cbo_TechnologyName.Text == "出布" || cbo_TechnologyName.Text == "取小样" || cbo_TechnologyName.Text == "测PH"
+                || cbo_TechnologyName.Text == "Entering the fabric" || cbo_TechnologyName.Text == "Outgoing fabric"
+                || cbo_TechnologyName.Text == "Sample" || cbo_TechnologyName.Text == "Test PH")
             {
                 txt_ProportionOrTime.Enabled = false;
                 txt_Rate.Enabled = false;

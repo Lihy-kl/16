@@ -217,8 +217,10 @@ namespace Lib_Card
                                 Thread.Sleep(1);
                             }
                             string str = keyValuePairs[s].Info;
-
-                            keyValuePairs.Remove(s);
+                            lock (keyValuePairs)
+                            {
+                                keyValuePairs.Remove(s);
+                            }
                             if (str == "右光幕遮挡" || str == "Right light curtain occlusion" || str == "右门已打开" || str == "The right door is open")
                             {
                                 bRight = false;

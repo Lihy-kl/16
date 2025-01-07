@@ -724,6 +724,9 @@ namespace SmartDyeing.FADM_Control
             this.ShowIcon = false;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Formula_FormClosed);
             this.Load += new System.EventHandler(this.Formula_Load);
+            this.LocationChanged += new System.EventHandler(this.Formula_LocationChanged);
+            this.Leave += new System.EventHandler(this.Formula_Leave);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Formula_MouseDown);
             this.grp_BatchData.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_BatchData)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);

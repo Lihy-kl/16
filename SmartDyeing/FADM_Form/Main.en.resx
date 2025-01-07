@@ -125,19 +125,169 @@
     <value>Microsoft YaHei UI, 7.5pt</value>
   </data>
   <data name="BtnUserSwitching.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 22</value>
+    <value>80, 25</value>
   </data>
   <data name="BtnUserSwitching.Text" xml:space="preserve">
     <value>OrdinaryUsers</value>
   </data>
-  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="toolStripSplitButton1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="toolStripSplitButton1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>137, 25</value>
+  </data>
+  <data name="toolStripSplitButton1.Text" xml:space="preserve">
+    <value>BasicDataManagement</value>
+  </data>
+  <data name="toolStripSplitButton6.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="toolStripSplitButton6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>141, 25</value>
+  </data>
+  <data name="toolStripSplitButton6.Text" xml:space="preserve">
+    <value>Parameter management</value>
+  </data>
+  <data name="toolStripSplitButton2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="toolStripSplitButton2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>183, 25</value>
+  </data>
+  <data name="toolStripSplitButton2.Text" xml:space="preserve">
+    <value>MachineDebuggingManagement</value>
+  </data>
+  <data name="BtnMain.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="BtnMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>185, 25</value>
+  </data>
+  <data name="BtnMain.Text" xml:space="preserve">
+    <value>MotherLiquidBottleInformationPage</value>
+  </data>
+  <data name="DetailInfo.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="DetailInfo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>164, 25</value>
+  </data>
+  <data name="DetailInfo.Text" xml:space="preserve">
+    <value>DispensingCupInformationPage</value>
+  </data>
+  <data name="toolStripSplitButton5.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="toolStripSplitButton5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>136, 25</value>
+  </data>
+  <data name="toolStripSplitButton5.Text" xml:space="preserve">
+    <value>DropManagementPage</value>
+  </data>
+  <data name="toolStripButton1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="toolStripButton1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
+        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
+        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
+        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
+        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
+        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
+        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
+        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
+        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
+        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="toolStripButton1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>109, 25</value>
+  </data>
+  <data name="toolStripButton1.Text" xml:space="preserve">
+    <value>AbsInformationPage</value>
+  </data>
+  <data name="toolStripSplitButton4.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="toolStripSplitButton4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>159, 20</value>
+  </data>
+  <data name="toolStripSplitButton4.Text" xml:space="preserve">
+    <value>HistoricalDataManagement</value>
+  </data>
+  <data name="toolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
+  </data>
+  <data name="BtnNTD.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="BtnNTD.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
+        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
+        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
+        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
+        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
+        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
+        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
+        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
+        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
+        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="BtnNTD.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 20</value>
+  </data>
+  <data name="BtnNTD.Text" xml:space="preserve">
+    <value>To-doListPage</value>
+  </data>
+  <data name="toolStripSeparator7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="toolStripSplitButton3.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="toolStripSplitButton3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 20</value>
+  </data>
+  <data name="toolStripSplitButton3.Text" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="LabStatus.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="LabStatus.Size" type="System.Drawing.Size, System.Drawing">
+    <value>27, 16</value>
+  </data>
+  <data name="toolStripLabel1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="toolStripSeparator5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="BtnResetBrew.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 7.5pt</value>
+  </data>
+  <data name="BtnResetBrew.Size" type="System.Drawing.Size, System.Drawing">
+    <value>203, 20</value>
+  </data>
+  <data name="BtnResetBrew.Text" xml:space="preserve">
+    <value>RestartTheCommunicationOfTheFeeder</value>
   </data>
   <data name="MiBrewingProcess.Size" type="System.Drawing.Size, System.Drawing">
     <value>262, 22</value>
   </data>
   <data name="MiBrewingProcess.Text" xml:space="preserve">
     <value>DyeingAuxiliariesConfigurationProcess</value>
+  </data>
+  <data name="MiDyeingProcess.Size" type="System.Drawing.Size, System.Drawing">
+    <value>262, 22</value>
+  </data>
+  <data name="MiDyeingProcess.Text" xml:space="preserve">
+    <value>DyeingSolidConfigurationProcess</value>
   </data>
   <data name="DyeingProcessConfiguration.Size" type="System.Drawing.Size, System.Drawing">
     <value>268, 22</value>
@@ -156,12 +306,6 @@
   </data>
   <data name="DyeingAndFixationProcessConfiguration.Text" xml:space="preserve">
     <value>DyeingAndFixationProcessConfiguration</value>
-  </data>
-  <data name="MiDyeingProcess.Size" type="System.Drawing.Size, System.Drawing">
-    <value>262, 22</value>
-  </data>
-  <data name="MiDyeingProcess.Text" xml:space="preserve">
-    <value>DyeingSolidConfigurationProcess</value>
   </data>
   <data name="MiAssistant.Size" type="System.Drawing.Size, System.Drawing">
     <value>262, 22</value>
@@ -199,15 +343,6 @@
   <data name="MiOperator.Text" xml:space="preserve">
     <value>OperatorInformation</value>
   </data>
-  <data name="toolStripSplitButton1.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft YaHei UI, 7.5pt</value>
-  </data>
-  <data name="toolStripSplitButton1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 22</value>
-  </data>
-  <data name="toolStripSplitButton1.Text" xml:space="preserve">
-    <value>BasicDataManagement</value>
-  </data>
   <data name="MiOut1.Size" type="System.Drawing.Size, System.Drawing">
     <value>129, 22</value>
   </data>
@@ -225,18 +360,6 @@
   </data>
   <data name="MiFullDrip1.Text" xml:space="preserve">
     <value>FullDrip</value>
-  </data>
-  <data name="toolStripSplitButton6.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft YaHei UI, 7.5pt</value>
-  </data>
-  <data name="toolStripSplitButton6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>141, 22</value>
-  </data>
-  <data name="toolStripSplitButton6.Text" xml:space="preserve">
-    <value>Parameter management</value>
-  </data>
-  <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
   </data>
   <data name="MiDebug.Size" type="System.Drawing.Size, System.Drawing">
     <value>148, 22</value>
@@ -256,116 +379,26 @@
   <data name="MiAlarm.Text" xml:space="preserve">
     <value>TheAlarmPage</value>
   </data>
-  <data name="toolStripSplitButton2.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft YaHei UI, 7.5pt</value>
-  </data>
-  <data name="toolStripSplitButton2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 22</value>
-  </data>
-  <data name="toolStripSplitButton2.Text" xml:space="preserve">
-    <value>MachineDebuggingManagement</value>
-  </data>
-  <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
-  </data>
-  <data name="BtnMain.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft YaHei UI, 7.5pt</value>
-  </data>
-  <data name="BtnMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 22</value>
-  </data>
-  <data name="BtnMain.Text" xml:space="preserve">
-    <value>MotherLiquidBottleInformationPage</value>
-  </data>
-  <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
-  </data>
-  <data name="DetailInfo.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft YaHei UI, 7.5pt</value>
-  </data>
-  <data name="DetailInfo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>164, 22</value>
-  </data>
-  <data name="DetailInfo.Text" xml:space="preserve">
-    <value>DispensingCupInformationPage</value>
-  </data>
-  <data name="toolStripSeparator9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
-  </data>
-  <data name="toolStripSplitButton5.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft YaHei UI, 7.5pt</value>
-  </data>
-  <data name="toolStripSplitButton5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 22</value>
-  </data>
-  <data name="toolStripSplitButton5.Text" xml:space="preserve">
-    <value>DropManagementPage</value>
-  </data>
-  <data name="toolStripSeparator8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
-  </data>
   <data name="MiHistoryPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>174, 22</value>
   </data>
   <data name="MiHistoryPage.Text" xml:space="preserve">
     <value>HistoricalQueryPage</value>
   </data>
   <data name="MiFormulaPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>174, 22</value>
   </data>
   <data name="MiFormulaPage.Text" xml:space="preserve">
     <value>RecipeHistoryPage</value>
   </data>
   <data name="MiBrewPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>174, 22</value>
   </data>
   <data name="MiBrewPage.Text" xml:space="preserve">
     <value>BrewPage</value>
   </data>
-  <data name="absPageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
-  </data>
-  <data name="absPageToolStripMenuItem.Text" xml:space="preserve">
-    <value>AbsPage</value>
-  </data>
-  <data name="toolStripSplitButton4.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft YaHei UI, 7.5pt</value>
-  </data>
-  <data name="toolStripSplitButton4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>159, 22</value>
-  </data>
-  <data name="toolStripSplitButton4.Text" xml:space="preserve">
-    <value>HistoricalDataManagement</value>
-  </data>
-  <data name="toolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
-  </data>
-  <data name="BtnNTD.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft YaHei UI, 7.5pt</value>
-  </data>
-  <data name="BtnNTD.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
-        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
-        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
-        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
-        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
-        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
-        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
-        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
-        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
-        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="BtnNTD.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 20</value>
-  </data>
-  <data name="BtnNTD.Text" xml:space="preserve">
-    <value>To-doListPage</value>
-  </data>
-  <data name="toolStripSeparator7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
+  <data name="MiAbsPage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>174, 22</value>
   </data>
   <data name="MiAbort.Size" type="System.Drawing.Size, System.Drawing">
     <value>108, 22</value>
@@ -378,48 +411,6 @@
   </data>
   <data name="MiRegister.Text" xml:space="preserve">
     <value>SignUp</value>
-  </data>
-  <data name="toolStripSplitButton3.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft YaHei UI, 7.5pt</value>
-  </data>
-  <data name="toolStripSplitButton3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 20</value>
-  </data>
-  <data name="toolStripSplitButton3.Text" xml:space="preserve">
-    <value>Help</value>
-  </data>
-  <data name="LabStatus.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft YaHei UI, 7.5pt</value>
-  </data>
-  <data name="LabStatus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>27, 16</value>
-  </data>
-  <data name="toolStripLabel1.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft YaHei UI, 7.5pt</value>
-  </data>
-  <data name="toolStripLabel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="toolStripSeparator5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
-  </data>
-  <data name="BtnResetBrew.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft YaHei UI, 7.5pt</value>
-  </data>
-  <data name="BtnResetBrew.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 20</value>
-  </data>
-  <data name="BtnResetBrew.Text" xml:space="preserve">
-    <value>RestartTheCommunicationOfTheFeeder</value>
-  </data>
-  <data name="toolStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1283, 25</value>
-  </data>
-  <data name="PnlMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 25</value>
-  </data>
-  <data name="PnlMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1283, 682</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

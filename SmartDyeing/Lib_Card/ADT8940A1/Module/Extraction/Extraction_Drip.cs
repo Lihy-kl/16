@@ -86,7 +86,7 @@ namespace Lib_Card.ADT8940A1.Module.Extraction
                 }
                 catch (Exception ex)
                 {
-                    if ("Z轴正限位已通" != ex.Message)
+                    if ("Z轴反限位已通" != ex.Message)
                         throw;
                 }
 
@@ -152,7 +152,7 @@ namespace Lib_Card.ADT8940A1.Module.Extraction
                 }
                 catch (Exception ex)
                 {
-                    if ("Z轴正限位已通" != ex.Message)
+                    if ("Z轴反限位已通" != ex.Message)
                         throw;
                 }
             }
@@ -217,7 +217,7 @@ namespace Lib_Card.ADT8940A1.Module.Extraction
                 });
 
                 threadC.Start();
-                iZRes = CardObject.OA1Axis.Absolute_Z(iSyringeType, iPulse, 0);
+                iZRes = CardObject.OA1Axis.Absolute_Z(iSyringeType, iPulse+ Configure.Parameter.Other_Z_BackPulse, 0);
                 if (0 != iZRes)
                     return iZRes;
 

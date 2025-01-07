@@ -58,6 +58,12 @@ namespace SmartDyeing.FADM_Form
                 FADM_Object.Communal._b_isBalanceInDrip = false;
             }
 
+            string s_isCupAreaOnly = Lib_File.Ini.GetIni("Setting", "IsCupAreaOnly", "0", s_path);
+            if (s_isCupAreaOnly == "1")
+            {
+                FADM_Object.Communal._b_isCupAreaOnly = true;
+            }
+
             string s_newSet = Lib_File.Ini.GetIni("Setting", "IsNewSet", "1", s_path);
             if (s_newSet == "0")
             {
@@ -112,6 +118,11 @@ namespace SmartDyeing.FADM_Form
                 Thread P_thd4 = new Thread(InsertAbs);
                 P_thd4.IsBackground = true;
                 P_thd4.Start();
+            }
+            else
+            {
+                toolStripButton1.Visible=false;
+                toolStripSeparator8.Visible=false;
             }
 
             //播报线程
@@ -215,7 +226,15 @@ namespace SmartDyeing.FADM_Form
                 FADM_Object.Communal._b_isNetWork = true;
             }
 
-
+            string IsUnitChange = Lib_File.Ini.GetIni("Setting", "IsUnitChange", "0", s_path);
+            if (IsUnitChange == "0")
+            {
+                FADM_Object.Communal._b_isUnitChange = false;
+            }
+            else
+            {
+                FADM_Object.Communal._b_isUnitChange = true;
+            }
 
             string s_dripAll = Lib_File.Ini.GetIni("Setting", "IsDripAll", "0", s_path);
             if (s_dripAll == "1")
@@ -259,7 +278,41 @@ namespace SmartDyeing.FADM_Form
                 FADM_Object.Communal._b_isUseClamp = true;
             }
 
+            string s_useClampOut = Lib_File.Ini.GetIni("Setting", "IsUseClampOut", "0", s_path);
+            if (s_useClampOut == "1")
+            {
+                FADM_Object.Communal._b_isUseClampOut = true;
+            }
+
+            string IsDyMin = Lib_File.Ini.GetIni("Setting", "IsDyMin", "0", s_path);
+            if (IsDyMin == "0")
+            {
+                FADM_Object.Communal._b_isDyMin = 0;
+            }
+            else
+            {
+                FADM_Object.Communal._b_isDyMin = Convert.ToInt32(IsDyMin);
+            }
+
+            string _b_DyeCupNum = Lib_File.Ini.GetIni("Setting", "IsDyeCupNum", "0", s_path);
+            if (_b_DyeCupNum == "0")
+            {
+                FADM_Object.Communal._b_DyeCupNum = 0;
+            }
+            else
+            {
+                FADM_Object.Communal._b_DyeCupNum = Convert.ToInt32(_b_DyeCupNum);
+            }
             
+
+
+
+
+            
+
+
+
+
 
             string isppm = Lib_File.Ini.GetIni("Setting", "PPM", "30", s_path);
             FADM_Object.Communal._d_ppm = Convert.ToDouble(isppm);
@@ -282,6 +335,193 @@ namespace SmartDyeing.FADM_Form
             if (s_desc == "1")
             {
                 FADM_Object.Communal._b_isDesc = true;
+            }
+
+            string s_isShowSample = Lib_File.Ini.GetIni("Setting", "IsShowSample", "0", s_path);
+            if (s_isShowSample == "1")
+            {
+                FADM_Object.Communal._b_isShowSample = true;
+            }
+
+            string s_Head_Ip = Lib_File.Ini.GetIni("CplImport", "Head_Ip", "1", s_path);
+            FADM_Object.Communal._i_Head_Ip = Convert.ToInt32(s_Head_Ip);
+
+            string s_Head_Ip_Len = Lib_File.Ini.GetIni("CplImport", "Head_Ip_Len", "4", s_path);
+            FADM_Object.Communal._i_Head_Ip_Len = Convert.ToInt32(s_Head_Ip_Len);
+
+            string s_Head_FormulaCode = Lib_File.Ini.GetIni("CplImport", "Head_FormulaCode", "5", s_path);
+            FADM_Object.Communal._i_Head_FormulaCode = Convert.ToInt32(s_Head_FormulaCode);
+
+            string s_Head_FormulaCode_Len = Lib_File.Ini.GetIni("CplImport", "Head_FormulaCode_Len", "12", s_path);
+            FADM_Object.Communal._i_Head_FormulaCode_Len = Convert.ToInt32(s_Head_FormulaCode_Len);
+
+            string s_Head_VersionNum = Lib_File.Ini.GetIni("CplImport", "Head_VersionNum", "17", s_path);
+            FADM_Object.Communal._i_Head_VersionNum = Convert.ToInt32(s_Head_VersionNum);
+
+            string s_Head_VersionNum_Len = Lib_File.Ini.GetIni("CplImport", "Head_VersionNum_Len", "2", s_path);
+            FADM_Object.Communal._i_Head_VersionNum_Len = Convert.ToInt32(s_Head_VersionNum_Len);
+
+            string s_Head_Count = Lib_File.Ini.GetIni("CplImport", "Head_Count", "19", s_path);
+            FADM_Object.Communal._i_Head_Count = Convert.ToInt32(s_Head_Count);
+
+            string s_Head_Count_Len = Lib_File.Ini.GetIni("CplImport", "Head_Count_Len", "2", s_path);
+            FADM_Object.Communal._i_Head_Count_Len = Convert.ToInt32(s_Head_Count_Len);
+
+            string s_Head_Unit = Lib_File.Ini.GetIni("CplImport", "Head_Unit", "21", s_path);
+            FADM_Object.Communal._i_Head_Unit = Convert.ToInt32(s_Head_Unit);
+
+            string s_Head_Unit_Len = Lib_File.Ini.GetIni("CplImport", "Head_Unit_Len", "1", s_path);
+            FADM_Object.Communal._i_Head_Unit_Len = Convert.ToInt32(s_Head_Unit_Len);
+
+            string s_Head_Index = Lib_File.Ini.GetIni("CplImport", "Head_Index", "22", s_path);
+            FADM_Object.Communal._i_Head_Index = Convert.ToInt32(s_Head_Index);
+
+            string s_Head_Index_Len = Lib_File.Ini.GetIni("CplImport", "Head_Index_Len", "3", s_path);
+            FADM_Object.Communal._i_Head_Index_Len = Convert.ToInt32(s_Head_Index_Len);
+
+            string s_Head_FormulaName = Lib_File.Ini.GetIni("CplImport", "Head_FormulaName", "25", s_path);
+            FADM_Object.Communal._i_Head_FormulaName = Convert.ToInt32(s_Head_FormulaName);
+
+            string s_Head_FormulaName_Len = Lib_File.Ini.GetIni("CplImport", "Head_FormulaName_Len", "24", s_path);
+            FADM_Object.Communal._i_Head_FormulaName_Len = Convert.ToInt32(s_Head_FormulaName_Len);
+
+            string s_Head_ClothWeight = Lib_File.Ini.GetIni("CplImport", "Head_ClothWeight", "49", s_path);
+            FADM_Object.Communal._i_Head_ClothWeight = Convert.ToInt32(s_Head_ClothWeight);
+
+            string s_Head_ClothWeight_Len = Lib_File.Ini.GetIni("CplImport", "Head_ClothWeight_Len", "8", s_path);
+            FADM_Object.Communal._i_Head_ClothWeight_Len = Convert.ToInt32(s_Head_ClothWeight_Len);
+
+            string s_Head_TotalWeight = Lib_File.Ini.GetIni("CplImport", "Head_TotalWeight", "57", s_path);
+            FADM_Object.Communal._i_Head_TotalWeight = Convert.ToInt32(s_Head_TotalWeight);
+
+            string s_Head_TotalWeight_Len = Lib_File.Ini.GetIni("CplImport", "Head_TotalWeight_Len", "8", s_path);
+            FADM_Object.Communal._i_Head_TotalWeight_Len = Convert.ToInt32(s_Head_TotalWeight_Len);
+
+            string s_Head_AddWater = Lib_File.Ini.GetIni("CplImport", "Head_AddWater", "65", s_path);
+            FADM_Object.Communal._i_Head_AddWater = Convert.ToInt32(s_Head_AddWater);
+
+            string s_Head_AddWater_Len = Lib_File.Ini.GetIni("CplImport", "Head_AddWater_Len", "1", s_path);
+            FADM_Object.Communal._i_Head_AddWater_Len = Convert.ToInt32(s_Head_AddWater_Len);
+
+            string s_Head_ConAdd = Lib_File.Ini.GetIni("CplImport", "Head_ConAdd", "66", s_path);
+            FADM_Object.Communal._i_Head_ConAdd = Convert.ToInt32(s_Head_ConAdd);
+
+            string s_Head_ConAdd_Len = Lib_File.Ini.GetIni("CplImport", "Head_ConAdd_Len", "1", s_path);
+            FADM_Object.Communal._i_Head_ConAdd_Len = Convert.ToInt32(s_Head_ConAdd_Len);
+
+            string s_Head_MNum = Lib_File.Ini.GetIni("CplImport", "Head_MNum", "67", s_path);
+            FADM_Object.Communal._i_Head_MNum = Convert.ToInt32(s_Head_MNum);
+
+            string s_Head_MNum_Len = Lib_File.Ini.GetIni("CplImport", "Head_MNum_Len", "2", s_path);
+            FADM_Object.Communal._i_Head_MNum_Len = Convert.ToInt32(s_Head_MNum_Len);
+
+            string s_Head_Date = Lib_File.Ini.GetIni("CplImport", "Head_Date", "69", s_path);
+            FADM_Object.Communal._i_Head_Date = Convert.ToInt32(s_Head_Date);
+
+            string s_Head_Date_Len = Lib_File.Ini.GetIni("CplImport", "Head_Date_Len", "8", s_path);
+            FADM_Object.Communal._i_Head_Date_Len = Convert.ToInt32(s_Head_Date_Len);
+
+
+            string s_Head_Code = Lib_File.Ini.GetIni("CplImport", "Head_Code", "77", s_path);
+            FADM_Object.Communal._i_Head_Code = Convert.ToInt32(s_Head_Code);
+
+            string s_Head_Code_Len = Lib_File.Ini.GetIni("CplImport", "Head_Code_Len", "8", s_path);
+            FADM_Object.Communal._i_Head_Code_Len = Convert.ToInt32(s_Head_Code_Len);
+
+            string s_Head_Type = Lib_File.Ini.GetIni("CplImport", "Head_Type", "85", s_path);
+            FADM_Object.Communal._i_Head_Type = Convert.ToInt32(s_Head_Type);
+
+            string s_Head_Type_Len = Lib_File.Ini.GetIni("CplImport", "Head_Type_Len", "1", s_path);
+            FADM_Object.Communal._i_Head_Type_Len = Convert.ToInt32(s_Head_Type_Len);
+
+            string s_Head_Drip = Lib_File.Ini.GetIni("CplImport", "Head_Drip", "86", s_path);
+            FADM_Object.Communal._i_Head_Drip = Convert.ToInt32(s_Head_Drip);
+
+            string s_Head_Drip_Len = Lib_File.Ini.GetIni("CplImport", "Head_Drip_Len", "1", s_path);
+            FADM_Object.Communal._i_Head_Drip_Len = Convert.ToInt32(s_Head_Drip_Len);
+
+            string s_Head_SIN = Lib_File.Ini.GetIni("CplImport", "Head_SIN", "87", s_path);
+            FADM_Object.Communal._i_Head_SIN = Convert.ToInt32(s_Head_SIN);
+
+            string s_Head_SIN_Len = Lib_File.Ini.GetIni("CplImport", "Head_SIN_Len", "2", s_path);
+            FADM_Object.Communal._i_Head_SIN_Len = Convert.ToInt32(s_Head_SIN_Len);
+
+            string s_Detail_Ip = Lib_File.Ini.GetIni("CplImport", "Detail_Ip", "1", s_path);
+            FADM_Object.Communal._i_Detail_Ip = Convert.ToInt32(s_Detail_Ip);
+
+            string s_Detail_Ip_Len = Lib_File.Ini.GetIni("CplImport", "Detail_Ip_Len", "4", s_path);
+            FADM_Object.Communal._i_Detail_Ip_Len = Convert.ToInt32(s_Detail_Ip_Len);
+
+            string s_Detail_FormulaCode = Lib_File.Ini.GetIni("CplImport", "Detail_FormulaCode", "5", s_path);
+            FADM_Object.Communal._i_Detail_FormulaCode = Convert.ToInt32(s_Detail_FormulaCode);
+
+            string s_Detail_FormulaCode_Len = Lib_File.Ini.GetIni("CplImport", "Detail_FormulaCode_Len", "12", s_path);
+            FADM_Object.Communal._i_Detail_FormulaCode_Len = Convert.ToInt32(s_Detail_FormulaCode_Len);
+
+            string s_Detail_VersionNum = Lib_File.Ini.GetIni("CplImport", "Detail_VersionNum", "17", s_path);
+            FADM_Object.Communal._i_Detail_VersionNum = Convert.ToInt32(s_Detail_VersionNum);
+
+            string s_Detail_VersionNum_Len = Lib_File.Ini.GetIni("CplImport", "Detail_VersionNum_Len", "2", s_path);
+            FADM_Object.Communal._i_Detail_VersionNum_Len = Convert.ToInt32(s_Detail_VersionNum_Len);
+
+            string s_Detail_Index = Lib_File.Ini.GetIni("CplImport", "Detail_Index", "19", s_path);
+            FADM_Object.Communal._i_Detail_Index = Convert.ToInt32(s_Detail_Index);
+
+            string s_Detail_Index_Len = Lib_File.Ini.GetIni("CplImport", "Detail_Index_Len", "2", s_path);
+            FADM_Object.Communal._i_Detail_Index_Len = Convert.ToInt32(s_Detail_Index_Len);
+
+            string s_Detail_Unit = Lib_File.Ini.GetIni("CplImport", "Detail_Unit", "21", s_path);
+            FADM_Object.Communal._i_Detail_Unit = Convert.ToInt32(s_Detail_Unit);
+
+            string s_Detail_Unit_Len = Lib_File.Ini.GetIni("CplImport", "Detail_Unit_Len", "1", s_path);
+            FADM_Object.Communal._i_Detail_Unit_Len = Convert.ToInt32(s_Detail_Unit_Len);
+
+            string s_Detail_Num = Lib_File.Ini.GetIni("CplImport", "Detail_Num", "22", s_path);
+            FADM_Object.Communal._i_Detail_Num = Convert.ToInt32(s_Detail_Num);
+
+            string s_Detail_Num_Len = Lib_File.Ini.GetIni("CplImport", "Detail_Num_Len", "3", s_path);
+            FADM_Object.Communal._i_Detail_Num_Len = Convert.ToInt32(s_Detail_Num_Len);
+
+            string s_Detail_AssistantCode = Lib_File.Ini.GetIni("CplImport", "Detail_AssistantCode", "25", s_path);
+            FADM_Object.Communal._i_Detail_AssistantCode = Convert.ToInt32(s_Detail_AssistantCode);
+
+            string s_Detail_AssistantCode_Len = Lib_File.Ini.GetIni("CplImport", "Detail_AssistantCode_Len", "8", s_path);
+            FADM_Object.Communal._i_Detail_AssistantCode_Len = Convert.ToInt32(s_Detail_AssistantCode_Len);
+
+            string s_Detail_RealConcentration = Lib_File.Ini.GetIni("CplImport", "Detail_RealConcentration", "33", s_path);
+            FADM_Object.Communal._i_Detail_RealConcentration = Convert.ToInt32(s_Detail_RealConcentration);
+
+            string s_Detail_RealConcentration_Len = Lib_File.Ini.GetIni("CplImport", "Detail_RealConcentration_Len", "9", s_path);
+            FADM_Object.Communal._i_Detail_RealConcentration_Len = Convert.ToInt32(s_Detail_RealConcentration_Len);
+
+            string s_Detail_SIN = Lib_File.Ini.GetIni("CplImport", "Detail_SIN", "42", s_path);
+            FADM_Object.Communal._i_Detail_SIN = Convert.ToInt32(s_Detail_SIN);
+
+            string s_Detail_SIN_Len = Lib_File.Ini.GetIni("CplImport", "Detail_SIN_Len", "2", s_path);
+            FADM_Object.Communal._i_Detail_SIN_Len = Convert.ToInt32(s_Detail_SIN_Len);
+
+            string s_isAddWaterFirst = Lib_File.Ini.GetIni("Setting", "IsAddWaterFirst", "1", s_path);
+            if (s_isAddWaterFirst == "0")
+            {
+                FADM_Object.Communal._b_isAddWaterFirst = false;
+            }
+
+            string s_isSort = Lib_File.Ini.GetIni("Setting", "IsSort", "1", s_path);
+            if (s_isSort == "0")
+            {
+                FADM_Object.Communal._b_isSort = false;
+            }
+
+            string s_isDripNeedCupNum = Lib_File.Ini.GetIni("Setting", "IsDripNeedCupNum", "0", s_path);
+            if (s_isDripNeedCupNum == "1")
+            {
+                FADM_Object.Communal._b_isDripNeedCupNum = true;
+            }
+
+            string s_isUseCloth = Lib_File.Ini.GetIni("Setting", "IsUseCloth", "0", s_path);
+            if (s_isUseCloth == "1")
+            {
+                FADM_Object.Communal._b_isUseCloth = true;
             }
         }
 
@@ -686,36 +926,73 @@ namespace SmartDyeing.FADM_Form
                             }
 
                         }
-
-                        //查询空闲自动分配杯号（滴液类型）
-                        s_sqltemp = "SELECT  CupNum FROM cup_details WHERE   IsUsing = 0 and  enable = 1 and Type = 2 order by CupNum ;";
-                        dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sqltemp);
-
-                        string s_sqltemp3 = "SELECT  * FROM wait_list WHERE  Type = 2  order by IndexNum;";
-                        DataTable dt_temp3 = FADM_Object.Communal._fadmSqlserver.GetData(s_sqltemp3);
-
-                        int i_num2 = 0;
                         bool b_type2 = false;
-                        foreach (DataRow Row in dt_temp.Rows)
+                        if (FADM_Object.Communal._b_isDripNeedCupNum)
                         {
-                            if (dt_temp3.Rows.Count == 0)
-                                break;
-                            //查询是否在drop_head里存在该杯
-                            string s_head = "SELECT  * FROM drop_head WHERE  CupNum = " + Row[0].ToString() + " ;";
-                            DataTable dt_head = FADM_Object.Communal._fadmSqlserver.GetData(s_head);
+                            //查询空闲自动分配杯号（滴液类型）
+                            s_sqltemp = "SELECT  CupNum FROM cup_details WHERE   IsUsing = 0 and  enable = 1 and Type = 2 order by CupNum ;";
+                            dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sqltemp);
 
-                            if (dt_temp3.Rows.Count > i_num2 && dt_head.Rows.Count == 0)
+                            
+
+                            int i_num2 = 0;
+                            foreach (DataRow Row in dt_temp.Rows)
                             {
-                                b_newInsert = true;
-                                //加入批次
-                                AddDropList a = new AddDropList(dt_temp3.Rows[i_num2]["FormulaCode"].ToString(), dt_temp3.Rows[i_num2]["VersionNum"].ToString(), Row[0].ToString(), 2);
-                                //删除等待列表记录
-                                FADM_Object.Communal._fadmSqlserver.GetData("Delete from wait_list where Type = 2 and IndexNum = " + dt_temp3.Rows[i_num2]["IndexNum"].ToString());
+                                string s_sqltemp3 = "SELECT  * FROM wait_list WHERE  Type = 2 and CupNum = " + Row[0].ToString()+" order by IndexNum;";
+                                DataTable dt_temp3 = FADM_Object.Communal._fadmSqlserver.GetData(s_sqltemp3);
 
-                                i_num2++;
-                                b_type2 = true;
+                                //查询是否在drop_head里存在该杯
+                                string s_head = "SELECT  * FROM drop_head WHERE  CupNum = " + Row[0].ToString() + " ;";
+                                DataTable dt_head = FADM_Object.Communal._fadmSqlserver.GetData(s_head);
+                                if (dt_temp3.Rows.Count > 0)
+                                {
+                                    if (dt_head.Rows.Count == 0)
+                                    {
+                                        b_newInsert = true;
+                                        //加入批次
+                                        AddDropList a = new AddDropList(dt_temp3.Rows[0]["FormulaCode"].ToString(), dt_temp3.Rows[0]["VersionNum"].ToString(), Row[0].ToString(), 2);
+                                        //删除等待列表记录
+                                        FADM_Object.Communal._fadmSqlserver.GetData("Delete from wait_list where Type = 2 and IndexNum = " + dt_temp3.Rows[0]["IndexNum"].ToString());
+
+                                        i_num2++;
+                                        b_type2 = true;
+                                    }
+                                }
+
                             }
+                        }
+                        else
+                        {
+                            //查询空闲自动分配杯号（滴液类型）
+                            s_sqltemp = "SELECT  CupNum FROM cup_details WHERE   IsUsing = 0 and  enable = 1 and Type = 2 order by CupNum ;";
+                            dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sqltemp);
 
+                            string s_sqltemp3 = "SELECT  * FROM wait_list WHERE  Type = 2  order by IndexNum;";
+                            DataTable dt_temp3 = FADM_Object.Communal._fadmSqlserver.GetData(s_sqltemp3);
+
+                            int i_num2 = 0;
+                            
+                            foreach (DataRow Row in dt_temp.Rows)
+                            {
+                                if (dt_temp3.Rows.Count == 0)
+                                    break;
+                                //查询是否在drop_head里存在该杯
+                                string s_head = "SELECT  * FROM drop_head WHERE  CupNum = " + Row[0].ToString() + " ;";
+                                DataTable dt_head = FADM_Object.Communal._fadmSqlserver.GetData(s_head);
+
+                                if (dt_temp3.Rows.Count > i_num2 && dt_head.Rows.Count == 0)
+                                {
+                                    b_newInsert = true;
+                                    //加入批次
+                                    AddDropList a = new AddDropList(dt_temp3.Rows[i_num2]["FormulaCode"].ToString(), dt_temp3.Rows[i_num2]["VersionNum"].ToString(), Row[0].ToString(), 2);
+                                    //删除等待列表记录
+                                    FADM_Object.Communal._fadmSqlserver.GetData("Delete from wait_list where Type = 2 and IndexNum = " + dt_temp3.Rows[i_num2]["IndexNum"].ToString());
+
+                                    i_num2++;
+                                    b_type2 = true;
+                                }
+
+                            }
                         }
                         bool b_p=false;
                         if (Lib_Card.Configure.Parameter.Other_Language == 0)
@@ -883,12 +1160,17 @@ namespace SmartDyeing.FADM_Form
                                         }
                                         b_newInsert = false;
                                         FADM_Control.Formula._b_updateWait = true;
+                                        FADM_Control.Formula_Cloth._b_updateWait = true;
+                                        FADM_Control.Formula_Cloth._b_updateWait = true;
                                         FADM_Object.Communal._b_isDripping = false;
                                     }
                                 }
 
                                 if (b_type2)
+                                {
                                     FADM_Control.Formula._b_updateWait = true;
+                                    FADM_Control.Formula_Cloth._b_updateWait = true;
+                                }
                                 FADM_Object.Communal._b_isDripping = false;
 
                             }
@@ -900,6 +1182,7 @@ namespace SmartDyeing.FADM_Form
                         else
                         {
                             FADM_Control.Formula._b_updateWait = true;
+                            FADM_Control.Formula_Cloth._b_updateWait = true;
                             FADM_Object.Communal._b_isDripping = false;
                         }
                     }
@@ -930,7 +1213,7 @@ namespace SmartDyeing.FADM_Form
                     {
                         int _i_nBottleNum = Convert.ToInt32(dt_data.Rows[0]["BottleNum"]);
                         //1.查看是否有空闲杯子
-                        s_sql = "SELECT * FROM abs_cup_details WHERE  Enable = 1 And IsUsing=0 order by CupNum;";
+                        s_sql = "SELECT * FROM abs_cup_details WHERE  Enable = 1 And IsUsing=0  And CupNum = 2 order by CupNum;";
                         DataTable dt_abs_cup_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
                         if (dt_abs_cup_details.Rows.Count == 0)
                         {
@@ -956,6 +1239,7 @@ namespace SmartDyeing.FADM_Form
                                 //记录选择杯号
                                 s_cupNum = dt_abs_cup_details.Rows[i_index]["CupNum"].ToString();
                             }
+
                             //2.计算需要添加的用量并保存到表_i_nBottleNum
                             s_sql = "SELECT bottle_details.*,assistant_details.AllowMinColoringConcentration,assistant_details.AllowMaxColoringConcentration,assistant_details.AssistantType,assistant_details.UnitOfAccount  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE bottle_details.BottleNum = " + _i_nBottleNum + ";";
                             DataTable dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
@@ -964,7 +1248,7 @@ namespace SmartDyeing.FADM_Form
                             string s_assistantType = dt_temp.Rows[0]["AssistantType"].ToString();
                             string s_realConcentration = dt_temp.Rows[0]["RealConcentration"].ToString();
                             string s_settingConcentration = dt_temp.Rows[0]["SettingConcentration"].ToString();
-                            string s_compensate = dt_temp.Rows[0]["Compensate"].ToString();
+                            string s_compensate = dt_temp.Rows[0]["Compensate"].ToString() == "" ? "0" : dt_temp.Rows[0]["Compensate"].ToString();
                             //if(Convert.ToDouble(s_settingConcentration) < 0.05)
                             //{
                             //    FADM_Form.CustomMessageBox.Show("浓度太小，不能测试", "TestAbs",
@@ -1415,7 +1699,9 @@ namespace SmartDyeing.FADM_Form
 
                                                 if (Convert.ToInt32(dt_data.Rows[0]["Type"]) == 0)
                                                 {
+                                                    double d_t1 = d_dosage1 * Convert.ToDouble(s_compensate);
                                                     d_dosage1 = d_dosage1 * (1 + Convert.ToDouble(s_compensate));
+                                                    d_water1-= d_t1;
                                                     //更新数据库
                                                     s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", d_dosage1) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water1) + "',Pulse=0,Cooperate=5,Type =5,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
                                                     FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
@@ -1485,7 +1771,9 @@ namespace SmartDyeing.FADM_Form
                                         double d_water = FADM_Object.Communal._d_abs_total - d_dosage;
                                         if (Convert.ToInt32(dt_data.Rows[0]["Type"]) == 0)
                                         {
+                                            double d_t = d_dosage * Convert.ToDouble(s_compensate);
                                             d_dosage = d_dosage * (1 + Convert.ToDouble(s_compensate));
+                                            d_water -= d_t;
                                             //更新数据库
                                             s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", d_dosage) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water) + "',Pulse=0,Cooperate=5,Type =1,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
                                             FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
@@ -1576,7 +1864,9 @@ namespace SmartDyeing.FADM_Form
                                                 double d_water1 = FADM_Object.Communal._d_abs_total - d_dosage1;
                                                 if (Convert.ToInt32(dt_data.Rows[0]["Type"]) == 0)
                                                 {
+                                                    double d_t1 = d_dosage1 * Convert.ToDouble(s_compensate);
                                                     d_dosage1 = d_dosage1 * (1 + Convert.ToDouble(s_compensate));
+                                                    d_water1 -= d_t1;
                                                     //更新数据库
                                                     s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", d_dosage1) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water1) + "',Pulse=0,Cooperate=5,Type =5,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
                                                     FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
@@ -1646,7 +1936,9 @@ namespace SmartDyeing.FADM_Form
                                         double d_water = FADM_Object.Communal._d_abs_total - d_dosage;
                                         if (Convert.ToInt32(dt_data.Rows[0]["Type"]) == 0)
                                         {
+                                            double d_t = d_dosage * Convert.ToDouble(s_compensate);
                                             d_dosage = d_dosage * (1 + Convert.ToDouble(s_compensate));
+                                            d_water -= d_t;
                                             //更新数据库
                                             s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", d_dosage) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water) + "',Pulse=0,Cooperate=5,Type =1,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
                                             FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
@@ -1795,7 +2087,7 @@ namespace SmartDyeing.FADM_Form
                             {
                                 MyAlarm myAlarm = null;
 
-                                Communal._s_plcVersion = "V" + ia_array[26].ToString("d4") + ia_array[27].ToString("d4");
+                                Communal._s_plcVersion =  ia_array[26].ToString("d4") + ia_array[27].ToString("d4");
 
                                 double d_b = 0.0;
                                 if (ia_array[0] < 0)
@@ -2169,6 +2461,8 @@ namespace SmartDyeing.FADM_Form
 
         private void BtnUserSwitching_Click(object sender, EventArgs e)
         {
+            //AAndB a = new AAndB();
+            //a.Show();
             try
             {
                 if (Lib_Card.Configure.Parameter.Other_Language == 0)
@@ -2364,16 +2658,33 @@ namespace SmartDyeing.FADM_Form
                 {
                     if (Communal._b_isBalanceInDrip)
                     {
-                        FADM_Control.MainBottle main = new MainBottle();
-                        this.PnlMain.Controls.Add(main);
-                        main.Focus();
+                        if (Communal._b_isCupAreaOnly)
+                        {
+                            FADM_Control.MainBottle_Only main = new MainBottle_Only();
+                            this.PnlMain.Controls.Add(main);
+                            main.Focus();
+                        }
+                        else
+                        {
+                            FADM_Control.MainBottle main = new MainBottle();
+                            this.PnlMain.Controls.Add(main);
+                            main.Focus();
+                        }
                     }
                     else
                     {
-
-                        FADM_Control.S_MainBottle main = new S_MainBottle();
-                        this.PnlMain.Controls.Add(main);
-                        main.Focus();
+                        if (Communal._b_isCupAreaOnly)
+                        {
+                            FADM_Control.S_MainBottle_Only main = new S_MainBottle_Only();
+                            this.PnlMain.Controls.Add(main);
+                            main.Focus();
+                        }
+                        else
+                        {
+                            FADM_Control.S_MainBottle main = new S_MainBottle();
+                            this.PnlMain.Controls.Add(main);
+                            main.Focus();
+                        }
                     }
                 }
                 else
@@ -2421,9 +2732,18 @@ namespace SmartDyeing.FADM_Form
                 }
                 else
                 {
-                    FADM_Control.Formula formula = new Formula(this);
-                    this.PnlMain.Controls.Add(formula);
-                    formula.Focus();
+                    if (Communal._b_isUseCloth)
+                    {
+                        FADM_Control.Formula_Cloth formula = new Formula_Cloth(this);
+                        this.PnlMain.Controls.Add(formula);
+                        formula.Focus();
+                    }
+                    else
+                    {
+                        FADM_Control.Formula formula = new Formula(this);
+                        this.PnlMain.Controls.Add(formula);
+                        formula.Focus();
+                    }
                 }
             }
             catch (Exception ex)
@@ -2918,6 +3238,39 @@ namespace SmartDyeing.FADM_Form
                                     string[] sa_temp = File.ReadAllLines(this._s_m_route);
                                     File.Delete(this._s_m_route);
                                     Thread th = new Thread(insert3);
+                                    th.IsBackground = true;
+                                    th.Start(sa_temp);
+                                }
+
+                            }
+                            catch (Exception ex)
+                            {
+                                if (_logWriteLock.IsWriteLockHeld)
+                                    _logWriteLock.ExitWriteLock(); //退出写入锁
+                            }
+                            finally
+                            {
+                                if (_logWriteLock.IsWriteLockHeld)
+                                    _logWriteLock.ExitWriteLock(); //退出写入锁
+
+                            }
+
+                        }
+                    }
+                    //CptImport各欄位說明.docx
+                    else if (_s_m_mode == "4")
+                    {
+                        if (File.Exists(this._s_m_route))
+                        {
+                            try
+                            {
+                                if (!_logWriteLock.IsWriteLockHeld)
+                                {
+
+                                    _logWriteLock.EnterWriteLock(); //进入写入锁
+                                    string[] sa_temp = File.ReadAllLines(this._s_m_route);
+                                    File.Delete(this._s_m_route);
+                                    Thread th = new Thread(insert4);
                                     th.IsBackground = true;
                                     th.Start(sa_temp);
                                 }
@@ -3689,6 +4042,179 @@ namespace SmartDyeing.FADM_Form
             }
         }
 
+        private void insert4(object arg)
+        {
+            try
+            {
+                string[] rcp = (string[])arg;
+                int currentIndex = 0;
+
+            label:
+                string formulaCode = null;
+                int versionNum = 0;
+                int num = 0;
+                string formulaName = null;
+                double clothWeight = 0;
+                double totalWeight = 0;
+                double bathRatio = 0;
+                double allW = 0;
+                double d_non_AnhydrationWR = Lib_Card.Configure.Parameter.Other_Default_Non_AnhydrationWR;
+                double d_anhydrationWR = Lib_Card.Configure.Parameter.Other_Default_AnhydrationWR;
+                //string sOperator = null;
+
+                for (; currentIndex < rcp.Length; currentIndex++)
+                {
+                    if (rcp[currentIndex].Substring(0, 4) == "500M" && rcp[currentIndex].Length == 86)
+                    {
+
+                        //表头资料
+                        formulaName = rcp[currentIndex].Substring(Communal._i_Head_FormulaName - 1, Communal._i_Head_FormulaName_Len).Trim();
+                        num = Convert.ToInt16(rcp[currentIndex].Substring(Communal._i_Head_Count - 1, Communal._i_Head_Count_Len));
+                        formulaCode = rcp[currentIndex].Substring(Communal._i_Head_FormulaCode - 1, Communal._i_Head_FormulaCode_Len).Trim();
+                        clothWeight = Convert.ToDouble(rcp[currentIndex].Substring(Communal._i_Head_ClothWeight - 1, Communal._i_Head_ClothWeight_Len));
+                        totalWeight = Convert.ToDouble(rcp[currentIndex].Substring(Communal._i_Head_TotalWeight - 1, Communal._i_Head_TotalWeight_Len));
+                        //sOperator = rcp[currentIndex].Substring(76, 8).Trim();
+                        bathRatio = Convert.ToDouble(string.Format("{0:F}", totalWeight / clothWeight));
+                        DataTable data = FADM_Object.Communal._fadmSqlserver.GetData(
+                            "SELECT * FROM formula_head WHERE FormulaCode ='" +
+                            formulaCode + "' ORDER BY VersionNum DESC");
+                        if (data.Rows.Count > 0)
+                        {
+                            versionNum = (Convert.ToInt16(data.Rows[0]["VersionNum"])) + 1;
+                        }
+                        break;
+                    }
+                }
+
+
+                List<recipe> list = new List<recipe>();
+                for (; currentIndex < rcp.Length; currentIndex++)
+                {
+                    if (rcp[currentIndex].Substring(0, 4) == "500C" && rcp[currentIndex].Length == 42 &&
+                        rcp[currentIndex].Substring(Communal._i_Detail_FormulaCode - 1, Communal._i_Detail_FormulaCode_Len).Trim() == formulaCode)
+                    {
+                        if (rcp[currentIndex].Substring(Communal._i_Detail_AssistantCode - 1, Communal._i_Detail_AssistantCode_Len) != "WATER   ")
+                        {
+                            recipe re = new recipe();
+                            re._i_indexNum = Convert.ToInt16(rcp[currentIndex].Substring(Communal._i_Detail_Index - 1, Communal._i_Detail_Index_Len));
+                            re._s_assistantCode = rcp[currentIndex].Substring(Communal._i_Detail_AssistantCode - 1, Communal._i_Detail_AssistantCode_Len);
+                            re._s_formulaDosage = Convert.ToDouble(rcp[currentIndex].Substring(Communal._i_Detail_RealConcentration - 1, Communal._i_Detail_RealConcentration_Len));
+
+                            DataTable data = FADM_Object.Communal._fadmSqlserver.GetData(
+                                "SELECT *  FROM assistant_details WHERE " +
+                                 "AssistantCode = '" + re._s_assistantCode + "';");
+
+                            if (data.Rows.Count == 0)
+                            {
+                                throw new Exception("未找到" + re._s_assistantCode + "染助剂代码");
+                            }
+
+                            re._s_assistantName = Convert.ToString(data.Rows[0]["AssistantName"]);
+                            re._s_unitOfAccount = Convert.ToString(data.Rows[0]["UnitOfAccount"]);
+
+                            data = FADM_Object.Communal._fadmSqlserver.GetData(
+                                "SELECT *  FROM bottle_details WHERE " +
+                                 "AssistantCode = '" + re._s_assistantCode + "' AND " +
+                                 "RealConcentration != 0 Order BY SettingConcentration DESC;");
+                            if (data.Rows.Count == 0)
+                            {
+                                throw new Exception("未找到" + re._s_assistantCode + "染助剂代码的瓶号");
+                            }
+                            for (int i = 0; i < data.Rows.Count; i++)
+                            {
+                                double objectW = 0;
+                                if (re._s_unitOfAccount == "%")
+                                {
+                                    objectW = Convert.ToDouble(string.Format("{0:F}",
+                                        clothWeight * re._s_formulaDosage / Convert.ToDouble(data.Rows[i]["RealConcentration"])));
+                                }
+                                else if (re._s_unitOfAccount == "g/l")
+                                {
+                                    objectW = Convert.ToDouble(string.Format("{0:F}",
+                                        totalWeight * re._s_formulaDosage / Convert.ToDouble(data.Rows[i]["RealConcentration"])));
+                                }
+                                else
+                                {
+                                    throw new Exception(re._s_assistantCode + "染助剂的计算单位设置异常");
+                                }
+
+                                if (objectW >= Convert.ToDouble(string.Format("{0:F}", data.Rows[i]["DropMinWeight"])))
+                                {
+                                    re._i_bottleNum = Convert.ToInt16(data.Rows[i]["BottleNum"]);
+                                    re._d_settingConcentration = Convert.ToDouble(string.Format("{0:F}", data.Rows[i]["SettingConcentration"]));
+                                    re._d_realConcentration = Convert.ToDouble(string.Format("{0:F}", data.Rows[i]["RealConcentration"]));
+                                    re._d_objectDropWeight = objectW;
+                                    break;
+                                }
+                                else
+                                {
+                                    if (i == data.Rows.Count - 1)
+                                    {
+                                        if (objectW > 0.1)
+                                        {
+                                            re._i_bottleNum = Convert.ToInt16(data.Rows[i]["BottleNum"]);
+                                            re._d_settingConcentration = Convert.ToDouble(string.Format("{0:F}", data.Rows[i]["SettingConcentration"]));
+                                            re._d_realConcentration = Convert.ToDouble(string.Format("{0:F}", data.Rows[i]["RealConcentration"]));
+                                            re._d_objectDropWeight = objectW;
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            throw new Exception(re._s_assistantCode + "染助剂滴液量小于0.1克");
+                                        }
+                                    }
+                                }
+                            }
+                            allW += re._d_objectDropWeight;
+                            list.Add(re);
+                        }
+                        if (list.Count >= num)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                //添加配方表
+                string sql = "INSERT INTO formula_head (" +
+                    " FormulaCode, VersionNum, FormulaName," +
+                    " AddWaterChoose,ClothWeight," +
+                    " BathRatio,TotalWeight,CreateTime," +
+                    " ObjectAddWaterWeight,Non_AnhydrationWR,AnhydrationWR,Stage,HandleBathRatio) VALUES('" + formulaCode + "'," +
+                    " '" + versionNum + "', '" + formulaName + "', 1, " +
+                    " '" + clothWeight + "', '" + bathRatio + "', '" + totalWeight + "', " +
+                    " '" + DateTime.Now + "', '" + string.Format("{0:F}", (totalWeight - allW)) + "', '" + d_non_AnhydrationWR + "', '" + d_anhydrationWR  + "', '" + "滴液" + "', '" + "0" + "');";
+                FADM_Object.Communal._fadmSqlserver.ReviseData(sql);
+
+                foreach (recipe rc in list)
+                {
+                    sql = "INSERT INTO formula_details (" +
+                          " FormulaCode, VersionNum, IndexNum, AssistantCode," +
+                          " FormulaDosage, UnitOfAccount, BottleNum, SettingConcentration," +
+                          " RealConcentration, AssistantName, ObjectDropWeight) VALUES( '" +
+                          formulaCode + "', '" + versionNum + "', " +
+                          "'" + rc._i_indexNum + "', '" + rc._s_assistantCode + "', '" +
+                          rc._s_formulaDosage + "', '" + rc._s_unitOfAccount + "'," +
+                          " '" + rc._i_bottleNum + "', '" + rc._d_settingConcentration + "', '" +
+                          rc._d_realConcentration + "', '" + rc._s_assistantName + "'," +
+                          " '" + rc._d_objectDropWeight + "');";
+
+                    FADM_Object.Communal._fadmSqlserver.ReviseData(sql);
+                }
+
+
+                if (currentIndex < rcp.Length - 1)
+                {
+                    goto label;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.Message, "insert", MessageBoxButtons.OK, true);
+            }
+        }
+
         private void insert(object obj_arg)
         {
             try
@@ -4339,23 +4865,44 @@ namespace SmartDyeing.FADM_Form
                 }
                 else
                 {
-                    if (FADM_Control.Formula._b_showRun == false)
-                    {
+                    if (Communal._b_isUseCloth) {
+                        if (FADM_Control.Formula_Cloth._b_showRun == false)
+                        {
+                            FADM_Control.Formula_Cloth formula = new Formula_Cloth(this);
+                            //this.PnlMain.Controls.Add(formula);
+                            formula.Show();
+                            formula.Focus();
+                            IntPtr p1 = formula.Handle;
+                            FADM_Control.Formula_Cloth.HANDER = p1.ToInt32();
+                        }
+                        else
+                        {
+                            //WindowsForms10.Window.8.app.0.2804c64_r8_ad1
+                            IntPtr ptr1 = new IntPtr(FADM_Control.Formula_Cloth.HANDER);
+                            SetForegroundWindow(ptr1);
+                            ShowWindow(ptr1, 3);
+                        }
+                    }
+                    else {
+                        if (FADM_Control.Formula._b_showRun == false)
+                        {
 
-                        FADM_Control.Formula formula = new Formula(this);
-                        //this.PnlMain.Controls.Add(formula);
-                        formula.Show();
-                        formula.Focus();
-                        IntPtr p1 = formula.Handle;
-                        FADM_Control.Formula.HANDER = p1.ToInt32();
+                            FADM_Control.Formula formula = new Formula(this);
+                            //this.PnlMain.Controls.Add(formula);
+                            formula.Show();
+                            formula.Focus();
+                            IntPtr p1 = formula.Handle;
+                            FADM_Control.Formula.HANDER = p1.ToInt32();
+                        }
+                        else
+                        {
+                            //WindowsForms10.Window.8.app.0.2804c64_r8_ad1
+                            IntPtr ptr1 = new IntPtr(FADM_Control.Formula.HANDER);
+                            SetForegroundWindow(ptr1);
+                            ShowWindow(ptr1, 3);
+                        }
                     }
-                    else
-                    {
-                        //WindowsForms10.Window.8.app.0.2804c64_r8_ad1
-                        IntPtr ptr1 = new IntPtr(FADM_Control.Formula.HANDER);
-                        SetForegroundWindow(ptr1);
-                        ShowWindow(ptr1, 3);
-                    }
+                   
                 }
             }
 
@@ -4447,23 +4994,48 @@ namespace SmartDyeing.FADM_Form
                     }
                     else
                     {
-                        if (FADM_Control.Formula._b_showRun == false)
+                        if (Communal._b_isUseCloth)
                         {
+                            if (FADM_Control.Formula_Cloth._b_showRun == false)
+                            {
 
-                            FADM_Control.Formula formula = new Formula(this);
-                            //this.PnlMain.Controls.Add(formula);
-                            formula.Show();
-                            formula.Focus();
-                            IntPtr p1 = formula.Handle;
-                            FADM_Control.Formula.HANDER = p1.ToInt32();
+                                FADM_Control.Formula_Cloth formula = new Formula_Cloth(this);
+                                //this.PnlMain.Controls.Add(formula);
+                                formula.Show();
+                                formula.Focus();
+                                IntPtr p1 = formula.Handle;
+                                FADM_Control.Formula_Cloth.HANDER = p1.ToInt32();
+                            }
+                            else
+                            {
+                                //WindowsForms10.Window.8.app.0.2804c64_r8_ad1
+                                IntPtr ptr1 = new IntPtr(FADM_Control.Formula_Cloth.HANDER);
+                                SetForegroundWindow(ptr1);
+                                ShowWindow(ptr1, 3);
+                            }
                         }
-                        else
-                        {
-                            //WindowsForms10.Window.8.app.0.2804c64_r8_ad1
-                            IntPtr ptr1 = new IntPtr(FADM_Control.Formula.HANDER);
-                            SetForegroundWindow(ptr1);
-                            ShowWindow(ptr1, 3);
+                        else {
+                            if (FADM_Control.Formula._b_showRun == false)
+                            {
+
+                                FADM_Control.Formula formula = new Formula(this);
+                                //this.PnlMain.Controls.Add(formula);
+                                formula.Show();
+                                formula.Focus();
+                                IntPtr p1 = formula.Handle;
+                                FADM_Control.Formula.HANDER = p1.ToInt32();
+                            }
+                            else
+                            {
+                                //WindowsForms10.Window.8.app.0.2804c64_r8_ad1
+                                IntPtr ptr1 = new IntPtr(FADM_Control.Formula.HANDER);
+                                SetForegroundWindow(ptr1);
+                                ShowWindow(ptr1, 3);
+                            }
+
                         }
+
+                        
                     }
                 }
             }
@@ -4845,6 +5417,21 @@ namespace SmartDyeing.FADM_Form
                     //TmrFGY.Enabled = false;
                 }
             }
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            foreach (Control control in this.PnlMain.Controls)
+            {
+                this.PnlMain.Controls.Remove(control);
+                control.Dispose();
+            }
+
+            
+                FADM_Control.ABS_Formula main = new ABS_Formula(this, FADM_Object.Communal._s_operator);
+                this.PnlMain.Controls.Add(main);
+                main.Focus();
+            
         }
     }
 }

@@ -724,7 +724,7 @@ namespace SmartDyeing.FADM_Object
             }
             await Task.Run(() => {
                 try {
-                    HttpWebResponse response = HttpUtil.CreatePostHttpResponse("https://www.gz-kelian.com/outer/product/inBroadcastW", parameters, 15000, null, null);
+                    HttpWebResponse response = HttpUtil.CreatePostHttpResponse(FADM_Object.Communal.URL + "/outer/product/inBroadcastW", parameters, 15000, null, null);
                     response.GetResponseStream();
                 } catch (Exception ex) { 
                 }
@@ -746,7 +746,7 @@ namespace SmartDyeing.FADM_Object
                 parameters.Add("time", time);
                 await Task.Run(() => {
                     // htt ps://www.gz-kelian.com/outer/product/inBroadcastW  h ttp://192.168.144.105:8080/outer/product/inBroadcastW
-                    HttpWebResponse response = HttpUtil.CreatePostHttpResponse("https://www.gz-kelian.com/outer/product/getBroadcastRe", parameters, 15000, null, null);
+                    HttpWebResponse response = HttpUtil.CreatePostHttpResponse(FADM_Object.Communal.URL + "/outer/product/getBroadcastRe", parameters, 15000, null, null);
                     Stream st = response.GetResponseStream();
                     StreamReader reader = new StreamReader(st);
                     string msg = reader.ReadToEnd();

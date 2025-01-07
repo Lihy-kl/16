@@ -107,7 +107,7 @@ namespace Lib_Card.ADT8940A1.Axis
         /// <summary>
         /// Z轴相对移动
         /// 异常：
-        ///     1：Z轴正限位已通
+        ///     1：Z轴反限位已通
         /// </summary>
         /// <param name="s_MoveArg">运动参数</param>
         /// <param name="iReserve">预留</param>
@@ -118,7 +118,7 @@ namespace Lib_Card.ADT8940A1.Axis
         /// Z轴绝对移动
         /// 异常：
         ///     1：脉冲计算异常
-        ///     2：Z轴正限位已通
+        ///     2：Z轴反限位已通
         ///     3：抓手A打开超时
         ///     4：抓手B打开超时
         ///     5：Z轴正在运行

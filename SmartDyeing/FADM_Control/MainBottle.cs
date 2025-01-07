@@ -1690,7 +1690,7 @@ namespace SmartDyeing.FADM_Control
             if (ptr == IntPtr.Zero)
             {
                 string s_num = Cup.NO.ToString();
-                string s_state = _lis_lab[Communal._dic_cup_index[Convert.ToInt16(s_num)]].Text;
+                string s_state = _lis_lab[Communal._dic_dyecup_index[Convert.ToInt16(s_num)]].Text;
                 if (!string.IsNullOrEmpty(s_state))
                 {
                     if (s_state != "下线" && s_state != "待机")
@@ -1704,7 +1704,7 @@ namespace SmartDyeing.FADM_Control
 
                 string s_num = Cup.NO.ToString();
 
-                string s_state = _lis_lab[Communal._dic_cup_index[Convert.ToInt16(s_num)]].Text;
+                string s_state = _lis_lab[Communal._dic_dyecup_index[Convert.ToInt16(s_num)]].Text;
                 if (!string.IsNullOrEmpty(s_state))
                 {
                     if (s_state != "下线" && s_state != "待机")
@@ -2501,7 +2501,7 @@ namespace SmartDyeing.FADM_Control
                             //    }
                             //}
 
-                            Label label = _lis_lab[Communal._dic_cup_index[Convert.ToInt16(dr1["CupNum"].ToString())]];
+                            Label label = _lis_lab[Communal._dic_dyecup_index[Convert.ToInt16(dr1["CupNum"].ToString())]];
 
                             
                             if (Lib_Card.Configure.Parameter.Other_Language == 0)
@@ -3159,6 +3159,7 @@ namespace SmartDyeing.FADM_Control
 
         private void tsm_TestAbs_Click(object sender, EventArgs e)
         {
+            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "测试吸光度");
             string s_sql_1 = "SELECT top 1 * FROM abs_wait_list  order by InsertDate;";
             DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_1);
             if (dt_data.Rows.Count > 0)
@@ -3172,7 +3173,7 @@ namespace SmartDyeing.FADM_Control
             else
             {
                 //1.查看是否有空闲杯子
-                string s_sql = "SELECT * FROM abs_cup_details WHERE  Enable = 1 And IsUsing=0 order by CupNum;";
+                string s_sql = "SELECT * FROM abs_cup_details WHERE  Enable = 1 And IsUsing=0 And CupNum = 2 order by CupNum;";
                 DataTable dt_abs_cup_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
                 if (dt_abs_cup_details.Rows.Count == 0)
                 {
@@ -3210,7 +3211,7 @@ namespace SmartDyeing.FADM_Control
                     string s_assistantType = dt_temp.Rows[0]["AssistantType"].ToString();
                     string s_realConcentration = dt_temp.Rows[0]["RealConcentration"].ToString();
                     string s_settingConcentration = dt_temp.Rows[0]["SettingConcentration"].ToString();
-                    string s_compensate = dt_temp.Rows[0]["Compensate"].ToString();
+                    string s_compensate = dt_temp.Rows[0]["Compensate"].ToString() == "" ? "0" : dt_temp.Rows[0]["Compensate"].ToString();
                     //if(Convert.ToDouble(s_settingConcentration) < 0.05)
                     //{
                     //    FADM_Form.CustomMessageBox.Show("浓度太小，不能测试", "TestAbs",
@@ -3621,10 +3622,13 @@ namespace SmartDyeing.FADM_Control
                                     {
                                         //计算50g液体需要重量
                                         double d_stotal1 = FADM_Object.Communal._d_abs_total * (FADM_Object.Communal._d_ppm / 10000);
+
                                         //母液重量
                                         double d_dosage1 = d_stotal1 / Convert.ToDouble(s_realConcentration);
                                         double d_water1 = FADM_Object.Communal._d_abs_total - d_dosage1;
+                                        double d_t1 = d_dosage1 * Convert.ToDouble(s_compensate);
                                         d_dosage1 = d_dosage1 * (1 + Convert.ToDouble(s_compensate));
+                                        d_water1-= d_t1;
                                         //更新数据库
                                         s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", d_dosage1) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water1) + "',Pulse=0,Cooperate=5,Type =5,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
                                         FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
@@ -3684,8 +3688,11 @@ namespace SmartDyeing.FADM_Control
                                 double d_stotal = FADM_Object.Communal._d_abs_total * (FADM_Object.Communal._d_ppm / 10000);
                                 //母液重量
                                 double d_dosage = d_stotal / Convert.ToDouble(s_realConcentration);
+                                
                                 double d_water = FADM_Object.Communal._d_abs_total - d_dosage;
+                                double d_t = d_dosage * Convert.ToDouble(s_compensate);
                                 d_dosage = d_dosage * (1 + Convert.ToDouble(s_compensate));
+                                d_water-= d_t;
                                 //更新数据库
                                 s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", d_dosage) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water) + "',Pulse=0,Cooperate=5,Type =1,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
                                 FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
@@ -3765,7 +3772,9 @@ namespace SmartDyeing.FADM_Control
                                         //母液重量
                                         double d_dosage1 = d_stotal1 / Convert.ToDouble(s_realConcentration);
                                         double d_water1 = FADM_Object.Communal._d_abs_total - d_dosage1;
+                                        double d_t1 = d_dosage1 * Convert.ToDouble(s_compensate);
                                         d_dosage1 = d_dosage1 * (1 + Convert.ToDouble(s_compensate));
+                                        d_water1 -= d_t1;
                                         //更新数据库
                                         s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", d_dosage1) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water1) + "',Pulse=0,Cooperate=5,Type =5,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
                                         FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
@@ -3826,7 +3835,9 @@ namespace SmartDyeing.FADM_Control
                                 //母液重量
                                 double d_dosage = d_stotal / Convert.ToDouble(s_realConcentration);
                                 double d_water = FADM_Object.Communal._d_abs_total - d_dosage;
+                                double d_t = d_dosage * Convert.ToDouble(s_compensate);
                                 d_dosage = d_dosage * (1 + Convert.ToDouble(s_compensate));
+                                d_water -= d_t;
                                 //更新数据库
                                 s_sql = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + _i_nBottleNum + ",SampleDosage='" + string.Format("{0:F3}", d_dosage) + "',AdditivesNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water) + "',Pulse=0,Cooperate=5,Type =1,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + s_cupNum + "';";
                                 FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
@@ -4261,6 +4272,7 @@ namespace SmartDyeing.FADM_Control
 
         private void tsm_TestBaseAbs_Click(object sender, EventArgs e)
         {
+            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "测试吸光度基准点");
             string s_sql_1 = "SELECT top 1 * FROM abs_wait_list  order by InsertDate;";
             DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_1);
             if (dt_data.Rows.Count > 0)
@@ -4271,7 +4283,7 @@ namespace SmartDyeing.FADM_Control
             else
             {
                 //1.查看是否有空闲杯子
-                string s_sql = "SELECT * FROM abs_cup_details WHERE  Enable = 1 And IsUsing=0 order by CupNum;";
+                string s_sql = "SELECT * FROM abs_cup_details WHERE  Enable = 1 And IsUsing=0 And CupNum = 2 order by CupNum;";
                 DataTable dt_abs_cup_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
                 if (dt_abs_cup_details.Rows.Count == 0)
                 {
@@ -4527,6 +4539,21 @@ namespace SmartDyeing.FADM_Control
 
         private void tsm_TestAbsCompensate_Click(object sender, EventArgs e)
         {
+            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "测试吸光度补偿");
+            //查询是否开料，如果是就不用测量
+            string s_sql_bottle = "SELECT bottle_details.*,assistant_details.AllowMinColoringConcentration,assistant_details.AllowMaxColoringConcentration,assistant_details.AssistantType,assistant_details.UnitOfAccount  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE bottle_details.BottleNum = " + _i_nBottleNum + ";";
+            DataTable dt_temp_bottle = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_bottle);
+
+            if(dt_temp_bottle.Rows.Count>0)
+            {
+                if (dt_temp_bottle.Rows[0]["OriginalBottleNum"].ToString()=="0")
+                {
+                    FADM_Form.CustomMessageBox.Show("开料瓶号不需要测试补偿", "TestAbsCompensate",
+                        MessageBoxButtons.OK, false);
+                    return;
+                }
+            }
+
             string s_sql_1 = "SELECT top 1 * FROM abs_wait_list  order by InsertDate;";
             DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_1);
             if (dt_data.Rows.Count > 0)
@@ -4540,11 +4567,11 @@ namespace SmartDyeing.FADM_Control
             else
             {
                 //1.查看是否有空闲杯子
-                string s_sql = "SELECT * FROM abs_cup_details WHERE  Enable = 1 And IsUsing=0 order by CupNum;";
+                string s_sql = "SELECT * FROM abs_cup_details WHERE  Enable = 1 And IsUsing=0 And CupNum = 2 order by CupNum;";
                 DataTable dt_abs_cup_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
                 if (dt_abs_cup_details.Rows.Count == 0)
                 {
-                    FADM_Form.CustomMessageBox.Show("不存在空闲测试工位", "TestAbs",
+                    FADM_Form.CustomMessageBox.Show("不存在空闲测试工位", "TestAbsCompensate",
                         MessageBoxButtons.OK, false);
                     return;
                 }
@@ -4555,7 +4582,7 @@ namespace SmartDyeing.FADM_Control
                 lab_re:
                     if (i_index == dt_abs_cup_details.Rows.Count)
                     {
-                        FADM_Form.CustomMessageBox.Show("不存在空闲测试工位", "TestAbs",
+                        FADM_Form.CustomMessageBox.Show("不存在空闲测试工位", "TestAbsCompensate",
                         MessageBoxButtons.OK, false);
                         return;
                     }
@@ -4578,7 +4605,7 @@ namespace SmartDyeing.FADM_Control
                     string s_assistantType = dt_temp.Rows[0]["AssistantType"].ToString();
                     string s_realConcentration = dt_temp.Rows[0]["RealConcentration"].ToString();
                     string s_settingConcentration = dt_temp.Rows[0]["SettingConcentration"].ToString();
-                    string s_compensate = dt_temp.Rows[0]["Compensate"].ToString();
+                    string s_compensate = dt_temp.Rows[0]["Compensate"].ToString() == "" ? "0" : dt_temp.Rows[0]["Compensate"].ToString();
                     //if(Convert.ToDouble(s_settingConcentration) < 0.05)
                     //{
                     //    FADM_Form.CustomMessageBox.Show("浓度太小，不能测试", "TestAbs",
@@ -4587,7 +4614,7 @@ namespace SmartDyeing.FADM_Control
                     //}
                     if (s_unitOfAccount != "%")
                     {
-                        FADM_Form.CustomMessageBox.Show("不是染料，不能测试", "TestAbs",
+                        FADM_Form.CustomMessageBox.Show("不是染料，不能测试", "TestAbsCompensate",
                         MessageBoxButtons.OK, false);
                         return;
                     }
@@ -4685,7 +4712,7 @@ namespace SmartDyeing.FADM_Control
                             dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
                             if (dt_temp.Rows.Count == 0)
                             {
-                                FADM_Form.CustomMessageBox.Show("不存在母液瓶号，不能测试", "TestAbs",
+                                FADM_Form.CustomMessageBox.Show("不存在母液瓶号，不能测试", "TestAbsCompensate",
                         MessageBoxButtons.OK, false);
                                 return;
                             }
@@ -4841,7 +4868,7 @@ namespace SmartDyeing.FADM_Control
                                 dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
                                 if (dt_temp.Rows.Count == 0)
                                 {
-                                    FADM_Form.CustomMessageBox.Show("不存在母液瓶号，不能测试", "TestAbs",
+                                    FADM_Form.CustomMessageBox.Show("不存在母液瓶号，不能测试", "TestAbsCompensate",
                             MessageBoxButtons.OK, false);
                                     return;
                                 }
@@ -4973,7 +5000,7 @@ namespace SmartDyeing.FADM_Control
                             dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
                             if (dt_temp.Rows.Count == 0)
                             {
-                                FADM_Form.CustomMessageBox.Show("不存在水剂母液瓶号，不能测试", "TestAbs",
+                                FADM_Form.CustomMessageBox.Show("不存在水剂母液瓶号，不能测试", "TestAbsCompensate",
                         MessageBoxButtons.OK, false);
                                 return;
                             }
@@ -5113,7 +5140,7 @@ namespace SmartDyeing.FADM_Control
                             dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
                             if (dt_temp.Rows.Count == 0)
                             {
-                                FADM_Form.CustomMessageBox.Show("不存在溶解剂母液瓶号，不能测试", "TestAbs",
+                                FADM_Form.CustomMessageBox.Show("不存在溶解剂母液瓶号，不能测试", "TestAbsCompensate",
                         MessageBoxButtons.OK, false);
                                 return;
                             }
