@@ -6537,8 +6537,8 @@ namespace SmartDyeing.FADM_Object
                 FADM_Object.Communal.WriteTcpStatus(false);
             //清掉执行完成 标志位
             label2:
-                int[] ia_array3 = { 29 };
-                int i_state = FADM_Object.Communal._tcpModBus.Write(811, ia_array3);
+                int[] ia_array3 = { 1 };
+                int i_state = FADM_Object.Communal._tcpModBus.Write(827, ia_array3);
                 if (i_state != -1)
                 {
                     FADM_Object.Communal.WriteTcpStatus(true);//恢复
@@ -6575,6 +6575,7 @@ namespace SmartDyeing.FADM_Object
         /// <returns></returns>
         public static void ResetBalance()
         {
+            return;
             if (Lib_Card.Configure.Parameter.Machine_Type == 0)
             {
                 return;

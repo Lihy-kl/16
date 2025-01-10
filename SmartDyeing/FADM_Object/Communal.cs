@@ -695,6 +695,11 @@ namespace SmartDyeing.FADM_Object
         public static bool _b_isUseCloth = false;
 
         /// <summary>
+        /// 是否在放布确认前可添加副杯滴液
+        /// </summary>
+        public static bool _b_isNeedConfirm = false;
+
+        /// <summary>
         /// 区域1触摸屏版本
         /// </summary>
         public static string _s_TouchVer1 = "";

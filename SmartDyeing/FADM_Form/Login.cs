@@ -1786,7 +1786,6 @@ namespace SmartDyeing.FADM_Form
 
         private void BtnLogOn_Click(object sender, EventArgs e)
         {
-
             //FADM_Object.Communal._fadmSqlserver.ReviseData(
             //            "INSERT INTO abs_wait_list(BottleNum, InsertDate) VALUES('" + 1 + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "');");
             //string s_sql_QQ = "SELECT top 1 * FROM abs_wait_list  order by InsertDate;";

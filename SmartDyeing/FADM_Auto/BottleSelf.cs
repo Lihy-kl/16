@@ -453,7 +453,7 @@ namespace SmartDyeing.FADM_Auto
                 {
                     //if (FADM_Object.Communal._b_isZero)//清零
                     //    MyModbusFun.ClearBalance();//调用清零 发送指令成功就返回。下面在判断读数
-                    //    Thread.Sleep(1500);
+                    //Thread.Sleep(1500);
 
                     //Lib_SerialPort.Balance.METTLER.bZeroSign = true; ;
                     //Thread.Sleep(200);

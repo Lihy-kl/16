@@ -83,7 +83,8 @@ namespace SmartDyeing.FADM_Form
             resources.GetString("cbo_TechnologyName.Items1"),
             resources.GetString("cbo_TechnologyName.Items2"),
             resources.GetString("cbo_TechnologyName.Items3"),
-            resources.GetString("cbo_TechnologyName.Items4")});
+            resources.GetString("cbo_TechnologyName.Items4"),
+            resources.GetString("cbo_TechnologyName.Items5")});
             this.cbo_TechnologyName.Name = "cbo_TechnologyName";
             // 
             // BrewingStep

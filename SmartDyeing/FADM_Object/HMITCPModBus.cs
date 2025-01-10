@@ -189,6 +189,25 @@ namespace SmartDyeing.FADM_Object
                 {
                     if (i_type == 1 || i_type == 2|| i_type == 3)
                     {
+                        int[] ia_values_ask = new int[6];
+                        for(int i = 0;i< ia_values_ask.Length;i++)
+                        {
+                            ia_values_ask[i] = 0;
+                        }
+                        //读取放布申请
+                        if (FADM_Object.Communal._b_isNeedConfirm)
+                        {
+                            if (i_type == 2)
+                            {
+                                
+                                int i_ret = -1;
+                                i_ret = Read(910, 6, ref ia_values_ask);
+                                if (i_ret == 0)
+                                {
+                                }
+                            }
+                        }
+
 
                         for (int i = 0; i < 6; i++)
                         {
@@ -218,6 +237,7 @@ namespace SmartDyeing.FADM_Object
                                     d._s_secondhistory = (ia_values[21]).ToString();
                                     d._s_secondopenInplace = (ia_values[22]).ToString();
                                     d._s_secondrealTem = (ia_values[44]).ToString();
+                                    d._s_putcloth = (ia_values_ask[i]).ToString();
                                     //int[] ia_values1 = new int[1];
                                     lis_l.Add(d);
                                     _b_Connect = true;
@@ -240,6 +260,8 @@ namespace SmartDyeing.FADM_Object
                             }
 
                         }
+
+                        
                     }
                     else
                     {
@@ -427,6 +449,11 @@ namespace SmartDyeing.FADM_Object
         ///  报警提示 0=超极限温度 1=电机电流过大 2=高于安全温度进入冷行 3=回原点超时
         /// </summary>
         public string _s_Warm;
+
+        /// <summary>
+        /// 放布确认申请(1放布申请)
+        /// </summary>
+        public string _s_putcloth;
 
 
     }

@@ -1330,9 +1330,9 @@ namespace SmartDyeing.FADM_Auto
                                         new FADM_Object.MyAlarm("not found " + s_brewingCode + " Liquid adjustment process", "Mother liquor soaking");
                                     break;
                                 }
-                                if (dt_bottle_details.Rows.Count > 5)
+                                if (dt_bottle_details.Rows.Count > 6)
                                 {
-                                    //FADM_Form.CustomMessageBox.Show(s_brewingCode + "调液流程步骤超过5步", "母液泡制", MessageBoxButtons.OK, false);
+                                    //FADM_Form.CustomMessageBox.Show(s_brewingCode + "调液流程步骤超过6步", "母液泡制", MessageBoxButtons.OK, false);
                                     //复位输入完成标记位
 
 
@@ -1340,14 +1340,14 @@ namespace SmartDyeing.FADM_Auto
                                     ia_array[0] = 2;
                                     FADM_Object.Communal._tcpModBusBrew.Write(2816 + 200 * i, ia_array);
                                     if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                        new FADM_Object.MyAlarm(s_brewingCode + "调液流程步骤超过5步", "母液泡制");
+                                        new FADM_Object.MyAlarm(s_brewingCode + "调液流程步骤超过6步", "母液泡制");
                                     else
-                                        new FADM_Object.MyAlarm(s_brewingCode + " The liquid adjustment process involves more than 5 steps", "Mother liquor soaking");
+                                        new FADM_Object.MyAlarm(s_brewingCode + " The liquid adjustment process involves more than 6 steps", "Mother liquor soaking");
                                     break;
                                 }
 
-                                int[] ia_no_1 = { 0, 0, 0, 0, 0 };
-                                int[] ia_data_1 = { 0, 0, 0, 0, 0 };
+                                int[] ia_no_1 = { 0, 0, 0, 0, 0, 0 };
+                                int[] ia_data_1 = { 0, 0, 0, 0, 0, 0 };
                                 for (int j = 0; j < dt_bottle_details.Rows.Count; j++)
                                 {
                                     string s_technologyName = Convert.ToString(dt_bottle_details.Rows[j][dt_bottle_details.Columns["TechnologyName"]]);
@@ -1386,6 +1386,12 @@ namespace SmartDyeing.FADM_Auto
                                         case "搅拌":
                                             //5
                                             ia_no_1[j] = 5;
+                                            ia_data_1[j] = i_data;
+
+                                            break;
+                                        case "加补充剂":
+                                            //6
+                                            ia_no_1[j] = 6;
                                             ia_data_1[j] = i_data;
 
                                             break;
@@ -1502,10 +1508,10 @@ namespace SmartDyeing.FADM_Auto
                                 ia_array[17] = ia_data_1[4];
 
                                 ia_array[18] = i_oribottle;
-                                ia_array[19] = 0;
+                                ia_array[19] = ia_no_1[5];
 
 
-                                ia_array[20] = 0;
+                                ia_array[20] = ia_data_1[5];
                                 ia_array[21] = 0;
                                 ia_array[22] = 0;
                                 ia_array[23] = 0;

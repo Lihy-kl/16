@@ -76,7 +76,7 @@ namespace SmartDyeing.FADM_Form
                 if (cbo_TechnologyName.Text != "手动加染助剂" && cbo_TechnologyName.Text != "搅拌")
                 {
                     string s_sql = "SELECT  SUM(ProportionOrTime) FROM brewing_process WHERE BrewingCode = '" + _s_brewingCode +
-                                       "' AND TechnologyName != '手动加染助剂' AND TechnologyName != '搅拌' AND StepNum != '" + txt_StepNum.Text + "';";
+                                       "' AND TechnologyName != '手动加染助剂' AND TechnologyName != '搅拌' AND TechnologyName != '加补充剂' AND StepNum != '" + txt_StepNum.Text + "';";
                     DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
 
                     if (Convert.ToString(dt_data.Rows[0][dt_data.Columns[0]]) != "" && txt_ProportionOrTime.Text != null && txt_ProportionOrTime.Text != "")
@@ -99,7 +99,7 @@ namespace SmartDyeing.FADM_Form
                 if (cbo_TechnologyName.Text != "Add dyeing auxiliaries manually" && cbo_TechnologyName.Text != "Stir")
                 {
                     string s_sql = "SELECT  SUM(ProportionOrTime) FROM brewing_process WHERE BrewingCode = '" + _s_brewingCode +
-                                       "' AND TechnologyName != 'Add dyeing auxiliaries manually' AND TechnologyName != 'Stir' AND StepNum != '" + txt_StepNum.Text + "';";
+                                       "' AND TechnologyName != 'Add dyeing auxiliaries manually' AND TechnologyName != 'Stir' AND TechnologyName != 'Add supplements'  AND StepNum != '" + txt_StepNum.Text + "';";
                     DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
 
                     if (Convert.ToString(dt_data.Rows[0][dt_data.Columns[0]]) != "" && txt_ProportionOrTime.Text != null && txt_ProportionOrTime.Text != "")

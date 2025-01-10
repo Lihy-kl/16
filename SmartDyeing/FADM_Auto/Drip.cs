@@ -37,6 +37,16 @@ namespace SmartDyeing.FADM_Auto
 
                 for (int j = lis_iUse.Count - 1; j >= 0; j--)
                 {
+                    if (FADM_Object.Communal._b_isNeedConfirm)
+                    {
+                        //如果杯号没在开始(由于另外一个杯使用导致需要洗杯的情况，直接清除)
+                        DataTable dt_need = FADM_Object.Communal._fadmSqlserver.GetData("Select * from drop_head where CupNum = " + lis_iUse[j] + " And BatchName != '0'");
+                        if (dt_need.Rows.Count == 0)
+                        {
+                            lis_iUse.Remove(lis_iUse[j]);
+                            continue;
+                        }
+                    }
                     if (FADM_Object.Communal._lis_washCupFinish.Contains(lis_iUse[j]))
                     {
                         lock (this)
@@ -101,6 +111,7 @@ namespace SmartDyeing.FADM_Auto
 
                         }
 
+
                         //int[] ia_zero = new int[1];
                         ////滴液状态
                         //ia_zero[0] = 3;
@@ -123,6 +134,28 @@ namespace SmartDyeing.FADM_Auto
 
                             Thread.Sleep(1000);
                         }
+                        if (FADM_Object.Communal._b_isNeedConfirm)
+                        {
+                            //判断另外一个杯是否完成开盖
+                            if (Communal._dic_first_second[lis_iUse[j]] > 0)
+                            {
+                                if (FADM_Auto.Dye._cup_Temps[Communal._dic_first_second[lis_iUse[j]] - 1]._i_cupCover == 1)
+                                {
+                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                                   "UPDATE cup_details SET Cooperate = '2' WHERE CupNum = " + Communal._dic_first_second[lis_iUse[j]] + ";");
+                                }
+                            }
+
+                            while (true)
+                            {
+
+                                //已开盖
+                                if (Convert.ToInt16(FADM_Auto.Dye._cup_Temps[Communal._dic_first_second[lis_iUse[j]] - 1]._i_cupCover) == 2)
+                                    break;
+
+                                Thread.Sleep(1000);
+                            }
+                        }
 
 
                         //把滴液状态改为可以滴液
@@ -142,10 +175,11 @@ namespace SmartDyeing.FADM_Auto
 
 
                     }
+
                 }
 
                 //判断是否全部洗杯完成，全部完成就退出线程
-                if(lis_iUse.Count==0)
+                if (lis_iUse.Count==0)
                 {
                     break;
                 }
@@ -788,9 +822,12 @@ namespace SmartDyeing.FADM_Auto
         {
             try
             {
+                //需要开盖杯号
+                List<int> lis_iOpen = new List<int>();
 
                 FADM_Object.Communal.WriteDripWait(false);
                 _b_dripErr = false;
+                _b_dripStop = false;
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", o_BatchName + "滴液启动");
                 FADM_Object.Communal._fadmSqlserver.ReviseData(
                     "UPDATE drop_head SET StartTime = '" + DateTime.Now + "' WHERE BatchName = '" + o_BatchName + "';");
@@ -1050,6 +1087,10 @@ namespace SmartDyeing.FADM_Auto
                             DataTable dt_drop_head = FADM_Object.Communal._fadmSqlserver.GetData(
                                "SELECT * FROM drop_head WHERE BatchName = '" + o_BatchName + "' AND CupFinish = 0  AND CupNum in (" + s_cup + ")  ORDER BY CupNum;");
 
+                            //查找所有打板杯号
+                            DataTable dt_drop_head_all = FADM_Object.Communal._fadmSqlserver.GetData(
+                               "SELECT * FROM drop_head WHERE CupNum in (" + s_cup + ")  ORDER BY CupNum;");
+
                             foreach (DataRow dataRow in dt_drop_head.Rows)
                             {
                                 int i_cupNum = Convert.ToInt16(dataRow["CupNum"]);
@@ -1064,12 +1105,44 @@ namespace SmartDyeing.FADM_Auto
                                 Txt.DeleteMarkTXT(i_cupNum);
                             }
 
-
+                            //不需要
+                            List<int> lis_i = new List<int>();
+                            if (FADM_Object.Communal._b_isNeedConfirm)
+                            {
+                                //把已经上次滴液把另外一杯已经滴过的区分出来，这些杯子不用查历史状态和发送滴液启动，就需要修改杯选择
+                                foreach (DataRow dataRow in dt_drop_head.Rows)
+                                {
+                                    int i_cupNum = Convert.ToInt16(dataRow["CupNum"]);
+                                    if (SmartDyeing.FADM_Object.Communal._dic_first_second[i_cupNum] > 0)
+                                    {
+                                        foreach (DataRow dataRow1 in dt_drop_head_all.Rows)
+                                        {
+                                            //当另外一个杯也在批次里
+                                            if (Convert.ToInt16(dataRow1["CupNum"]) == SmartDyeing.FADM_Object.Communal._dic_first_second[i_cupNum])
+                                            {
+                                                //判断另外一个杯是否已经滴完
+                                                if (dataRow1["CupFinish"].ToString() == "1")
+                                                {
+                                                    //把这个杯排除
+                                                    if (!lis_i.Contains(i_cupNum))
+                                                        lis_i.Add(i_cupNum);
+                                                }
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
 
                         label1:
                             foreach (DataRow dataRow in dt_drop_head.Rows)
                             {
                                 int i_cupNum = Convert.ToInt16(dataRow["CupNum"]);
+                                if (FADM_Object.Communal._b_isNeedConfirm)
+                                {
+                                    if (lis_i.Contains(i_cupNum))
+                                        continue;
+                                }
                                 //等待杯子进入待机状态
                                 int i_state = Convert.ToInt16(FADM_Auto.Dye._cup_Temps[i_cupNum - 1]._s_statues);
                                 if (0 != i_state)
@@ -1083,7 +1156,19 @@ namespace SmartDyeing.FADM_Auto
                             foreach (DataRow dataRow in dt_drop_head.Rows)
                             {
                                 int i_cupNum = Convert.ToInt16(dataRow["CupNum"]);
-                                int i_state = Convert.ToInt16(FADM_Auto.Dye._cup_Temps[i_cupNum - 1]._s_history); ;
+                                if (FADM_Object.Communal._b_isNeedConfirm)
+                                {
+                                    if (lis_i.Contains(i_cupNum))
+                                        continue;
+                                }
+                                int i_state = Convert.ToInt16(FADM_Auto.Dye._cup_Temps[i_cupNum - 1]._s_history);
+                                int i_state_s = 0;
+                                if (FADM_Object.Communal._b_isNeedConfirm)
+                                {
+                                    if (SmartDyeing.FADM_Object.Communal._dic_first_second[i_cupNum] > 0)
+                                        //检查副杯历史状态
+                                        i_state_s = Convert.ToInt16(FADM_Auto.Dye._cup_Temps[SmartDyeing.FADM_Object.Communal._dic_first_second[i_cupNum] - 1]._s_history);
+                                }
                                 FADM_Object.Communal._fadmSqlserver.ReviseData(
                                      "UPDATE cup_details SET Statues = '检查历史状态' WHERE CupNum = " + i_cupNum + ";");
 
@@ -1096,7 +1181,7 @@ namespace SmartDyeing.FADM_Auto
                                         FADM_Object.Communal._fadmSqlserver.ReviseData(
                                                "UPDATE drop_details SET IsDrop = '0' WHERE CupNum = " + i_cupNum + ";");
                                     }
-                                    if (Communal._dic_first_second[i_cupNum] >0)
+                                    if (Communal._dic_first_second[i_cupNum] > 0)
                                     {
                                         bool b_haveOther = false;
                                         foreach (DataRow dataRow1 in dt_drop_head.Rows)
@@ -1117,8 +1202,68 @@ namespace SmartDyeing.FADM_Auto
                                                        "UPDATE drop_details SET IsDrop = '0' WHERE CupNum = " + Communal._dic_first_second[i_cupNum] + ";");
                                             }
                                         }
+                                        else
+                                        {
+                                            if (FADM_Object.Communal._b_isNeedConfirm)
+                                            {
+                                                if (0 != i_state_s)
+                                                {
+                                                    //判断副杯是否下线,如果下线就不判断
+                                                    DataTable dt_cup = FADM_Object.Communal._fadmSqlserver.GetData(
+                                           "SELECT * FROM cup_details WHERE CupNum =" + Communal._dic_first_second[i_cupNum] + ";");
+                                                    if (dt_cup.Rows.Count > 0)
+                                                    {
+                                                        if (dt_cup.Rows[0]["Enable"].ToString() == "1")
+                                                        {
+                                                            if (!lis_iUse.Contains(Communal._dic_first_second[i_cupNum]))
+                                                            {
+                                                                lis_iUse.Add(Communal._dic_first_second[i_cupNum]);
+                                                            }
+                                                        }
+                                                    }
+
+                                                }
+                                            }
+                                        }
                                     }
                                 }
+                                //当历史状态为0时，正常可以下发开始，但现在需要判断另外一个杯是否使用，是否需要前洗杯
+                                else
+                                {
+                                    if (FADM_Object.Communal._b_isNeedConfirm)
+                                    {
+                                        if (0 != i_state_s)
+                                        {
+                                            //判断副杯是否下线,如果下线就不判断
+                                            DataTable dt_cup = FADM_Object.Communal._fadmSqlserver.GetData(
+                                   "SELECT * FROM cup_details WHERE CupNum =" + Communal._dic_first_second[i_cupNum] + ";");
+                                            if (dt_cup.Rows.Count > 0)
+                                            {
+                                                if (dt_cup.Rows[0]["Enable"].ToString() == "1")
+                                                {
+                                                    if (!lis_iUse.Contains(Communal._dic_first_second[i_cupNum]))
+                                                    {
+                                                        lis_iUse.Add(Communal._dic_first_second[i_cupNum]);
+                                                        //把滴液标记位先取消，滴液时先不滴
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                               "UPDATE drop_details SET IsDrop = '0' WHERE CupNum = " + Communal._dic_first_second[i_cupNum] + " And BatchName = '" + o_BatchName+"';");
+                                                    }
+                                                    //由于上面已经判断过，能进入到这里肯定是双杯，这里就是如果打板杯位不用前洗杯，但闲置副杯要前洗杯，就把主副杯一起洗了
+                                                    if (!lis_iUse.Contains(i_cupNum))
+                                                    {
+                                                        lis_iUse.Add(i_cupNum);
+                                                        //把滴液标记位先取消，滴液时先不滴
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                               "UPDATE drop_details SET IsDrop = '0' WHERE CupNum = " + i_cupNum + ";");
+                                                    }
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                }
+
+
                             }
                             //if (lis_iUse.Count > 0)
                             //{
@@ -1179,6 +1324,19 @@ namespace SmartDyeing.FADM_Auto
                             foreach (DataRow dataRow in dt_drop_head.Rows)
                             {
                                 int i_cupNum = Convert.ToInt16(dataRow["CupNum"]);
+                                if (FADM_Object.Communal._b_isNeedConfirm)
+                                {
+                                    if (lis_i.Contains(i_cupNum))
+                                    {
+                                        //杯选择更改为双杯，状态改为滴液
+                                        int[] ia_zero = new int[1];
+                                        ia_zero[0] = 0;
+                                        DyeHMIWrite(i_cupNum, 119, 119, ia_zero);
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                     "UPDATE cup_details SET Statues = '滴液' WHERE CupNum = " + i_cupNum + ";");
+                                        continue;
+                                    }
+                                }
                                 //把没有前洗杯的配液杯下发滴液状态，前洗杯的需要开启线程来自己完成后加入
                                 if (!lis_iUse.Contains(i_cupNum))
                                 {
@@ -1280,24 +1438,93 @@ namespace SmartDyeing.FADM_Auto
                                 {
                                     int iCupNum = Convert.ToInt16(dataRow["CupNum"]);
 
-
+                                    if (lis_i.Contains(iCupNum))
+                                    {
+                                        continue;
+                                    }
                                     int iOpenCover = Convert.ToInt16(FADM_Auto.Dye._cup_Temps[iCupNum - 1]._s_statues);
 
+                                    
 
                                     if (5 != iOpenCover)
+                                    {
                                         b_open = false;
+                                    }
 
                                 }
 
 
                                 if (b_open)
+                                {
+                                    if (FADM_Object.Communal._b_isNeedConfirm)
+                                    {
+                                        //记录需要开盖的杯号
+                                        foreach (DataRow dataRow in dt_drop_head.Rows)
+                                        {
+                                            int iCupNum = Convert.ToInt16(dataRow["CupNum"]);
+                                            //
+                                            if (Communal._dic_first_second[iCupNum] > 0)
+                                            {
+                                                //如果关盖，就加入开盖队列
+                                                if (FADM_Auto.Dye._cup_Temps[Communal._dic_first_second[iCupNum] - 1]._i_cupCover == 1)
+                                                {
+                                                    if (!lis_iOpen.Contains(Communal._dic_first_second[iCupNum]))
+                                                    {
+                                                        lis_iOpen.Add(Communal._dic_first_second[iCupNum]);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                     break;
+                                }
 
                                 Thread.Sleep(1000);
                             }
 
                         }
-                        //thread.Join();
+                        if (FADM_Object.Communal._b_isNeedConfirm)
+                        {
+                            //把需要开盖的杯子添加一个开盖动作
+                            for (int i = 0; i < lis_iOpen.Count; i++)
+                            {
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                                   "UPDATE cup_details SET Cooperate = '2' WHERE CupNum = " + lis_iOpen[i] + ";");
+                            }
+                            //thread.Join();
+                            //等待所以杯开盖完成
+                            while (true)
+                            {
+                                //判断染色线程是否需要用机械手
+                                if (null != FADM_Object.Communal.ReadDyeThread())
+                                {
+                                    FADM_Object.Communal.WriteDripWait(true);
+                                    Communal._b_isWaitDrip = true;
+                                    while (true)
+                                    {
+                                        if (false == FADM_Object.Communal.ReadDripWait())
+                                            break;
+                                        Thread.Sleep(1);
+                                    }
+                                    Communal._b_isWaitDrip = false;
+                                }
+                                else
+                                    Communal._b_isWaitDrip = false;
+
+                                bool b_pass = true;
+                                for (int i = 0; i < lis_iOpen.Count; i++)
+                                {
+                                    if (FADM_Auto.Dye._cup_Temps[lis_iOpen[i] - 1]._i_cupCover == 1)
+                                    {
+                                        b_pass = false;
+                                    }
+                                }
+                                if (b_pass)
+                                    break;
+
+                                Thread.Sleep(1000);
+                            }
+                        }
 
                         if (-1 == i_mRes)
                         {
@@ -1599,27 +1826,29 @@ namespace SmartDyeing.FADM_Auto
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找待机位");
                 FADM_Object.Communal._i_optBottleNum = 0;
                 FADM_Object.Communal._i_OptCupNum = 0;
-                //判断染色线程是否需要用机械手
-                if (null != FADM_Object.Communal.ReadDyeThread())
-                {
-                    FADM_Object.Communal.WriteDripWait(true);
-                    Communal._b_isWaitDrip = true;
-                    while (true)
-                    {
-                        if (false == FADM_Object.Communal.ReadDripWait())
-                            break;
-                        Thread.Sleep(1);
-                    }
-                    Communal._b_isWaitDrip = false;
-                }
-                else
-                    Communal._b_isWaitDrip = false;
-                //if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1)
+
+                FADM_Object.Communal.WriteDripWait(false);
+                ////判断染色线程是否需要用机械手
+                //if (null != FADM_Object.Communal.ReadDyeThread())
                 //{
-                i_mRes = MyModbusFun.TargetMove(3, 0, 1);
-                if (-2 == i_mRes)
-                    throw new Exception("收到退出消息");
+                //    FADM_Object.Communal.WriteDripWait(true);
+                //    Communal._b_isWaitDrip = true;
+                //    while (true)
+                //    {
+                //        if (false == FADM_Object.Communal.ReadDripWait())
+                //            break;
+                //        Thread.Sleep(1);
+                //    }
+                //    Communal._b_isWaitDrip = false;
                 //}
+                //else
+                //    Communal._b_isWaitDrip = false;
+                if (null == FADM_Object.Communal.ReadDyeThread())
+                {
+                    i_mRes = MyModbusFun.TargetMove(3, 0, 1);
+                    if (-2 == i_mRes)
+                        throw new Exception("收到退出消息");
+                }
                 //else
                 //{
                 //    //不回待机位，失能关闭
@@ -1643,7 +1872,8 @@ namespace SmartDyeing.FADM_Auto
 
                 SmartDyeing.FADM_Control.P_Formula.P_bl_update = true;
                 FADM_Control.Formula.P_bl_update = true;
-                
+                FADM_Control.Formula_Cloth.P_bl_update = true;
+
             }
             catch (Exception ex)
             {
@@ -1677,6 +1907,7 @@ namespace SmartDyeing.FADM_Auto
 
                     SmartDyeing.FADM_Control.P_Formula.P_bl_update = true;
                     FADM_Control.Formula.P_bl_update = true;
+                    FADM_Control.Formula_Cloth.P_bl_update = true;
 
                     return;
                 }
@@ -9356,10 +9587,21 @@ namespace SmartDyeing.FADM_Auto
                             //后处理区域
                             {
                                 DataTable dataTable = FADM_Object.Communal._fadmSqlserver.GetData("SELECT * FROM drop_head WHERE BatchName = '" + oBatchName + "'    ORDER BY CupNum;");
+                                DataTable dataTable_s = FADM_Object.Communal._fadmSqlserver.GetData("SELECT * FROM drop_head WHERE BatchName != '0'    ORDER BY CupNum;");
                                 List<int> lis_lUse_Cup = new List<int>();
-                                foreach (DataRow dataRow in dataTable.Rows)
+                                if (FADM_Object.Communal._b_isNeedConfirm)
                                 {
-                                    lis_lUse_Cup.Add(Convert.ToInt16(dataRow["CupNum"]));
+                                    foreach (DataRow dataRow in dataTable_s.Rows)
+                                    {
+                                        lis_lUse_Cup.Add(Convert.ToInt16(dataRow["CupNum"]));
+                                    }
+                                }
+                                else
+                                {
+                                    foreach (DataRow dataRow in dataTable.Rows)
+                                    {
+                                        lis_lUse_Cup.Add(Convert.ToInt16(dataRow["CupNum"]));
+                                    }
                                 }
                                 //把对应副杯也加入进去
                                 List<int> lis_cupFailT2 = new List<int>();
@@ -9424,10 +9666,24 @@ namespace SmartDyeing.FADM_Auto
 
                                     DataTable dt_drop_head2 = FADM_Object.Communal._fadmSqlserver.GetData(
                                                                "SELECT * FROM drop_head WHERE BatchName = '" + oBatchName + "'    ORDER BY CupNum;");
+
+                                    DataTable dt_drop_head3 = FADM_Object.Communal._fadmSqlserver.GetData(
+                                                               "SELECT * FROM drop_head WHERE BatchName != '0'    ORDER BY CupNum;");
                                     List<int> lis_lUse1 = new List<int>();
-                                    foreach (DataRow dataRow in dt_drop_head2.Rows)
+                                    if (FADM_Object.Communal._b_isNeedConfirm)
                                     {
-                                        lis_lUse1.Add(Convert.ToInt16(dataRow["CupNum"]));
+                                        foreach (DataRow dataRow in dt_drop_head3.Rows)
+                                        {
+                                            lis_lUse1.Add(Convert.ToInt16(dataRow["CupNum"]));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        foreach (DataRow dataRow in dt_drop_head2.Rows)
+                                        {
+                                            lis_lUse1.Add(Convert.ToInt16(dataRow["CupNum"]));
+                                        }
+
                                     }
                                     for (int i = lis_cupFailT.Count - 1; i >= 0; i--)
                                     {
@@ -9522,10 +9778,22 @@ namespace SmartDyeing.FADM_Auto
                                     bool b_open = true;
                                     DataTable dt_drop_head2 = FADM_Object.Communal._fadmSqlserver.GetData(
                            "SELECT * FROM drop_head WHERE BatchName = '" + oBatchName + "' AND CupFinish = 0    ORDER BY CupNum;");
+                                    DataTable dt_drop_head3 = FADM_Object.Communal._fadmSqlserver.GetData(
+                           "SELECT * FROM drop_head WHERE BatchName != '0' AND CupFinish = 0    ORDER BY CupNum;");
                                     List<int> lUse1 = new List<int>();
-                                    foreach (DataRow dataRow in dt_drop_head2.Rows)
+                                    if (FADM_Object.Communal._b_isNeedConfirm)
                                     {
-                                        lUse1.Add(Convert.ToInt16(dataRow["CupNum"]));
+                                        foreach (DataRow dataRow in dt_drop_head3.Rows)
+                                        {
+                                            lUse1.Add(Convert.ToInt16(dataRow["CupNum"]));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        foreach (DataRow dataRow in dt_drop_head2.Rows)
+                                        {
+                                            lUse1.Add(Convert.ToInt16(dataRow["CupNum"]));
+                                        }
                                     }
                                     for (int i = lis_ints1.Count - 1; i >= 0; i--)
                                     {

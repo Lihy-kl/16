@@ -523,6 +523,12 @@ namespace SmartDyeing.FADM_Form
             {
                 FADM_Object.Communal._b_isUseCloth = true;
             }
+
+            string s_isNeedConfirm = Lib_File.Ini.GetIni("Setting", "s_IsNeedConfirm", "0", s_path);
+            if (s_isNeedConfirm == "1")
+            {
+                FADM_Object.Communal._b_isNeedConfirm = true;
+            }
         }
 
         public void countDown()
@@ -818,18 +824,42 @@ namespace SmartDyeing.FADM_Form
                             }
                             foreach (DataRow Row1 in dataTabletemp1.Rows)
                             {
-                                //判断另外一个杯子是否在用
-                                if (Communal._dic_first_second[Convert.ToInt32(Row[0].ToString())] > 0)
+                                if (FADM_Object.Communal._b_isNeedConfirm)
                                 {
-                                    string str_head_s = "SELECT  * FROM drop_head WHERE  CupNum = " + Communal._dic_first_second[Convert.ToInt32(Row[0].ToString())] + "  And BatchName ='0';";
-                                    DataTable dt_head_s = FADM_Object.Communal._fadmSqlserver.GetData(str_head_s);
-                                    if(dt_head_s.Rows.Count>1)
+                                    //判断另外一个杯子是否在用
+                                    if (Communal._dic_first_second[Convert.ToInt32(Row[0].ToString())] > 0)
                                     {
-                                        string s_head_w = "SELECT  * FROM formula_head WHERE  FormulaCode = '" + Row1["FormulaCode"].ToString() + "' And  VersionNum ='" + Row1["VersionNum"].ToString() + "';";
-                                        DataTable dt_head_w = FADM_Object.Communal._fadmSqlserver.GetData(s_head_w);
+                                        string str_head_s = "SELECT  * FROM drop_head WHERE  CupNum = " + Communal._dic_first_second[Convert.ToInt32(Row[0].ToString())] + "  ;";
+                                        DataTable dt_head_s = FADM_Object.Communal._fadmSqlserver.GetData(str_head_s);
+                                        if (dt_head_s.Rows.Count == 1)
+                                        {
+                                            string s_head_w = "SELECT  * FROM formula_head WHERE  FormulaCode = '" + Row1["FormulaCode"].ToString() + "' And  VersionNum ='" + Row1["VersionNum"].ToString() + "';";
+                                            DataTable dt_head_w = FADM_Object.Communal._fadmSqlserver.GetData(s_head_w);
 
-                                        //if (dt_head_s.Rows[0]["DyeingCode"].ToString() == dt_head_w.Rows[0]["DyeingCode"].ToString())
-                                        if (JudDyeingCode(dt_head_s.Rows[0]["FormulaCode"].ToString(), dt_head_s.Rows[0]["VersionNum"].ToString(), dt_head_w.Rows[0]["FormulaCode"].ToString(), dt_head_w.Rows[0]["VersionNum"].ToString()) == 0)
+                                            //if (dt_head_s.Rows[0]["DyeingCode"].ToString() == dt_head_w.Rows[0]["DyeingCode"].ToString())
+                                            if (JudDyeingCode(dt_head_s.Rows[0]["FormulaCode"].ToString(), dt_head_s.Rows[0]["VersionNum"].ToString(), dt_head_w.Rows[0]["FormulaCode"].ToString(), dt_head_w.Rows[0]["VersionNum"].ToString()) == 0)
+                                            {
+
+                                                //当另外一个杯还是放布而且步号是1时可以加入
+                                                string s_cup_s = "SELECT  * FROM cup_details WHERE  CupNum = " + Communal._dic_first_second[Convert.ToInt32(Row[0].ToString())] + " ;";
+                                                DataTable dt_cup_s = FADM_Object.Communal._fadmSqlserver.GetData(s_cup_s);
+                                                if (dt_cup_s.Rows.Count > 0)
+                                                {
+                                                    //当前工艺步骤为1时，可以加入
+                                                    if (Convert.ToInt32(dt_cup_s.Rows[0]["StepNum"].ToString()) <= 1 && dt_cup_s.Rows[0]["TechnologyName"].ToString() == "放布")
+                                                    {
+                                                        b_newInsert = true;
+                                                        //加入批次
+                                                        AddDropList a = new AddDropList(dataTabletemp1.Rows[0]["FormulaCode"].ToString(), dataTabletemp1.Rows[0]["VersionNum"].ToString(), Row[0].ToString(), 3);
+                                                        //删除等待列表记录
+                                                        FADM_Object.Communal._fadmSqlserver.GetData("Delete from wait_list where Type = 3 and IndexNum = " + dataTabletemp1.Rows[0]["IndexNum"].ToString());
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        //另外一个杯子没在使用
+                                        else
                                         {
                                             b_newInsert = true;
                                             //加入批次
@@ -839,16 +869,65 @@ namespace SmartDyeing.FADM_Form
                                             break;
                                         }
                                     }
+                                    else
+                                    {
+                                        b_newInsert = true;
+                                        //加入批次
+                                        AddDropList a = new AddDropList(dataTabletemp1.Rows[0]["FormulaCode"].ToString(), dataTabletemp1.Rows[0]["VersionNum"].ToString(), Row[0].ToString(), 3);
+                                        //删除等待列表记录
+                                        FADM_Object.Communal._fadmSqlserver.GetData("Delete from wait_list where Type = 3 and IndexNum = " + dataTabletemp1.Rows[0]["IndexNum"].ToString());
+
+                                        break;
+                                    }
                                 }
                                 else
                                 {
-                                    b_newInsert = true;
-                                    //加入批次
-                                    AddDropList a = new AddDropList(dataTabletemp1.Rows[0]["FormulaCode"].ToString(), dataTabletemp1.Rows[0]["VersionNum"].ToString(), Row[0].ToString(), 3);
-                                    //删除等待列表记录
-                                    FADM_Object.Communal._fadmSqlserver.GetData("Delete from wait_list where Type = 3 and IndexNum = " + dataTabletemp1.Rows[0]["IndexNum"].ToString());
+                                    //判断另外一个杯子是否在用
+                                    if (Communal._dic_first_second[Convert.ToInt32(Row[0].ToString())] > 0)
+                                    {
+                                        string str_head_s = "SELECT  * FROM drop_head WHERE  CupNum = " + Communal._dic_first_second[Convert.ToInt32(Row[0].ToString())] + "  ;";
+                                        DataTable dt_head_s = FADM_Object.Communal._fadmSqlserver.GetData(str_head_s);
+                                        if (dt_head_s.Rows.Count == 1)
+                                        {
+                                            if (dt_head_s.Rows[0]["BatchName"].ToString() == "0")
+                                            {
+                                                string s_head_w = "SELECT  * FROM formula_head WHERE  FormulaCode = '" + Row1["FormulaCode"].ToString() + "' And  VersionNum ='" + Row1["VersionNum"].ToString() + "';";
+                                                DataTable dt_head_w = FADM_Object.Communal._fadmSqlserver.GetData(s_head_w);
 
-                                    break;
+                                                //if (dt_head_s.Rows[0]["DyeingCode"].ToString() == dt_head_w.Rows[0]["DyeingCode"].ToString())
+                                                if (JudDyeingCode(dt_head_s.Rows[0]["FormulaCode"].ToString(), dt_head_s.Rows[0]["VersionNum"].ToString(), dt_head_w.Rows[0]["FormulaCode"].ToString(), dt_head_w.Rows[0]["VersionNum"].ToString()) == 0)
+                                                {
+                                                    b_newInsert = true;
+                                                    //加入批次
+                                                    AddDropList a = new AddDropList(dataTabletemp1.Rows[0]["FormulaCode"].ToString(), dataTabletemp1.Rows[0]["VersionNum"].ToString(), Row[0].ToString(), 3);
+                                                    //删除等待列表记录
+                                                    FADM_Object.Communal._fadmSqlserver.GetData("Delete from wait_list where Type = 3 and IndexNum = " + dataTabletemp1.Rows[0]["IndexNum"].ToString());
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        //另外一个杯没在使用
+                                        else
+                                        {
+                                            b_newInsert = true;
+                                            //加入批次
+                                            AddDropList a = new AddDropList(dataTabletemp1.Rows[0]["FormulaCode"].ToString(), dataTabletemp1.Rows[0]["VersionNum"].ToString(), Row[0].ToString(), 3);
+                                            //删除等待列表记录
+                                            FADM_Object.Communal._fadmSqlserver.GetData("Delete from wait_list where Type = 3 and IndexNum = " + dataTabletemp1.Rows[0]["IndexNum"].ToString());
+
+                                            break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        b_newInsert = true;
+                                        //加入批次
+                                        AddDropList a = new AddDropList(dataTabletemp1.Rows[0]["FormulaCode"].ToString(), dataTabletemp1.Rows[0]["VersionNum"].ToString(), Row[0].ToString(), 3);
+                                        //删除等待列表记录
+                                        FADM_Object.Communal._fadmSqlserver.GetData("Delete from wait_list where Type = 3 and IndexNum = " + dataTabletemp1.Rows[0]["IndexNum"].ToString());
+
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -898,6 +977,28 @@ namespace SmartDyeing.FADM_Form
                                                 FADM_Object.Communal._fadmSqlserver.GetData("Delete from wait_list where Type = 3 and IndexNum = " + Row1["IndexNum"].ToString());
 
                                                 break;
+                                            }
+                                            else
+                                            {
+                                                if (FADM_Object.Communal._b_isNeedConfirm)
+                                                {
+                                                    //当另外一个杯还是放布而且步号是1时可以加入
+                                                    string s_cup_s = "SELECT  * FROM cup_details WHERE  CupNum = " + Communal._dic_first_second[Convert.ToInt32(Row[0].ToString())] + " ;";
+                                                    DataTable dt_cup_s = FADM_Object.Communal._fadmSqlserver.GetData(s_cup_s);
+                                                    if (dt_cup_s.Rows.Count > 0)
+                                                    {
+                                                        //当前工艺步骤为1时，可以加入
+                                                        if (Convert.ToInt32(dt_cup_s.Rows[0]["StepNum"].ToString()) <= 1 && dt_cup_s.Rows[0]["TechnologyName"].ToString() == "放布")
+                                                        {
+                                                            b_newInsert = true;
+                                                            //加入批次
+                                                            AddDropList a = new AddDropList(Row1["FormulaCode"].ToString(), Row1["VersionNum"].ToString(), Row[0].ToString(), 3);
+                                                            //删除等待列表记录
+                                                            FADM_Object.Communal._fadmSqlserver.GetData("Delete from wait_list where Type = 3 and IndexNum = " + Row1["IndexNum"].ToString());
+                                                            break;
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -1073,14 +1174,17 @@ namespace SmartDyeing.FADM_Form
                                         }
                                         foreach (DataRow dr in dt_data.Rows)
                                         {
-                                            //把双杯的都判断一下，如果两个杯都有配方，就一起滴定，如果只有一个杯有配方就不自动开始
-                                            if (Communal._dic_first_second[Convert.ToInt32(dr["CupNum"])] > 0)
+                                            if (!FADM_Object.Communal._b_isNeedConfirm)
                                             {
-                                                if(!lis_cup.Contains(Communal._dic_first_second[Convert.ToInt32(dr["CupNum"])]))
+                                                //把双杯的都判断一下，如果两个杯都有配方，就一起滴定，如果只有一个杯有配方就不自动开始
+                                                if (Communal._dic_first_second[Convert.ToInt32(dr["CupNum"])] > 0)
                                                 {
-                                                    continue;
-                                                }
+                                                    if (!lis_cup.Contains(Communal._dic_first_second[Convert.ToInt32(dr["CupNum"])]))
+                                                    {
+                                                        continue;
+                                                    }
 
+                                                }
                                             }
                                             //写入配方浏览表
                                             s_sql = "UPDATE formula_head SET State = '已滴定配方'" +
@@ -1110,6 +1214,7 @@ namespace SmartDyeing.FADM_Form
                                             {
                                                 new FADM_Auto.Drip().DripLiquid(s_batchNum);
                                                 FADM_Control.Formula.P_bl_update = true;
+                                                FADM_Control.Formula_Cloth.P_bl_update = true;
                                             });
                                             thread.Start();
 

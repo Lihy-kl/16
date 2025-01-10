@@ -191,6 +191,9 @@
   <data name="cbo_TechnologyName.Items4" xml:space="preserve">
     <value>Stir</value>
   </data>
+  <data name="cbo_TechnologyName.Items5" xml:space="preserve">
+    <value>Add supplements</value>
+  </data>
   <data name="cbo_TechnologyName.Location" type="System.Drawing.Point, System.Drawing">
     <value>156, 83</value>
   </data>
