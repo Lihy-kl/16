@@ -923,7 +923,7 @@ namespace SmartDyeing.FADM_Form
                 int x = 0;
                 int y = 0;
                 MyModbusFun.CalTarget(0, Lib_Card.Configure.Parameter.Machine_Bottle_Total, ref x, ref y);
-                FADM_Object.Communal._i_Max_Y = y;
+                FADM_Object.Communal._i_Max_Y = y+10000;
 
                 int i_coordinate_Balance_Y = Convert.ToInt32(FADM_Object.Communal._i_Max_Y);//天平Y坐标
                 int i_d84 = 0;

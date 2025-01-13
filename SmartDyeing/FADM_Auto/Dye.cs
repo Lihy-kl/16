@@ -2282,7 +2282,7 @@ namespace SmartDyeing.FADM_Auto
                                                                                 //滴液区
                                                                                 int[] ia_values2 = new int[1];
                                                                                 ia_values2[0] = 3;
-                                                                                int TXT = Convert.ToInt32(dt_drop_head.Rows[0]["ClothNum"].ToString()) % (FADM_Object.Communal._b_isDyMin - 1);
+                                                                                int TXT = Convert.ToInt32(dt_drop_head.Rows[0]["ClothNum"].ToString()) ;
                                                                                 int bb = 10000 + 3000 - 1 + Convert.ToInt32(TXT) - 1;
 
                                                                             Labelbb:
@@ -5920,7 +5920,7 @@ namespace SmartDyeing.FADM_Auto
                                                                                 int[] ia_values2 = new int[1];
                                                                                 ia_values2[0] = 3;
 
-                                                                                int TXT = Convert.ToInt32(dt_drop_head.Rows[0]["ClothNum"].ToString()) % (FADM_Object.Communal._b_isDyMin - 1);
+                                                                                int TXT = Convert.ToInt32(dt_drop_head.Rows[0]["ClothNum"].ToString());
                                                                                 int bb = 10000+3000 - 1 + Convert.ToInt32(TXT) - 1;
 
                                                                             Labelbb:
@@ -6291,7 +6291,7 @@ namespace SmartDyeing.FADM_Auto
                                                                             int[] ia_values2 = new int[1];
                                                                             ia_values2[0] = 3;
 
-                                                                            int TXT = Convert.ToInt32(dt_drop_head.Rows[0]["ClothNum"].ToString()) % (FADM_Object.Communal._b_isDyMin - 1);
+                                                                            int TXT = Convert.ToInt32(dt_drop_head.Rows[0]["ClothNum"].ToString()) ;
                                                                             int bb = 10000+3000 - 1 + Convert.ToInt32(TXT) - 1;
 
                                                                         Labelbb:
@@ -9492,7 +9492,7 @@ namespace SmartDyeing.FADM_Auto
 
                         if(dt_cupordye_details_sec.Rows.Count>0)
                         {
-                            if (_cup_Temps[Communal._dic_first_second[iCupNo] - 1]._i_requesCupCover == 1)
+                            if (_cup_Temps[Communal._dic_first_second[iCupNo] - 1]._i_requesCupCover == 1 || FADM_Object.Communal._b_isNeedConfirm)
                             {
                                 //判断现有杯盖状态，如果已开盖就不执行
                                 if (_cup_Temps[Communal._dic_first_second[iCupNo] - 1]._i_cupCover == 2)
@@ -12365,7 +12365,6 @@ namespace SmartDyeing.FADM_Auto
                 }
 
                 FADM_Control.Formula._b_updateWait = true;
-                FADM_Control.Formula_Cloth._b_updateWait = true;
 
             }
             else if (nret == -2)
@@ -12456,7 +12455,6 @@ namespace SmartDyeing.FADM_Auto
                 }
 
                 FADM_Control.Formula._b_updateWait = true;
-                FADM_Control.Formula_Cloth._b_updateWait = true;
 
                 //更新需要加药第一杯脉冲
                 string s_sql3 = "SELECT * FROM dye_details WHERE   (Cooperate = 1 Or Cooperate = 10) And " +
@@ -15710,7 +15708,6 @@ namespace SmartDyeing.FADM_Auto
 
 
                 FADM_Control.Formula.P_bl_update = true;
-                FADM_Control.Formula_Cloth.P_bl_update = true;
                 //FADM_Object.Communal._fadmSqlserver.InsertSpeechInfo(i_cupNo + "号配液杯染固色完成");
 
                 //FADM_Object.Communal._fadmSqlserver.DeleteSpeechInfo(i_cupNo + "号配液杯染固色完成");

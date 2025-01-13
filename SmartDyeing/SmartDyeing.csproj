@@ -177,12 +177,6 @@
     <Compile Include="FADM_Control\CurveControl.Designer.cs">
       <DependentUpon>CurveControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="FADM_Control\Formula_Cloth.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FADM_Control\Formula_Cloth.Designer.cs">
-      <DependentUpon>Formula_Cloth.cs</DependentUpon>
-    </Compile>
     <Compile Include="FADM_Control\FourBeater.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -550,6 +544,12 @@
     <Compile Include="FADM_Form\ReName.Designer.cs">
       <DependentUpon>ReName.cs</DependentUpon>
     </Compile>
+    <Compile Include="FADM_Form\ReNameDyeingCode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\ReNameDyeingCode.Designer.cs">
+      <DependentUpon>ReNameDyeingCode.cs</DependentUpon>
+    </Compile>
     <Compile Include="FADM_Form\ReportPrint.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -709,12 +709,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FADM_Control\CurveControl.resx">
       <DependentUpon>CurveControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FADM_Control\Formula_Cloth.en.resx">
-      <DependentUpon>Formula_Cloth.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FADM_Control\Formula_Cloth.resx">
-      <DependentUpon>Formula_Cloth.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FADM_Control\FourBeater.en.resx">
       <DependentUpon>FourBeater.cs</DependentUpon>
@@ -1008,6 +1002,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FADM_Form\ReName.resx">
       <DependentUpon>ReName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\ReNameDyeingCode.resx">
+      <DependentUpon>ReNameDyeingCode.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FADM_Form\Report1.rdlc" />
     <EmbeddedResource Include="FADM_Form\Report2.rdlc" />

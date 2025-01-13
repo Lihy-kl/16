@@ -2150,7 +2150,7 @@ namespace SmartDyeing.FADM_Form
                 {
                     int[] ia_values2 = new int[1];
                     ia_values2[0] = 3;
-                    int TXT = _i_checkBox_num % (FADM_Object.Communal._b_isDyMin - 1);
+                    int TXT = _i_checkBox_num ;
                     int bb = 10000 + 3000 - 1 + Convert.ToInt32(TXT) - 1;
 
                 Labelbb:

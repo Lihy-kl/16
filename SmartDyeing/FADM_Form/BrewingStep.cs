@@ -73,7 +73,7 @@ namespace SmartDyeing.FADM_Form
         {
             if (Lib_Card.Configure.Parameter.Other_Language == 0)
             {
-                if (cbo_TechnologyName.Text != "手动加染助剂" && cbo_TechnologyName.Text != "搅拌")
+                if (cbo_TechnologyName.Text != "手动加染助剂" && cbo_TechnologyName.Text != "搅拌" && cbo_TechnologyName.Text != "加补充剂")
                 {
                     string s_sql = "SELECT  SUM(ProportionOrTime) FROM brewing_process WHERE BrewingCode = '" + _s_brewingCode +
                                        "' AND TechnologyName != '手动加染助剂' AND TechnologyName != '搅拌' AND TechnologyName != '加补充剂' AND StepNum != '" + txt_StepNum.Text + "';";
@@ -96,7 +96,7 @@ namespace SmartDyeing.FADM_Form
             }
             else
             {
-                if (cbo_TechnologyName.Text != "Add dyeing auxiliaries manually" && cbo_TechnologyName.Text != "Stir")
+                if (cbo_TechnologyName.Text != "Add dyeing auxiliaries manually" && cbo_TechnologyName.Text != "Stir" && cbo_TechnologyName.Text != "Add supplements")
                 {
                     string s_sql = "SELECT  SUM(ProportionOrTime) FROM brewing_process WHERE BrewingCode = '" + _s_brewingCode +
                                        "' AND TechnologyName != 'Add dyeing auxiliaries manually' AND TechnologyName != 'Stir' AND TechnologyName != 'Add supplements'  AND StepNum != '" + txt_StepNum.Text + "';";

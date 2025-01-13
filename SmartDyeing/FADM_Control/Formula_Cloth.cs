@@ -1025,7 +1025,7 @@ namespace SmartDyeing.FADM_Control
                                     if (Convert.ToInt32(txt_CupNum.Text) >= FADM_Object.Communal._b_isDyMin)  //滴液区
                                     {
                                         Lib_Log.Log.writeLogException("=======滴液区输入杯号为" + txt_CupNum.Text);
-                                        int TXT = Convert.ToInt32(txt_CupNum.Text) % (FADM_Object.Communal._b_isDyMin - 1);
+                                        int TXT = Convert.ToInt32(txt_CupNum.Text) - (FADM_Object.Communal._b_isDyMin - 1);
                                         txt_ClothNum.Text = TXT.ToString();
                                         //int dyNum = Communal._lis_dripCupNum[TXT - 1]; //滴液位的逻辑位置
                                         //txt_ClothNum.Text = dyNum.ToString();
@@ -1049,7 +1049,7 @@ namespace SmartDyeing.FADM_Control
                                             }
                                             else if (Status.Equals("1"))
                                             { //有布 那就是第二轮36 + 杯号
-                                                txt_ClothNum.Text = (36 + Convert.ToInt32(txt_CupNum.Text)).ToString();//txt_ClothNum放布位
+                                                txt_ClothNum.Text = (FADM_Object.Communal._b_DyeCupNum + Convert.ToInt32(txt_CupNum.Text)).ToString();//txt_ClothNum放布位
                                                 Lib_Log.Log.writeLogException("=======有布 那就是第二轮" + txt_ClothNum.Text);
                                             }
                                         }
@@ -1065,10 +1065,10 @@ namespace SmartDyeing.FADM_Control
                                     if (Convert.ToInt32(txt_CupNum.Text) >= FADM_Object.Communal._b_isDyMin)  //滴液区
                                     {
                                         Lib_Log.Log.writeLogException("=======滴液区输入杯号为" + txt_CupNum.Text);
-                                        int TXT = Convert.ToInt32(txt_CupNum.Text) % (FADM_Object.Communal._b_isDyMin - 1);
+                                        int TXT = Convert.ToInt32(txt_CupNum.Text) - (FADM_Object.Communal._b_isDyMin - 1);
                                         txt_ClothNum.Text = TXT.ToString();
                                         int TXT2 = TXT;
-                                        int dyNum = Communal._lis_dripCupNum[TXT - 1]; //滴液位的逻辑位置
+                                       // int dyNum = Communal._lis_dripCupNum[TXT - 1]; //滴液位的逻辑位置
                                         //txt_ClothNum.Text = dyNum.ToString();
 
                                         //例如输入73 也就是滴液杯位1  但是显示区域的话 比如41开始是滴液位  所以显示41
@@ -1124,6 +1124,8 @@ namespace SmartDyeing.FADM_Control
                                                 {
                                                     int cc = 10000 - 1 + (Convert.ToInt32(TXT) == 1 ? ClothIndex - 100 : ClothIndex - 100 + Convert.ToInt32(TXT) + (Convert.ToInt32(TXT) - 2 <= 0 ? 0 : Convert.ToInt32(TXT) - 2));
                                                     Lib_Log.Log.writeLogException("=======查询布位重量cc" + cc.ToString());
+                                                    
+                                                   
                                                     state = FADM_Object.Communal.HMIBaClo.Read(cc, 2, ref ia_values);
                                                     if (state != -1)
                                                     {
@@ -1152,12 +1154,14 @@ namespace SmartDyeing.FADM_Control
                                                     {
                                                         _b_isFlagBaClo = true;
                                                         FADM_Form.CustomMessageBox.Show("没有找到" + txt_ClothNum.Text + "号杯对应的布重,检查或手动填写!", "温馨提示", MessageBoxButtons.OK, false);
+                                                        FADM_Object.Communal.HMIBaClo.ReConnect();
                                                     }
                                                 }
                                                 else
                                                 {
                                                     _b_isFlagBaClo = true;
                                                     FADM_Form.CustomMessageBox.Show("没有找到" + txt_ClothNum.Text + "号杯对应的布重,检查或手动填写!", "温馨提示", MessageBoxButtons.OK, false);
+                                                    FADM_Object.Communal.HMIBaClo.ReConnect();
                                                 }
                                                 isFalg = true;
                                                 goto next;
@@ -1165,6 +1169,7 @@ namespace SmartDyeing.FADM_Control
                                             else
                                             {
                                                 FADM_Form.CustomMessageBox.Show("注意,称布触摸屏通讯失败!", "温馨提示", MessageBoxButtons.OK, false);
+                                                FADM_Object.Communal.HMIBaClo.ReConnect();
                                             }
                                             isFalg = true;
                                         }
@@ -1187,6 +1192,10 @@ namespace SmartDyeing.FADM_Control
 
                                         int bb = 10000 + 3000 - 1 + ClothIndex + Convert.ToInt32(txt_ClothNum.Text) - 1;
                                         Lib_Log.Log.writeLogException("=======查询布位状态寄存器bb=" + bb.ToString());
+                                        if (FADM_Object.Communal.HMIBaClo._modbusClient.Connected == false)
+                                        {
+                                            FADM_Object.Communal.HMIBaClo.ReConnect();
+                                        }
                                         int state = FADM_Object.Communal.HMIBaClo.Read(bb, 1, ref ia_values);
                                         if (state != -1)
                                         {
@@ -1203,6 +1212,10 @@ namespace SmartDyeing.FADM_Control
                                             {
                                                 int cc = 10000 - 1 + ClothIndex + (Convert.ToInt32(txt_ClothNum.Text) == 1 ? 1000 : 1000 + Convert.ToInt32(txt_ClothNum.Text) + (Convert.ToInt32(txt_ClothNum.Text) - 2 <= 0 ? 0 : Convert.ToInt32(txt_ClothNum.Text) - 2));
                                                 Lib_Log.Log.writeLogException("=======查询布位重量cc" + cc.ToString());
+                                                if (FADM_Object.Communal.HMIBaClo._modbusClient.Connected == false)
+                                                {
+                                                    FADM_Object.Communal.HMIBaClo.ReConnect();
+                                                }
                                                 state = FADM_Object.Communal.HMIBaClo.Read(cc, 2, ref ia_values);
                                                 if (state != -1)
                                                 {
@@ -4471,7 +4484,7 @@ namespace SmartDyeing.FADM_Control
                             int[] ia_values2 = new int[1];
                             ia_values2[0] = 3;
 
-                            int TXT = Convert.ToInt32(txt_CupNum.Text) % (FADM_Object.Communal._b_isDyMin - 1);
+                            int TXT = Convert.ToInt32(txt_CupNum.Text) - (FADM_Object.Communal._b_isDyMin - 1);
                             int TXT2 = TXT;
                             foreach (KeyValuePair<int, List<int>> kvp in Communal.my_lis_dripCupNum)
                             {
@@ -4491,6 +4504,10 @@ namespace SmartDyeing.FADM_Control
                             }
                             int bb = 10000 + ClothIndex - 1 + Convert.ToInt32(TXT2) - 1;
                             Lib_Log.Log.writeLogException("=======保存配方改布位状态 bb" + bb);
+                            if (FADM_Object.Communal.HMIBaClo._modbusClient.Connected == false)
+                            {
+                                FADM_Object.Communal.HMIBaClo.ReConnect();
+                            }
                             int statte = FADM_Object.Communal.HMIBaClo.Write(bb, ia_values2);
                             if (statte == -1)
                             {
@@ -4507,6 +4524,10 @@ namespace SmartDyeing.FADM_Control
                             int bb = 10000 + 3000 - 1 + ClothIndex + Convert.ToInt32(txt_ClothNum.Text) - 1;
                             Lib_Log.Log.writeLogException("=======保存配方改布位状态 bb" + bb.ToString() + "&&txt_CupNum.Text=" + txt_ClothNum.Text);
                             FADM_Object.Communal._fadmSqlserver.ReviseData("Update Lay set Status = 1  where Number = '" + txt_ClothNum.Text + "';");
+                            if (FADM_Object.Communal.HMIBaClo._modbusClient.Connected == false)
+                            {
+                                FADM_Object.Communal.HMIBaClo.ReConnect();
+                            }
                             int statte = FADM_Object.Communal.HMIBaClo.Write(bb, ia_values2);
                             if (statte == -1)
                             {
@@ -5517,7 +5538,6 @@ namespace SmartDyeing.FADM_Control
                     }
                 }
                 catch { }
-                FADM_Control.Formula_Cloth._b_updateWait = true;
 
             }
             else
@@ -5835,7 +5855,7 @@ namespace SmartDyeing.FADM_Control
                                                         DataTable dt_temp2 = FADM_Object.Communal._fadmSqlserver.GetData(s_sqltemp2);
                                                         if (dt_temp2.Rows.Count > 0)
                                                         {
-                                                            if (Convert.ToInt32(dt_temp2.Rows[0]["StepNum"].ToString()) > 1 || dt_temp2.Rows[0]["Statues"].ToString()=="停止中")
+                                                            if (Convert.ToInt32(dt_head1_s.Rows[0]["StepNum"].ToString()) > 1 || dt_head1_s.Rows[0]["Statues"].ToString()=="停止中")
                                                                 b_addWaitList = true;
                                                         }
                                                         else

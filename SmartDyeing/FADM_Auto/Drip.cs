@@ -1872,7 +1872,6 @@ namespace SmartDyeing.FADM_Auto
 
                 SmartDyeing.FADM_Control.P_Formula.P_bl_update = true;
                 FADM_Control.Formula.P_bl_update = true;
-                FADM_Control.Formula_Cloth.P_bl_update = true;
 
             }
             catch (Exception ex)
@@ -1907,7 +1906,6 @@ namespace SmartDyeing.FADM_Auto
 
                     SmartDyeing.FADM_Control.P_Formula.P_bl_update = true;
                     FADM_Control.Formula.P_bl_update = true;
-                    FADM_Control.Formula_Cloth.P_bl_update = true;
 
                     return;
                 }
@@ -11760,10 +11758,21 @@ namespace SmartDyeing.FADM_Auto
                             //后处理区域
                             {
                                 DataTable dataTable = FADM_Object.Communal._fadmSqlserver.GetData("SELECT * FROM drop_head WHERE BatchName = '" + oBatchName + "'    ORDER BY CupNum;");
+                                DataTable dataTable_s = FADM_Object.Communal._fadmSqlserver.GetData("SELECT * FROM drop_head WHERE BatchName != '0'    ORDER BY CupNum;");
                                 List<int> lis_lUse_Cup = new List<int>();
-                                foreach (DataRow dataRow in dataTable.Rows)
+                                if (FADM_Object.Communal._b_isNeedConfirm)
                                 {
-                                    lis_lUse_Cup.Add(Convert.ToInt16(dataRow["CupNum"]));
+                                    foreach (DataRow dataRow in dataTable_s.Rows)
+                                    {
+                                        lis_lUse_Cup.Add(Convert.ToInt16(dataRow["CupNum"]));
+                                    }
+                                }
+                                else
+                                {
+                                    foreach (DataRow dataRow in dataTable.Rows)
+                                    {
+                                        lis_lUse_Cup.Add(Convert.ToInt16(dataRow["CupNum"]));
+                                    }
                                 }
                                 //把对应副杯也加入进去
                                 List<int> lis_cupFailT2 = new List<int>();
@@ -11828,10 +11837,23 @@ namespace SmartDyeing.FADM_Auto
 
                                     DataTable dt_drop_head2 = FADM_Object.Communal._fadmSqlserver.GetData(
                                                                "SELECT * FROM drop_head WHERE BatchName = '" + oBatchName + "'    ORDER BY CupNum;");
+                                    DataTable dt_drop_head3 = FADM_Object.Communal._fadmSqlserver.GetData(
+                                                              "SELECT * FROM drop_head WHERE BatchName != '0'    ORDER BY CupNum;");
                                     List<int> lis_lUse1 = new List<int>();
-                                    foreach (DataRow dataRow in dt_drop_head2.Rows)
+                                    if (FADM_Object.Communal._b_isNeedConfirm)
                                     {
-                                        lis_lUse1.Add(Convert.ToInt16(dataRow["CupNum"]));
+                                        foreach (DataRow dataRow in dt_drop_head3.Rows)
+                                        {
+                                            lis_lUse1.Add(Convert.ToInt16(dataRow["CupNum"]));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        foreach (DataRow dataRow in dt_drop_head2.Rows)
+                                        {
+                                            lis_lUse1.Add(Convert.ToInt16(dataRow["CupNum"]));
+                                        }
+
                                     }
                                     for (int i = lis_cupFailT.Count - 1; i >= 0; i--)
                                     {
@@ -11926,10 +11948,22 @@ namespace SmartDyeing.FADM_Auto
                                     bool b_open = true;
                                     DataTable dt_drop_head2 = FADM_Object.Communal._fadmSqlserver.GetData(
                            "SELECT * FROM drop_head WHERE BatchName = '" + oBatchName + "' AND CupFinish = 0    ORDER BY CupNum;");
+                                    DataTable dt_drop_head3 = FADM_Object.Communal._fadmSqlserver.GetData(
+                           "SELECT * FROM drop_head WHERE BatchName != '0' AND CupFinish = 0    ORDER BY CupNum;");
                                     List<int> lUse1 = new List<int>();
-                                    foreach (DataRow dataRow in dt_drop_head2.Rows)
+                                    if (FADM_Object.Communal._b_isNeedConfirm)
                                     {
-                                        lUse1.Add(Convert.ToInt16(dataRow["CupNum"]));
+                                        foreach (DataRow dataRow in dt_drop_head3.Rows)
+                                        {
+                                            lUse1.Add(Convert.ToInt16(dataRow["CupNum"]));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        foreach (DataRow dataRow in dt_drop_head2.Rows)
+                                        {
+                                            lUse1.Add(Convert.ToInt16(dataRow["CupNum"]));
+                                        }
                                     }
                                     for (int i = lis_ints1.Count - 1; i >= 0; i--)
                                     {

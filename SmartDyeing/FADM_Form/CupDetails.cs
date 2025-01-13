@@ -78,7 +78,7 @@ namespace SmartDyeing.FADM_Form
                 //        b = !b;
                 //    }
                 //}
-
+                double newtotalTimeInSeconds = 0;
                 string s_cupno = Lib_File.Txt.ReadTXT(CupNo);
                 if (s_cupno != "" && s_cupno != null)
                 {
@@ -107,6 +107,7 @@ namespace SmartDyeing.FADM_Form
                     double totalTimeInSeconds = 0; // 每条曲线的总计用时（秒）
                     totalTimeInSeconds = sa_arr.Length * 30; // 每个点代表30秒
                                                              // 将总计用时转换为时分秒
+                    newtotalTimeInSeconds = totalTimeInSeconds;
                     TimeSpan totalTime = TimeSpan.FromSeconds(totalTimeInSeconds);
                     string totalTimeFormatted = $"{totalTime.Hours:D2}小时 {totalTime.Minutes:D2}分钟 {totalTime.Seconds:D2}秒";
                     // 在图例中显示每条曲线的总计用时
@@ -236,6 +237,13 @@ namespace SmartDyeing.FADM_Form
                     double totalTimeInSeconds = 0; // 每条曲线的总计用时（秒）
                     totalTimeInSeconds = sa_arr.Length * 30; // 每个点代表30秒
                                                              // 将总计用时转换为时分秒
+                    double time = totalTimeInSeconds - newtotalTimeInSeconds;
+                    // 获取当前时间
+                    DateTime now = DateTime.Now;
+                    TimeSpan duration = TimeSpan.FromSeconds(time);
+                    DateTime futureTime = now + duration;
+                    string cc = futureTime.ToString("HH:mm:ss");
+
                     TimeSpan totalTime = TimeSpan.FromSeconds(totalTimeInSeconds);
                     string totalTimeFormatted = $"{totalTime.Hours:D2}小时 {totalTime.Minutes:D2}分钟 {totalTime.Seconds:D2}秒";
                     // 在图例中显示每条曲线的总计用时
@@ -256,7 +264,7 @@ namespace SmartDyeing.FADM_Form
                         ToolTip = series.ToolTip
                     };
                     // 使用 LegendItem.Cells 设置文本
-                    legendItem.Cells.Add(LegendCellType.Text, $"{series.Name} - 总计: {totalTimeFormatted}", ContentAlignment.MiddleLeft);
+                    legendItem.Cells.Add(LegendCellType.Text, $"{series.Name} - 总计: {totalTimeFormatted} -预计完成时间:{cc}", ContentAlignment.MiddleLeft);
                     chart.Legends[0].CustomItems.Add(legendItem);
 
                     chart.MouseClick += Chart1_MouseClick;

@@ -542,23 +542,9 @@ namespace SmartDyeing.FADM_Object
                         {
                             //最后一行最后一个格子结束
                             //this.Enabled = false;
-                            if (Communal._b_isUseCloth)
+                            if (false)
                             {
-                                string s_temp = this.Name.Split('_')[2];
-                                FADM_Control.myDyeingConfiguration s = FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp) - 1).ToString()];
-                                if (s.dgv_Dye.Rows.Count != 0)
-                                {
-                                    s.dgv_Dye.Enabled = true;
-                                    s.dgv_Dye.CurrentCell = s.dgv_Dye[1, 0];
-                                    s.dgv_Dye.Focus();
-                                }
-                                else
-                                {
-                                    //没有需要填写加A加B 就跳到下一个工艺选择 com上
-                                    //==0个
-                                    myDyeSelect d = FADM_Control.Formula_Cloth.myDyeSelectList[Convert.ToInt32(s_temp)];
-                                    d.dy_type_comboBox1.Focus();
-                                }
+
                             }
                             else {
                                 string s_temp = this.Name.Split('_')[2];
@@ -673,43 +659,9 @@ namespace SmartDyeing.FADM_Object
                                     else
                                     {
                                         //是不是直接跳到保存上
-                                        if (Communal._b_isUseCloth)
+                                        if (false)
                                         {
-                                            string s_temp = this.Name;
-                                            myDyeSelect d = FADM_Control.Formula_Cloth.myDyeSelectList[Convert.ToInt32(s_temp)];
-                                            d.dy_type_comboBox1.Focus();
-
-                                            if (FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp) - 1).ToString()].dgv_dyconfiglisg.Visible)
-                                            { //隐藏
-
-                                                Label la = (Label)FADM_Control.Formula_Cloth.isHiSo[Convert.ToInt32(s_temp) - 1];
-                                                string s_temp2 = la.Name;
-                                                if (FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Visible)
-                                                { //隐藏
-                                                    /*FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Hide();
-                                                    la.Text = "▲                                                                                  ";*/
-
-                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Hide();
-                                                    Point xy = FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Location;
-                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_Dye.Location = xy;
-                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height = FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height - FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
-                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height = FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height - FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
-                                                    la.Text = "▲                                                                                  ";
-
-                                                }
-                                                else
-                                                {
-                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height = FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height + FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
-                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height = FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height + FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
-                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Show();
-                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_Dye.Location = new Point(FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_Dye.Location.X, FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Location.Y + FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height);
-
-                                                    //FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Show();
-                                                    la.Text = "▼                                                                                  ";
-                                                }
-                                                // FADM_Control.Formula_Cloth.DyeingConHS(FADM_Control.Formula_Cloth.isHiSo[Convert.ToInt32(s_temp)-1], null);
-
-                                            }
+                                            
                                         }
                                         else {
                                             string s_temp = this.Name;
@@ -778,39 +730,10 @@ namespace SmartDyeing.FADM_Object
 
                                     if (this.Parent.Text.Contains("染色工艺"))
                                     {
-                                        if (Communal._b_isUseCloth)
+                                        if (false)
                                         {
 
-                                            string s_temp = this.Name;
-                                            myDyeSelect d = FADM_Control.Formula_Cloth.myDyeSelectList[Convert.ToInt32(s_temp)];
-                                            d.dy_type_comboBox1.Focus();
-                                            if (FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp) - 1).ToString()].dgv_dyconfiglisg.Visible)
-                                            { //隐藏
-
-                                                Label la = (Label)FADM_Control.Formula_Cloth.isHiSo[Convert.ToInt32(s_temp) - 1];
-                                                string s_temp2 = la.Name;
-                                                if (FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Visible)
-                                                { //隐藏
-                                                  //FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Hide();
-                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Hide();
-                                                    Point xy = FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Location;
-                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_Dye.Location = xy;
-                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height = FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height - FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
-                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height = FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height - FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
-
-                                                    la.Text = "▲                                                                                  ";
-                                                }
-                                                else
-                                                {
-
-                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height = FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Height + FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
-                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height = FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].grp_Dye.Height + FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height;
-                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Show();
-                                                    FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_Dye.Location = new Point(FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_Dye.Location.X, FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Location.Y + FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].dgv_dyconfiglisg.Height);
-                                                    //FADM_Control.Formula_Cloth.mymap[(Convert.ToInt32(s_temp2) - 1).ToString()].Show();
-                                                    la.Text = "▼                                                                                  ";
-                                                }
-                                            }
+                                            
 
                                         }
                                         else {

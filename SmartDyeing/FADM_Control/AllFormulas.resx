@@ -119,16 +119,22 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="dgv_Details.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 408</value>
+    <value>0, 510</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="dgv_Details.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="dgv_Details.RowHeadersWidth" type="System.Int32, mscorlib">
+    <value>51</value>
+  </data>
   <data name="dgv_Details.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
     <value>Vertical</value>
   </data>
   <data name="dgv_Details.Size" type="System.Drawing.Size, System.Drawing">
-    <value>269, 560</value>
+    <value>359, 700</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="dgv_Details.TabIndex" type="System.Int32, mscorlib">
     <value>46</value>
   </data>
@@ -147,20 +153,44 @@
   <data name="Column2.HeaderText" xml:space="preserve">
     <value>类型</value>
   </data>
+  <data name="Column2.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="Column2.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="Column3.HeaderText" xml:space="preserve">
     <value>步号</value>
+  </data>
+  <data name="Column3.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="Column3.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="Column4.HeaderText" xml:space="preserve">
     <value>工艺名称</value>
   </data>
+  <data name="Column4.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="Column4.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dgv_Dyeing.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 26</value>
+    <value>0, 32</value>
+  </data>
+  <data name="dgv_Dyeing.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="dgv_Dyeing.RowHeadersWidth" type="System.Int32, mscorlib">
+    <value>51</value>
   </data>
   <data name="dgv_Dyeing.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
     <value>Vertical</value>
   </data>
   <data name="dgv_Dyeing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>269, 376</value>
+    <value>359, 470</value>
   </data>
   <data name="dgv_Dyeing.TabIndex" type="System.Int32, mscorlib">
     <value>45</value>
@@ -178,16 +208,16 @@
     <value>1</value>
   </data>
   <data name="groupBox3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1631, 3</value>
+    <value>2175, 4</value>
   </data>
   <data name="groupBox3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 2, 3, 2</value>
+    <value>4, 2, 4, 2</value>
   </data>
   <data name="groupBox3.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 2, 3, 2</value>
+    <value>4, 2, 4, 2</value>
   </data>
   <data name="groupBox3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>273, 974</value>
+    <value>364, 1218</value>
   </data>
   <data name="groupBox3.TabIndex" type="System.Int32, mscorlib">
     <value>51</value>
@@ -217,10 +247,13 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_CupNum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>103, 93</value>
+    <value>137, 116</value>
+  </data>
+  <data name="txt_CupNum.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_CupNum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>42, 29</value>
+    <value>55, 35</value>
   </data>
   <data name="txt_CupNum.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
@@ -238,7 +271,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_CupNum.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="txt_ClothType.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -247,10 +280,13 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_ClothType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>880, 19</value>
+    <value>1173, 24</value>
+  </data>
+  <data name="txt_ClothType.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_ClothType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 29</value>
+    <value>185, 35</value>
   </data>
   <data name="txt_ClothType.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
@@ -268,7 +304,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_ClothType.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="txt_CreateTime.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -277,10 +313,13 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_CreateTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>880, 93</value>
+    <value>1173, 116</value>
+  </data>
+  <data name="txt_CreateTime.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_CreateTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>419, 29</value>
+    <value>557, 35</value>
   </data>
   <data name="txt_CreateTime.TabIndex" type="System.Int32, mscorlib">
     <value>22</value>
@@ -298,7 +337,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_CreateTime.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="txt_TotalWeight.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -307,10 +346,13 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_TotalWeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>603, 58</value>
+    <value>804, 72</value>
+  </data>
+  <data name="txt_TotalWeight.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_TotalWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>55, 29</value>
+    <value>72, 35</value>
   </data>
   <data name="txt_TotalWeight.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -328,7 +370,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_TotalWeight.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="txt_BathRatio.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -337,10 +379,13 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_BathRatio.Location" type="System.Drawing.Point, System.Drawing">
-    <value>326, 58</value>
+    <value>435, 72</value>
+  </data>
+  <data name="txt_BathRatio.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_BathRatio.Size" type="System.Drawing.Size, System.Drawing">
-    <value>129, 29</value>
+    <value>171, 35</value>
   </data>
   <data name="txt_BathRatio.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -358,7 +403,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_BathRatio.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>12</value>
   </data>
   <data name="txt_ClothWeight.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -367,10 +412,13 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_ClothWeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>103, 58</value>
+    <value>137, 72</value>
+  </data>
+  <data name="txt_ClothWeight.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_ClothWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>172, 29</value>
+    <value>228, 35</value>
   </data>
   <data name="txt_ClothWeight.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -388,7 +436,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_ClothWeight.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>13</value>
   </data>
   <data name="chk_AddWaterChoose.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -403,10 +451,13 @@
     <value>NoControl</value>
   </data>
   <data name="chk_AddWaterChoose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>676, 61</value>
+    <value>901, 76</value>
+  </data>
+  <data name="chk_AddWaterChoose.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="chk_AddWaterChoose.Size" type="System.Drawing.Size, System.Drawing">
-    <value>66, 23</value>
+    <value>80, 28</value>
   </data>
   <data name="chk_AddWaterChoose.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -424,7 +475,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;chk_AddWaterChoose.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>14</value>
   </data>
   <data name="txt_Customer.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -433,10 +484,13 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_Customer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1119, 19</value>
+    <value>1492, 24</value>
+  </data>
+  <data name="txt_Customer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_Customer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 29</value>
+    <value>239, 35</value>
   </data>
   <data name="txt_Customer.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -454,7 +508,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_Customer.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>15</value>
   </data>
   <data name="txt_FormulaName.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -463,10 +517,13 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_FormulaName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>603, 19</value>
+    <value>804, 24</value>
+  </data>
+  <data name="txt_FormulaName.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_FormulaName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 29</value>
+    <value>183, 35</value>
   </data>
   <data name="txt_FormulaName.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -484,7 +541,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_FormulaName.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>16</value>
   </data>
   <data name="txt_State.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -493,10 +550,13 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_State.Location" type="System.Drawing.Point, System.Drawing">
-    <value>326, 19</value>
+    <value>435, 24</value>
+  </data>
+  <data name="txt_State.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_State.Size" type="System.Drawing.Size, System.Drawing">
-    <value>129, 29</value>
+    <value>171, 35</value>
   </data>
   <data name="txt_State.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -514,7 +574,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_State.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>17</value>
   </data>
   <data name="txt_FormulaCode.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -523,13 +583,16 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_FormulaCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>103, 19</value>
+    <value>137, 24</value>
+  </data>
+  <data name="txt_FormulaCode.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_FormulaCode.MaxLength" type="System.Int32, mscorlib">
     <value>16</value>
   </data>
   <data name="txt_FormulaCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>172, 29</value>
+    <value>228, 35</value>
   </data>
   <data name="txt_FormulaCode.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -547,7 +610,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_FormulaCode.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>19</value>
   </data>
   <data name="txt_Record_Operator.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -556,10 +619,13 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_Record_Operator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>89, 65</value>
+    <value>119, 81</value>
+  </data>
+  <data name="txt_Record_Operator.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_Record_Operator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>213, 27</value>
+    <value>283, 32</value>
   </data>
   <data name="txt_Record_Operator.TabIndex" type="System.Int32, mscorlib">
     <value>58</value>
@@ -579,11 +645,17 @@
   <data name="Column5.HeaderText" xml:space="preserve">
     <value>配方代码</value>
   </data>
+  <data name="Column5.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
   <data name="Column5.Width" type="System.Int32, mscorlib">
     <value>160</value>
   </data>
   <data name="Column6.HeaderText" xml:space="preserve">
     <value>版本</value>
+  </data>
+  <data name="Column6.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
   </data>
   <data name="Column6.Width" type="System.Int32, mscorlib">
     <value>60</value>
@@ -591,14 +663,23 @@
   <data name="Column7.HeaderText" xml:space="preserve">
     <value>备份</value>
   </data>
+  <data name="Column7.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
   <data name="dgv_BatchData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 294</value>
+    <value>5, 368</value>
+  </data>
+  <data name="dgv_BatchData.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="dgv_BatchData.RowHeadersWidth" type="System.Int32, mscorlib">
+    <value>51</value>
   </data>
   <data name="dgv_BatchData.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
     <value>Vertical</value>
   </data>
   <data name="dgv_BatchData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>298, 674</value>
+    <value>397, 842</value>
   </data>
   <data name="dgv_BatchData.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -628,10 +709,13 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="dt_Record_End.Location" type="System.Drawing.Point, System.Drawing">
-    <value>89, 194</value>
+    <value>119, 242</value>
+  </data>
+  <data name="dt_Record_End.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="dt_Record_End.Size" type="System.Drawing.Size, System.Drawing">
-    <value>213, 29</value>
+    <value>283, 35</value>
   </data>
   <data name="dt_Record_End.TabIndex" type="System.Int32, mscorlib">
     <value>56</value>
@@ -658,10 +742,13 @@
     <value>NoControl</value>
   </data>
   <data name="rdo_Record_Now.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, 17</value>
+    <value>3, 21</value>
+  </data>
+  <data name="rdo_Record_Now.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="rdo_Record_Now.Size" type="System.Drawing.Size, System.Drawing">
-    <value>103, 23</value>
+    <value>127, 28</value>
   </data>
   <data name="rdo_Record_Now.TabIndex" type="System.Int32, mscorlib">
     <value>51</value>
@@ -691,10 +778,13 @@
     <value>NoControl</value>
   </data>
   <data name="rdo_Record_condition.Location" type="System.Drawing.Point, System.Drawing">
-    <value>211, 17</value>
+    <value>281, 21</value>
+  </data>
+  <data name="rdo_Record_condition.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="rdo_Record_condition.Size" type="System.Drawing.Size, System.Drawing">
-    <value>103, 23</value>
+    <value>127, 28</value>
   </data>
   <data name="rdo_Record_condition.TabIndex" type="System.Int32, mscorlib">
     <value>57</value>
@@ -721,10 +811,13 @@
     <value>NoControl</value>
   </data>
   <data name="btn_Record_Select.Location" type="System.Drawing.Point, System.Drawing">
-    <value>89, 244</value>
+    <value>119, 305</value>
+  </data>
+  <data name="btn_Record_Select.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="btn_Record_Select.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 42</value>
+    <value>163, 52</value>
   </data>
   <data name="btn_Record_Select.TabIndex" type="System.Int32, mscorlib">
     <value>53</value>
@@ -757,10 +850,13 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="dt_Record_Start.Location" type="System.Drawing.Point, System.Drawing">
-    <value>89, 144</value>
+    <value>119, 180</value>
+  </data>
+  <data name="dt_Record_Start.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="dt_Record_Start.Size" type="System.Drawing.Size, System.Drawing">
-    <value>213, 29</value>
+    <value>283, 35</value>
   </data>
   <data name="dt_Record_Start.TabIndex" type="System.Int32, mscorlib">
     <value>55</value>
@@ -787,10 +883,13 @@
     <value>NoControl</value>
   </data>
   <data name="rdo_Record_All.Location" type="System.Drawing.Point, System.Drawing">
-    <value>106, 17</value>
+    <value>141, 21</value>
+  </data>
+  <data name="rdo_Record_All.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="rdo_Record_All.Size" type="System.Drawing.Size, System.Drawing">
-    <value>103, 23</value>
+    <value>127, 28</value>
   </data>
   <data name="rdo_Record_All.TabIndex" type="System.Int32, mscorlib">
     <value>52</value>
@@ -817,10 +916,13 @@
     <value>NoControl</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-8, 57</value>
+    <value>-11, 71</value>
+  </data>
+  <data name="label5.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>99, 36</value>
+    <value>132, 45</value>
   </data>
   <data name="label5.TabIndex" type="System.Int32, mscorlib">
     <value>47</value>
@@ -850,10 +952,13 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_Record_Code.Location" type="System.Drawing.Point, System.Drawing">
-    <value>89, 103</value>
+    <value>119, 129</value>
+  </data>
+  <data name="txt_Record_Code.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_Record_Code.Size" type="System.Drawing.Size, System.Drawing">
-    <value>213, 29</value>
+    <value>283, 35</value>
   </data>
   <data name="txt_Record_Code.TabIndex" type="System.Int32, mscorlib">
     <value>54</value>
@@ -880,10 +985,13 @@
     <value>NoControl</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-8, 97</value>
+    <value>-11, 121</value>
+  </data>
+  <data name="label4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>99, 36</value>
+    <value>132, 45</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>48</value>
@@ -913,10 +1021,13 @@
     <value>NoControl</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-8, 140</value>
+    <value>-11, 175</value>
+  </data>
+  <data name="label3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>99, 36</value>
+    <value>132, 45</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>49</value>
@@ -946,10 +1057,13 @@
     <value>NoControl</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-8, 188</value>
+    <value>-11, 235</value>
+  </data>
+  <data name="label2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>99, 36</value>
+    <value>132, 45</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>50</value>
@@ -976,10 +1090,16 @@
     <value>宋体, 10.5pt</value>
   </data>
   <data name="grp_BatchData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 3</value>
+    <value>0, 4</value>
+  </data>
+  <data name="grp_BatchData.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="grp_BatchData.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="grp_BatchData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>306, 974</value>
+    <value>408, 1218</value>
   </data>
   <data name="grp_BatchData.TabIndex" type="System.Int32, mscorlib">
     <value>42</value>
@@ -999,6 +1119,78 @@
   <data name="&gt;&gt;grp_BatchData.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="txt_DyeingCode.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="txt_DyeingCode.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="txt_DyeingCode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>408, 118</value>
+  </data>
+  <data name="txt_DyeingCode.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="txt_DyeingCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>199, 35</value>
+  </data>
+  <data name="txt_DyeingCode.TabIndex" type="System.Int32, mscorlib">
+    <value>54</value>
+  </data>
+  <data name="txt_DyeingCode.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Center</value>
+  </data>
+  <data name="&gt;&gt;txt_DyeingCode.Name" xml:space="preserve">
+    <value>txt_DyeingCode</value>
+  </data>
+  <data name="&gt;&gt;txt_DyeingCode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txt_DyeingCode.Parent" xml:space="preserve">
+    <value>grp_FormulaData</value>
+  </data>
+  <data name="&gt;&gt;txt_DyeingCode.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label6.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label6.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="label6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>210, 123</value>
+  </data>
+  <data name="label6.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>190, 24</value>
+  </data>
+  <data name="label6.TabIndex" type="System.Int32, mscorlib">
+    <value>53</value>
+  </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>染固色工艺代码:</value>
+  </data>
+  <data name="label6.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;label6.Name" xml:space="preserve">
+    <value>label6</value>
+  </data>
+  <data name="&gt;&gt;label6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
+    <value>grp_FormulaData</value>
+  </data>
+  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="txt_Operator.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -1006,10 +1198,13 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_Operator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>603, 94</value>
+    <value>804, 118</value>
+  </data>
+  <data name="txt_Operator.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_Operator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 27</value>
+    <value>183, 32</value>
   </data>
   <data name="txt_Operator.TabIndex" type="System.Int32, mscorlib">
     <value>49</value>
@@ -1024,49 +1219,88 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_Operator.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="dataGridViewTextBoxColumn55.HeaderText" xml:space="preserve">
     <value>序号/名称</value>
   </data>
+  <data name="dataGridViewTextBoxColumn55.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
   <data name="dataGridViewTextBoxColumn56.HeaderText" xml:space="preserve">
     <value>染助剂代码</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn56.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
   </data>
   <data name="dataGridViewTextBoxColumn57.HeaderText" xml:space="preserve">
     <value>配方用量</value>
   </data>
+  <data name="dataGridViewTextBoxColumn57.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
   <data name="dataGridViewTextBoxColumn58.HeaderText" xml:space="preserve">
     <value>单位</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn58.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
   </data>
   <data name="dataGridViewComboBoxColumn7.HeaderText" xml:space="preserve">
     <value>瓶号</value>
   </data>
+  <data name="dataGridViewComboBoxColumn7.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
   <data name="dataGridViewTextBoxColumn59.HeaderText" xml:space="preserve">
     <value>设定浓度</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn59.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
   </data>
   <data name="dataGridViewTextBoxColumn60.HeaderText" xml:space="preserve">
     <value>实际浓度</value>
   </data>
+  <data name="dataGridViewTextBoxColumn60.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
   <data name="dataGridViewTextBoxColumn61.HeaderText" xml:space="preserve">
     <value>染助剂名称</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn61.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
   </data>
   <data name="dataGridViewTextBoxColumn62.HeaderText" xml:space="preserve">
     <value>目标滴液量</value>
   </data>
+  <data name="dataGridViewTextBoxColumn62.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
   <data name="dataGridViewTextBoxColumn63.HeaderText" xml:space="preserve">
     <value>实际滴液量</value>
   </data>
+  <data name="dataGridViewTextBoxColumn63.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
   <data name="dataGridViewCheckBoxColumn7.HeaderText" xml:space="preserve">
     <value>手动选瓶</value>
+  </data>
+  <data name="dataGridViewCheckBoxColumn7.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
   </data>
   <data name="dgv_FormulaData.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
   <data name="dgv_FormulaData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 128</value>
+    <value>4, 160</value>
+  </data>
+  <data name="dgv_FormulaData.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="dgv_FormulaData.RowHeadersWidth" type="System.Int32, mscorlib">
+    <value>51</value>
   </data>
   <data name="dgv_FormulaData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1303, 282</value>
+    <value>1737, 352</value>
   </data>
   <data name="dgv_FormulaData.TabIndex" type="System.Int32, mscorlib">
     <value>48</value>
@@ -1081,7 +1315,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;dgv_FormulaData.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="txt_AnhydrationWR.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1090,10 +1324,13 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_AnhydrationWR.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1119, 58</value>
+    <value>1492, 72</value>
+  </data>
+  <data name="txt_AnhydrationWR.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_AnhydrationWR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 29</value>
+    <value>239, 35</value>
   </data>
   <data name="txt_AnhydrationWR.TabIndex" type="System.Int32, mscorlib">
     <value>45</value>
@@ -1111,7 +1348,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_AnhydrationWR.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="lab_AnhydrationWR.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1120,10 +1357,13 @@
     <value>NoControl</value>
   </data>
   <data name="lab_AnhydrationWR.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1023, 58</value>
+    <value>1364, 72</value>
+  </data>
+  <data name="lab_AnhydrationWR.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_AnhydrationWR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 28</value>
+    <value>128, 35</value>
   </data>
   <data name="lab_AnhydrationWR.TabIndex" type="System.Int32, mscorlib">
     <value>44</value>
@@ -1144,7 +1384,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_AnhydrationWR.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="txt_Non_AnhydrationWR.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1153,10 +1393,13 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_Non_AnhydrationWR.Location" type="System.Drawing.Point, System.Drawing">
-    <value>880, 58</value>
+    <value>1173, 72</value>
+  </data>
+  <data name="txt_Non_AnhydrationWR.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_Non_AnhydrationWR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 29</value>
+    <value>184, 35</value>
   </data>
   <data name="txt_Non_AnhydrationWR.TabIndex" type="System.Int32, mscorlib">
     <value>43</value>
@@ -1174,7 +1417,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_Non_AnhydrationWR.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="lab_txt_Non_AnhydrationWR.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1183,10 +1426,13 @@
     <value>NoControl</value>
   </data>
   <data name="lab_txt_Non_AnhydrationWR.Location" type="System.Drawing.Point, System.Drawing">
-    <value>756, 58</value>
+    <value>1008, 72</value>
+  </data>
+  <data name="lab_txt_Non_AnhydrationWR.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_txt_Non_AnhydrationWR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 28</value>
+    <value>163, 35</value>
   </data>
   <data name="lab_txt_Non_AnhydrationWR.TabIndex" type="System.Int32, mscorlib">
     <value>42</value>
@@ -1207,7 +1453,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_txt_Non_AnhydrationWR.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="txt_VersionNum.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1216,10 +1462,13 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_VersionNum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>283, 19</value>
+    <value>377, 24</value>
+  </data>
+  <data name="txt_VersionNum.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_VersionNum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>35, 29</value>
+    <value>45, 35</value>
   </data>
   <data name="txt_VersionNum.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -1237,7 +1486,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_VersionNum.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>18</value>
   </data>
   <data name="lab_CreateTime.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1246,10 +1495,13 @@
     <value>NoControl</value>
   </data>
   <data name="lab_CreateTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>772, 92</value>
+    <value>1029, 115</value>
+  </data>
+  <data name="lab_CreateTime.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_CreateTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>106, 31</value>
+    <value>141, 39</value>
   </data>
   <data name="lab_CreateTime.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -1270,7 +1522,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_CreateTime.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>20</value>
   </data>
   <data name="lab_CupNum.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1279,10 +1531,13 @@
     <value>NoControl</value>
   </data>
   <data name="lab_CupNum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 90</value>
+    <value>5, 112</value>
+  </data>
+  <data name="lab_CupNum.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_CupNum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 35</value>
+    <value>139, 44</value>
   </data>
   <data name="lab_CupNum.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -1303,7 +1558,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_CupNum.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>21</value>
   </data>
   <data name="lab_Operator.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1312,10 +1567,13 @@
     <value>NoControl</value>
   </data>
   <data name="lab_Operator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>477, 90</value>
+    <value>636, 112</value>
+  </data>
+  <data name="lab_Operator.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_Operator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>109, 35</value>
+    <value>145, 44</value>
   </data>
   <data name="lab_Operator.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -1336,7 +1594,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_Operator.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>22</value>
   </data>
   <data name="lab_TotalWeight.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1345,10 +1603,13 @@
     <value>NoControl</value>
   </data>
   <data name="lab_TotalWeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>509, 56</value>
+    <value>679, 70</value>
+  </data>
+  <data name="lab_TotalWeight.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_TotalWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>77, 33</value>
+    <value>103, 41</value>
   </data>
   <data name="lab_TotalWeight.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -1369,7 +1630,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_TotalWeight.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>23</value>
   </data>
   <data name="lab_BathRatio.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1378,10 +1639,13 @@
     <value>NoControl</value>
   </data>
   <data name="lab_BathRatio.Location" type="System.Drawing.Point, System.Drawing">
-    <value>274, 58</value>
+    <value>365, 72</value>
+  </data>
+  <data name="lab_BathRatio.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_BathRatio.Size" type="System.Drawing.Size, System.Drawing">
-    <value>57, 29</value>
+    <value>76, 36</value>
   </data>
   <data name="lab_BathRatio.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1402,7 +1666,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_BathRatio.ZOrder" xml:space="preserve">
-    <value>22</value>
+    <value>24</value>
   </data>
   <data name="lab_ClothWeight.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1411,10 +1675,13 @@
     <value>NoControl</value>
   </data>
   <data name="lab_ClothWeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 55</value>
+    <value>5, 69</value>
+  </data>
+  <data name="lab_ClothWeight.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_ClothWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 35</value>
+    <value>139, 44</value>
   </data>
   <data name="lab_ClothWeight.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1435,7 +1702,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_ClothWeight.ZOrder" xml:space="preserve">
-    <value>23</value>
+    <value>25</value>
   </data>
   <data name="lab_Customer.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1444,10 +1711,13 @@
     <value>NoControl</value>
   </data>
   <data name="lab_Customer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1047, 16</value>
+    <value>1396, 20</value>
+  </data>
+  <data name="lab_Customer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_Customer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>72, 35</value>
+    <value>96, 44</value>
   </data>
   <data name="lab_Customer.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1468,7 +1738,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_Customer.ZOrder" xml:space="preserve">
-    <value>24</value>
+    <value>26</value>
   </data>
   <data name="lab_ClothType.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1477,10 +1747,13 @@
     <value>NoControl</value>
   </data>
   <data name="lab_ClothType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>772, 16</value>
+    <value>1029, 20</value>
+  </data>
+  <data name="lab_ClothType.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_ClothType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>106, 35</value>
+    <value>141, 44</value>
   </data>
   <data name="lab_ClothType.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1501,7 +1774,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_ClothType.ZOrder" xml:space="preserve">
-    <value>25</value>
+    <value>27</value>
   </data>
   <data name="lab_FormulaName.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1510,10 +1783,13 @@
     <value>NoControl</value>
   </data>
   <data name="lab_FormulaName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>477, 16</value>
+    <value>636, 20</value>
+  </data>
+  <data name="lab_FormulaName.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_FormulaName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>109, 35</value>
+    <value>145, 44</value>
   </data>
   <data name="lab_FormulaName.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1534,7 +1810,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_FormulaName.ZOrder" xml:space="preserve">
-    <value>26</value>
+    <value>28</value>
   </data>
   <data name="lab_FormulaCode.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -1543,10 +1819,13 @@
     <value>NoControl</value>
   </data>
   <data name="lab_FormulaCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 16</value>
+    <value>5, 20</value>
+  </data>
+  <data name="lab_FormulaCode.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_FormulaCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 35</value>
+    <value>139, 44</value>
   </data>
   <data name="lab_FormulaCode.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1567,16 +1846,22 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_FormulaCode.ZOrder" xml:space="preserve">
-    <value>27</value>
+    <value>29</value>
   </data>
   <data name="grp_FormulaData.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 10.5pt</value>
   </data>
   <data name="grp_FormulaData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>309, 2</value>
+    <value>412, 2</value>
+  </data>
+  <data name="grp_FormulaData.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="grp_FormulaData.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="grp_FormulaData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1309, 418</value>
+    <value>1745, 522</value>
   </data>
   <data name="grp_FormulaData.TabIndex" type="System.Int32, mscorlib">
     <value>43</value>
@@ -1599,233 +1884,695 @@
   <data name="Index.HeaderText" xml:space="preserve">
     <value>序号</value>
   </data>
+  <data name="Index.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="Index.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="AssistantCode.HeaderText" xml:space="preserve">
     <value>染助剂代码</value>
+  </data>
+  <data name="AssistantCode.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="AssistantCode.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="FormulaDosage.HeaderText" xml:space="preserve">
     <value>配方用量</value>
   </data>
+  <data name="FormulaDosage.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="FormulaDosage.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="UnitOfAccount.HeaderText" xml:space="preserve">
     <value>单位</value>
+  </data>
+  <data name="UnitOfAccount.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="UnitOfAccount.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="Column1.HeaderText" xml:space="preserve">
     <value>瓶号</value>
   </data>
+  <data name="Column1.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="Column1.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="SettingConcentration.HeaderText" xml:space="preserve">
     <value>设定浓度</value>
+  </data>
+  <data name="SettingConcentration.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="SettingConcentration.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="RealConcentration.HeaderText" xml:space="preserve">
     <value>实际浓度</value>
   </data>
+  <data name="RealConcentration.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="RealConcentration.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="AssistantName.HeaderText" xml:space="preserve">
     <value>染助剂名称</value>
+  </data>
+  <data name="AssistantName.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="AssistantName.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="ObjectDropWeight.HeaderText" xml:space="preserve">
     <value>目标滴液量</value>
   </data>
+  <data name="ObjectDropWeight.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="ObjectDropWeight.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="RealDropWeight.HeaderText" xml:space="preserve">
     <value>实际滴液量</value>
+  </data>
+  <data name="RealDropWeight.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="RealDropWeight.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="BottleSelection.HeaderText" xml:space="preserve">
     <value>手动选瓶</value>
   </data>
+  <data name="BottleSelection.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="BottleSelection.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn46.HeaderText" xml:space="preserve">
     <value>序号</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn46.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn46.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn47.HeaderText" xml:space="preserve">
     <value>染助剂代码</value>
   </data>
+  <data name="dataGridViewTextBoxColumn47.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn47.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn48.HeaderText" xml:space="preserve">
     <value>配方用量</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn48.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn48.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn49.HeaderText" xml:space="preserve">
     <value>单位</value>
   </data>
+  <data name="dataGridViewTextBoxColumn49.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn49.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewComboBoxColumn6.HeaderText" xml:space="preserve">
     <value>瓶号</value>
+  </data>
+  <data name="dataGridViewComboBoxColumn6.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewComboBoxColumn6.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn50.HeaderText" xml:space="preserve">
     <value>设定浓度</value>
   </data>
+  <data name="dataGridViewTextBoxColumn50.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn50.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn51.HeaderText" xml:space="preserve">
     <value>实际浓度</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn51.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn51.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn52.HeaderText" xml:space="preserve">
     <value>染助剂名称</value>
   </data>
+  <data name="dataGridViewTextBoxColumn52.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn52.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn53.HeaderText" xml:space="preserve">
     <value>目标滴液量</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn53.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn53.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn54.HeaderText" xml:space="preserve">
     <value>实际滴液量</value>
   </data>
+  <data name="dataGridViewTextBoxColumn54.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn54.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewCheckBoxColumn6.HeaderText" xml:space="preserve">
     <value>手动选瓶</value>
+  </data>
+  <data name="dataGridViewCheckBoxColumn6.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewCheckBoxColumn6.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn37.HeaderText" xml:space="preserve">
     <value>序号</value>
   </data>
+  <data name="dataGridViewTextBoxColumn37.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn37.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn38.HeaderText" xml:space="preserve">
     <value>染助剂代码</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn38.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn38.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn39.HeaderText" xml:space="preserve">
     <value>配方用量</value>
   </data>
+  <data name="dataGridViewTextBoxColumn39.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn39.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn40.HeaderText" xml:space="preserve">
     <value>单位</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn40.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn40.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewComboBoxColumn5.HeaderText" xml:space="preserve">
     <value>瓶号</value>
   </data>
+  <data name="dataGridViewComboBoxColumn5.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewComboBoxColumn5.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn41.HeaderText" xml:space="preserve">
     <value>设定浓度</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn41.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn41.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn42.HeaderText" xml:space="preserve">
     <value>实际浓度</value>
   </data>
+  <data name="dataGridViewTextBoxColumn42.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn42.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn43.HeaderText" xml:space="preserve">
     <value>染助剂名称</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn43.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn43.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn44.HeaderText" xml:space="preserve">
     <value>目标滴液量</value>
   </data>
+  <data name="dataGridViewTextBoxColumn44.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn44.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn45.HeaderText" xml:space="preserve">
     <value>实际滴液量</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn45.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn45.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewCheckBoxColumn5.HeaderText" xml:space="preserve">
     <value>手动选瓶</value>
   </data>
+  <data name="dataGridViewCheckBoxColumn5.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewCheckBoxColumn5.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn28.HeaderText" xml:space="preserve">
     <value>序号</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn28.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn28.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn29.HeaderText" xml:space="preserve">
     <value>染助剂代码</value>
   </data>
+  <data name="dataGridViewTextBoxColumn29.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn29.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn30.HeaderText" xml:space="preserve">
     <value>配方用量</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn30.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn30.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn31.HeaderText" xml:space="preserve">
     <value>单位</value>
   </data>
+  <data name="dataGridViewTextBoxColumn31.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn31.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewComboBoxColumn4.HeaderText" xml:space="preserve">
     <value>瓶号</value>
+  </data>
+  <data name="dataGridViewComboBoxColumn4.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewComboBoxColumn4.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn32.HeaderText" xml:space="preserve">
     <value>设定浓度</value>
   </data>
+  <data name="dataGridViewTextBoxColumn32.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn32.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn33.HeaderText" xml:space="preserve">
     <value>实际浓度</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn33.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn33.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn34.HeaderText" xml:space="preserve">
     <value>染助剂名称</value>
   </data>
+  <data name="dataGridViewTextBoxColumn34.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn34.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn35.HeaderText" xml:space="preserve">
     <value>目标滴液量</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn35.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn35.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn36.HeaderText" xml:space="preserve">
     <value>实际滴液量</value>
   </data>
+  <data name="dataGridViewTextBoxColumn36.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn36.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewCheckBoxColumn4.HeaderText" xml:space="preserve">
     <value>手动选瓶</value>
+  </data>
+  <data name="dataGridViewCheckBoxColumn4.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewCheckBoxColumn4.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn19.HeaderText" xml:space="preserve">
     <value>序号</value>
   </data>
+  <data name="dataGridViewTextBoxColumn19.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn19.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn20.HeaderText" xml:space="preserve">
     <value>染助剂代码</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn20.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn20.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn21.HeaderText" xml:space="preserve">
     <value>配方用量</value>
   </data>
+  <data name="dataGridViewTextBoxColumn21.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn21.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn22.HeaderText" xml:space="preserve">
     <value>单位</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn22.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn22.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewComboBoxColumn3.HeaderText" xml:space="preserve">
     <value>瓶号</value>
   </data>
+  <data name="dataGridViewComboBoxColumn3.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewComboBoxColumn3.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn23.HeaderText" xml:space="preserve">
     <value>设定浓度</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn23.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn23.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn24.HeaderText" xml:space="preserve">
     <value>实际浓度</value>
   </data>
+  <data name="dataGridViewTextBoxColumn24.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn24.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn25.HeaderText" xml:space="preserve">
     <value>染助剂名称</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn25.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn25.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn26.HeaderText" xml:space="preserve">
     <value>目标滴液量</value>
   </data>
+  <data name="dataGridViewTextBoxColumn26.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn26.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn27.HeaderText" xml:space="preserve">
     <value>实际滴液量</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn27.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn27.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewCheckBoxColumn3.HeaderText" xml:space="preserve">
     <value>手动选瓶</value>
   </data>
+  <data name="dataGridViewCheckBoxColumn3.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewCheckBoxColumn3.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn10.HeaderText" xml:space="preserve">
     <value>序号</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn10.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn10.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn11.HeaderText" xml:space="preserve">
     <value>染助剂代码</value>
   </data>
+  <data name="dataGridViewTextBoxColumn11.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn11.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn12.HeaderText" xml:space="preserve">
     <value>配方用量</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn12.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn12.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn13.HeaderText" xml:space="preserve">
     <value>单位</value>
   </data>
+  <data name="dataGridViewTextBoxColumn13.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn13.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewComboBoxColumn2.HeaderText" xml:space="preserve">
     <value>瓶号</value>
+  </data>
+  <data name="dataGridViewComboBoxColumn2.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewComboBoxColumn2.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn14.HeaderText" xml:space="preserve">
     <value>设定浓度</value>
   </data>
+  <data name="dataGridViewTextBoxColumn14.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn14.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn15.HeaderText" xml:space="preserve">
     <value>实际浓度</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn15.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn15.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn16.HeaderText" xml:space="preserve">
     <value>染助剂名称</value>
   </data>
+  <data name="dataGridViewTextBoxColumn16.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn16.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn17.HeaderText" xml:space="preserve">
     <value>目标滴液量</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn17.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn17.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn18.HeaderText" xml:space="preserve">
     <value>实际滴液量</value>
   </data>
+  <data name="dataGridViewTextBoxColumn18.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn18.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewCheckBoxColumn2.HeaderText" xml:space="preserve">
     <value>手动选瓶</value>
+  </data>
+  <data name="dataGridViewCheckBoxColumn2.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewCheckBoxColumn2.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn1.HeaderText" xml:space="preserve">
     <value>序号</value>
   </data>
+  <data name="dataGridViewTextBoxColumn1.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn1.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn2.HeaderText" xml:space="preserve">
     <value>染助剂代码</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn2.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn2.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn3.HeaderText" xml:space="preserve">
     <value>配方用量</value>
   </data>
+  <data name="dataGridViewTextBoxColumn3.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn3.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn4.HeaderText" xml:space="preserve">
     <value>单位</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn4.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn4.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewComboBoxColumn1.HeaderText" xml:space="preserve">
     <value>瓶号</value>
   </data>
+  <data name="dataGridViewComboBoxColumn1.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewComboBoxColumn1.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn5.HeaderText" xml:space="preserve">
     <value>设定浓度</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn5.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn5.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn6.HeaderText" xml:space="preserve">
     <value>实际浓度</value>
   </data>
+  <data name="dataGridViewTextBoxColumn6.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn6.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn7.HeaderText" xml:space="preserve">
     <value>染助剂名称</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn7.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn7.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="dataGridViewTextBoxColumn8.HeaderText" xml:space="preserve">
     <value>目标滴液量</value>
   </data>
+  <data name="dataGridViewTextBoxColumn8.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn8.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewTextBoxColumn9.HeaderText" xml:space="preserve">
     <value>实际滴液量</value>
   </data>
+  <data name="dataGridViewTextBoxColumn9.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn9.Width" type="System.Int32, mscorlib">
+    <value>125</value>
+  </data>
   <data name="dataGridViewCheckBoxColumn1.HeaderText" xml:space="preserve">
     <value>手动选瓶</value>
+  </data>
+  <data name="dataGridViewCheckBoxColumn1.MinimumWidth" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="dataGridViewCheckBoxColumn1.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <metadata name="tmr.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
@@ -1834,10 +2581,13 @@
     <value>True</value>
   </data>
   <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>317, 426</value>
+    <value>423, 532</value>
+  </data>
+  <data name="panel2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1298, 545</value>
+    <value>1731, 681</value>
   </data>
   <data name="panel2.TabIndex" type="System.Int32, mscorlib">
     <value>52</value>
@@ -1861,10 +2611,13 @@
     <value>25</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 12</value>
+    <value>8, 15</value>
+  </data>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1904, 980</value>
+    <value>2539, 1225</value>
   </data>
   <data name="&gt;&gt;Column2.Name" xml:space="preserve">
     <value>Column2</value>

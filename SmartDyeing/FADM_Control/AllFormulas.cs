@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmartDyeing.FADM_Form;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,12 +19,23 @@ namespace SmartDyeing.FADM_Control
         Dictionary<string, int> _dic_dyeCode = new Dictionary<string, int>();
         string _s_stage = "";
         string _s_type = "1";
-        ComboBox txt_DyeingCode = new ComboBox();
         List<string> _lis_dyeingCode = new List<string>();
+
+
+        public Dictionary<string, NoActivateForm> noActivateFormsList = new Dictionary<string, NoActivateForm>();
+
+        private static IList<string> temData;
+
+        private bool triggerKeyPress = false;
 
         public AllFormulas()
         {
             InitializeComponent();
+
+
+            txt_Record_Code.Leave += new EventHandler(comboBox2_Leave);
+            // txt_Record_Code.KeyPress += dy_nodelist_comboBox2_KeyPress;
+            this.Load += MyUserControl_Load;
 
             string s_sql = "SELECT * FROM operator_table ;";
             DataTable dt_operator = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
@@ -33,13 +45,13 @@ namespace SmartDyeing.FADM_Control
                 // txt_Operator.Items.Add(Convert.ToString(dr[0]));
             }
             // 加个空字符串代表滴液
-            txt_DyeingCode.Items.Add("");
+           // txt_DyeingCode.Items.Add("");
             string s_sql1 = "SELECT DyeingCode FROM dyeing_code group by DyeingCode;";
             DataTable dt_dyeing_code = FADM_Object.Communal._fadmSqlserver.GetData(s_sql1);
 
             foreach (DataRow dr in dt_dyeing_code.Rows)
             {
-                txt_DyeingCode.Items.Add(Convert.ToString(dr[0]));
+              //  txt_DyeingCode.Items.Add(Convert.ToString(dr[0]));
                 _lis_dyeingCode.Add(Convert.ToString(dr[0]));
                 _dic_dyeCode.Add(Convert.ToString(dr[0]), 3);
             }
@@ -49,7 +61,7 @@ namespace SmartDyeing.FADM_Control
 
             foreach (DataRow dr in dt_pretreatment_code.Rows)
             {
-                txt_DyeingCode.Items.Add(Convert.ToString(dr[0]));
+              //  txt_DyeingCode.Items.Add(Convert.ToString(dr[0]));
                 _lis_dyeingCode.Add(Convert.ToString(dr[0]));
                 _dic_dyeCode.Add(Convert.ToString(dr[0]), 1);
             }
@@ -125,7 +137,22 @@ namespace SmartDyeing.FADM_Control
 
             }
         }
-
+        private void MyUserControl_Load(object sender, EventArgs e)
+        {
+            Form parentForm = this.FindForm();
+            if (parentForm != null)
+            {
+                parentForm.LocationChanged += ParentForm_LocationChanged;
+            }
+        }
+        private void ParentForm_LocationChanged(object sender, EventArgs e)
+        {
+            foreach (KeyValuePair<string, NoActivateForm> pair in this.noActivateFormsList)
+            {
+                pair.Value.Visible = false;
+                pair.Value.Close();
+            }
+        }
         private void btn_Record_Select_Click(object sender, EventArgs e)
         {
             DropRecordHeadShow();
@@ -1668,7 +1695,6 @@ namespace SmartDyeing.FADM_Control
                 //设置内容居中显示
                 dgv_Details.RowsDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-              
 
                 //设置行高
                 dgv_Details.RowTemplate.Height = 30;
@@ -1677,6 +1703,208 @@ namespace SmartDyeing.FADM_Control
             catch (Exception ex)
             {
                 FADM_Form.CustomMessageBox.Show(ex.Message, "DetailsShow", MessageBoxButtons.OK, true);
+            }
+        }
+
+     
+
+        private void tttt(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                System.Windows.Forms.ListBox cc = (System.Windows.Forms.ListBox)sender;
+                string info = noActivateFormsList[Convert.ToString(cc.AccessibleName)].lb_End_Stations.SelectedItem as string;
+                txt_Record_Code.Text = info;
+                noActivateFormsList[Convert.ToString(cc.AccessibleName)].Visible = false;
+                noActivateFormsList[Convert.ToString(cc.AccessibleName)].Close();
+            }
+        }
+        private void listBox1_DoubleClick(object sender, EventArgs e)
+        {
+            System.Windows.Forms.ListBox cc = (System.Windows.Forms.ListBox)sender;
+            // 确保双击的是ListBox中的项
+            if (cc.SelectedIndex != -1)
+            {
+                // 获取被双击的项
+                string selectedItem = cc.SelectedItem.ToString();
+
+                txt_Record_Code.Text = selectedItem;
+                noActivateFormsList[Convert.ToString(cc.AccessibleName)].Visible = false;
+                noActivateFormsList[Convert.ToString(cc.AccessibleName)].Close();
+                // 可以在这里添加代码来处理双击事件，例如弹出消息框显示项
+            }
+        }
+        public IList<string> GetStations(string filter)
+        {
+            IList<string> results = new List<string>();
+            string s_sql = "SELECT DISTINCT FormulaCode" +
+                               "  FROM formula_head_temp " +
+                               " group BY FormulaCode;";
+            DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+            foreach (DataRow dr in dt_data.Rows)
+            {
+                results.Add(Convert.ToString(dr[0]));
+            }
+            /*return results.Where(
+                f =>
+                (f.Substring(0, filter.Length) == filter)).ToList<string>();*/
+
+            return results.Where(item => item.Contains(filter)).ToList();
+
+        }
+
+
+        private void dy_nodelist_comboBox2_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (triggerKeyPress) {
+                triggerKeyPress = false;
+                return;
+            }
+            Console.WriteLine("11111111111111111111111111111111111");
+            System.Windows.Forms.TextBox cc = (System.Windows.Forms.TextBox)sender;
+            if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Left)
+            {
+                if (noActivateFormsList[Convert.ToString(cc.Name)].lb_End_Stations.SelectedIndex > 0)
+                    noActivateFormsList[Convert.ToString(cc.Name)].lb_End_Stations.SelectedIndex--;
+            }
+            else if (e.KeyCode == Keys.Down || e.KeyCode == Keys.Right)
+            {
+                if (noActivateFormsList[Convert.ToString(cc.Name)].lb_End_Stations.SelectedIndex < noActivateFormsList[Convert.ToString(cc.Name)].lb_End_Stations.Items.Count - 1)
+                    noActivateFormsList[Convert.ToString(cc.Name)].lb_End_Stations.SelectedIndex++;
+            }//回车
+            else if (e.KeyCode == Keys.Enter)
+            {
+                if (noActivateFormsList.ContainsKey(Convert.ToString(cc.Name)) && noActivateFormsList[Convert.ToString(cc.Name)].Focused && noActivateFormsList[Convert.ToString(cc.Name)].Visible)
+                {
+                    string info = noActivateFormsList[Convert.ToString(cc.Name)].lb_End_Stations.SelectedItem as string;
+                    txt_Record_Code.Text = info;
+
+                }
+                else if (noActivateFormsList.ContainsKey(Convert.ToString(cc.Name)) && !noActivateFormsList[Convert.ToString(cc.Name)].Focused)
+                {
+                    //noActivateFormsList[Convert.ToInt32(cc.Name)].TopMost = true;
+                    //noActivateFormsList[Convert.ToInt32(cc.Name)].Focus();
+                    noActivateFormsList[Convert.ToString(cc.Name)].Visible = false;
+                    noActivateFormsList[Convert.ToString(cc.Name)].Close();
+                    NoActivateForm n = null;
+                    n = new NoActivateForm();
+                    n.Width = cc.Width;
+                    n.lb_End_Stations.Width = cc.Width;
+                    n.Width = cc.Width;
+                    Point button1ScreenPos = cc.PointToScreen(Point.Empty);
+                    n.lb_End_Stations.AccessibleName = cc.Name;
+                    n.lb_End_Stations.KeyDown += new KeyEventHandler(tttt);
+                    n.lb_End_Stations.DoubleClick += new EventHandler(listBox1_DoubleClick);
+                    n.StartPosition = FormStartPosition.Manual;
+                    n.Location = new Point(button1ScreenPos.X, button1ScreenPos.Y + 27);
+                    n.Show();
+                    noActivateFormsList[Convert.ToString(cc.Name)] = n;
+                    IList<string> list = GetStations(cc.Text);
+                    if (list.Count > 0)
+                    {
+                        n.lb_End_Stations.DataSource = list;
+                    }
+                }
+                else if (!noActivateFormsList.ContainsKey(Convert.ToString(cc.Name)))
+                {
+                    NoActivateForm n = null;
+                    n = new NoActivateForm();
+                    n.Width = cc.Width;
+                    n.lb_End_Stations.Width = cc.Width;
+                    n.lb_End_Stations.AccessibleName = cc.Name;
+                    Point button1ScreenPos = cc.PointToScreen(Point.Empty);
+                    n.lb_End_Stations.AccessibleName = cc.Name;
+                    n.lb_End_Stations.KeyDown += new KeyEventHandler(tttt);
+                    n.lb_End_Stations.DoubleClick += new EventHandler(listBox1_DoubleClick);
+                    n.StartPosition = FormStartPosition.Manual;
+                    n.Location = new Point(button1ScreenPos.X, button1ScreenPos.Y + 27);
+                    n.Show();
+                    noActivateFormsList.Add(Convert.ToString(cc.Name), n);
+                    IList<string> list = GetStations(cc.Text);
+                    if (list.Count > 0)
+                    {
+                        n.lb_End_Stations.DataSource = list;
+                    }
+
+                }
+            }
+            else
+            {
+                Point button1ScreenPos = cc.PointToScreen(Point.Empty);
+                NoActivateForm n = null;
+                //noActivateFormsList.Add(Convert.ToInt32(cc.Name), n);
+
+                if (noActivateFormsList.ContainsKey(Convert.ToString(cc.Name)))
+                {
+                    noActivateFormsList[Convert.ToString(cc.Name)].Visible = false;
+                    noActivateFormsList[Convert.ToString(cc.Name)].Close();
+
+                    n = noActivateFormsList[Convert.ToString(cc.Name)];
+                    n = new NoActivateForm();
+                    n.Width = cc.Width;
+                    n.lb_End_Stations.Width = cc.Width;
+                    n.lb_End_Stations.AccessibleName = cc.Name;
+                    noActivateFormsList[Convert.ToString(cc.Name)] = n;
+                }
+                else
+                {
+                    n = new NoActivateForm();
+                    n.Width = cc.Width;
+                    n.lb_End_Stations.Width = cc.Width;
+                    n.lb_End_Stations.AccessibleName = cc.Name;
+                    noActivateFormsList.Add(Convert.ToString(cc.Name), n);
+                }
+
+                //n.lb_End_Stations.DrawItem += new DrawItemEventHandler(ListBox_StationDatas_DrawItem);
+                //n.Focus();
+                n.lb_End_Stations.KeyDown += new KeyEventHandler(tttt);
+                n.lb_End_Stations.DoubleClick += new EventHandler(listBox1_DoubleClick);
+                n.StartPosition = FormStartPosition.Manual;
+                n.Location = new Point(button1ScreenPos.X, button1ScreenPos.Y + 27);
+                n.Show();
+
+                IList<string> list = GetStations(cc.Text);
+                if (list.Count > 0)
+                {
+                    n.lb_End_Stations.DataSource = list;
+                }
+            }
+        }
+
+        private void comboBox2_Leave(object sender, EventArgs e)
+        {
+            System.Windows.Forms.TextBox cc = (System.Windows.Forms.TextBox)sender;
+            if (noActivateFormsList.ContainsKey(Convert.ToString(cc.Name)))
+            {
+                noActivateFormsList[Convert.ToString(cc.Name)].Visible = false;
+                noActivateFormsList[Convert.ToString(cc.Name)].Close();
+            }
+        }
+        private void dy_nodelist_comboBox2_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            TextBox box = (TextBox)sender;
+            switch (e.KeyChar)
+            {
+                case (char)Keys.Enter:
+                    triggerKeyPress = true;
+
+                    string type = box.Name; //dy_type_comboBox1.Text;
+                    
+
+                    if (noActivateFormsList.ContainsKey(Convert.ToString(box.Name)) && noActivateFormsList[Convert.ToString(box.Name)].Visible)
+                    {
+                        string info = noActivateFormsList[Convert.ToString(box.Name)].lb_End_Stations.SelectedItem as string;
+                        box.Text = info;
+                        box.SelectionStart = box.Text.Length;
+                        box.SelectionLength = 0;
+                        noActivateFormsList[Convert.ToString(box.Name)].Visible = false;
+                        noActivateFormsList[Convert.ToString(box.Name)].Close();
+                        DropRecordHeadShow();
+                        e.Handled = true;
+                    }
+                    break;
+                default:
+                    break;
             }
         }
     }

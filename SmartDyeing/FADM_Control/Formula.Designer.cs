@@ -65,6 +65,14 @@ namespace SmartDyeing.FADM_Control
             this.label11 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.grp_FormulaData = new System.Windows.Forms.GroupBox();
+            this.txt_FormulaName = new System.Windows.Forms.TextBox();
+            this.txt_ClothNum = new System.Windows.Forms.TextBox();
+            this.lab_FormulaName = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lab_CupNum = new System.Windows.Forms.Label();
+            this.txt_CupNum = new System.Windows.Forms.TextBox();
+            this.txt_DyeingCode = new System.Windows.Forms.ComboBox();
+            this.lab_DyeingCode = new System.Windows.Forms.Label();
             this.txt_Operator = new System.Windows.Forms.TextBox();
             this.txt_FormulaGroup = new System.Windows.Forms.ComboBox();
             this.lab_FormulaGroup = new System.Windows.Forms.Label();
@@ -72,31 +80,6 @@ namespace SmartDyeing.FADM_Control
             this.lab_AnhydrationWR = new System.Windows.Forms.Label();
             this.txt_Non_AnhydrationWR = new System.Windows.Forms.TextBox();
             this.lab_Non_AnhydrationWR = new System.Windows.Forms.Label();
-            this.txt_CupNum = new System.Windows.Forms.TextBox();
-            this.txt_ClothType = new System.Windows.Forms.TextBox();
-            this.txt_CreateTime = new System.Windows.Forms.TextBox();
-            this.txt_TotalWeight = new System.Windows.Forms.TextBox();
-            this.txt_BathRatio = new System.Windows.Forms.TextBox();
-            this.txt_ClothWeight = new System.Windows.Forms.TextBox();
-            this.chk_AddWaterChoose = new System.Windows.Forms.CheckBox();
-            this.txt_Customer = new System.Windows.Forms.TextBox();
-            this.txt_FormulaName = new System.Windows.Forms.TextBox();
-            this.txt_State = new System.Windows.Forms.TextBox();
-            this.txt_VersionNum = new System.Windows.Forms.TextBox();
-            this.txt_FormulaCode = new System.Windows.Forms.TextBox();
-            this.lab_CreateTime = new System.Windows.Forms.Label();
-            this.lab_CupNum = new System.Windows.Forms.Label();
-            this.lab_Operator = new System.Windows.Forms.Label();
-            this.lab_TotalWeight = new System.Windows.Forms.Label();
-            this.lab_BathRatio = new System.Windows.Forms.Label();
-            this.lab_ClothWeight = new System.Windows.Forms.Label();
-            this.lab_Customer = new System.Windows.Forms.Label();
-            this.lab_ClothType = new System.Windows.Forms.Label();
-            this.lab_FormulaName = new System.Windows.Forms.Label();
-            this.lab_FormulaCode = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.btn_pre = new System.Windows.Forms.Button();
-            this.btn_upd = new System.Windows.Forms.Button();
             this.dgv_FormulaData = new SmartDyeing.FADM_Object.MyDataGridView();
             this.Index = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AssistantCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -109,6 +92,27 @@ namespace SmartDyeing.FADM_Control
             this.ObjectDropWeight = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.RealDropWeight = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BottleSelection = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.txt_ClothType = new System.Windows.Forms.TextBox();
+            this.txt_CreateTime = new System.Windows.Forms.TextBox();
+            this.txt_TotalWeight = new System.Windows.Forms.TextBox();
+            this.txt_BathRatio = new System.Windows.Forms.TextBox();
+            this.txt_ClothWeight = new System.Windows.Forms.TextBox();
+            this.chk_AddWaterChoose = new System.Windows.Forms.CheckBox();
+            this.txt_Customer = new System.Windows.Forms.TextBox();
+            this.txt_State = new System.Windows.Forms.TextBox();
+            this.txt_VersionNum = new System.Windows.Forms.TextBox();
+            this.txt_FormulaCode = new System.Windows.Forms.TextBox();
+            this.lab_CreateTime = new System.Windows.Forms.Label();
+            this.lab_Operator = new System.Windows.Forms.Label();
+            this.lab_TotalWeight = new System.Windows.Forms.Label();
+            this.lab_BathRatio = new System.Windows.Forms.Label();
+            this.lab_ClothWeight = new System.Windows.Forms.Label();
+            this.lab_Customer = new System.Windows.Forms.Label();
+            this.lab_ClothType = new System.Windows.Forms.Label();
+            this.lab_FormulaCode = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.btn_pre = new System.Windows.Forms.Button();
+            this.btn_upd = new System.Windows.Forms.Button();
             this.grp_BatchData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_BatchData)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -344,6 +348,14 @@ namespace SmartDyeing.FADM_Control
             // 
             // grp_FormulaData
             // 
+            this.grp_FormulaData.Controls.Add(this.txt_FormulaName);
+            this.grp_FormulaData.Controls.Add(this.txt_ClothNum);
+            this.grp_FormulaData.Controls.Add(this.lab_FormulaName);
+            this.grp_FormulaData.Controls.Add(this.label1);
+            this.grp_FormulaData.Controls.Add(this.lab_CupNum);
+            this.grp_FormulaData.Controls.Add(this.txt_CupNum);
+            this.grp_FormulaData.Controls.Add(this.txt_DyeingCode);
+            this.grp_FormulaData.Controls.Add(this.lab_DyeingCode);
             this.grp_FormulaData.Controls.Add(this.txt_Operator);
             this.grp_FormulaData.Controls.Add(this.txt_FormulaGroup);
             this.grp_FormulaData.Controls.Add(this.lab_FormulaGroup);
@@ -352,7 +364,6 @@ namespace SmartDyeing.FADM_Control
             this.grp_FormulaData.Controls.Add(this.txt_Non_AnhydrationWR);
             this.grp_FormulaData.Controls.Add(this.lab_Non_AnhydrationWR);
             this.grp_FormulaData.Controls.Add(this.dgv_FormulaData);
-            this.grp_FormulaData.Controls.Add(this.txt_CupNum);
             this.grp_FormulaData.Controls.Add(this.txt_ClothType);
             this.grp_FormulaData.Controls.Add(this.txt_CreateTime);
             this.grp_FormulaData.Controls.Add(this.txt_TotalWeight);
@@ -360,23 +371,67 @@ namespace SmartDyeing.FADM_Control
             this.grp_FormulaData.Controls.Add(this.txt_ClothWeight);
             this.grp_FormulaData.Controls.Add(this.chk_AddWaterChoose);
             this.grp_FormulaData.Controls.Add(this.txt_Customer);
-            this.grp_FormulaData.Controls.Add(this.txt_FormulaName);
             this.grp_FormulaData.Controls.Add(this.txt_State);
             this.grp_FormulaData.Controls.Add(this.txt_VersionNum);
             this.grp_FormulaData.Controls.Add(this.txt_FormulaCode);
             this.grp_FormulaData.Controls.Add(this.lab_CreateTime);
-            this.grp_FormulaData.Controls.Add(this.lab_CupNum);
             this.grp_FormulaData.Controls.Add(this.lab_Operator);
             this.grp_FormulaData.Controls.Add(this.lab_TotalWeight);
             this.grp_FormulaData.Controls.Add(this.lab_BathRatio);
             this.grp_FormulaData.Controls.Add(this.lab_ClothWeight);
             this.grp_FormulaData.Controls.Add(this.lab_Customer);
             this.grp_FormulaData.Controls.Add(this.lab_ClothType);
-            this.grp_FormulaData.Controls.Add(this.lab_FormulaName);
             this.grp_FormulaData.Controls.Add(this.lab_FormulaCode);
             resources.ApplyResources(this.grp_FormulaData, "grp_FormulaData");
             this.grp_FormulaData.Name = "grp_FormulaData";
             this.grp_FormulaData.TabStop = false;
+            // 
+            // txt_FormulaName
+            // 
+            resources.ApplyResources(this.txt_FormulaName, "txt_FormulaName");
+            this.txt_FormulaName.Name = "txt_FormulaName";
+            // 
+            // txt_ClothNum
+            // 
+            resources.ApplyResources(this.txt_ClothNum, "txt_ClothNum");
+            this.txt_ClothNum.Name = "txt_ClothNum";
+            // 
+            // lab_FormulaName
+            // 
+            resources.ApplyResources(this.lab_FormulaName, "lab_FormulaName");
+            this.lab_FormulaName.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.lab_FormulaName.Name = "lab_FormulaName";
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
+            // lab_CupNum
+            // 
+            resources.ApplyResources(this.lab_CupNum, "lab_CupNum");
+            this.lab_CupNum.Name = "lab_CupNum";
+            // 
+            // txt_CupNum
+            // 
+            resources.ApplyResources(this.txt_CupNum, "txt_CupNum");
+            this.txt_CupNum.Name = "txt_CupNum";
+            this.txt_CupNum.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_CupNum_KeyPress);
+            this.txt_CupNum.Leave += new System.EventHandler(this.txt_CupNum_Leave);
+            // 
+            // txt_DyeingCode
+            // 
+            resources.ApplyResources(this.txt_DyeingCode, "txt_DyeingCode");
+            this.txt_DyeingCode.FormattingEnabled = true;
+            this.txt_DyeingCode.Name = "txt_DyeingCode";
+            this.txt_DyeingCode.SelectedIndexChanged += new System.EventHandler(this.txt_DyeingCode_SelectedIndexChanged2);
+            this.txt_DyeingCode.TextUpdate += new System.EventHandler(this.txt_DyeingCode_TextUpdate);
+            this.txt_DyeingCode.Leave += new System.EventHandler(this.txt_DyeingCode_Leave);
+            // 
+            // lab_DyeingCode
+            // 
+            resources.ApplyResources(this.lab_DyeingCode, "lab_DyeingCode");
+            this.lab_DyeingCode.Name = "lab_DyeingCode";
             // 
             // txt_Operator
             // 
@@ -419,149 +474,6 @@ namespace SmartDyeing.FADM_Control
             // 
             resources.ApplyResources(this.lab_Non_AnhydrationWR, "lab_Non_AnhydrationWR");
             this.lab_Non_AnhydrationWR.Name = "lab_Non_AnhydrationWR";
-            // 
-            // txt_CupNum
-            // 
-            resources.ApplyResources(this.txt_CupNum, "txt_CupNum");
-            this.txt_CupNum.Name = "txt_CupNum";
-            this.txt_CupNum.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_CupNum_KeyPress);
-            this.txt_CupNum.Leave += new System.EventHandler(this.txt_CupNum_Leave);
-            // 
-            // txt_ClothType
-            // 
-            resources.ApplyResources(this.txt_ClothType, "txt_ClothType");
-            this.txt_ClothType.Name = "txt_ClothType";
-            // 
-            // txt_CreateTime
-            // 
-            resources.ApplyResources(this.txt_CreateTime, "txt_CreateTime");
-            this.txt_CreateTime.Name = "txt_CreateTime";
-            // 
-            // txt_TotalWeight
-            // 
-            resources.ApplyResources(this.txt_TotalWeight, "txt_TotalWeight");
-            this.txt_TotalWeight.Name = "txt_TotalWeight";
-            // 
-            // txt_BathRatio
-            // 
-            resources.ApplyResources(this.txt_BathRatio, "txt_BathRatio");
-            this.txt_BathRatio.Name = "txt_BathRatio";
-            this.txt_BathRatio.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_BathRatio_KeyPress);
-            this.txt_BathRatio.Leave += new System.EventHandler(this.txt_BathRatio_Leave);
-            // 
-            // txt_ClothWeight
-            // 
-            resources.ApplyResources(this.txt_ClothWeight, "txt_ClothWeight");
-            this.txt_ClothWeight.Name = "txt_ClothWeight";
-            this.txt_ClothWeight.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_ClothWeight_KeyPress);
-            this.txt_ClothWeight.Leave += new System.EventHandler(this.txt_ClothWeight_Leave);
-            // 
-            // chk_AddWaterChoose
-            // 
-            resources.ApplyResources(this.chk_AddWaterChoose, "chk_AddWaterChoose");
-            this.chk_AddWaterChoose.BackColor = System.Drawing.SystemColors.Control;
-            this.chk_AddWaterChoose.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.chk_AddWaterChoose.Name = "chk_AddWaterChoose";
-            this.chk_AddWaterChoose.UseVisualStyleBackColor = false;
-            this.chk_AddWaterChoose.Enter += new System.EventHandler(this.chk_AddWaterChoose_Enter);
-            this.chk_AddWaterChoose.Leave += new System.EventHandler(this.chk_AddWaterChoose_Leave);
-            // 
-            // txt_Customer
-            // 
-            resources.ApplyResources(this.txt_Customer, "txt_Customer");
-            this.txt_Customer.Name = "txt_Customer";
-            // 
-            // txt_FormulaName
-            // 
-            resources.ApplyResources(this.txt_FormulaName, "txt_FormulaName");
-            this.txt_FormulaName.Name = "txt_FormulaName";
-            // 
-            // txt_State
-            // 
-            resources.ApplyResources(this.txt_State, "txt_State");
-            this.txt_State.Name = "txt_State";
-            // 
-            // txt_VersionNum
-            // 
-            resources.ApplyResources(this.txt_VersionNum, "txt_VersionNum");
-            this.txt_VersionNum.Name = "txt_VersionNum";
-            // 
-            // txt_FormulaCode
-            // 
-            resources.ApplyResources(this.txt_FormulaCode, "txt_FormulaCode");
-            this.txt_FormulaCode.Name = "txt_FormulaCode";
-            // 
-            // lab_CreateTime
-            // 
-            resources.ApplyResources(this.lab_CreateTime, "lab_CreateTime");
-            this.lab_CreateTime.ForeColor = System.Drawing.SystemColors.ButtonShadow;
-            this.lab_CreateTime.Name = "lab_CreateTime";
-            // 
-            // lab_CupNum
-            // 
-            resources.ApplyResources(this.lab_CupNum, "lab_CupNum");
-            this.lab_CupNum.Name = "lab_CupNum";
-            // 
-            // lab_Operator
-            // 
-            resources.ApplyResources(this.lab_Operator, "lab_Operator");
-            this.lab_Operator.Name = "lab_Operator";
-            // 
-            // lab_TotalWeight
-            // 
-            resources.ApplyResources(this.lab_TotalWeight, "lab_TotalWeight");
-            this.lab_TotalWeight.ForeColor = System.Drawing.SystemColors.ButtonShadow;
-            this.lab_TotalWeight.Name = "lab_TotalWeight";
-            // 
-            // lab_BathRatio
-            // 
-            resources.ApplyResources(this.lab_BathRatio, "lab_BathRatio");
-            this.lab_BathRatio.Name = "lab_BathRatio";
-            // 
-            // lab_ClothWeight
-            // 
-            resources.ApplyResources(this.lab_ClothWeight, "lab_ClothWeight");
-            this.lab_ClothWeight.Name = "lab_ClothWeight";
-            // 
-            // lab_Customer
-            // 
-            resources.ApplyResources(this.lab_Customer, "lab_Customer");
-            this.lab_Customer.Name = "lab_Customer";
-            // 
-            // lab_ClothType
-            // 
-            resources.ApplyResources(this.lab_ClothType, "lab_ClothType");
-            this.lab_ClothType.Name = "lab_ClothType";
-            // 
-            // lab_FormulaName
-            // 
-            resources.ApplyResources(this.lab_FormulaName, "lab_FormulaName");
-            this.lab_FormulaName.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.lab_FormulaName.Name = "lab_FormulaName";
-            // 
-            // lab_FormulaCode
-            // 
-            resources.ApplyResources(this.lab_FormulaCode, "lab_FormulaCode");
-            this.lab_FormulaCode.Name = "lab_FormulaCode";
-            // 
-            // panel2
-            // 
-            resources.ApplyResources(this.panel2, "panel2");
-            this.panel2.Name = "panel2";
-            // 
-            // btn_pre
-            // 
-            resources.ApplyResources(this.btn_pre, "btn_pre");
-            this.btn_pre.Name = "btn_pre";
-            this.btn_pre.UseVisualStyleBackColor = true;
-            this.btn_pre.Click += new System.EventHandler(this.btn_pre_Click);
-            // 
-            // btn_upd
-            // 
-            resources.ApplyResources(this.btn_upd, "btn_upd");
-            this.btn_upd.Name = "btn_upd";
-            this.btn_upd.UseVisualStyleBackColor = true;
-            this.btn_upd.Click += new System.EventHandler(this.btn_upd_Click);
             // 
             // dgv_FormulaData
             // 
@@ -704,6 +616,126 @@ namespace SmartDyeing.FADM_Control
             this.BottleSelection.Name = "BottleSelection";
             this.BottleSelection.ReadOnly = true;
             // 
+            // txt_ClothType
+            // 
+            resources.ApplyResources(this.txt_ClothType, "txt_ClothType");
+            this.txt_ClothType.Name = "txt_ClothType";
+            // 
+            // txt_CreateTime
+            // 
+            resources.ApplyResources(this.txt_CreateTime, "txt_CreateTime");
+            this.txt_CreateTime.Name = "txt_CreateTime";
+            // 
+            // txt_TotalWeight
+            // 
+            resources.ApplyResources(this.txt_TotalWeight, "txt_TotalWeight");
+            this.txt_TotalWeight.Name = "txt_TotalWeight";
+            // 
+            // txt_BathRatio
+            // 
+            resources.ApplyResources(this.txt_BathRatio, "txt_BathRatio");
+            this.txt_BathRatio.Name = "txt_BathRatio";
+            this.txt_BathRatio.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_BathRatio_KeyPress);
+            this.txt_BathRatio.Leave += new System.EventHandler(this.txt_BathRatio_Leave);
+            // 
+            // txt_ClothWeight
+            // 
+            resources.ApplyResources(this.txt_ClothWeight, "txt_ClothWeight");
+            this.txt_ClothWeight.Name = "txt_ClothWeight";
+            this.txt_ClothWeight.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_ClothWeight_KeyPress);
+            this.txt_ClothWeight.Leave += new System.EventHandler(this.txt_ClothWeight_Leave);
+            // 
+            // chk_AddWaterChoose
+            // 
+            resources.ApplyResources(this.chk_AddWaterChoose, "chk_AddWaterChoose");
+            this.chk_AddWaterChoose.BackColor = System.Drawing.SystemColors.Control;
+            this.chk_AddWaterChoose.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.chk_AddWaterChoose.Name = "chk_AddWaterChoose";
+            this.chk_AddWaterChoose.UseVisualStyleBackColor = false;
+            this.chk_AddWaterChoose.Enter += new System.EventHandler(this.chk_AddWaterChoose_Enter);
+            this.chk_AddWaterChoose.Leave += new System.EventHandler(this.chk_AddWaterChoose_Leave);
+            // 
+            // txt_Customer
+            // 
+            resources.ApplyResources(this.txt_Customer, "txt_Customer");
+            this.txt_Customer.Name = "txt_Customer";
+            // 
+            // txt_State
+            // 
+            resources.ApplyResources(this.txt_State, "txt_State");
+            this.txt_State.Name = "txt_State";
+            // 
+            // txt_VersionNum
+            // 
+            resources.ApplyResources(this.txt_VersionNum, "txt_VersionNum");
+            this.txt_VersionNum.Name = "txt_VersionNum";
+            // 
+            // txt_FormulaCode
+            // 
+            resources.ApplyResources(this.txt_FormulaCode, "txt_FormulaCode");
+            this.txt_FormulaCode.Name = "txt_FormulaCode";
+            // 
+            // lab_CreateTime
+            // 
+            resources.ApplyResources(this.lab_CreateTime, "lab_CreateTime");
+            this.lab_CreateTime.ForeColor = System.Drawing.SystemColors.ButtonShadow;
+            this.lab_CreateTime.Name = "lab_CreateTime";
+            // 
+            // lab_Operator
+            // 
+            resources.ApplyResources(this.lab_Operator, "lab_Operator");
+            this.lab_Operator.Name = "lab_Operator";
+            // 
+            // lab_TotalWeight
+            // 
+            resources.ApplyResources(this.lab_TotalWeight, "lab_TotalWeight");
+            this.lab_TotalWeight.ForeColor = System.Drawing.SystemColors.ButtonShadow;
+            this.lab_TotalWeight.Name = "lab_TotalWeight";
+            // 
+            // lab_BathRatio
+            // 
+            resources.ApplyResources(this.lab_BathRatio, "lab_BathRatio");
+            this.lab_BathRatio.Name = "lab_BathRatio";
+            // 
+            // lab_ClothWeight
+            // 
+            resources.ApplyResources(this.lab_ClothWeight, "lab_ClothWeight");
+            this.lab_ClothWeight.Name = "lab_ClothWeight";
+            // 
+            // lab_Customer
+            // 
+            resources.ApplyResources(this.lab_Customer, "lab_Customer");
+            this.lab_Customer.Name = "lab_Customer";
+            // 
+            // lab_ClothType
+            // 
+            resources.ApplyResources(this.lab_ClothType, "lab_ClothType");
+            this.lab_ClothType.Name = "lab_ClothType";
+            // 
+            // lab_FormulaCode
+            // 
+            resources.ApplyResources(this.lab_FormulaCode, "lab_FormulaCode");
+            this.lab_FormulaCode.Name = "lab_FormulaCode";
+            // 
+            // panel2
+            // 
+            resources.ApplyResources(this.panel2, "panel2");
+            this.panel2.Name = "panel2";
+            // 
+            // btn_pre
+            // 
+            resources.ApplyResources(this.btn_pre, "btn_pre");
+            this.btn_pre.Name = "btn_pre";
+            this.btn_pre.UseVisualStyleBackColor = true;
+            this.btn_pre.Click += new System.EventHandler(this.btn_pre_Click);
+            // 
+            // btn_upd
+            // 
+            resources.ApplyResources(this.btn_upd, "btn_upd");
+            this.btn_upd.Name = "btn_upd";
+            this.btn_upd.UseVisualStyleBackColor = true;
+            this.btn_upd.Click += new System.EventHandler(this.btn_upd_Click);
+            // 
             // Formula
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -774,13 +806,6 @@ namespace SmartDyeing.FADM_Control
         private FlowLayoutPanel panel2;
         public Button btn_pre;
         public GroupBox grp_FormulaData;
-        private TextBox txt_Operator;
-        private ComboBox txt_FormulaGroup;
-        private Label lab_FormulaGroup;
-        private TextBox txt_AnhydrationWR;
-        private Label lab_AnhydrationWR;
-        private TextBox txt_Non_AnhydrationWR;
-        private Label lab_Non_AnhydrationWR;
         public FADM_Object.MyDataGridView dgv_FormulaData;
         private DataGridViewTextBoxColumn Index;
         private DataGridViewTextBoxColumn AssistantCode;
@@ -793,6 +818,16 @@ namespace SmartDyeing.FADM_Control
         private DataGridViewTextBoxColumn ObjectDropWeight;
         private DataGridViewTextBoxColumn RealDropWeight;
         private DataGridViewCheckBoxColumn BottleSelection;
+        public Button btn_upd;
+        private ComboBox txt_DyeingCode;
+        private Label lab_DyeingCode;
+        private TextBox txt_Operator;
+        private ComboBox txt_FormulaGroup;
+        private Label lab_FormulaGroup;
+        private TextBox txt_AnhydrationWR;
+        private Label lab_AnhydrationWR;
+        private TextBox txt_Non_AnhydrationWR;
+        private Label lab_Non_AnhydrationWR;
         public TextBox txt_CupNum;
         private TextBox txt_ClothType;
         private TextBox txt_CreateTime;
@@ -815,6 +850,7 @@ namespace SmartDyeing.FADM_Control
         private Label lab_ClothType;
         private Label lab_FormulaName;
         private Label lab_FormulaCode;
-        public Button btn_upd;
+        public TextBox txt_ClothNum;
+        private Label label1;
     }
 }

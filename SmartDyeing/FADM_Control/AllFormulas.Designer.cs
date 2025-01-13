@@ -76,6 +76,8 @@ namespace SmartDyeing.FADM_Control
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.grp_FormulaData = new System.Windows.Forms.GroupBox();
+            this.txt_DyeingCode = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.txt_Operator = new System.Windows.Forms.ComboBox();
             this.dgv_FormulaData = new SmartDyeing.FADM_Object.MyDataGridView();
             this.dataGridViewTextBoxColumn55 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -460,6 +462,8 @@ namespace SmartDyeing.FADM_Control
             // 
             resources.ApplyResources(this.txt_Record_Code, "txt_Record_Code");
             this.txt_Record_Code.Name = "txt_Record_Code";
+            this.txt_Record_Code.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dy_nodelist_comboBox2_KeyPress);
+            this.txt_Record_Code.KeyUp += new System.Windows.Forms.KeyEventHandler(this.dy_nodelist_comboBox2_KeyUp);
             // 
             // label4
             // 
@@ -478,6 +482,8 @@ namespace SmartDyeing.FADM_Control
             // 
             // grp_FormulaData
             // 
+            this.grp_FormulaData.Controls.Add(this.txt_DyeingCode);
+            this.grp_FormulaData.Controls.Add(this.label6);
             this.grp_FormulaData.Controls.Add(this.txt_Operator);
             this.grp_FormulaData.Controls.Add(this.dgv_FormulaData);
             this.grp_FormulaData.Controls.Add(this.txt_AnhydrationWR);
@@ -509,6 +515,16 @@ namespace SmartDyeing.FADM_Control
             resources.ApplyResources(this.grp_FormulaData, "grp_FormulaData");
             this.grp_FormulaData.Name = "grp_FormulaData";
             this.grp_FormulaData.TabStop = false;
+            // 
+            // txt_DyeingCode
+            // 
+            resources.ApplyResources(this.txt_DyeingCode, "txt_DyeingCode");
+            this.txt_DyeingCode.Name = "txt_DyeingCode";
+            // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.Name = "label6";
             // 
             // txt_Operator
             // 
@@ -1488,5 +1504,7 @@ namespace SmartDyeing.FADM_Control
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn63;
         private DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn7;
         private FlowLayoutPanel panel2;
+        private TextBox txt_DyeingCode;
+        private Label label6;
     }
 }

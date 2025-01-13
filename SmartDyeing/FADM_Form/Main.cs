@@ -839,21 +839,32 @@ namespace SmartDyeing.FADM_Form
                                             //if (dt_head_s.Rows[0]["DyeingCode"].ToString() == dt_head_w.Rows[0]["DyeingCode"].ToString())
                                             if (JudDyeingCode(dt_head_s.Rows[0]["FormulaCode"].ToString(), dt_head_s.Rows[0]["VersionNum"].ToString(), dt_head_w.Rows[0]["FormulaCode"].ToString(), dt_head_w.Rows[0]["VersionNum"].ToString()) == 0)
                                             {
-
-                                                //当另外一个杯还是放布而且步号是1时可以加入
-                                                string s_cup_s = "SELECT  * FROM cup_details WHERE  CupNum = " + Communal._dic_first_second[Convert.ToInt32(Row[0].ToString())] + " ;";
-                                                DataTable dt_cup_s = FADM_Object.Communal._fadmSqlserver.GetData(s_cup_s);
-                                                if (dt_cup_s.Rows.Count > 0)
+                                                if (dt_head_s.Rows[0]["BatchName"].ToString() == "0")
                                                 {
-                                                    //当前工艺步骤为1时，可以加入
-                                                    if (Convert.ToInt32(dt_cup_s.Rows[0]["StepNum"].ToString()) <= 1 && dt_cup_s.Rows[0]["TechnologyName"].ToString() == "放布")
+                                                    b_newInsert = true;
+                                                    //加入批次
+                                                    AddDropList a = new AddDropList(dataTabletemp1.Rows[0]["FormulaCode"].ToString(), dataTabletemp1.Rows[0]["VersionNum"].ToString(), Row[0].ToString(), 3);
+                                                    //删除等待列表记录
+                                                    FADM_Object.Communal._fadmSqlserver.GetData("Delete from wait_list where Type = 3 and IndexNum = " + dataTabletemp1.Rows[0]["IndexNum"].ToString());
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    //当另外一个杯还是放布而且步号是1时可以加入
+                                                    string s_cup_s = "SELECT  * FROM cup_details WHERE  CupNum = " + Communal._dic_first_second[Convert.ToInt32(Row[0].ToString())] + " ;";
+                                                    DataTable dt_cup_s = FADM_Object.Communal._fadmSqlserver.GetData(s_cup_s);
+                                                    if (dt_cup_s.Rows.Count > 0)
                                                     {
-                                                        b_newInsert = true;
-                                                        //加入批次
-                                                        AddDropList a = new AddDropList(dataTabletemp1.Rows[0]["FormulaCode"].ToString(), dataTabletemp1.Rows[0]["VersionNum"].ToString(), Row[0].ToString(), 3);
-                                                        //删除等待列表记录
-                                                        FADM_Object.Communal._fadmSqlserver.GetData("Delete from wait_list where Type = 3 and IndexNum = " + dataTabletemp1.Rows[0]["IndexNum"].ToString());
-                                                        break;
+                                                        //当前工艺步骤为1时，可以加入
+                                                        if (Convert.ToInt32(dt_cup_s.Rows[0]["StepNum"].ToString()) <= 1 && dt_cup_s.Rows[0]["TechnologyName"].ToString() == "放布")
+                                                        {
+                                                            b_newInsert = true;
+                                                            //加入批次
+                                                            AddDropList a = new AddDropList(dataTabletemp1.Rows[0]["FormulaCode"].ToString(), dataTabletemp1.Rows[0]["VersionNum"].ToString(), Row[0].ToString(), 3);
+                                                            //删除等待列表记录
+                                                            FADM_Object.Communal._fadmSqlserver.GetData("Delete from wait_list where Type = 3 and IndexNum = " + dataTabletemp1.Rows[0]["IndexNum"].ToString());
+                                                            break;
+                                                        }
                                                     }
                                                 }
                                             }
@@ -1214,7 +1225,6 @@ namespace SmartDyeing.FADM_Form
                                             {
                                                 new FADM_Auto.Drip().DripLiquid(s_batchNum);
                                                 FADM_Control.Formula.P_bl_update = true;
-                                                FADM_Control.Formula_Cloth.P_bl_update = true;
                                             });
                                             thread.Start();
 
@@ -1265,8 +1275,6 @@ namespace SmartDyeing.FADM_Form
                                         }
                                         b_newInsert = false;
                                         FADM_Control.Formula._b_updateWait = true;
-                                        FADM_Control.Formula_Cloth._b_updateWait = true;
-                                        FADM_Control.Formula_Cloth._b_updateWait = true;
                                         FADM_Object.Communal._b_isDripping = false;
                                     }
                                 }
@@ -1274,7 +1282,6 @@ namespace SmartDyeing.FADM_Form
                                 if (b_type2)
                                 {
                                     FADM_Control.Formula._b_updateWait = true;
-                                    FADM_Control.Formula_Cloth._b_updateWait = true;
                                 }
                                 FADM_Object.Communal._b_isDripping = false;
 
@@ -1287,7 +1294,6 @@ namespace SmartDyeing.FADM_Form
                         else
                         {
                             FADM_Control.Formula._b_updateWait = true;
-                            FADM_Control.Formula_Cloth._b_updateWait = true;
                             FADM_Object.Communal._b_isDripping = false;
                         }
                     }
@@ -2837,11 +2843,8 @@ namespace SmartDyeing.FADM_Form
                 }
                 else
                 {
-                    if (Communal._b_isUseCloth)
+                    if (false)
                     {
-                        FADM_Control.Formula_Cloth formula = new Formula_Cloth(this);
-                        this.PnlMain.Controls.Add(formula);
-                        formula.Focus();
                     }
                     else
                     {
@@ -4970,23 +4973,8 @@ namespace SmartDyeing.FADM_Form
                 }
                 else
                 {
-                    if (Communal._b_isUseCloth) {
-                        if (FADM_Control.Formula_Cloth._b_showRun == false)
-                        {
-                            FADM_Control.Formula_Cloth formula = new Formula_Cloth(this);
-                            //this.PnlMain.Controls.Add(formula);
-                            formula.Show();
-                            formula.Focus();
-                            IntPtr p1 = formula.Handle;
-                            FADM_Control.Formula_Cloth.HANDER = p1.ToInt32();
-                        }
-                        else
-                        {
-                            //WindowsForms10.Window.8.app.0.2804c64_r8_ad1
-                            IntPtr ptr1 = new IntPtr(FADM_Control.Formula_Cloth.HANDER);
-                            SetForegroundWindow(ptr1);
-                            ShowWindow(ptr1, 3);
-                        }
+                    if (false) {
+                        
                     }
                     else {
                         if (FADM_Control.Formula._b_showRun == false)
@@ -5099,25 +5087,9 @@ namespace SmartDyeing.FADM_Form
                     }
                     else
                     {
-                        if (Communal._b_isUseCloth)
+                        if (false)
                         {
-                            if (FADM_Control.Formula_Cloth._b_showRun == false)
-                            {
-
-                                FADM_Control.Formula_Cloth formula = new Formula_Cloth(this);
-                                //this.PnlMain.Controls.Add(formula);
-                                formula.Show();
-                                formula.Focus();
-                                IntPtr p1 = formula.Handle;
-                                FADM_Control.Formula_Cloth.HANDER = p1.ToInt32();
-                            }
-                            else
-                            {
-                                //WindowsForms10.Window.8.app.0.2804c64_r8_ad1
-                                IntPtr ptr1 = new IntPtr(FADM_Control.Formula_Cloth.HANDER);
-                                SetForegroundWindow(ptr1);
-                                ShowWindow(ptr1, 3);
-                            }
+                           
                         }
                         else {
                             if (FADM_Control.Formula._b_showRun == false)

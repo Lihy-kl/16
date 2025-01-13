@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,34 @@ namespace SmartDyeing.FADM_Form
 
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
             SetStyle(ControlStyles.Selectable, false);
+
+            lb_End_Stations.DrawMode = DrawMode.OwnerDrawVariable;
+            lb_End_Stations.MeasureItem += new MeasureItemEventHandler(lb_End_Stations_MeasureItem);
+            lb_End_Stations.DrawItem += Lb_End_Stations_DrawItem;
+        }
+
+        private void Lb_End_Stations_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            e.DrawBackground();
+            e.DrawFocusRectangle();
+            if (e.Index >= 0)
+            {
+                string text = lb_End_Stations.Items[e.Index].ToString();
+                using (Brush brush = new SolidBrush(e.ForeColor))
+                {
+                    // 获取文本的大小
+                    SizeF textSize = e.Graphics.MeasureString(text, e.Font);
+                    // 计算文本的起始位置，使其在项中居中
+                    float x = e.Bounds.Left + (e.Bounds.Width - textSize.Width) / 2;
+                    float y = e.Bounds.Top + (e.Bounds.Height - textSize.Height) / 2;
+                    e.Graphics.DrawString(text, e.Font, brush, x,y);
+                }
+            }
+        }
+
+        private void lb_End_Stations_MeasureItem(object sender, MeasureItemEventArgs e)
+        {
+            e.ItemHeight = 21;
         }
 
         protected override CreateParams CreateParams
@@ -55,7 +84,7 @@ namespace SmartDyeing.FADM_Form
             // 
             this.lb_End_Stations.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lb_End_Stations.FormattingEnabled = true;
-            this.lb_End_Stations.ItemHeight = 20;
+            this.lb_End_Stations.ItemHeight = 23;
             this.lb_End_Stations.Location = new System.Drawing.Point(2, 3);
             this.lb_End_Stations.Margin = new System.Windows.Forms.Padding(4);
             this.lb_End_Stations.Name = "lb_End_Stations";
