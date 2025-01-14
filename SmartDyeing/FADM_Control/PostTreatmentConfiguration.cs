@@ -322,6 +322,7 @@ namespace SmartDyeing.FADM_Control
                         UpdateListAndDyeCode();
                         DyeCodeShow(txt_Dye_Code.Text);
 
+                        FADM_Control.Formula.updateloadCraft(); //配方界面更新下
 
                         //打开按钮
                         btn_DyeingProcessAdd.Enabled = true;

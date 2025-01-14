@@ -700,6 +700,12 @@ namespace SmartDyeing.FADM_Object
         public static bool _b_isNeedConfirm = false;
 
         /// <summary>
+        /// 配方界面上的浴比更改后 底下的所有工艺浴比跟着变化
+        /// </summary>
+        public static bool _b_isBathRatioTxtDyBath = false;
+
+
+        /// <summary>
         /// 区域1触摸屏版本
         /// </summary>
         public static string _s_TouchVer1 = "";

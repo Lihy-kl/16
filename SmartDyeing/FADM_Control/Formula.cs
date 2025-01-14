@@ -67,6 +67,8 @@ namespace SmartDyeing.FADM_Control
         public static bool _b_showRun = false;
 
         public static int HANDER = 0;
+
+        
         //构造函数
         public Formula(SmartDyeing.FADM_Form.Main _FormMain)
         {
@@ -487,6 +489,13 @@ namespace SmartDyeing.FADM_Control
                     {
                         if ((c is TextBox || c is ComboBox) && c.Name == s_name)
                         {
+                            if (c.Name.Equals("txt_DyeingCode"))
+                            {
+                                //先去掉那个indexchange事件 防止加载两次
+                                ComboBox bb = (ComboBox)c;
+                                bb.SelectedIndexChanged -= txt_DyeingCode_SelectedIndexChanged2;
+                            }
+
                             c.Text = dt_formulahead.Rows[0][mDc].ToString();
                             break;
                         }
@@ -496,6 +505,7 @@ namespace SmartDyeing.FADM_Control
                         chk_AddWaterChoose.Checked = (dt_formulahead.Rows[0][mDc].ToString() == "False" || dt_formulahead.Rows[0][mDc].ToString() == "0" ? false : true);
                     }
                 }
+                this.txt_DyeingCode.SelectedIndexChanged += txt_DyeingCode_SelectedIndexChanged2;
 
                 if (Lib_Card.Configure.Parameter.Other_Language != 0)
                 {
@@ -2497,6 +2507,14 @@ namespace SmartDyeing.FADM_Control
                             }
                         }
                     }
+                    if (FADM_Object.Communal._b_isBathRatioTxtDyBath) {
+                        //看底下所有的工艺。把所有的工艺浴比全部改掉
+                        foreach (KeyValuePair<string, FADM_Control.myDyeingConfiguration> Element in mymap)
+                        {
+                            FADM_Control.myDyeingConfiguration s = Element.Value;
+                            s.txt_HandleBathRatio.Text = txt_BathRatio.Text;
+                        }
+                    }
 
                     //重新计算滴液重
                     foreach (DataGridViewRow dr in dgv_FormulaData.Rows)
@@ -2505,12 +2523,7 @@ namespace SmartDyeing.FADM_Control
                     }
 
 
-                    //看底下所有的工艺。把所有的工艺浴比全部改掉
-                    foreach (KeyValuePair<string, FADM_Control.myDyeingConfiguration> Element in mymap)
-                    {
-                        FADM_Control.myDyeingConfiguration s = Element.Value;
-                        s.txt_HandleBathRatio.Text = txt_BathRatio.Text;
-                    }
+                    
 
                     //判断后处理浴比是否为空,如果为空，就填入浴比值
                     //if (txt_HandleBathRatio.Text == "" || txt_HandleBathRatio.Text == "0.00" || txt_HandleBathRatio.Text == "0")
@@ -4429,8 +4442,14 @@ namespace SmartDyeing.FADM_Control
                         lis_head.Add(_s_stage);
                         lis_head.Add("");
                     }
-
-                    // 添加进配方浏览表头
+                    if (Communal._b_isUseCloth && this.txt_ClothNum.Text != "")
+                    {
+                        lis_head.Add(this.txt_ClothNum.Text);
+                    }
+                    else {
+                        lis_head.Add("0");
+                    }
+                        // 添加进配方浏览表头
                     string s_sql_1 = "INSERT INTO formula_head (" +
                                          " FormulaCode, VersionNum, State, FormulaName," +
                                          " ClothType,Customer,AddWaterChoose,CompoundBoardChoose,ClothWeight," +
@@ -4943,6 +4962,44 @@ namespace SmartDyeing.FADM_Control
                         myDyeSelectList_new.RemoveAt(i); //空的删掉并删掉位置 为下面对比对
                     }
                 }
+                if (txt_DyeingCode.Text=="" && myDyeSelectList_new.Count>0) {  //染固色工艺为空 但是底下又选择了工艺，兼容 鸿港版本
+                                                //去掉了染固色工艺代码这里。这里要找到有合适的 跟底下工艺符合的染固色工艺代码
+
+                    string s_sql1 = "SELECT DyeingCode FROM dyeing_code group by DyeingCode;";
+                    DataTable dt_dyeing_code = FADM_Object.Communal._fadmSqlserver.GetData(s_sql1);
+                    foreach (DataRow dr in dt_dyeing_code.Rows)
+                    {
+                        string code = Convert.ToString(dr[0]);
+                        string s_sql2 = "SELECT * FROM dyeing_code where DyeingCode = '"+code+"' order by IndexNum;";
+                        DataTable dt_dyeing_code2 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql2);
+                        if (dt_dyeing_code2.Rows.Count == myDyeSelectList_new.Count) {
+                            //个数一样 工艺名字和工艺类型
+                            Boolean isTrue2 = true;
+                            for (int i = 0; i < dt_dyeing_code2.Rows.Count; i++) {
+                                if (dt_dyeing_code2.Rows[i]["Code"].ToString().Trim().Equals(myDyeSelectList_new[i].dy_nodelist_comboBox2.Text.Trim())
+                                    && dt_dyeing_code2.Rows[i]["Type"].ToString().Trim().Equals(myDyeSelectList_new[i].dy_type_comboBox1.Text.Trim().Equals("染色工艺") ? "1" : "2"))
+                                {
+
+                                }
+                                else {
+                                    //不相等
+                                    isTrue2 = false;
+                                    break;
+                                }
+
+                            }
+                            if (isTrue2) {
+                                isTrue = true;
+                                this.txt_DyeingCode.SelectedIndexChanged -= txt_DyeingCode_SelectedIndexChanged2;
+                                this.txt_DyeingCode.Text = code;
+                                this.txt_DyeingCode.SelectedIndexChanged += txt_DyeingCode_SelectedIndexChanged2;
+                                return isTrue;
+                            }
+                        }
+                        
+                    }
+                }
+
                 if (myDyeSelectList_new.Count!= dt_data2_odl.Rows.Count) {
                     isTrue = false;
                     return isTrue;
@@ -5103,12 +5160,37 @@ namespace SmartDyeing.FADM_Control
                 {
                     for (int i = dgv_FormulaBrowse.SelectedRows.Count - 1; i >= 0; i--)
                     {
+
                         //查询对应配方资料
-                        string s_sql = "SELECT FormulaCode, VersionNum, CreateTime, CupNum,Stage from  formula_head WHERE FormulaCode ='" + dgv_FormulaBrowse.SelectedRows[i].Cells[0].Value.ToString() +
+                        string s_sql = "SELECT FormulaCode, VersionNum, CreateTime, CupNum,Stage,DyeingCode from  formula_head WHERE FormulaCode ='" + dgv_FormulaBrowse.SelectedRows[i].Cells[0].Value.ToString() +
                                 "' And  VersionNum = " + dgv_FormulaBrowse.SelectedRows[i].Cells[1].Value.ToString() + ";";
                         DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
                         if (dt_data.Rows.Count > 0)
                         {
+                            string DyeingCode = Convert.ChangeType(dt_data.Rows[0]["DyeingCode"], typeof(string)) as string;
+                            if (DyeingCode!="") {
+                                //2025.01.13这里加个判断，非宏港版本 尽管加载出来了染固色代码里的工艺，但是 dyeing_dtails表里没有数据,所以要提示先保存下
+                                string s_sql_dyeing = "SELECT FormulaCode,VersionNum,StepNum,TechnologyName,Temp,TempSpeed,Time,RotorSpeed,Code, DyeType,No FROM dyeing_details where FormulaCode = '" + dgv_FormulaBrowse.SelectedRows[i].Cells[0].Value.ToString() + "' and VersionNum = '" + dgv_FormulaBrowse.SelectedRows[i].Cells[1].Value.ToString() + "' order by StepNum asc ;";
+                                DataTable dt_data_dyeing = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_dyeing);
+
+                                s_sql_dyeing = "select * from dyeing_code where DyeingCode ='" + DyeingCode + "' order by IndexNum;";
+                                DataTable dt_data2_dyeing_code = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_dyeing);
+
+                                if (dt_data_dyeing.Rows.Count == 0 && dt_data2_dyeing_code.Rows.Count>0) {
+                                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                        FADM_Form.CustomMessageBox.Show("为兼容版本,请先保存,然后再加入批次", "操作异常", MessageBoxButtons.OK, false);
+                                    else
+                                        FADM_Form.CustomMessageBox.Show("For compatibility with different versions, please save it first and then add it to the batch.", "Abnormal operation", MessageBoxButtons.OK, false);
+                                    return;
+                                }
+
+                            }
+                            
+
+                            
+
+
+
                             //先判断是否后处理
                             if (dt_data.Rows[0][4].ToString() == "后处理" || dt_data.Rows[0][4].ToString() == "Handle")
                             {
@@ -5722,6 +5804,29 @@ namespace SmartDyeing.FADM_Control
                 }
                 else
                 {
+                    string DyeingCode = Convert.ChangeType(dt_formulaHead.Rows[0]["DyeingCode"], typeof(string)) as string;
+                    if (DyeingCode != "")
+                    {
+                        //2025.01.13这里加个判断，非宏港版本 尽管加载出来了染固色代码里的工艺，但是 dyeing_dtails表里没有数据,所以要提示先保存下
+                        string s_sql_dyeing = "SELECT FormulaCode,VersionNum,StepNum,TechnologyName,Temp,TempSpeed,Time,RotorSpeed,Code, DyeType,No FROM dyeing_details where FormulaCode = '" + txt_FormulaCode.Text + "' and VersionNum = '" + txt_VersionNum.Text + "' order by StepNum asc ;";
+                        DataTable dt_data_dyeing = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_dyeing);
+
+                        s_sql_dyeing = "select * from dyeing_code where DyeingCode ='" + DyeingCode + "' order by IndexNum;";
+                        DataTable dt_data2_dyeing_code = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_dyeing);
+
+                        if (dt_data_dyeing.Rows.Count == 0 && dt_data2_dyeing_code.Rows.Count > 0)
+                        {
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                FADM_Form.CustomMessageBox.Show("为兼容版本,请先保存,然后再加入批次", "操作异常", MessageBoxButtons.OK, false);
+                            else
+                                FADM_Form.CustomMessageBox.Show("For compatibility with different versions, please save it first and then add it to the batch.", "Abnormal operation", MessageBoxButtons.OK, false);
+                            return;
+                        }
+                    }
+
+
+
+
                     if (dt_formulaHead.Rows[0][0].ToString() != txt_CupNum.Text)
                     {
                         if (Lib_Card.Configure.Parameter.Other_Language == 0)
@@ -9604,8 +9709,17 @@ namespace SmartDyeing.FADM_Control
                 }
                 else
                 {
-                    _s_stage = "滴液";
-                    loadMyDyeSelect(0);
+                    //兼容以往 去掉染固色工艺代码的版本 这里判断下染固色工艺代码有没有 有的话 加载一遍
+                    if (this.txt_DyeingCode.Text != "")
+                    {
+                        txt_DyeingCode_SelectedIndexChanged2(null,null);
+                    }
+                    else {
+                        _s_stage = "滴液";
+                        loadMyDyeSelect(0);
+                    }
+
+                    
                 }
 
             }
@@ -14659,7 +14773,35 @@ namespace SmartDyeing.FADM_Control
             }*/
         }
 
-
+        public static void updateloadCraft()
+        {
+            for (int i = 0; i < myDyeSelectList.Count; i++)
+            {
+                ComboBox box = myDyeSelectList[i].dy_type_comboBox1;
+                string value = box.Text;
+                string index = box.Name;
+                if (value.Equals("染色工艺"))
+                {
+                    string s_sql = "SELECT Code  FROM dyeing_process where Type = 1 group by Code ;";
+                    DataTable dt_dyeingcode = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                    myDyeSelectList[Convert.ToInt32(index)].dy_nodelist_comboBox2.Items.Clear();
+                    foreach (DataRow dr in dt_dyeingcode.Rows)
+                    {
+                        myDyeSelectList[Convert.ToInt32(index)].dy_nodelist_comboBox2.Items.Add(Convert.ToString(dr[0]));
+                    }
+                }
+                else if (value.Equals("后处理工艺"))
+                {
+                    string s_sql = "SELECT Code  FROM dyeing_process where Type = 2 group by Code ;";
+                    DataTable dt_dyeingcode = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                    myDyeSelectList[Convert.ToInt32(index)].dy_nodelist_comboBox2.Items.Clear();
+                    foreach (DataRow dr in dt_dyeingcode.Rows)
+                    {
+                        myDyeSelectList[Convert.ToInt32(index)].dy_nodelist_comboBox2.Items.Add(Convert.ToString(dr[0]));
+                    }
+                }
+            }
+        }
     }
 
 }

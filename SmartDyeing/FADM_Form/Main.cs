@@ -529,6 +529,12 @@ namespace SmartDyeing.FADM_Form
             {
                 FADM_Object.Communal._b_isNeedConfirm = true;
             }
+
+            string IsBathRatioTxtDyBath = Lib_File.Ini.GetIni("Setting", "IsBathRatioTxtDyBath", "0", s_path);
+            if (IsBathRatioTxtDyBath == "1")
+            {
+                FADM_Object.Communal._b_isBathRatioTxtDyBath = true;
+            }
         }
 
         public void countDown()

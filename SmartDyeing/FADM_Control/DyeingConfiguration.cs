@@ -581,6 +581,9 @@ namespace SmartDyeing.FADM_Control
 
                         //设置添加按钮焦点
                         btn_DyeingProcessAdd.Focus();
+
+                        FADM_Control.Formula.updateloadCraft(); //配方界面更新下
+
                     }
                     break;
                 default:
