@@ -704,6 +704,11 @@ namespace SmartDyeing.FADM_Object
         /// </summary>
         public static bool _b_isBathRatioTxtDyBath = false;
 
+        /// <summary>
+        /// 是否单独使用开料机(只有开料机)
+        /// </summary>
+        public static bool _b_isUseBrewOnly = false;
+
 
         /// <summary>
         /// 区域1触摸屏版本
@@ -804,6 +809,16 @@ namespace SmartDyeing.FADM_Object
         /// 是否显示取小样测PH工艺
         /// </summary>
         public static bool _b_isShowSample = false;
+
+        /// <summary>
+        /// 是否有AB助剂
+        /// </summary>
+        public static bool _b_isUseABAssistant = false;
+
+        /// <summary>
+        /// AB助剂数量
+        /// </summary>
+        public static int _i_ABAssistantCount = 2;
 
         /// <summary>
         /// 抛出异常中英文对接

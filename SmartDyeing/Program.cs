@@ -110,6 +110,10 @@ namespace SmartDyeing
                 if (login.DialogResult == DialogResult.OK)
                 {
                     login.Dispose();
+
+                    //FADM_Form.Form2 form2 = new Form2();
+                    //form2.ShowDialog();
+
                     FADM_Form.Main main = new FADM_Form.Main();
                     Application.Run(main);
                 }

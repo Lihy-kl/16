@@ -67,6 +67,13 @@ namespace SmartDyeing.FADM_Form
         [DebuggerStepThrough]
         protected override void WndProc(ref Message m)
         {
+            Console.WriteLine("===================="+ m.Msg.ToString());
+            if (m.Msg == 0x0100 && m.WParam.ToInt32() == 0x71)
+            {
+                // 处理F2键按下的逻辑
+                Console.WriteLine("F2键被按下");
+                return;
+            }
             if (m.Msg.Equals(WM_MOUSEACTIVATE))
             {
                 m.Result = new IntPtr(MA_NOACTIVATE);
@@ -74,6 +81,7 @@ namespace SmartDyeing.FADM_Form
             }
             base.WndProc(ref m);
         }
+   
 
         private void InitializeComponent()
         {

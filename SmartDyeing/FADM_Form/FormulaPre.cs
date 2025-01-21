@@ -34,7 +34,6 @@ namespace SmartDyeing.FADM_Form
             int height = this.Height;
             //this.Height = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height-35;
             this.Height = 360  + (PFormula.dgv_FormulaData.Rows.Count * 30) + 300;
-            
             this.flowLayoutPanel1.Height = this.flowLayoutPanel1.Height + System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height - height - 35;
         }
 
@@ -106,7 +105,7 @@ namespace SmartDyeing.FADM_Form
                         }
                     }
 
-
+                    int count2 = 1;
                     List<ProcessStep> list = new List<ProcessStep>();
                     //加A 加B的数据
                     for (int i = 0; i < FADM_Control.Formula.myDyeSelectList.Count; i++)
@@ -128,6 +127,7 @@ namespace SmartDyeing.FADM_Form
                                        "克", FADM_Control.Formula.myDyeSelectList[i].dy_nodelist_comboBox2.Text);
                                     index = index + 1;
                                     count = count + 1;
+                                    count2 = count2 + 1;
 
 
                                 }
@@ -174,7 +174,11 @@ namespace SmartDyeing.FADM_Form
                             }
                         }
                     }
-                    dgv_FormulaData.Height = 30 * count + 10;
+
+
+
+                    this.Height = this.Height + 30 * count2 - 100;
+                    dgv_FormulaData.Height = dgv_FormulaData.Height + 30 * count + 10;
 
                     if (list != null && list.Count > 0)
                     { //list!=null && list.Count>0

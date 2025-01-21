@@ -2138,7 +2138,7 @@ namespace SmartDyeing.FADM_Form
 
         private void tsm_Reset_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = FADM_Form.CustomMessageBox.Show("确定要确定重置吗?重置后会把布重清空", "温馨提示", MessageBoxButtons.YesNo, true);
+            DialogResult dialogResult = FADM_Form.CustomMessageBox.Show("确定要确定删除吗?删除后会把布重清空", "温馨提示", MessageBoxButtons.YesNo, true);
 
             if (dialogResult == DialogResult.Yes)
             {

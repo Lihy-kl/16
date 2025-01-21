@@ -317,54 +317,115 @@ namespace SmartDyeing.FADM_Object
                         }
                         if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1 || (!Communal._b_isBalanceInDrip))
                         {
-                            if (FADM_Object.Communal._b_isNewSet)
+                            //需要把AB助剂区分开
+                            if (FADM_Object.Communal._b_isUseABAssistant)
                             {
-                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
-                                Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (i_no - 1) /
-                                    Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                if(i_no <= Lib_Card.Configure.Parameter.Machine_Bottle_Total - FADM_Object.Communal._i_ABAssistantCount)
+                                {
+                                    if (FADM_Object.Communal._b_isNewSet)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (i_no - 1) /
+                                            Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    }
+                                    else
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y - (i_no - 1) /
+                                            Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    }
+                                }
                             }
                             else
                             {
-                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
-                                Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y - (i_no - 1) /
+                                if (FADM_Object.Communal._b_isNewSet)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
                                     Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (i_no - 1) /
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                }
+                                else
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
+                                    Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y - (i_no - 1) /
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                }
                             }
                         }
                         else
                         {
                             int iNo = i_no;
-                            if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14 >= iNo)
+                            if (FADM_Object.Communal._b_isUseABAssistant)
                             {
-                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (iNo - 1) %
-                                    Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (iNo - 1) /
-                                    Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                            }
-                            else if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - 7 >= iNo)
-                            {
-                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
-                                    ((iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 2)
-                                    * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
-                                    ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14) /
-                                    Lib_Card.Configure.Parameter.Machine_Bottle_Column +
-                                    (iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
-                                    * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - (14+ FADM_Object.Communal._i_ABAssistantCount) >= iNo)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (iNo - 1) %
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (iNo - 1) /
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                }
+                                else if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - (7+ FADM_Object.Communal._i_ABAssistantCount) >= iNo)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
+                                        ((iNo + (14+ FADM_Object.Communal._i_ABAssistantCount) - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 2)
+                                        * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
+                                        ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - (14+ FADM_Object.Communal._i_ABAssistantCount)) /
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column +
+                                        (iNo + (14+ FADM_Object.Communal._i_ABAssistantCount) - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
+                                        * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
 
 
+                                }
+                                else if(Lib_Card.Configure.Parameter.Machine_Bottle_Total -  FADM_Object.Communal._i_ABAssistantCount >= iNo)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
+                                       ((iNo + (14+ FADM_Object.Communal._i_ABAssistantCount) - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 3)
+                                       * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
+                                        ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - (14+ FADM_Object.Communal._i_ABAssistantCount)) /
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column +
+                                        (iNo + (14+ FADM_Object.Communal._i_ABAssistantCount) - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
+                                        * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                }
                             }
                             else
                             {
-                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
-                                   ((iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 3)
-                                   * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
-                                    ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14) /
-                                    Lib_Card.Configure.Parameter.Machine_Bottle_Column +
-                                    (iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
-                                    * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14 >= iNo)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (iNo - 1) %
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (iNo - 1) /
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                }
+                                else if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - 7 >= iNo)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
+                                        ((iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 2)
+                                        * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
+                                        ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14) /
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column +
+                                        (iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
+                                        * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+
+
+                                }
+                                else
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
+                                       ((iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 3)
+                                       * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
+                                        ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14) /
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column +
+                                        (iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
+                                        * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                }
                             }
                         }
                         break;
@@ -1398,54 +1459,115 @@ namespace SmartDyeing.FADM_Object
                         }
                         if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1 || (!Communal._b_isBalanceInDrip))
                         {
-                            if (FADM_Object.Communal._b_isNewSet)
+                            //需要把AB助剂区分开
+                            if (FADM_Object.Communal._b_isUseABAssistant)
                             {
-                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
-                                Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (i_no - 1) /
-                                    Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                if (i_no <= Lib_Card.Configure.Parameter.Machine_Bottle_Total - FADM_Object.Communal._i_ABAssistantCount)
+                                {
+                                    if (FADM_Object.Communal._b_isNewSet)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (i_no - 1) /
+                                            Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    }
+                                    else
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y - (i_no - 1) /
+                                            Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    }
+                                }
                             }
                             else
                             {
-                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
-                                Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y - (i_no - 1) /
+                                if (FADM_Object.Communal._b_isNewSet)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
                                     Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (i_no - 1) /
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                }
+                                else
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
+                                    Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y - (i_no - 1) /
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                }
                             }
                         }
                         else
                         {
                             int iNo = i_no;
-                            if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14 >= iNo)
+                            if (FADM_Object.Communal._b_isUseABAssistant)
                             {
-                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (iNo - 1) %
-                                    Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (iNo - 1) /
-                                    Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                            }
-                            else if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - 7 >= iNo)
-                            {
-                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
-                                    ((iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 2)
-                                    * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
-                                    ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14) /
-                                    Lib_Card.Configure.Parameter.Machine_Bottle_Column +
-                                    (iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
-                                    * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - (14 + FADM_Object.Communal._i_ABAssistantCount) >= iNo)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (iNo - 1) %
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (iNo - 1) /
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                }
+                                else if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - (7 + FADM_Object.Communal._i_ABAssistantCount) >= iNo)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
+                                        ((iNo + (14 + FADM_Object.Communal._i_ABAssistantCount) - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 2)
+                                        * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
+                                        ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - (14 + FADM_Object.Communal._i_ABAssistantCount)) /
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column +
+                                        (iNo + (14 + FADM_Object.Communal._i_ABAssistantCount) - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
+                                        * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
 
 
+                                }
+                                else if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - FADM_Object.Communal._i_ABAssistantCount >= iNo)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
+                                       ((iNo + (14 + FADM_Object.Communal._i_ABAssistantCount) - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 3)
+                                       * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
+                                        ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - (14 + FADM_Object.Communal._i_ABAssistantCount)) /
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column +
+                                        (iNo + (14 + FADM_Object.Communal._i_ABAssistantCount) - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
+                                        * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                }
                             }
                             else
                             {
-                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
-                                   ((iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 3)
-                                   * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
-                                    ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14) /
-                                    Lib_Card.Configure.Parameter.Machine_Bottle_Column +
-                                    (iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
-                                    * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14 >= iNo)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (iNo - 1) %
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (iNo - 1) /
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                }
+                                else if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - 7 >= iNo)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
+                                        ((iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 2)
+                                        * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
+                                        ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14) /
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column +
+                                        (iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
+                                        * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+
+
+                                }
+                                else
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
+                                       ((iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 3)
+                                       * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
+                                        ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14) /
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column +
+                                        (iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
+                                        * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                }
                             }
                         }
                         break;
@@ -2459,44 +2581,115 @@ namespace SmartDyeing.FADM_Object
                             }
                             if (Lib_Card.Configure.Parameter.Other_IsOnlyDrip == 1 || (!Communal._b_isBalanceInDrip))
                             {
-                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
-                                Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (i_no - 1) /
-                                    Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                //需要把AB助剂区分开
+                                if (FADM_Object.Communal._b_isUseABAssistant)
+                                {
+                                    if (i_no <= Lib_Card.Configure.Parameter.Machine_Bottle_Total - FADM_Object.Communal._i_ABAssistantCount)
+                                    {
+                                        if (FADM_Object.Communal._b_isNewSet)
+                                        {
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
+                                            Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (i_no - 1) /
+                                                Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                        }
+                                        else
+                                        {
+                                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
+                                            Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y - (i_no - 1) /
+                                                Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (FADM_Object.Communal._b_isNewSet)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (i_no - 1) /
+                                            Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    }
+                                    else
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (i_no - 1) %
+                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y - (i_no - 1) /
+                                            Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    }
+                                }
                             }
                             else
                             {
                                 int iNo = i_no;
-                                if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14 >= iNo)
+                                if (FADM_Object.Communal._b_isUseABAssistant)
                                 {
-                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (iNo - 1) %
-                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (iNo - 1) /
-                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                                }
-                                else if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - 7 >= iNo)
-                                {
-                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
-                                        ((iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 2)
-                                        * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
-                                        ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14) /
-                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column +
-                                        (iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
-                                        * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - (14 + FADM_Object.Communal._i_ABAssistantCount) >= iNo)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (iNo - 1) %
+                                            Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (iNo - 1) /
+                                            Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    }
+                                    else if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - (7 + FADM_Object.Communal._i_ABAssistantCount) >= iNo)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
+                                            ((iNo + (14 + FADM_Object.Communal._i_ABAssistantCount) - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 2)
+                                            * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
+                                            ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - (14 + FADM_Object.Communal._i_ABAssistantCount)) /
+                                            Lib_Card.Configure.Parameter.Machine_Bottle_Column +
+                                            (iNo + (14 + FADM_Object.Communal._i_ABAssistantCount) - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
+                                            * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
 
 
+                                    }
+                                    else if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - FADM_Object.Communal._i_ABAssistantCount >= iNo)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
+                                           ((iNo + (14 + FADM_Object.Communal._i_ABAssistantCount) - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 3)
+                                           * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
+                                            ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - (14 + FADM_Object.Communal._i_ABAssistantCount)) /
+                                            Lib_Card.Configure.Parameter.Machine_Bottle_Column +
+                                            (iNo + (14 + FADM_Object.Communal._i_ABAssistantCount) - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
+                                            * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    }
                                 }
                                 else
                                 {
-                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
-                                       ((iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 3)
-                                       * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
-                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
-                                        ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14) /
-                                        Lib_Card.Configure.Parameter.Machine_Bottle_Column +
-                                        (iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
-                                        * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14 >= iNo)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X - (iNo - 1) %
+                                            Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y + (iNo - 1) /
+                                            Lib_Card.Configure.Parameter.Machine_Bottle_Column * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    }
+                                    else if (Lib_Card.Configure.Parameter.Machine_Bottle_Total - 7 >= iNo)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
+                                            ((iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 2)
+                                            * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
+                                            ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14) /
+                                            Lib_Card.Configure.Parameter.Machine_Bottle_Column +
+                                            (iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
+                                            * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+
+
+                                    }
+                                    else
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_X -
+                                           ((iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) % 8 + 3)
+                                           * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Bottle_Y +
+                                            ((Lib_Card.Configure.Parameter.Machine_Bottle_Total - 14) /
+                                            Lib_Card.Configure.Parameter.Machine_Bottle_Column +
+                                            (iNo + 14 - Lib_Card.Configure.Parameter.Machine_Bottle_Total) / 8)
+                                            * Lib_Card.Configure.Parameter.Coordinate_Bottle_Interval;
+                                    }
                                 }
                             }
                             break;

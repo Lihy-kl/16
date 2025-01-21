@@ -1518,10 +1518,23 @@ namespace SmartDyeing.FADM_Control
 
                 if (0 >= Convert.ToInt32(TxtNum.Text) || Convert.ToInt32(TxtNum.Text) > Lib_Card.Configure.Parameter.Machine_Bottle_Total)
                 {
-                    MessageBox.Show("瓶号输入错误");
-                    FADM_Object.Communal.WriteDripWait(false);
-                    FADM_Object.Communal.WriteMachineStatus(0);
-                    return;
+                    if (FADM_Object.Communal._b_isUseABAssistant)
+                    {
+                        if (Convert.ToInt32(TxtNum.Text) > Lib_Card.Configure.Parameter.Machine_Bottle_Total - FADM_Object.Communal._i_ABAssistantCount)
+                        {
+                            MessageBox.Show("瓶号输入错误");
+                            FADM_Object.Communal.WriteDripWait(false);
+                            FADM_Object.Communal.WriteMachineStatus(0);
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("瓶号输入错误");
+                        FADM_Object.Communal.WriteDripWait(false);
+                        FADM_Object.Communal.WriteMachineStatus(0);
+                        return;
+                    }
                 }
 
                 if (0 != MyModbusFun.TargetMove(0, Convert.ToInt32(TxtNum.Text), 0))

@@ -77,7 +77,15 @@ namespace SmartDyeing.FADM_Control
                     Bottle bottle = new Bottle();
 
                     //计算瓶子X轴间隔
-                    int i_bottleInterval_X = (this.PnlBottle.Width - bottle.Width * ((_i_machineType / i_bottleLine) + 1)) / (_i_machineType / i_bottleLine);
+                    int i_bottleInterval_X = 0;
+                    if (FADM_Object.Communal._b_isUseABAssistant)
+                    {
+                        i_bottleInterval_X = (this.PnlBottle.Width - bottle.Width * ((_i_machineType / i_bottleLine) + 2)) / (_i_machineType / i_bottleLine + 1);
+                    }
+                    else
+                    {
+                        i_bottleInterval_X = (this.PnlBottle.Width - bottle.Width * ((_i_machineType / i_bottleLine) + 1)) / (_i_machineType / i_bottleLine);
+                    }
 
                     //计算瓶子Y轴间隔
                     int i_bottleInterval_Y = (this.PnlBottle.Height - 10 - (bottle.Height + 10) * i_bottleLine) / (i_bottleLine - 1);
@@ -87,19 +95,43 @@ namespace SmartDyeing.FADM_Control
 
                     //显示母液瓶瓶号
                     bottle.NO = i.ToString();
-
-                    //计算母液瓶坐标
-                    if (i <= _i_machineType - 14)
-                        bottle.Location = new Point(((i - 1) / i_bottleLine * (i_bottleInterval_X + bottle.Width)),
-                             ((i - 1) % i_bottleLine) * (i_bottleInterval_Y + bottle.Height + 10));
-                    else if (i <= _i_machineType - 7)
-                        bottle.Location = new Point((((_i_machineType - 14) / i_bottleLine + ((i + 14 - _i_machineType) / 8)) * (i_bottleInterval_X + bottle.Width)),
-                           ((i + 13 - _i_machineType) % 8 + 3) * (i_bottleInterval_Y + bottle.Height + 10));
+                    if (FADM_Object.Communal._b_isUseABAssistant)
+                    {
+                        //计算母液瓶坐标
+                        if (i <= _i_machineType - (14 + FADM_Object.Communal._i_ABAssistantCount))
+                            bottle.Location = new Point(((i - 1) / i_bottleLine * (i_bottleInterval_X + bottle.Width)),
+                                 ((i - 1) % i_bottleLine) * (i_bottleInterval_Y + bottle.Height + 10));
+                        else if (i <= _i_machineType - (7 + FADM_Object.Communal._i_ABAssistantCount))
+                            bottle.Location = new Point((((_i_machineType - (14 + FADM_Object.Communal._i_ABAssistantCount)) / i_bottleLine + 0) * (i_bottleInterval_X + bottle.Width)),
+                               ((i + 13 + FADM_Object.Communal._i_ABAssistantCount - _i_machineType) % 8 + 3) * (i_bottleInterval_Y + bottle.Height + 10));
+                        else if (i <= _i_machineType - FADM_Object.Communal._i_ABAssistantCount)
+                            bottle.Location = new Point((((_i_machineType - (14 + FADM_Object.Communal._i_ABAssistantCount)) / i_bottleLine + 1) * (i_bottleInterval_X + bottle.Width)),
+                              ((i + 14 + FADM_Object.Communal._i_ABAssistantCount - _i_machineType) % 8 + 3) * (i_bottleInterval_Y + bottle.Height + 10));
+                        else
+                            bottle.Location = new Point((((_i_machineType - (14 + FADM_Object.Communal._i_ABAssistantCount)) / i_bottleLine + 2) * (i_bottleInterval_X + bottle.Width)),
+                              ((i + 15 + FADM_Object.Communal._i_ABAssistantCount - _i_machineType) % 8 + 3) * (i_bottleInterval_Y + bottle.Height + 10));
+                    }
                     else
-                        bottle.Location = new Point((((_i_machineType - 14) / i_bottleLine + ((i + 14 - _i_machineType) / 8)) * (i_bottleInterval_X + bottle.Width)),
-                          ((i + 14 - _i_machineType) % 8 + 3) * (i_bottleInterval_Y + bottle.Height + 10));
-
-                    i_balanceX = (_i_machineType - 14) / i_bottleLine * (i_bottleInterval_X + bottle.Width) + ((i_bottleInterval_X + bottle.Width * 2 - _balance.Width) / 2) - 10;
+                    {
+                        //计算母液瓶坐标
+                        if (i <= _i_machineType - 14)
+                            bottle.Location = new Point(((i - 1) / i_bottleLine * (i_bottleInterval_X + bottle.Width)),
+                                 ((i - 1) % i_bottleLine) * (i_bottleInterval_Y + bottle.Height + 10));
+                        else if (i <= _i_machineType - 7)
+                            bottle.Location = new Point((((_i_machineType - 14) / i_bottleLine + ((i + 14 - _i_machineType) / 8)) * (i_bottleInterval_X + bottle.Width)),
+                               ((i + 13 - _i_machineType) % 8 + 3) * (i_bottleInterval_Y + bottle.Height + 10));
+                        else
+                            bottle.Location = new Point((((_i_machineType - 14) / i_bottleLine + ((i + 14 - _i_machineType) / 8)) * (i_bottleInterval_X + bottle.Width)),
+                              ((i + 14 - _i_machineType) % 8 + 3) * (i_bottleInterval_Y + bottle.Height + 10));
+                    }
+                    if (FADM_Object.Communal._b_isUseABAssistant)
+                    {
+                        i_balanceX = (_i_machineType - 14) / i_bottleLine * (i_bottleInterval_X + bottle.Width) + ((i_bottleInterval_X + bottle.Width * 2 - _balance.Width) / 2) +  10;
+                    }
+                    else
+                    {
+                        i_balanceX = (_i_machineType - 14) / i_bottleLine * (i_bottleInterval_X + bottle.Width) + ((i_bottleInterval_X + bottle.Width * 2 - _balance.Width) / 2) - 10;
+                    }
                     //关联母液瓶的点击事件
                     bottle.Click += Bottle_Click;
                     bottle.MouseUp += Bottle_MouseUp;

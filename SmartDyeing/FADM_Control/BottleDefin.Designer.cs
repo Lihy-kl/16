@@ -174,7 +174,8 @@ namespace SmartDyeing.FADM_Control
             this.cbo_SyringeType.Items.AddRange(new object[] {
             resources.GetString("cbo_SyringeType.Items"),
             resources.GetString("cbo_SyringeType.Items1"),
-            resources.GetString("cbo_SyringeType.Items2")});
+            resources.GetString("cbo_SyringeType.Items2"),
+            resources.GetString("cbo_SyringeType.Items3")});
             this.cbo_SyringeType.Name = "cbo_SyringeType";
             this.cbo_SyringeType.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cbo_SyringeType_KeyDown);
             // 

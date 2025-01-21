@@ -61,7 +61,7 @@
             // 
             this.tsm_Reset.Name = "tsm_Reset";
             this.tsm_Reset.Size = new System.Drawing.Size(180, 22);
-            this.tsm_Reset.Text = "重置";
+            this.tsm_Reset.Text = "删除";
             this.tsm_Reset.Click += new System.EventHandler(this.tsm_Reset_Click);
             // 
             // CupArea

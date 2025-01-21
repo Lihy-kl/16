@@ -29,8 +29,9 @@ namespace SmartDyeing.FADM_Form
             {
                 return;
             }
-            d1 = 1;
-            d2 = 397.7;
+            d1 = Convert.ToDouble(textBox1.Text);
+            d2 = Convert.ToDouble(textBox2.Text);
+            d3 = Convert.ToDouble(textBox3.Text);
             cont = 0;
             if (!b_start)
             {
@@ -50,6 +51,7 @@ namespace SmartDyeing.FADM_Form
 
         double d1 = 1;
         double d2 = 397.7;
+        double d3 = 0.1;
         int cont = 0;
 
         private void Read()
@@ -66,7 +68,7 @@ namespace SmartDyeing.FADM_Form
                 if(cont >10)
                 {
                     cont = 1;
-                    d1 += 0.5;
+                    d1 += d3;
                 }
                 //移动到天平，然后伸出接液盘
                 int i_mRes = MyModbusFun.TargetMove(2, 0, 0);

@@ -311,6 +311,11 @@ namespace SmartDyeing.FADM_Form
                     if (txt_StepNum.Text != "" && txt_StepNum.Text != null && cbo_TechnologyName.Text != "" &&
                         cbo_TechnologyName.Text != null && txt_ProportionOrTime.Text != "" && txt_ProportionOrTime.Text != null && txt_Rev.Text != null && txt_Rev.Text != "")
                     {
+                        if(Convert.ToInt32(txt_ProportionOrTime.Text) <=0)
+                        {
+                            FADM_Form.CustomMessageBox.Show("时间/比例不能为0，请重新编辑！", "操作异常", MessageBoxButtons.OK, false);
+                            return;
+                        }
                         if (_b_insertOrUpdate)
                         {
                             string s_sql = null;
@@ -550,6 +555,11 @@ namespace SmartDyeing.FADM_Form
                     if (txt_StepNum.Text != "" && txt_StepNum.Text != null && cbo_TechnologyName.Text != "" &&
                         cbo_TechnologyName.Text != null && txt_ProportionOrTime.Text != "" && txt_ProportionOrTime.Text != null && txt_Rev.Text != null && txt_Rev.Text != "")
                     {
+                        if (Convert.ToInt32(txt_ProportionOrTime.Text) <= 0)
+                        {
+                            FADM_Form.CustomMessageBox.Show("Time or ratio cannot be Zero, please edit again", "Abnormal operation", MessageBoxButtons.OK, false);
+                            return;
+                        }
                         if (_b_insertOrUpdate)
                         {
                             string s_sql = null;

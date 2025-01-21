@@ -681,11 +681,14 @@ namespace SmartDyeing.FADM_Form
                     FADM_Object.Communal._tcpModBus._s_IP = s_server;
                     if (FADM_Object.Communal._tcpModBus.Connect() == -1)
                     {
-                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                            FADM_Form.CustomMessageBox.Show("连接PLC失败,请检查!", "设备", MessageBoxButtons.OK, false);
-                        else
-                            FADM_Form.CustomMessageBox.Show("Connection to PLC failed, please check!", "Equipment", MessageBoxButtons.OK, false);
-                        System.Diagnostics.Process.GetProcessById(System.Diagnostics.Process.GetCurrentProcess().Id).Kill();
+                        if (!FADM_Object.Communal._b_isUseBrewOnly)
+                        {
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                FADM_Form.CustomMessageBox.Show("连接PLC失败,请检查!", "设备", MessageBoxButtons.OK, false);
+                            else
+                                FADM_Form.CustomMessageBox.Show("Connection to PLC failed, please check!", "Equipment", MessageBoxButtons.OK, false);
+                            System.Diagnostics.Process.GetProcessById(System.Diagnostics.Process.GetCurrentProcess().Id).Kill();
+                        }
                     }
                 }
                 catch
@@ -696,9 +699,11 @@ namespace SmartDyeing.FADM_Form
                         FADM_Form.CustomMessageBox.Show("Connection to PLC failed, please check!", "Equipment", MessageBoxButtons.OK, false);
                     System.Diagnostics.Process.GetProcessById(System.Diagnostics.Process.GetCurrentProcess().Id).Kill();
                 }
-
-                //清除动作错误编号
-                MyModbusFun.ClearError();
+                if (!FADM_Object.Communal._b_isUseBrewOnly)
+                {
+                    //清除动作错误编号
+                    MyModbusFun.ClearError();
+                }
 
 
                 //获取参数 写给plc寄存器 d 1000开始

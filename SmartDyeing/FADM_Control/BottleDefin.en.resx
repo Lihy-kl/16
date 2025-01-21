@@ -121,6 +121,12 @@
     <value>Browse</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="grp_BottleDetails.Size" type="System.Drawing.Size, System.Drawing">
+    <value>599, 968</value>
+  </data>
+  <data name="grp_BottleDetails.Text" xml:space="preserve">
+    <value>MotherLiquorInformation</value>
+  </data>
   <data name="cbo_OriginalBottleNum.Location" type="System.Drawing.Point, System.Drawing">
     <value>290, 634</value>
   </data>
@@ -160,6 +166,9 @@
   </data>
   <data name="cbo_SyringeType.Items2" xml:space="preserve">
     <value>Powder Drum</value>
+  </data>
+  <data name="cbo_SyringeType.Items3" xml:space="preserve">
+    <value>Metering Pump</value>
   </data>
   <data name="cbo_SyringeType.Location" type="System.Drawing.Point, System.Drawing">
     <value>290, 374</value>
@@ -326,11 +335,14 @@
   <data name="lab_BottleNum.Text" xml:space="preserve">
     <value>BottleNumber:</value>
   </data>
-  <data name="grp_BottleDetails.Size" type="System.Drawing.Size, System.Drawing">
-    <value>599, 968</value>
+  <data name="grp_AssistantDetails.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1286, 8</value>
   </data>
-  <data name="grp_BottleDetails.Text" xml:space="preserve">
-    <value>MotherLiquorInformation</value>
+  <data name="grp_AssistantDetails.Size" type="System.Drawing.Size, System.Drawing">
+    <value>602, 964</value>
+  </data>
+  <data name="grp_AssistantDetails.Text" xml:space="preserve">
+    <value>DyeingAuxiliaries</value>
   </data>
   <data name="rdo_3.Location" type="System.Drawing.Point, System.Drawing">
     <value>427, 283</value>
@@ -505,14 +517,5 @@
   </data>
   <data name="lab_AssistantName.Text" xml:space="preserve">
     <value>DyeingAuxiliariesName:</value>
-  </data>
-  <data name="grp_AssistantDetails.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1286, 8</value>
-  </data>
-  <data name="grp_AssistantDetails.Size" type="System.Drawing.Size, System.Drawing">
-    <value>602, 964</value>
-  </data>
-  <data name="grp_AssistantDetails.Text" xml:space="preserve">
-    <value>DyeingAuxiliaries</value>
   </data>
 </root>

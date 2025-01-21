@@ -775,30 +775,7 @@ namespace SmartDyeing.FADM_Auto
                             {
                                 //FADM_Object.Communal._tcpModBusBrew._b_Connect = true;
                                 _i_errCount = 0;
-
-                                if (Communal._b_isexpired)
-                                {
-                                    //发送过期信号
-                                    int[] ia_array1 = { 0 };
-                                    int i_state1 = FADM_Object.Communal._tcpModBusBrew.Write(2801, ia_array1);
-                                    if (i_state1 != -1)
-                                    {
-                                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                            throw new Exception("软件已过期");
-                                        else
-                                            throw new Exception("The software has expired");
-                                    }
-                                }
-                                else if (Communal._b_closebrew)
-                                {
-                                    //发送关机锁止信号
-                                    int[] ia_array1 = { 0 };
-                                    int i_state1 = FADM_Object.Communal._tcpModBusBrew.Write(2801, ia_array1);
-                                    if (i_state1 != -1)
-                                    {
-                                    }
-                                }
-                                else
+                                if (FADM_Object.Communal._b_isUseBrewOnly)
                                 {
                                     //没发送过，发送正常信号，就发送一次
                                     if (!Communal._tcpModBusBrew._b_Connect)
@@ -808,6 +785,44 @@ namespace SmartDyeing.FADM_Auto
                                         if (i_state1 != -1)
                                         {
                                             Communal._tcpModBusBrew._b_Connect = true;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (Communal._b_isexpired)
+                                    {
+                                        //发送过期信号
+                                        int[] ia_array1 = { 0 };
+                                        int i_state1 = FADM_Object.Communal._tcpModBusBrew.Write(2801, ia_array1);
+                                        if (i_state1 != -1)
+                                        {
+                                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                throw new Exception("软件已过期");
+                                            else
+                                                throw new Exception("The software has expired");
+                                        }
+                                    }
+                                    else if (Communal._b_closebrew)
+                                    {
+                                        //发送关机锁止信号
+                                        int[] ia_array1 = { 0 };
+                                        int i_state1 = FADM_Object.Communal._tcpModBusBrew.Write(2801, ia_array1);
+                                        if (i_state1 != -1)
+                                        {
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //没发送过，发送正常信号，就发送一次
+                                        if (!Communal._tcpModBusBrew._b_Connect)
+                                        {
+                                            int[] ia_array1 = { 1 };
+                                            int i_state1 = FADM_Object.Communal._tcpModBusBrew.Write(2801, ia_array1);
+                                            if (i_state1 != -1)
+                                            {
+                                                Communal._tcpModBusBrew._b_Connect = true;
+                                            }
                                         }
                                     }
                                 }

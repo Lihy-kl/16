@@ -76,6 +76,15 @@ namespace SmartDyeing.FADM_Form
                 FADM_Object.Communal._b_isUseAuto = false;
             }
 
+            string s_isUseABAssistant = Lib_File.Ini.GetIni("Setting", "IsUseABAssistant", "0", s_path);
+            if (s_isUseABAssistant == "1")
+            {
+                FADM_Object.Communal._b_isUseABAssistant = true;
+            }
+
+            string s_ABAssistantCount = Lib_File.Ini.GetIni("Setting", "ABAssistantCount", "2", s_path);
+            FADM_Object.Communal._i_ABAssistantCount = Convert.ToInt32(s_ABAssistantCount);
+
             countDown();
 
             BtnMain_Click(sender, e);
@@ -524,7 +533,7 @@ namespace SmartDyeing.FADM_Form
                 FADM_Object.Communal._b_isUseCloth = true;
             }
 
-            string s_isNeedConfirm = Lib_File.Ini.GetIni("Setting", "s_IsNeedConfirm", "0", s_path);
+            string s_isNeedConfirm = Lib_File.Ini.GetIni("Setting", "IsNeedConfirm", "0", s_path);
             if (s_isNeedConfirm == "1")
             {
                 FADM_Object.Communal._b_isNeedConfirm = true;
@@ -535,6 +544,14 @@ namespace SmartDyeing.FADM_Form
             {
                 FADM_Object.Communal._b_isBathRatioTxtDyBath = true;
             }
+
+            string s_isUseBrewOnly = Lib_File.Ini.GetIni("Setting", "IsUseBrewOnly", "0", s_path);
+            if (s_isUseBrewOnly == "1")
+            {
+                FADM_Object.Communal._b_isUseBrewOnly = true;
+            }
+
+            
         }
 
         public void countDown()
@@ -4675,6 +4692,8 @@ namespace SmartDyeing.FADM_Form
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (FADM_Object.Communal._b_isUseBrewOnly)
+                return;
             if (FADM_Object.Communal._b_isBackUp)
             {
                 if (Lib_Card.Configure.Parameter.Other_Language == 0)

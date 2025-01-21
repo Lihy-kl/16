@@ -207,6 +207,26 @@ namespace SmartDyeing.FADM_Control
                                     e.Bounds);
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.F2)
+            {
+                Form parentForm = this.FindForm();
+                Formula ss = (Formula)parentForm;
+                ss.mym(Keys.F2);
+                // 屏蔽F2键
+                return true;
+            } else if (keyData == Keys.F4) {
+                Form parentForm = this.FindForm();
+                Formula ss = (Formula)parentForm;
+                ss.mym(Keys.F4);
+                // 屏蔽F2键
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         public  IList<string> GetStations(string filter)
         {
             IList<string> results = new List<string>();
@@ -232,7 +252,21 @@ namespace SmartDyeing.FADM_Control
                 f =>
                 (f.Substring(0, filter.Length) == filter)).ToList<string>();*/
 
-            return results.Where(item => item.Contains(filter)).ToList();
+            return results
+                    .Where(item => item.Contains(filter)) // 模糊匹配
+                    .OrderBy(item => item.Length != filter.Length) // 匹配项的长度一致的排在前面
+                    .ThenBy(item => item.Length) // 按字符长度排序
+                    .ThenBy(item => item) // 按字母顺序排序
+                    .ToList();
+           // results = results.Where(item => item.Contains(filter)).ToList();
+           // results = results.OrderBy(item => item.Length).ToList();
+            //return results.Where(item => item.Contains(filter)).OrderBy(item => item.Length).ToList();
+           // return (IList<string>)results.Where(s => s.StartsWith(filter)).GroupBy(s => s.Length).OrderBy(g => g.Key == filter.Length).SelectMany(g => g).ToList();
+            // 使用Where进行模糊查询
+            // 按字符长度分组
+            // 首先排序字符长度与搜索词相同的组
+            // 然后按字符长度排序
+            // 展开分组
 
         }
 

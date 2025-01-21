@@ -183,7 +183,12 @@ namespace SmartDyeing.FADM_Control
                 IntPtr ptr = FindWindow(null, s_temp);
                 if (ptr == IntPtr.Zero)
                 {
-                    new BottleDetails(Convert.ToInt16(Bottle.NO)).Show();
+                    //new BottleDetails(Convert.ToInt16(Bottle.NO)).Show();
+                    BottleDetails b = new BottleDetails(Convert.ToInt16(Bottle.NO));
+                    if(MousePosition.X > 800)
+                    b.Location = new Point(10, 100);
+
+                    b.Show();
                 }
             }
             else
