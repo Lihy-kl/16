@@ -85,7 +85,7 @@ namespace SmartDyeing.FADM_Control
                     }
                     else
                     {
-                        i_bottleInterval_X = (this.PnlBottle.Width - bottle.Width * ((_i_machineType / i_bottleLine) + 1)) / (_i_machineType / i_bottleLine );
+                        i_bottleInterval_X = (this.PnlBottle.Width - bottle.Width * ((_i_machineType / i_bottleLine) + 1)) / (_i_machineType / i_bottleLine);
                     }
 
                     //计算瓶子Y轴间隔
@@ -99,13 +99,13 @@ namespace SmartDyeing.FADM_Control
                     if (FADM_Object.Communal._b_isUseABAssistant)
                     {
                         //计算母液瓶坐标
-                        if (i <= _i_machineType - (14+ FADM_Object.Communal._i_ABAssistantCount))
+                        if (i <= _i_machineType - (14 + FADM_Object.Communal._i_ABAssistantCount))
                             bottle.Location = new Point(((i - 1) / i_bottleLine * (i_bottleInterval_X + bottle.Width)),
                                  ((i - 1) % i_bottleLine) * (i_bottleInterval_Y + bottle.Height + 10));
-                        else if (i <= _i_machineType - (7+ FADM_Object.Communal._i_ABAssistantCount))
+                        else if (i <= _i_machineType - (7 + FADM_Object.Communal._i_ABAssistantCount))
                             bottle.Location = new Point((((_i_machineType - (14 + FADM_Object.Communal._i_ABAssistantCount)) / i_bottleLine + 0) * (i_bottleInterval_X + bottle.Width)),
                                ((i + 13 + FADM_Object.Communal._i_ABAssistantCount - _i_machineType) % 8 + 3) * (i_bottleInterval_Y + bottle.Height + 10));
-                        else if (i <= _i_machineType -  FADM_Object.Communal._i_ABAssistantCount)
+                        else if (i <= _i_machineType - FADM_Object.Communal._i_ABAssistantCount)
                             bottle.Location = new Point((((_i_machineType - (14 + FADM_Object.Communal._i_ABAssistantCount)) / i_bottleLine + 1) * (i_bottleInterval_X + bottle.Width)),
                               ((i + 14 + FADM_Object.Communal._i_ABAssistantCount - _i_machineType) % 8 + 3) * (i_bottleInterval_Y + bottle.Height + 10));
                         else
@@ -127,7 +127,7 @@ namespace SmartDyeing.FADM_Control
                     }
                     if (FADM_Object.Communal._b_isUseABAssistant)
                     {
-                        i_balanceX = (_i_machineType - (14+ FADM_Object.Communal._i_ABAssistantCount)) / i_bottleLine * (i_bottleInterval_X + bottle.Width) + ((i_bottleInterval_X + bottle.Width * 2 - _balance.Width) / 2) + 20;
+                        i_balanceX = (_i_machineType - (14 + FADM_Object.Communal._i_ABAssistantCount)) / i_bottleLine * (i_bottleInterval_X + bottle.Width) + ((i_bottleInterval_X + bottle.Width * 2 - _balance.Width) / 2) + 20;
                     }
                     else
                     {
@@ -213,7 +213,7 @@ namespace SmartDyeing.FADM_Control
             if (e.Button != MouseButtons.Right)
             {
                 string s_temp = null;
-                if(Lib_Card.Configure.Parameter.Other_Language == 0)
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
                 {
                     s_temp = "母液瓶详细资料";
                 }
@@ -348,17 +348,45 @@ namespace SmartDyeing.FADM_Control
                 //更新所以瓶
                 bottle_update();
 
-                if ("6666" != FADM_Object.Communal._s_balanceValue &&
-                "7777" != FADM_Object.Communal._s_balanceValue &&
-                "8888" != FADM_Object.Communal._s_balanceValue &&
-                "9999" != FADM_Object.Communal._s_balanceValue)
+
+                if (Lib_Card.Configure.Parameter.Machine_Type == 0)
                 {
-                    _balance.Title = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", FADM_Object.Communal._s_balanceValue) : string.Format("{0:F3}", FADM_Object.Communal._s_balanceValue);
-                    this._balance.LiquidColor = Color.DeepSkyBlue;
+                    if (Lib_Card.Configure.Parameter.Machine_BalanceType == 0)
+                    {
+                        if (6666 != Lib_SerialPort.Balance.METTLER.BalanceValue &&
+                            7777 != Lib_SerialPort.Balance.METTLER.BalanceValue &&
+                            8888 != Lib_SerialPort.Balance.METTLER.BalanceValue &&
+                            9999 != Lib_SerialPort.Balance.METTLER.BalanceValue)
+                            _balance.Title = string.Format("{0:F}", Lib_SerialPort.Balance.METTLER.BalanceValue);
+                    }
+                    else
+                    {
+                        if (6666 != Lib_SerialPort.Balance.SHINKO.BalanceValue &&
+                            //7777 != Lib_SerialPort.Balance.SHINKO.BalanceValue &&
+                            8888 != Lib_SerialPort.Balance.SHINKO.BalanceValue &&
+                            9999 != Lib_SerialPort.Balance.SHINKO.BalanceValue)
+                            _balance.Title = string.Format("{0:F3}", Lib_SerialPort.Balance.SHINKO.BalanceValue);
+                    }
+
+                    if (FADM_Object.Communal._b_balanceAlarm)
+                        this._balance.LiquidColor = Color.Red;
+                    else
+                        this._balance.LiquidColor = Color.DeepSkyBlue;
                 }
                 else
                 {
-                    this._balance.LiquidColor = Color.Red;
+                    if ("6666" != FADM_Object.Communal._s_balanceValue &&
+                "7777" != FADM_Object.Communal._s_balanceValue &&
+                "8888" != FADM_Object.Communal._s_balanceValue &&
+                "9999" != FADM_Object.Communal._s_balanceValue)
+                    {
+                        _balance.Title = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", FADM_Object.Communal._s_balanceValue) : string.Format("{0:F3}", FADM_Object.Communal._s_balanceValue);
+                        this._balance.LiquidColor = Color.DeepSkyBlue;
+                    }
+                    else
+                    {
+                        this._balance.LiquidColor = Color.Red;
+                    }
                 }
 
                 //更新当前批次母液瓶不足信息
@@ -472,7 +500,7 @@ namespace SmartDyeing.FADM_Control
                 {
                     lab_Expire.Text = "ExpiredBottleNumber:" + s_bootleExpire.Substring(0, s_bootleExpire.Length - 1);
                 }
-                }
+            }
             else
             {
                 //lab_Expire.Visible = false;
@@ -545,7 +573,7 @@ namespace SmartDyeing.FADM_Control
                                 if (Lib_Card.Configure.Parameter.Other_Language == 0)
                                     _sa_bottleInfo[Convert.ToInt16(dr["BottleNum"]) - 1] = Lib_Card.CardObject.InsertD(Convert.ToInt16(dr["BottleNum"]) + "号母液瓶过期，请重新泡制", "bottle_update");
                                 else
-                                    _sa_bottleInfo[Convert.ToInt16(dr["BottleNum"]) - 1] = Lib_Card.CardObject.InsertD( "The "+ Convert.ToInt16(dr["BottleNum"]) + " mother liquor bottle has expired, please re brew it", "bottle_update");
+                                    _sa_bottleInfo[Convert.ToInt16(dr["BottleNum"]) - 1] = Lib_Card.CardObject.InsertD("The " + Convert.ToInt16(dr["BottleNum"]) + " mother liquor bottle has expired, please re brew it", "bottle_update");
                             }
                         }
                         else if (timeDifference > (Convert.ToUInt32(s_termOfValidity) - 4) * 60 * 60)
@@ -1052,7 +1080,7 @@ namespace SmartDyeing.FADM_Control
 
                             Label label = _lis_lab[Communal._dic_dyecup_index[Convert.ToInt16(dr1["CupNum"].ToString())]];
 
-                            
+
                             if (Lib_Card.Configure.Parameter.Other_Language == 0)
                                 label.Text = dr1["Statues"].ToString();
                             else
@@ -1061,7 +1089,7 @@ namespace SmartDyeing.FADM_Control
                                 {
                                     label.Text = "standby";
                                 }
-                                else if("上线" == dr1["Statues"].ToString())
+                                else if ("上线" == dr1["Statues"].ToString())
                                 {
                                     label.Text = "OnLine";
                                 }
@@ -1272,7 +1300,7 @@ namespace SmartDyeing.FADM_Control
                                         //判断是否合格
                                         foreach (DataRow dr2 in P_dt_data.Rows)
                                         {
-                                            double d_bl_RealErr = Convert.ToDouble(Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", Convert.ToDouble(dr2["ObjectDropWeight"])+ (dr2["Compensation"] is DBNull?0.0: Convert.ToDouble(dr2["Compensation"])) - Convert.ToDouble(dr2["RealDropWeight"])) : string.Format("{0:F3}", Convert.ToDouble(dr2["ObjectDropWeight"]) + (dr2["Compensation"] is DBNull ? 0.0 : Convert.ToDouble(dr2["Compensation"])) - Convert.ToDouble(dr2["RealDropWeight"])));
+                                            double d_bl_RealErr = Convert.ToDouble(Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", Convert.ToDouble(dr2["ObjectDropWeight"]) + (dr2["Compensation"] is DBNull ? 0.0 : Convert.ToDouble(dr2["Compensation"])) - Convert.ToDouble(dr2["RealDropWeight"])) : string.Format("{0:F3}", Convert.ToDouble(dr2["ObjectDropWeight"]) + (dr2["Compensation"] is DBNull ? 0.0 : Convert.ToDouble(dr2["Compensation"])) - Convert.ToDouble(dr2["RealDropWeight"])));
                                             d_bl_RealErr = d_bl_RealErr > 0 ? d_bl_RealErr : -d_bl_RealErr;
                                             if (d_bl_RealErr > d_bl_drop_allow_err)
                                             {
@@ -1414,9 +1442,9 @@ namespace SmartDyeing.FADM_Control
                             }
                         }
 
-                        
 
-                        
+
+
                     }
                 }
                 catch
@@ -1774,7 +1802,7 @@ namespace SmartDyeing.FADM_Control
                     else
                     {
                         //需要洗杯
-                        if (MyAbsorbance._abs_Temps[Convert.ToInt32(s_cupNum) -1]._s_history=="1")
+                        if (MyAbsorbance._abs_Temps[Convert.ToInt32(s_cupNum) - 1]._s_history == "1")
                         {
                             //发送洗杯
                             //发送启动
@@ -1821,7 +1849,7 @@ namespace SmartDyeing.FADM_Control
                             else
                                 FADM_Object.Communal._tcpModBusAbs.Write(810, values);
 
-                             s_sql = "UPDATE abs_cup_details SET Statues='洗杯',IsUsing = 1,Type=0  WHERE CupNum = " + s_cupNum + " ;";
+                            s_sql = "UPDATE abs_cup_details SET Statues='洗杯',IsUsing = 1,Type=0  WHERE CupNum = " + s_cupNum + " ;";
                             FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
 
                             //加入到等待列表
@@ -3099,7 +3127,7 @@ namespace SmartDyeing.FADM_Control
 
         private void contextMenuStrip2_Opening(object sender, CancelEventArgs e)
         {
-            if(FADM_Object.Communal._b_pause)
+            if (FADM_Object.Communal._b_pause)
             {
                 if (Lib_Card.Configure.Parameter.Other_Language == 0)
                     tsm_SignPause.Text = "恢复";
@@ -3107,7 +3135,7 @@ namespace SmartDyeing.FADM_Control
                     tsm_SignPause.Text = "Restore";
             }
 
-            if(Lib_Card.Configure.Parameter.Other_UseAbs== 0 || FADM_Object.Communal._b_absErr)
+            if (Lib_Card.Configure.Parameter.Other_UseAbs == 0 || FADM_Object.Communal._b_absErr)
             {
                 tsm_TestAbs.Visible = false;
                 tsm_TestStanAbs.Visible = false;
@@ -3115,7 +3143,6 @@ namespace SmartDyeing.FADM_Control
             }
 
         }
-
         private void Reset()
         {
             while (true)
@@ -3129,7 +3156,7 @@ namespace SmartDyeing.FADM_Control
             }
         }
 
-       
+
 
 
 

@@ -12,6 +12,7 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Drawing;
 using System.Runtime.Remoting.Lifetime;
 using Lib_Card;
+using Lib_Card.ADT8940A1.Module.Home;
 
 namespace SmartDyeing.FADM_Auto
 {
@@ -35,6 +36,10 @@ namespace SmartDyeing.FADM_Auto
 
                 MyModbusFun.SetBatchStart();
                 //FADM_Auto.Reset.IOReset();  //这里要待定 看下怎么改
+                if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                {
+                    Lib_Card.ADT8940A1.Module.Home.Home.Home_XYZFinish = false;
+                }
                 /*if (!Lib_Card.ADT8940A1.Module.Home.Home.Home_XYZFinish)
                 {
                     //回零
@@ -351,6 +356,17 @@ namespace SmartDyeing.FADM_Auto
 
             int i_res = 0;
         label11:
+
+
+            //判断有异常 松开失能 推送了
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+            {
+                //富士伺服在下面判断 天平状态 原有不动 绿维的放在上面 并且置位 是否回原点 绿维的放移动机械手前面
+
+                //判断是否异常
+                FADM_Object.Communal.BalanceState("针检");
+            }
+
             //移动到母液瓶
             FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找1号(吸光度杯)");
             FADM_Object.Communal._i_optBottleNum = i_bottleNo;
@@ -362,6 +378,7 @@ namespace SmartDyeing.FADM_Auto
             //抽液
             DataTable dt_bottle_details = FADM_Object.Communal._fadmSqlserver.GetData(
                 "SELECT SyringeType FROM bottle_details WHERE BottleNum = '" + i_bottleNo + "';");
+
 
 
             if ("小针筒" == Convert.ToString(dt_bottle_details.Rows[0][0]) || "Little Syringe" == Convert.ToString(dt_bottle_details.Rows[0][0]))
@@ -520,8 +537,14 @@ namespace SmartDyeing.FADM_Auto
             FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找天平位");
 
             //判断是否异常
-            FADM_Object.Communal.BalanceState("针检");
+            
+            if ((Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 0)|| Lib_Card.Configure.Parameter.Machine_Type == 1)
+            {
+                //富士伺服在下面判断 天平状态 原有不动 绿维的放在上面 并且置位 是否回原点
 
+                //判断是否异常
+                FADM_Object.Communal.BalanceState("针检");
+            }
             //调零
             //Lib_SerialPort.Balance.METTLER.bZeroSign = true;
 
@@ -723,6 +746,16 @@ namespace SmartDyeing.FADM_Auto
             else
             {
             label11:
+
+                if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                {
+                    //富士伺服在下面判断 天平状态 原有不动 绿维的放在上面 并且置位 是否回原点 绿维的放移动机械手前面
+
+                    //判断是否异常
+                    FADM_Object.Communal.BalanceState("针检");
+                }
+
+
                 //移动到母液瓶
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找" + i_bottleNo + "号母液瓶");
                 FADM_Object.Communal._i_optBottleNum = i_bottleNo;
@@ -850,9 +883,14 @@ namespace SmartDyeing.FADM_Auto
                 //移动到天平位
 
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找天平位");
+                if ((Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 0) || Lib_Card.Configure.Parameter.Machine_Type == 1)
+                {
+                    //富士伺服在下面判断 天平状态 原有不动 绿维的放在上面 并且置位 是否回原点
 
-                //判断是否异常
-                FADM_Object.Communal.BalanceState("针检");
+                    //判断是否异常
+                    FADM_Object.Communal.BalanceState("针检");
+                }
+               
 
                 //调零
                 //Lib_SerialPort.Balance.METTLER.bZeroSign = true;
@@ -1104,6 +1142,14 @@ namespace SmartDyeing.FADM_Auto
             else
             {
 
+                if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                {
+                    //富士伺服在下面判断 天平状态 原有不动 绿维的放在上面 并且置位 是否回原点 绿维的放移动机械手前面
+
+                    //判断是否异常
+                    FADM_Object.Communal.BalanceState("针检");
+                }
+
                 //移动到母液瓶
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找" + i_bottleNo + "号母液瓶");
                 FADM_Object.Communal._i_optBottleNum = i_bottleNo;
@@ -1221,9 +1267,14 @@ namespace SmartDyeing.FADM_Auto
                 //移动到天平位
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找天平位");
 
-                //判断是否异常
-                FADM_Object.Communal.BalanceState("针检");
 
+                if ((Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 0) || Lib_Card.Configure.Parameter.Machine_Type == 1)
+                {
+                    //富士伺服在下面判断 天平状态 原有不动 绿维的放在上面 并且置位 是否回原点
+
+                    //判断是否异常
+                    FADM_Object.Communal.BalanceState("针检");
+                }
                 //调零
                 if (FADM_Object.Communal._b_isZero)//清零
                     MyModbusFun.ClearBalance();//调用清零 发送指令成功就返回。下面在判断读数

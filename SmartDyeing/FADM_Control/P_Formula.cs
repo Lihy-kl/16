@@ -2450,6 +2450,40 @@ namespace SmartDyeing.FADM_Control
 
                     }
 
+                lab_ag1:
+                    string s_sql_agaon = "SELECT *  FROM formula_head  WHERE" +
+                                               " FormulaCode = '" + txt_FormulaCode.Text + "' AND" +
+                                               " VersionNum = '" + txt_VersionNum.Text + "' ;";
+                    DataTable dt_again = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_agaon);
+
+
+                    if (dt_again.Rows.Count > 0)
+                    {
+                        string s_sql_q = "DELETE FROM formula_head WHERE" +
+                                           " FormulaCode = '" + txt_FormulaCode.Text + "'" +
+                                           " AND VersionNum = '" + txt_VersionNum.Text + "' ;";
+                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql_q);
+
+                        goto lab_ag1;
+                    }
+
+                lab_ag2:
+                    s_sql_agaon = "SELECT *  FROM formula_details  WHERE" +
+                                               " FormulaCode = '" + txt_FormulaCode.Text + "' AND" +
+                                               " VersionNum = '" + txt_VersionNum.Text + "' ;";
+                    dt_again = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_agaon);
+
+
+                    if (dt_again.Rows.Count > 0)
+                    {
+                        string s_sql_q = "DELETE FROM formula_details WHERE" +
+                                           " FormulaCode = '" + txt_FormulaCode.Text + "'" +
+                                           " AND VersionNum = '" + txt_VersionNum.Text + "' ;";
+                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql_q);
+
+                        goto lab_ag2;
+                    }
+
 
                     //string P_str_sql_3 = "SELECT BottleMinWeight FROM other_parameters WHERE MyID = 1;";
                     //DataTable _dt_data = FADM_Object.Communal._fadmSqlserver.GetData(P_str_sql_3);
@@ -2637,11 +2671,18 @@ namespace SmartDyeing.FADM_Control
                             dgvr.DefaultCellStyle.BackColor != Color.Red &&
                             dgvr.DefaultCellStyle.BackColor != Color.Lime)
                         {
+                            lab_ag:
                             //删除滴液详情表当前数据
                             s_sql_1 = "DELETE FROM drop_details WHERE" +
                                           " FormulaCode = '" + txt_FormulaCode.Text + "' AND" +
                                           " CupNum = " + s_cup + " ;";
                             FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql_1);
+
+                             s_sql_agaon = "SELECT *  FROM drop_details WHERE CupNum = '" + s_cup + "';";
+                             dt_again = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_agaon);
+
+                            if (dt_again.Rows.Count > 0)
+                                goto lab_ag;
 
 
                             //添加进滴液详细表
@@ -2735,6 +2776,20 @@ namespace SmartDyeing.FADM_Control
                         else
                             FADM_Form.CustomMessageBox.Show(s_logPastDue + "mother liquor bottle expired！", "expire", MessageBoxButtons.OK, false);
                     }
+
+                    //查询配方是否存在重复瓶号
+                    string s_temp1;
+                    s_temp1 = "SELECT FormulaCode,VersionNum,BottleNum FROM formula_details   where FormulaCode = '" + txt_FormulaCode.Text + "' and VersionNum=" + txt_VersionNum.Text + "  GROUP BY FormulaCode,VersionNum,BottleNum HAVING COUNT(*) > 1;  ";
+                    DataTable dt_data_detail = FADM_Object.Communal._fadmSqlserver.GetData(s_temp1);
+                    if (dt_data_detail.Rows.Count > 0)
+                    {
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            FADM_Form.CustomMessageBox.Show("保存失败，请重新保存", "btn_Save_Click", MessageBoxButtons.OK, false);
+                        else
+                            FADM_Form.CustomMessageBox.Show("Failed to save. Please try again", "btn_Save_Click", MessageBoxButtons.OK, false);
+                        return;
+                    }
+
                     if (Lib_Card.Configure.Parameter.Other_Language == 0)
                         FADM_Form.CustomMessageBox.Show("保存完成", "温馨提示", MessageBoxButtons.OK, false);
                     else

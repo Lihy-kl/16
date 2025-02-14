@@ -658,5 +658,28 @@ namespace SmartDyeing.FADM_Control
                 dgv_Child_DyeData.ClearSelection();
             }
         }
+
+        private void btn_Copy_Click(object sender, EventArgs e)
+        {
+            try
+
+            {
+                ReName rename = new ReName(2, txt_Dye_Code.Text);
+                rename.ShowDialog();
+                if (rename.DialogResult != DialogResult.OK)
+                {
+                    return;
+                }
+
+                UpdateListAndDyeCode();
+
+                int i_index = dgv_Child_DyeData.CurrentRow.Index;
+
+                DyeCodeShow(FADM_Object.Communal._s_reName);
+                dgv_Child_DyeData.CurrentCell = dgv_Child_DyeData[0, i_index];
+
+            }
+            catch { }
+        }
     }
 }

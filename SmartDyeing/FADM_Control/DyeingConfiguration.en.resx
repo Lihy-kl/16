@@ -118,6 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="btn_Copy.Size" type="System.Drawing.Size, System.Drawing">
+    <value>142, 42</value>
+  </data>
+  <data name="btn_Copy.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>69, 19</value>
   </data>
@@ -175,13 +181,13 @@
   <data name="grp_BrewingProcess.Text" xml:space="preserve">
     <value>DyeingProcessSettings</value>
   </data>
-  <data name="dgv_Dye_Code.Size" type="System.Drawing.Size, System.Drawing">
-    <value>326, 955</value>
-  </data>
   <data name="grp_Dyeing.Size" type="System.Drawing.Size, System.Drawing">
     <value>332, 977</value>
   </data>
   <data name="grp_Dyeing.Text" xml:space="preserve">
     <value>Browse</value>
+  </data>
+  <data name="dgv_Dye_Code.Size" type="System.Drawing.Size, System.Drawing">
+    <value>326, 955</value>
   </data>
 </root>

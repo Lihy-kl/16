@@ -44,6 +44,8 @@ namespace Lib_Card
         public static Dictionary<string, prompt> keyValuePairsCopy = new Dictionary<string, prompt>();
         public static Dictionary<string, prompt> keyValuePairsCopy1 = new Dictionary<string, prompt>();
 
+        private static readonly object lockObject = new object();
+
         /// <summary>
         /// 插入语音播报字典
         /// </summary>
@@ -51,7 +53,7 @@ namespace Lib_Card
         /// <param name="Caption">类型</param>
         public static string InsertD(string Text, string Caption)
         {
-            lock (keyValuePairs)
+            lock (lockObject)
             {
             labe2:
                 try
@@ -92,7 +94,7 @@ namespace Lib_Card
                 try
                 {
                     DateTime dateTime = DateTime.Now;
-                    string time = dateTime.ToLongTimeString();
+                    string time = dateTime.ToString("HH:mm:ss.fff");
                     prompt prompt = new prompt();
 
                     prompt.Type = Caption;
@@ -121,7 +123,7 @@ namespace Lib_Card
         /// <param name="Caption">类型</param>
         public static string InsertCF(string Text, string Caption)
         {
-            lock (keyValuePairs)
+            lock (lockObject)
             {
 
             label2:
@@ -172,7 +174,7 @@ namespace Lib_Card
                 try
                 {
                     DateTime dateTime = DateTime.Now;
-                    string time = dateTime.ToLongTimeString();
+                    string time = dateTime.ToString("HH:mm:ss.fff");
                     prompt prompt = new prompt();
 
                     prompt.Type = Caption;
@@ -217,7 +219,7 @@ namespace Lib_Card
                                 Thread.Sleep(1);
                             }
                             string str = keyValuePairs[s].Info;
-                            lock (keyValuePairs)
+                            lock (lockObject)
                             {
                                 keyValuePairs.Remove(s);
                             }

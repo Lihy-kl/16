@@ -675,6 +675,13 @@ namespace SmartDyeing.FADM_Form
                     string s_path = Environment.CurrentDirectory + "\\Config\\Config.ini";
                     string s_server = Lib_File.Ini.GetIni("PLC", "IP", s_path);
                     string s_port = Lib_File.Ini.GetIni("PLC", "Port", s_path);
+
+                    string s_isUseBrewOnly = Lib_File.Ini.GetIni("Setting", "IsUseBrewOnly", "0", s_path);
+                    if (s_isUseBrewOnly == "1")
+                    {
+                        FADM_Object.Communal._b_isUseBrewOnly = true;
+                    }
+
                     //连接plc
                     FADM_Object.Communal._tcpModBus = new TCPModBus();
                     FADM_Object.Communal._tcpModBus._i_port = Convert.ToInt32(s_port);

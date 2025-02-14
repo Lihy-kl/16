@@ -1208,7 +1208,47 @@ namespace SmartDyeing.FADM_Form
                                         }
                                         foreach (DataRow dr in dt_data.Rows)
                                         {
-                                            if (!FADM_Object.Communal._b_isNeedConfirm)
+
+                                            if (FADM_Object.Communal._b_isNeedConfirm)
+                                            {
+                                                if (Communal._dic_first_second[Convert.ToInt32(dr["CupNum"])] > 0)
+                                                {
+                                                    //先判断另外一个杯有没在使用
+                                                    s_sql = "SELECT * FROM drop_head Where CupNum = " + Communal._dic_first_second[Convert.ToInt32(dr["CupNum"])] + " And BatchName !='0';";
+                                                    DataTable dt_drop_head_1 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                                    if (dt_drop_head_1.Rows.Count > 0)
+                                                    {
+                                                        string s_cup_s = "SELECT  * FROM cup_details WHERE  CupNum = " + Communal._dic_first_second[Convert.ToInt32(dr["CupNum"])] + " ;";
+                                                        DataTable dt_cup_s = FADM_Object.Communal._fadmSqlserver.GetData(s_cup_s);
+                                                        if (dt_cup_s.Rows.Count > 0)
+                                                        {
+                                                            //判断是否一样批次号
+                                                            if (dt_drop_head_1.Rows[0]["BatchName"].ToString() == s_batchNum)
+                                                            {
+
+                                                            }
+                                                            //不是一样批次号才判断步数
+                                                            else
+                                                            {
+                                                                //当前工艺步骤为1时，或者批次号一致可以加入
+                                                                if ((Convert.ToInt32(dt_cup_s.Rows[0]["StepNum"].ToString()) <= 1 && dt_cup_s.Rows[0]["TechnologyName"].ToString() == "放布"))
+                                                                {
+                                                                }
+                                                                else
+                                                                {
+                                                                    //停止中或步号不为1
+                                                                    if (Convert.ToInt32(dt_cup_s.Rows[0]["StepNum"].ToString()) > 1 || dt_cup_s.Rows[0]["Statues"].ToString() == "停止中")
+                                                                    {
+                                                                        continue;
+                                                                    }
+                                                                }
+                                                            }
+
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            else
                                             {
                                                 //把双杯的都判断一下，如果两个杯都有配方，就一起滴定，如果只有一个杯有配方就不自动开始
                                                 if (Communal._dic_first_second[Convert.ToInt32(dr["CupNum"])] > 0)
@@ -5182,7 +5222,7 @@ namespace SmartDyeing.FADM_Form
             DateTime dt = DateTime.Now;
             DateTime dt1= DateTime.Now;
             dt1= dt.AddDays(-30);
-            FADM_Object.Communal._fadmSqlserver.ReviseData("delete from brew_run_table where MyDateTime < "+dt1.ToString());
+            FADM_Object.Communal._fadmSqlserver.ReviseData("delete from brew_run_table where MyDateTime < '" + dt1.ToString() + "'");
             countDown();
 
 

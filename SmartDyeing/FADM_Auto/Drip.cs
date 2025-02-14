@@ -1,4 +1,5 @@
 ﻿
+using Lib_Card.ADT8940A1.Module.Home;
 using Lib_File;
 using SmartDyeing.FADM_Control;
 using SmartDyeing.FADM_Form;
@@ -852,12 +853,17 @@ namespace SmartDyeing.FADM_Auto
                 else
                     Communal._b_isWaitDrip = false;
 
-
+                
 
                 //回零               
                 string s_homeErr = "";
 
                 MyModbusFun.Reset();
+
+                if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                {
+                    Lib_Card.ADT8940A1.Module.Home.Home.Home_XYZFinish = false;
+                }
 
                 if (FADM_Object.Communal._b_isDebug)
                 {
@@ -5638,6 +5644,16 @@ namespace SmartDyeing.FADM_Auto
             {
                 FADM_Object.Communal._b_stop = true;
             }
+
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+            {
+                //富士伺服在下面判断 天平状态 原有不动 绿维的放在上面 并且置位 是否回原点 绿维的放移动机械手前面
+
+                //判断是否异常
+                FADM_Object.Communal.BalanceState("滴液");
+            }
+
+
             FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找" + i_minBottleNo + "号母液瓶");
             FADM_Object.Communal._i_optBottleNum = i_minBottleNo;
             i_mRes = MyModbusFun.TargetMove(0, i_minBottleNo, 1);
@@ -5895,8 +5911,16 @@ namespace SmartDyeing.FADM_Auto
                     FADM_Object.Communal._b_stop = true;
                 }
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找天平位");
-                //判断是否异常
-                FADM_Object.Communal.BalanceState("滴液");
+
+
+
+                if ((Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 0) || Lib_Card.Configure.Parameter.Machine_Type == 1)
+                {
+                    //富士伺服在下面判断 天平状态 原有不动 绿维的放在上面 并且置位 是否回原点
+
+                    //判断是否异常
+                    FADM_Object.Communal.BalanceState("滴液");
+                }
 
                 i_mRes = MyModbusFun.TargetMove(2, 0, 0);
                 if (-2 == i_mRes)
@@ -7335,6 +7359,15 @@ namespace SmartDyeing.FADM_Auto
                         //把实际加水杯号记录
                         lis_actualAddWaterCup.Add(i_cupNo);
 
+                        if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                        {
+                            //富士伺服在下面判断 天平状态 原有不动 绿维的放在上面 并且置位 是否回原点 绿维的放移动机械手前面
+
+                            //判断是否异常
+                            FADM_Object.Communal.BalanceState("滴液"); //这是加水 
+                        }
+
+
                         FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找" + i_cupNo + "号配液杯");
                         int i_reSuccess2 = MyModbusFun.TargetMove(1, i_cupNo, 1);
                         if (-2 == i_reSuccess2)
@@ -7478,7 +7511,13 @@ namespace SmartDyeing.FADM_Auto
                     FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找天平位");
 
                     //判断是否异常
-                    FADM_Object.Communal.BalanceState("滴液");
+                    if ((Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 0) || Lib_Card.Configure.Parameter.Machine_Type == 1)
+                    {
+                        //富士伺服在下面判断 天平状态 原有不动 绿维的放在上面 并且置位 是否回原点
+
+                        //判断是否异常
+                        FADM_Object.Communal.BalanceState("滴液");
+                    }
 
                     //Lib_SerialPort.Balance.METTLER.bZeroSign = true;
 
@@ -7650,8 +7689,14 @@ namespace SmartDyeing.FADM_Auto
                             myAlarm = new FADM_Object.MyAlarm(" The re inspection of" + s_failC + " cup with water has failed. Do you want to continue? (To continue dripping, please click Yes, and to exit dripping, please click No)", "Add water for retesting", true, 1);
                         while (true)
                         {
-                            if (0 != myAlarm._i_alarm_Choose)
+                            if (0 != myAlarm._i_alarm_Choose) {
+                                if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                                {
+                                  //  Home.Home_XYZFinish = false;
+                                }
                                 break;
+                            }
+                               
                             Thread.Sleep(1);
                         }
 
@@ -7937,8 +7982,14 @@ namespace SmartDyeing.FADM_Auto
                                 "The " + i_minBottleNo + " mother liquor bottle has expired, and there is a record of opened materials in the material preparation table. Should it be replaced? (Please click Yes for replacement, and click No for continuing to use the old mother liquor)", "Drip", true, 1);
                             while (true)
                             {
-                                if (0 != myAlarm._i_alarm_Choose)
+                                if (0 != myAlarm._i_alarm_Choose) {
+                                    if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                                    {
+                                       // Home.Home_XYZFinish = false;
+                                    }
                                     break;
+                                }
+                                    
                                 Thread.Sleep(1);
                             }
                             //判断染色线程是否需要用机械手
@@ -8005,8 +8056,14 @@ namespace SmartDyeing.FADM_Auto
                                 "The " + i_minBottleNo + " mother liquor bottle has expired, and there is a record of opened materials in the material preparation table. Should it be replaced? (Please click Yes for replacement, and click No for continuing to use the old mother liquor)", "Drip", true, 1);
                             while (true)
                             {
-                                if (0 != myAlarm._i_alarm_Choose)
+                                if (0 != myAlarm._i_alarm_Choose) {
+                                    if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                                    {
+                                       // Home.Home_XYZFinish = false;
+                                    }
                                     break;
+                                }
+                                    
                                 Thread.Sleep(1);
                             }
                             //判断染色线程是否需要用机械手
@@ -8146,8 +8203,14 @@ namespace SmartDyeing.FADM_Auto
                     while (true)
 
                     {
-                        if (0 != myAlarm._i_alarm_Choose)
+                        if (0 != myAlarm._i_alarm_Choose) {
+                            if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                            {
+                              //  Home.Home_XYZFinish = false;
+                            }
                             break;
+                        }
+                            
                         Thread.Sleep(1);
                     }
                     //判断染色线程是否需要用机械手
@@ -8244,8 +8307,14 @@ namespace SmartDyeing.FADM_Auto
                             "(To continue searching, please click Yes. To exit Drip, please click No)", "Drip", true, 1);
                     while (true)
                     {
-                        if (0 != myAlarm._i_alarm_Choose)
+                        if (0 != myAlarm._i_alarm_Choose) {
+                            if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                            {
+                               // Home.Home_XYZFinish = false;
+                            }
                             break;
+                        }
+                            
                         Thread.Sleep(1);
                     }
                     //判断染色线程是否需要用机械手
@@ -9244,8 +9313,14 @@ namespace SmartDyeing.FADM_Auto
                     myAlarm = new FADM_Object.MyAlarm("The liquid level in bottle " + s_alarmBottleNo + " is too low. Do you want to continue ? ", "Drip", true, 1);
                     while (true)
                 {
-                    if (0 != myAlarm._i_alarm_Choose)
+                    if (0 != myAlarm._i_alarm_Choose) {
+                        if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                        {
+                           // Home.Home_XYZFinish = false;
+                        }
                         break;
+                    }
+                        
                     Thread.Sleep(1);
                 }
                 //判断染色线程是否需要用机械手
@@ -9309,8 +9384,14 @@ namespace SmartDyeing.FADM_Auto
                     myAlarm = new FADM_Object.MyAlarm("The liquid level in bottle " + s_alarmBottleNo + " is expire. Do you want to continue ? ", "Drip", true, 1);
                 while (true)
                 {
-                    if (0 != myAlarm._i_alarm_Choose)
+                    if (0 != myAlarm._i_alarm_Choose) {
+                        if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                        {
+                           // Home.Home_XYZFinish = false;
+                        }
                         break;
+                    }
+                        
                     Thread.Sleep(1);
                 }
                 //判断染色线程是否需要用机械手
@@ -9374,8 +9455,13 @@ namespace SmartDyeing.FADM_Auto
                     myAlarm = new FADM_Object.MyAlarm(s_alarmBottleNo + " bottle did not find a syringe. Do you want to continue? ", "Drip", true, 1);
                 while (true)
                 {
-                    if (0 != myAlarm._i_alarm_Choose)
+                    if (0 != myAlarm._i_alarm_Choose) {
+                        if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                        {
+                          //  Home.Home_XYZFinish = false;
+                        }
                         break;
+                    }
                     Thread.Sleep(1);
                 }
                 //判断染色线程是否需要用机械手
@@ -9537,8 +9623,14 @@ namespace SmartDyeing.FADM_Auto
 
                         while (true)
                         {
-                            if (0 != myAlarm._i_alarm_Choose)
+                            if (0 != myAlarm._i_alarm_Choose) {
+                                if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                                {
+                                   // Home.Home_XYZFinish = false;
+                                }
                                 break;
+                            }
+                                
                             Thread.Sleep(1);
                         }
                         //判断染色线程是否需要用机械手
@@ -10067,8 +10159,14 @@ namespace SmartDyeing.FADM_Auto
 
                         while (true)
                         {
-                            if (0 != myAlarm._i_alarm_Choose)
+                            if (0 != myAlarm._i_alarm_Choose) {
+                                if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                                {
+                                   // Home.Home_XYZFinish = false;
+                                }
                                 break;
+                            }
+                               
                             Thread.Sleep(1);
                         }
                         //判断染色线程是否需要用机械手
@@ -10658,8 +10756,14 @@ namespace SmartDyeing.FADM_Auto
                                 "The " + i_minBottleNo + " mother liquor bottle has expired, and there is a record of opened materials in the material preparation table. Should it be replaced? (Please click Yes for replacement, and click No for continuing to use the old mother liquor)", "Drip", true, 1);
                             while (true)
                             {
-                                if (0 != myAlarm._i_alarm_Choose)
+                                if (0 != myAlarm._i_alarm_Choose) {
+                                    if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                                    {
+                                       // Home.Home_XYZFinish = false;
+                                    }
                                     break;
+                                }
+                                    
                                 Thread.Sleep(1);
                             }
                             //判断染色线程是否需要用机械手
@@ -10726,8 +10830,14 @@ namespace SmartDyeing.FADM_Auto
                                 "The " + i_minBottleNo + " mother liquor bottle has expired, and there is a record of opened materials in the material preparation table. Should it be replaced? (Please click Yes for replacement, and click No for continuing to use the old mother liquor)", "Drip", true, 1);
                             while (true)
                             {
-                                if (0 != myAlarm._i_alarm_Choose)
+                                if (0 != myAlarm._i_alarm_Choose) {
+                                    if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                                    {
+                                       // Home.Home_XYZFinish = false;
+                                    }
                                     break;
+                                }
+                                    
                                 Thread.Sleep(1);
                             }
                             //判断染色线程是否需要用机械手
@@ -10867,8 +10977,12 @@ namespace SmartDyeing.FADM_Auto
                     while (true)
 
                     {
-                        if (0 != myAlarm._i_alarm_Choose)
+                        if (0 != myAlarm._i_alarm_Choose) {
+                            if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1) {
+                               // Home.Home_XYZFinish = false;
+                            }
                             break;
+                        }
                         Thread.Sleep(1);
                     }
                     //判断染色线程是否需要用机械手
@@ -10965,8 +11079,13 @@ namespace SmartDyeing.FADM_Auto
                             "(To continue searching, please click Yes. To exit Drip, please click No)", "Drip", true, 1);
                     while (true)
                     {
-                        if (0 != myAlarm._i_alarm_Choose)
+                        if (0 != myAlarm._i_alarm_Choose) {
+                            if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                            {
+                               // Home.Home_XYZFinish = false;
+                            }
                             break;
+                        }
                         Thread.Sleep(1);
                     }
                     //判断染色线程是否需要用机械手
@@ -11417,8 +11536,13 @@ namespace SmartDyeing.FADM_Auto
                     myAlarm = new FADM_Object.MyAlarm("The liquid level in bottle " + s_alarmBottleNo + " is too low. Do you want to continue ? ", "Drip", true, 1);
                 while (true)
                 {
-                    if (0 != myAlarm._i_alarm_Choose)
+                    if (0 != myAlarm._i_alarm_Choose) {
+                        if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                        {
+                          //  Home.Home_XYZFinish = false;
+                        }
                         break;
+                    }
                     Thread.Sleep(1);
                 }
                 //判断染色线程是否需要用机械手
@@ -11482,8 +11606,14 @@ namespace SmartDyeing.FADM_Auto
                     myAlarm = new FADM_Object.MyAlarm("The liquid level in bottle " + s_alarmBottleNo + " is expire. Do you want to continue ? ", "Drip", true, 1);
                 while (true)
                 {
-                    if (0 != myAlarm._i_alarm_Choose)
+                    if (0 != myAlarm._i_alarm_Choose) {
+                        if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                        {
+                          //  Home.Home_XYZFinish = false;
+                        }
                         break;
+                    }
+                       
                     Thread.Sleep(1);
                 }
                 //判断染色线程是否需要用机械手
@@ -11547,8 +11677,14 @@ namespace SmartDyeing.FADM_Auto
                     myAlarm = new FADM_Object.MyAlarm(s_alarmBottleNo + " bottle did not find a syringe. Do you want to continue? ", "Drip", true, 1);
                 while (true)
                 {
-                    if (0 != myAlarm._i_alarm_Choose)
+                    if (0 != myAlarm._i_alarm_Choose) {
+                        if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                        {
+                          //  Home.Home_XYZFinish = false;
+                        }
                         break;
+                    }
+                       
                     Thread.Sleep(1);
                 }
                 //判断染色线程是否需要用机械手
@@ -11710,8 +11846,14 @@ namespace SmartDyeing.FADM_Auto
 
                         while (true)
                         {
-                            if (0 != myAlarm._i_alarm_Choose)
+                            if (0 != myAlarm._i_alarm_Choose) {
+                                if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                                {
+                                    Home.Home_XYZFinish = false;
+                                }
                                 break;
+                            }
+                                
                             Thread.Sleep(1);
                         }
                         //判断染色线程是否需要用机械手
@@ -12239,8 +12381,14 @@ namespace SmartDyeing.FADM_Auto
 
                         while (true)
                         {
-                            if (0 != myAlarm._i_alarm_Choose)
+                            if (0 != myAlarm._i_alarm_Choose) {
+                                if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                                {
+                                    Home.Home_XYZFinish = false;
+                                }
                                 break;
+                            }
+                               
                             Thread.Sleep(1);
                         }
                         //判断染色线程是否需要用机械手

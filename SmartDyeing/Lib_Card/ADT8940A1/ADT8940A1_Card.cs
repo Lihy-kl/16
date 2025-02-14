@@ -1,4 +1,5 @@
 ﻿using Demo;
+using Lib_Card.Configure;
 using System;
 using System.Threading;
 
@@ -125,10 +126,22 @@ namespace Lib_Card.ADT8940A1
 
         public override int ReadAxisActualPosition(int iAxisNo, ref int iPosition)
         {
-            if (0 == Adt8940a1m.adt8940a1_get_actual_pos(0, iAxisNo, out iPosition))
+            if (Parameter.Machine_Type_Lv == 1)
             {
-              
-                return 0;
+                if (0 == Adt8940a1m.adt8940a1_get_actual_pos(0, iAxisNo, out int i))
+                {
+                    iPosition = i / 4;
+                    return 0;
+                }
+
+            }
+            else
+            {
+                if (0 == Adt8940a1m.adt8940a1_get_actual_pos(0, iAxisNo, out iPosition))
+                {
+
+                    return 0;
+                }
             }
             return -1;
 
@@ -176,7 +189,7 @@ namespace Lib_Card.ADT8940A1
 
             if (1 == Adt8940a1m.adt8940a1_HomeProcess_Ex(0, iAxisNo))
                 return -1;
-            return 0;   
+            return 0;
 
 
         }
@@ -241,10 +254,10 @@ namespace Lib_Card.ADT8940A1
 
         public override int SetAxisActualPosition(int iAxisNo)
         {
-            if (1 == Adt8940a1m.adt8940a1_set_actual_pos(0, iAxisNo,0))
+            if (1 == Adt8940a1m.adt8940a1_set_actual_pos(0, iAxisNo, 0))
                 return -1;
             return 0;
-            
+
         }
 
         public override int SetAxisCommandPosition(int iAxisNo, int iPosition)

@@ -1,9 +1,12 @@
 ﻿using Lib_Card;
+using Lib_Card.ADT8940A1;
+using Lib_Card.ADT8940A1.Module.Home;
 using Lib_Card.ADT8940A1.Module.Put;
 using SmartDyeing.FADM_Auto;
 using SmartDyeing.FADM_Control;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Reflection.Emit;
@@ -4204,6 +4207,32 @@ namespace SmartDyeing.FADM_Object
             }
         }
 
+        //针对绿维电机放针  还是不防针 防止异常情况 比如 在移动向天平的时候 异常了 这时候不能放针
+        public static void lvPut() {
+
+           /* int iSyringe = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Syringe);
+            if (Lib_Card.Configure.Parameter.Machine_isSyringe == 1)
+            {
+                iSyringe = 1;
+            }
+            if (iSyringe == 1)
+            {//在判断下针检感应器 
+                DataTable dt_bottle_details = FADM_Object.Communal._fadmSqlserver.GetData(
+                            "SELECT SyringeType FROM bottle_details WHERE BottleNum = '" + FADM_Object.Communal._i_optBottleNum + "';");
+                //加个放针
+                if ("小针筒" == Convert.ToString(dt_bottle_details.Rows[0][0]) || "Little Syringe" == Convert.ToString(dt_bottle_details.Rows[0][0]))
+                {
+                    MyModbusFun.Put(0);
+                }
+                else
+                {
+                    MyModbusFun.Put(1);
+                }
+            }*/
+
+            Home.Home_XYZFinish = false; //放完针 可能推动 所以下次运动重新回原点
+        }
+
         /// <summary>
         /// 天平检查
         /// </summary>
@@ -4215,6 +4244,13 @@ namespace SmartDyeing.FADM_Object
             label4:
                 if (6666 == FADM_Object.Communal.dBalanceValue)
                 {
+                    //不等于0 说明是绿维电机 并且夹着针 放针
+                    if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1 && FADM_Object.Communal._i_optBottleNum!=0)
+                    {
+                        lvPut();
+                    }
+
+
                     Lib_Card.ADT8940A1.OutPut.X_Power.X_Power xpower = new Lib_Card.ADT8940A1.OutPut.X_Power.X_Power_Basic();
                     xpower.X_Power_Off();
                     Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power ypower = new Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power_Basic();
@@ -4227,6 +4263,12 @@ namespace SmartDyeing.FADM_Object
                 }
                 else if (7777 == FADM_Object.Communal.dBalanceValue)
                 {
+                    //不等于0 说明是绿维电机 并且夹着针 放针
+                    if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                    {
+                        lvPut();
+                    }
+
                     Lib_Card.ADT8940A1.OutPut.X_Power.X_Power xpower = new Lib_Card.ADT8940A1.OutPut.X_Power.X_Power_Basic();
                     xpower.X_Power_Off();
                     Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power ypower = new Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power_Basic();
@@ -4238,6 +4280,12 @@ namespace SmartDyeing.FADM_Object
                 }
                 else if (8888 == FADM_Object.Communal.dBalanceValue)
                 {
+                    //不等于0 说明是绿维电机 并且夹着针 放针
+                    if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                    {
+                        lvPut();
+                    }
+
                     Lib_Card.ADT8940A1.OutPut.X_Power.X_Power xpower = new Lib_Card.ADT8940A1.OutPut.X_Power.X_Power_Basic();
                     xpower.X_Power_Off();
                     Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power ypower = new Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power_Basic();
@@ -4249,6 +4297,12 @@ namespace SmartDyeing.FADM_Object
                 }
                 else if (9999 == FADM_Object.Communal.dBalanceValue)
                 {
+                    //不等于0 说明是绿维电机 并且夹着针 放针
+                    if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                    {
+                        lvPut();
+                    }
+
                     Lib_Card.ADT8940A1.OutPut.X_Power.X_Power xpower = new Lib_Card.ADT8940A1.OutPut.X_Power.X_Power_Basic();
                     xpower.X_Power_Off();
                     Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power ypower = new Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power_Basic();
@@ -4260,6 +4314,12 @@ namespace SmartDyeing.FADM_Object
                 }
                 else if (FADM_Object.Communal._b_balanceAlarm)
                 {
+                    //不等于0 说明是绿维电机 并且夹着针 放针
+                    if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                    {
+                        lvPut();
+                    }
+
                     Lib_Card.ADT8940A1.OutPut.X_Power.X_Power xpower = new Lib_Card.ADT8940A1.OutPut.X_Power.X_Power_Basic();
                     xpower.X_Power_Off();
                     Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power ypower = new Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power_Basic();

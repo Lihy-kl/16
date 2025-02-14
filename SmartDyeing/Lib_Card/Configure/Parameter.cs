@@ -166,6 +166,12 @@
         public static int Machine_Type  { get; set; }
 
 
+        /// <summary>
+        /// 滴液机电机类型
+        /// 0：富士
+        /// 1：绿维
+        /// </summary>
+        public static int Machine_Type_Lv { get; set; }
 
         /// <summary>
         /// 区域1类型

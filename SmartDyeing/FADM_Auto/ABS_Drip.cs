@@ -738,8 +738,14 @@ namespace SmartDyeing.FADM_Auto
                             continue;
                         }
                     }
-                    //
-                    
+                    if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                    {
+                        //富士伺服在下面判断 天平状态 原有不动 绿维的放在上面 并且置位 是否回原点 绿维的放移动机械手前面
+
+                        //判断是否异常
+                        FADM_Object.Communal.BalanceState("滴液");
+                    }
+
                     double d_blObjectW = Convert.ToDouble(row["ObjectAddWaterWeight"]);
                     if (d_blObjectW > 0)
                     {
@@ -888,8 +894,15 @@ namespace SmartDyeing.FADM_Auto
 
                     FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找天平位");
 
-                    //判断是否异常
-                    FADM_Object.Communal.BalanceState("滴液");
+                    if ((Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 0)|| Lib_Card.Configure.Parameter.Machine_Type == 1)
+                    {
+                        //富士伺服在下面判断 天平状态 原有不动 绿维的放在上面 并且置位 是否回原点
+
+                        //判断是否异常
+                        FADM_Object.Communal.BalanceState("滴液");
+                    }
+                    
+                   
 
                     //Lib_SerialPort.Balance.METTLER.bZeroSign = true;
 

@@ -26,6 +26,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using Newtonsoft.Json.Linq;
 using Lib_DataBank.MySQL;
 using System.Reflection.Emit;
+using Lib_Card.ADT8940A1.Module.Home;
 
 namespace SmartDyeing.FADM_Auto
 {
@@ -2935,7 +2936,7 @@ namespace SmartDyeing.FADM_Auto
                                                 v[0] = 0;
                                                 FADM_Object.Communal._tcpDyeHMI1.Write(910 + j, v);
 
-                                                v[0] = 1;
+                                                v[0] = 2;
                                                 FADM_Object.Communal._tcpDyeHMI1.Write(900 + j, v);
                                             }
                                             else if (i == 1)
@@ -4719,7 +4720,7 @@ namespace SmartDyeing.FADM_Auto
                                     if (FADM_Object.Communal._lis_dripSuccessCup.Contains(i_cupNo) || FADM_Object.Communal._lis_dripSuccessCup.Contains(i_cupNo+1))
                                     {
                                         //先判断是否第二轮
-                                        DataTable dt_need = FADM_Object.Communal._fadmSqlserver.GetData("Select * from drop_head where (CupNum = " + i_cupNo + " Or CupNum =" + (i_cupNo + 1)+ ") And BatchName != '0'");
+                                        DataTable dt_need = FADM_Object.Communal._fadmSqlserver.GetData("Select * from drop_head where (CupNum = " + i_cupNo + " Or CupNum =" + (i_cupNo + 1)+ ") And BatchName != '0' order by CupNum");
                                         //主副杯都存在打板配方
                                         if(dt_need.Rows.Count == 2)
                                         {
@@ -5067,7 +5068,7 @@ namespace SmartDyeing.FADM_Auto
 
                                         if(lis_useCup.Contains(i_cupNo) && lis_useCup.Contains(i_cupNo+1))
                                         {
-                                            DataTable dt_need = FADM_Object.Communal._fadmSqlserver.GetData("Select * from drop_head where (CupNum = " + i_cupNo + " Or CupNum =" + (i_cupNo + 1) + ") And BatchName != '0'");
+                                            DataTable dt_need = FADM_Object.Communal._fadmSqlserver.GetData("Select * from drop_head where (CupNum = " + i_cupNo + " Or CupNum =" + (i_cupNo + 1) + ") And BatchName != '0'  order by CupNum");
                                             if (dt_need.Rows.Count == 2)
                                             {
                                                 if (dt_need.Rows[0]["BatchName"].ToString() != dt_need.Rows[1]["BatchName"].ToString())
@@ -5112,7 +5113,7 @@ namespace SmartDyeing.FADM_Auto
                                             //{
                                             //    //如果滴液失败不包含这个杯号，就要判断批次号是否一致，如果不一致就把上一批批次号改为最新，否则重新滴液会有问题
                                             //    //先判断是否第二轮
-                                            //    DataTable dt_need = FADM_Object.Communal._fadmSqlserver.GetData("Select * from drop_head where (CupNum = " + i_cupNo + " Or CupNum =" + (i_cupNo + 1) + ") And BatchName != '0'");
+                                            //    DataTable dt_need = FADM_Object.Communal._fadmSqlserver.GetData("Select * from drop_head where (CupNum = " + i_cupNo + " Or CupNum =" + (i_cupNo + 1) + ") And BatchName != '0'  order by CupNum");
                                             //    if(dt_need.Rows.Count == 2)
                                             //    {
                                             //        if (dt_need.Rows[0]["BatchName"].ToString() != dt_need.Rows[1]["BatchName"].ToString())
@@ -5157,7 +5158,7 @@ namespace SmartDyeing.FADM_Auto
                                             //{
                                             //    //如果滴液失败不包含这个杯号，就要判断批次号是否一致，如果不一致就把上一批批次号改为最新，否则重新滴液会有问题
                                             //    //先判断是否第二轮
-                                            //    DataTable dt_need = FADM_Object.Communal._fadmSqlserver.GetData("Select * from drop_head where (CupNum = " + i_cupNo + " Or CupNum =" + (i_cupNo + 1) + ") And BatchName != '0'");
+                                            //    DataTable dt_need = FADM_Object.Communal._fadmSqlserver.GetData("Select * from drop_head where (CupNum = " + i_cupNo + " Or CupNum =" + (i_cupNo + 1) + ") And BatchName != '0'  order by CupNum");
                                             //    if (dt_need.Rows.Count == 2)
                                             //    {
                                             //        if (dt_need.Rows[0]["BatchName"].ToString() != dt_need.Rows[1]["BatchName"].ToString())
@@ -8390,9 +8391,13 @@ namespace SmartDyeing.FADM_Auto
 
                 bool b_return = false;
                 MyModbusFun.Reset();
-            //FADM_Auto.Reset.IOReset();
-            //加药
+                //FADM_Auto.Reset.IOReset();
 
+                //加药
+                if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                {
+                    Home.Home_XYZFinish = false;
+                }
 
             labTop:
                 //Lib_Log.Log.writeLogException("检查是否有其他动作启动");

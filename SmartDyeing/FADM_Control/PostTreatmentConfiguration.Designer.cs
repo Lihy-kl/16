@@ -43,6 +43,7 @@
             this.btn_DyeingProcessUpdate = new System.Windows.Forms.Button();
             this.btn_DyeingProcessAdd = new System.Windows.Forms.Button();
             this.grp_BrewingProcess = new System.Windows.Forms.GroupBox();
+            this.btn_Copy = new System.Windows.Forms.Button();
             this.dgv_Child_DyeData = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Dye_Code)).BeginInit();
             this.grp_Dyeing.SuspendLayout();
@@ -141,6 +142,7 @@
             // 
             // grp_BrewingProcess
             // 
+            this.grp_BrewingProcess.Controls.Add(this.btn_Copy);
             this.grp_BrewingProcess.Controls.Add(this.txt_Notes);
             this.grp_BrewingProcess.Controls.Add(this.label1);
             this.grp_BrewingProcess.Controls.Add(this.btn_DyeingProcessDelete);
@@ -154,6 +156,13 @@
             resources.ApplyResources(this.grp_BrewingProcess, "grp_BrewingProcess");
             this.grp_BrewingProcess.Name = "grp_BrewingProcess";
             this.grp_BrewingProcess.TabStop = false;
+            // 
+            // btn_Copy
+            // 
+            resources.ApplyResources(this.btn_Copy, "btn_Copy");
+            this.btn_Copy.Name = "btn_Copy";
+            this.btn_Copy.UseVisualStyleBackColor = true;
+            this.btn_Copy.Click += new System.EventHandler(this.btn_Copy_Click);
             // 
             // dgv_Child_DyeData
             // 
@@ -210,5 +219,6 @@
         private System.Windows.Forms.Button btn_DyeingProcessAdd;
         private System.Windows.Forms.GroupBox grp_BrewingProcess;
         private System.Windows.Forms.DataGridView dgv_Child_DyeData;
+        private System.Windows.Forms.Button btn_Copy;
     }
 }
