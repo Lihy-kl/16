@@ -254,9 +254,10 @@ namespace SmartDyeing.FADM_Control
 
             txt_DyeingCode.KeyPress += txt_DyeingCode_KeyPress;
             txt_DyeingCode.SelectedIndexChanged += txt_DyeingCode_SelectedIndexChanged2;
+
         }
 
-    
+
 
         private void txt_DyeingCode_KeyDown(object sender, KeyEventArgs e)
         {
@@ -344,7 +345,45 @@ namespace SmartDyeing.FADM_Control
         //label控件的点击事件
         void Label_Click(object sender, EventArgs e)
         {
+            if (FADM_Object.Communal._s_operator == "管理用户" || FADM_Object.Communal._s_operator == "工程师")
+            {
+                Label lab = (Label)sender;
+                if (lab.Name != "lab_FormulaCode" && lab.Name != "lab_TotalWeight" &&
+                    lab.Name != "lab_CreateTime" && lab.Name != "lab_ClothWeight" &&
+                    lab.Name != "lab_BathRatio" && lab.Name != "lab_Operator")
+                {
+                    string s = "txt_" + lab.Name.Remove(0, 4);
+                    foreach (Control c in this.grp_FormulaData.Controls)
+                    {
+                        if ((c is TextBox || c is ComboBox) && c.Name == s)
+                        {
+                            string s_sql = "SELECT " + c.Name + " FROM enabled_set;";
+                            string s_choose = (FADM_Object.Communal._fadmSqlserver.GetData(s_sql)).Rows[0][0].ToString();
+                            if (s_choose == "0")
+                            {
+                                lab.ForeColor = SystemColors.ControlText;
+                                s_sql = "UPDATE enabled_set SET" +
+                                            " " + c.Name.ToString() + " = 1" +
+                                            " WHERE MyID = 1;";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
 
+
+                            }
+                            else
+                            {
+                                lab.ForeColor = SystemColors.ButtonShadow;
+                                s_sql = "UPDATE enabled_set SET" +
+                                           " " + c.Name.ToString() + " = 0" +
+                                           " WHERE MyID = 1;";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                            }
+
+                        }
+                    }
+
+                }
+            }
         }
 
         //查询是否存在的历史配方
@@ -1595,9 +1634,14 @@ namespace SmartDyeing.FADM_Control
                                             {
                                                 if (c[j + 1].Name == dgv_FormulaData.Name)
                                                 {
+                                                    txt_DyeingCode.Leave -= txt_DyeingCode_Leave;
+
+
                                                     dgv_FormulaData.Enabled = true;
                                                     dgv_FormulaData.CurrentCell = dgv_FormulaData[1, 0];
                                                     dgv_FormulaData.Focus();
+                                                    txt_DyeingCode.Leave += txt_DyeingCode_Leave;
+
                                                     return;
                                                 }
                                                 //else if (c[j + 1].Name == dgv_Dye.Name)
@@ -3464,12 +3508,16 @@ namespace SmartDyeing.FADM_Control
                 }
                 if (_s_stage == "后处理")
                 {
+                    Dictionary<string, string> mmmm = null;
                     //判断
                     for (int p = 0; p < _lis_dg.Count; p++) //11-01 这里是判断 加A的或者加B的助剂计算滴液量等等信息
                     {
                         FADM_Object.MyDataGridView dgv_Dye = (FADM_Object.MyDataGridView)_lis_dg[p];
                         if (dgv_Dye.Rows.Count >= 1)
                         {
+
+                            mmmm = new Dictionary<string, string>();
+                            string bb = "";
                             foreach (DataGridViewRow dgvr in dgv_Dye.Rows)
                             {
                                 if (dgvr.Index < dgv_Dye.Rows.Count)
@@ -3500,14 +3548,50 @@ namespace SmartDyeing.FADM_Control
                                                 }
                                             }
                                         }
+                                     
+                                        string s1 = dgvr.Cells[0].Value==null?"": dgvr.Cells[0].Value.ToString();
+                                        if (s1 == null || s1.Length == 0)
+                                        {
+                                            s1 = bb;
+                                        }
+                                        else {
+                                            //不等于空
+                                            if (!s1.Equals(bb)) {
+                                                bb = s1;
+                                            }
+                                        }
+
+                                        string s2 = dgvr.Cells[1].Value.ToString();
+                                        if (mmmm.ContainsKey(s1 + "-" + s2)) {
+                                            if (DialogResult.OK == FADM_Form.CustomMessageBox.Show(dgvr.Cells[1].Value.ToString() +
+                                                  "染助剂代码重复，请检查！", "输入异常", MessageBoxButtons.OK, false))
+                                            {
+                                                return;
+                                            }
+                                        }
+                                        else {
+                                            mmmm.Add(s1 + "-" + s2, s1 + "-" + s2);
+                                        }
+                                        
+
 
                                         //判断是否有重复助剂代码
-                                        for (int i = 0; i < dgvr.Index; i++)
+                                        /*for (int i = 0; i < dgvr.Index; i++)
                                         {
                                             if (dgv_Dye.Rows[i].Cells[1].Value != null)
                                             {
                                                 if (Convert.ToString(dgvr.Cells[1].Value) == Convert.ToString(dgv_Dye.Rows[i].Cells[1].Value))
                                                 {
+
+                                                    string c1 = dgvr.Cells[0].Value.ToString();
+                                                    string c2 = Convert.ToString(dgv_Dye.Rows[i].Cells[0].Value);
+
+                                                    *//*if () { //2025.02.14 还要加上前面是加A还是加B 的条件判断
+                                                    
+                                                    
+                                                    }*//*
+
+
                                                     if (DialogResult.OK == FADM_Form.CustomMessageBox.Show(dgvr.Cells[1].Value.ToString() +
                                                 "染助剂代码重复，请检查！", "输入异常", MessageBoxButtons.OK, false))
                                                     {
@@ -3515,7 +3599,7 @@ namespace SmartDyeing.FADM_Control
                                                     }
                                                 }
                                             }
-                                        }
+                                        }*/
                                     }
                                 }
                                 for (int i = 0; i < dgv_Dye.Columns.Count - 1; i++)
@@ -3854,7 +3938,11 @@ namespace SmartDyeing.FADM_Control
                             txt_State.Text = "Undropped";
                     }
 
-
+                    //2025.02.14 txt_VersionNum.Text 已经是最新的版本 加个去表里 先删除掉数据先
+                    string delete_s_sql = "DELETE FROM dyeing_details WHERE" +
+                                         " FormulaCode = '" + txt_FormulaCode.Text + "' AND" +
+                                         " VersionNum = '" + txt_VersionNum.Text + "' ;";
+                    FADM_Object.Communal._fadmSqlserver.ReviseData(delete_s_sql);
 
 
                     //11-01 注释 改掉
@@ -3972,9 +4060,16 @@ namespace SmartDyeing.FADM_Control
                                             { //加A或者啥是空 则是组合则把上一个加药的名字弄过来
                                                 if (s.dgv_Dye[0, dr.Index].Value == null && s.dgv_Dye[3, dr.Index].Value != null && s.dgv_Dye[5, dr.Index].Value != null)
                                                 {
-                                                    s.dgv_Dye[dc.Index, dr.Index].Value = s.dgv_Dye[dc.Index, dr.Index - 1].Value.ToString();
+                                                    int c = 1;
+                                                    label0:
+                                                    if (s.dgv_Dye[dc.Index, dr.Index - c].Value==null) {
+                                                        c++;
+                                                        goto label0;
+                                                    }
+
+                                                    s.dgv_Dye[dc.Index, dr.Index].Value = s.dgv_Dye[dc.Index, dr.Index - c].Value.ToString();
                                                     //证明有组合 
-                                                    lis_detail.Add(s.dgv_Dye[dc.Index, dr.Index - 1].Value.ToString());
+                                                    lis_detail.Add(s.dgv_Dye[dc.Index, dr.Index - c].Value.ToString());
                                                     continue;
                                                 }
                                                 else if (s.dgv_Dye[0, dr.Index].Value == null && s.dgv_Dye[3, dr.Index].Value == null && s.dgv_Dye[5, dr.Index].Value == null)
@@ -4026,6 +4121,7 @@ namespace SmartDyeing.FADM_Control
                                 string value10 = mySelect.dy_type_comboBox1.Text.Equals("染色工艺") ? "1" : "2";//染色工艺还是后处理工艺 type 这里不要从这里取是否是染色工艺还是
                                 if (value10.Equals("1"))
                                 {
+                                    Dictionary<string, string> TemMap = new Dictionary<string, string>();
                                     foreach (DataGridViewRow dr in s.dgv_dyconfiglisg.Rows)
                                     { //保存步骤号详细信息
                                         if (dr.Index < s.dgv_dyconfiglisg.RowCount)
@@ -4060,16 +4156,26 @@ namespace SmartDyeing.FADM_Control
                                                           "', '" + ll[7] + "', '" + ll[2] + "', '" + ll[8] + "', '" + ll[9] + "','" + ll[10] + "','',0, '" + SuperIndex + "');";
                                                     FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
 
+                                                    //染色工艺 分步加药 重复加A 就不要保存进去 这个表了 这里要判断下
+                                                    if (TemMap.ContainsKey(value2))
+                                                    {
+                                                        
+                                                    }
+                                                    else {
+                                                        string s_sql_0 = "INSERT INTO formula_handle_details (" +
+                                                              "Code,FormulaCode, VersionNum, TechnologyName, AssistantCode,AssistantName," +
+                                                              " FormulaDosage, UnitOfAccount, BottleNum, SettingConcentration," +
+                                                              " RealConcentration,  ObjectDropWeight, RealDropWeight," +
+                                                              " BottleSelection,No) VALUES('" + value9 + "'," +
+                                                              " '" + value7 + "', '" + value8 + "', '" + value2 + "', '" + ll[1] + "'," +
+                                                              " '" + ll[2] + "', '" + ll[3] + "', '" + ll[4] + "', '" + ll[5] + "'," +
+                                                              " '" + ll[6] + "', '" + ll[7] + "', '" + ll[8] + "', '" + ll[9] + "', '" + ll[10] + "','" + SuperIndex + "');";
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql_0);
 
-                                                    string s_sql_0 = "INSERT INTO formula_handle_details (" +
-                                                          "Code,FormulaCode, VersionNum, TechnologyName, AssistantCode,AssistantName," +
-                                                          " FormulaDosage, UnitOfAccount, BottleNum, SettingConcentration," +
-                                                          " RealConcentration,  ObjectDropWeight, RealDropWeight," +
-                                                          " BottleSelection,No) VALUES('" + value9 + "'," +
-                                                          " '" + value7 + "', '" + value8 + "', '" + value2 + "', '" + ll[1] + "'," +
-                                                          " '" + ll[2] + "', '" + ll[3] + "', '" + ll[4] + "', '" + ll[5] + "'," +
-                                                          " '" + ll[6] + "', '" + ll[7] + "', '" + ll[8] + "', '" + ll[9] + "', '" + ll[10] + "','" + SuperIndex + "');";
-                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql_0);
+                                                        TemMap.Add(value2, value2);
+
+                                                    }
+                                                    
 
                                                 }
                                             }
@@ -5053,6 +5159,9 @@ namespace SmartDyeing.FADM_Control
                                         FADM_Form.CustomMessageBox.Show("染固色参数异常，请重新编辑！", "操作异常", MessageBoxButtons.OK, false);
                                         return false;
                                     }
+                                } else if (s.dgv_Dye[1, dr.Index].Value == null && s.dgv_Dye[3, dr.Index].Value != null) {
+                                    FADM_Form.CustomMessageBox.Show("染固色参数异常，请重新编辑！", "操作异常", MessageBoxButtons.OK, false);
+                                    return false;
                                 }
                             }
                             catch (Exception)
@@ -6004,7 +6113,13 @@ namespace SmartDyeing.FADM_Control
                                     {
                                         if (isTemp2[strList[8] + "-" + dr[10].ToString()].ContainsKey(strList[3]))
                                         {
-                                            continue;
+                                            if ("1".Equals(dr[9].ToString())) {
+
+                                            }
+                                            else {
+                                                continue;
+                                            }
+                                           
                                         }
                                         else
                                         {
@@ -10294,9 +10409,15 @@ namespace SmartDyeing.FADM_Control
                     else
                     {
                         s.dgv_dyconfiglisg.Rows.Add(stepNum.ToString(), list[i][3].Trim(), list[i][4].Trim(), list[i][5].Trim(), list[i][6].Trim(), list[i][7].Trim());
-                        if (list[i][3].Trim().Equals("加A") || list[i][3].Trim().Equals("加B") || list[i][3].Trim().Equals("加C") || list[i][3].Trim().Equals("加D") || list[i][3].Trim().Equals("加E") || list[i][3].Trim().Equals("加F") || list[i][3].Trim().Equals("加G") || list[i][3].Trim().Equals("加H") || list[i][3].Trim().Equals("加I") || list[i][3].Trim().Equals("加J") || list[i][3].Trim().Equals("加K") || list[i][3].Trim().Equals("加L") || list[i][3].Trim().Equals("加M") || list[i][3].Trim().Equals("加N"))
+                        if (list[i][3].Trim().Equals("加A") || list[i][3].Trim().Equals("加B") || list[i][3].Trim().Equals("加C") || list[i][3].Trim().Equals("加D") || list[i][3].Trim().Equals("加E") || list[i][3].Trim().Equals("加F") || list[i][3].Trim().Equals("加G") || list[i][3].Trim().Equals("加H") || list[i][3].Trim().Equals("加I") || list[i][3].Trim().Equals("加J") || list[i][3].Trim().Equals("加K") || list[i][3].Trim().Equals("加L") || list[i][3].Trim().Equals("加M") || list[i][3].Trim().Equals("加N") || list[i][3].Trim().Equals("Add A") || list[i][3].Trim().Equals("Add B") || list[i][3].Trim().Equals("Add C") || list[i][3].Trim().Equals("Add D") || list[i][3].Trim().Equals("Add E"))
                         {
-                            listYY.Add(list[i]);
+                            // 检查 listYY 中是否已经包含 list[i][3] 这个值
+                            bool exists = listYY.Any(item => item[3] == list[i][3].Trim());
+                            // 如果不存在，则添加到 listYY 中
+                            if (!exists)
+                            {
+                                listYY.Add(list[i]);
+                            }
                         }
                     }
                     stepNum++;
@@ -10594,6 +10715,7 @@ namespace SmartDyeing.FADM_Control
                 }
                 s.dgv_Dye.Name = i_nNum.ToString();
                 s.dgv_Dye.AccessibleName = "dye";
+                s.dgv_Dye.AccessibleDescription = i_nNum.ToString();
                 //ll = new Label();
                 /*ll.Name = i_nNum.ToString();
                 ll.Text = "▼                                                                                  ";
@@ -10638,13 +10760,14 @@ namespace SmartDyeing.FADM_Control
                 s.grp_Dye.Text = (list[0][9].Equals("1") ? "染色工艺" + list[0][8].ToString() : "后处理工艺") + "(" + list[0][8].ToString() + ")";
                 s.dgv_dyconfiglisg.Rows.Clear();
 
+                
                 List<List<string>> listYY = new List<List<string>>(); //存放加药
 
                 for (int i = 0; i < list.Count; i++)
                 {
                     if (list[0][9].Equals("2"))//后处理
                     {
-                        if (list[i][3].Trim().Equals("加A") || list[i][3].Trim().Equals("加B") || list[i][3].Trim().Equals("加C") || list[i][3].Trim().Equals("加D") || list[i][3].Trim().Equals("加E") || list[i][3].Trim().Equals("加F") || list[i][3].Trim().Equals("加G") || list[i][3].Trim().Equals("加H") || list[i][3].Trim().Equals("加I") || list[i][3].Trim().Equals("加J") || list[i][3].Trim().Equals("加K") || list[i][3].Trim().Equals("加L") || list[i][3].Trim().Equals("加M") || list[i][3].Trim().Equals("加N"))
+                        if (list[i][3].Trim().Equals("加A") || list[i][3].Trim().Equals("加B") || list[i][3].Trim().Equals("加C") || list[i][3].Trim().Equals("加D") || list[i][3].Trim().Equals("加E") || list[i][3].Trim().Equals("加F") || list[i][3].Trim().Equals("加G") || list[i][3].Trim().Equals("加H") || list[i][3].Trim().Equals("加I") || list[i][3].Trim().Equals("加J") || list[i][3].Trim().Equals("加K") || list[i][3].Trim().Equals("加L") || list[i][3].Trim().Equals("加M") || list[i][3].Trim().Equals("加N") || list[i][3].Trim().Equals("Add A") || list[i][3].Trim().Equals("Add B") || list[i][3].Trim().Equals("Add C") || list[i][3].Trim().Equals("Add D") || list[i][3].Trim().Equals("Add E"))
                         {
                             if (i != 0)
                             {
@@ -10666,10 +10789,20 @@ namespace SmartDyeing.FADM_Control
                     }
                     else
                     {
+                        //染色 只显示一个加A
                         s.dgv_dyconfiglisg.Rows.Add(stepNum.ToString(), list[i][3].Trim(), list[i][4].Trim(), list[i][5].Trim(), list[i][6].Trim(), list[i][7].Trim());
-                        if (list[i][3].Trim().Equals("加A") || list[i][3].Trim().Equals("加B") || list[i][3].Trim().Equals("加C") || list[i][3].Trim().Equals("加D") || list[i][3].Trim().Equals("加E") || list[i][3].Trim().Equals("加F") || list[i][3].Trim().Equals("加G") || list[i][3].Trim().Equals("加H") || list[i][3].Trim().Equals("加I") || list[i][3].Trim().Equals("加J") || list[i][3].Trim().Equals("加K") || list[i][3].Trim().Equals("加L") || list[i][3].Trim().Equals("加M") || list[i][3].Trim().Equals("加N"))
+
+                        if (list[i][3].Trim().Equals("加A") || list[i][3].Trim().Equals("加B") || list[i][3].Trim().Equals("加C") || list[i][3].Trim().Equals("加D") || list[i][3].Trim().Equals("加E") || list[i][3].Trim().Equals("加F") || list[i][3].Trim().Equals("加G") || list[i][3].Trim().Equals("加H") || list[i][3].Trim().Equals("加I") || list[i][3].Trim().Equals("加J") || list[i][3].Trim().Equals("加K") || list[i][3].Trim().Equals("加L") || list[i][3].Trim().Equals("加M") || list[i][3].Trim().Equals("加N") || list[i][3].Trim().Equals("Add A") || list[i][3].Trim().Equals("Add B") || list[i][3].Trim().Equals("Add C") || list[i][3].Trim().Equals("Add D") || list[i][3].Trim().Equals("Add E"))
                         {
-                            listYY.Add(list[i]);
+
+                            // 检查 listYY 中是否已经包含 list[i][3] 这个值
+                            bool exists = listYY.Any(item => item[3] == list[i][3].Trim());
+                            // 如果不存在，则添加到 listYY 中
+                            if (!exists)
+                            {
+                                listYY.Add(list[i]);
+                            }
+                           
                         }
                     }
                     stepNum++;
@@ -10786,6 +10919,13 @@ namespace SmartDyeing.FADM_Control
 
         private void txt_DyeingCode_Leave(object sender, EventArgs e)
         {
+
+            foreach (KeyValuePair<string, NoActivateForm> pair in noActivateFormsList)
+            {
+                pair.Value.Visible = false;
+                pair.Value.Close();
+            }
+
             /*{
                 for (int i = panel2.Controls.Count - 1; i >= 0; i--)
                 {
@@ -13703,6 +13843,7 @@ namespace SmartDyeing.FADM_Control
                                     }
                                 }
                             }
+                          
 
                             //判断是否有重复助剂代码
                             for (int i = 0; i < dgvr.Index; i++)
@@ -13786,12 +13927,16 @@ namespace SmartDyeing.FADM_Control
                 }
                 if (_s_stage == "后处理")
                 {
+                    Dictionary<string, string> mmmm = null;
                     //判断
                     for (int p = 0; p < _lis_dg.Count; p++) //11-01 这里是判断 加A的或者加B的助剂计算滴液量等等信息
                     {
                         FADM_Object.MyDataGridView dgv_Dye = (FADM_Object.MyDataGridView)_lis_dg[p];
                         if (dgv_Dye.Rows.Count >= 1)
                         {
+
+                            mmmm = new Dictionary<string, string>();
+                            string bb = "";
                             foreach (DataGridViewRow dgvr in dgv_Dye.Rows)
                             {
                                 if (dgvr.Index < dgv_Dye.Rows.Count)
@@ -13822,9 +13967,35 @@ namespace SmartDyeing.FADM_Control
                                                 }
                                             }
                                         }
+                                        string s1 = dgvr.Cells[0].Value == null ? "" : dgvr.Cells[0].Value.ToString();
+                                        if (s1 == null || s1.Length == 0)
+                                        {
+                                            s1 = bb;
+                                        }
+                                        else
+                                        {
+                                            //不等于空
+                                            if (!s1.Equals(bb))
+                                            {
+                                                bb = s1;
+                                            }
+                                        }
 
+                                        string s2 = dgvr.Cells[1].Value.ToString();
+                                        if (mmmm.ContainsKey(s1 + "-" + s2))
+                                        {
+                                            if (DialogResult.OK == FADM_Form.CustomMessageBox.Show(dgvr.Cells[1].Value.ToString() +
+                                                  "染助剂代码重复，请检查！", "输入异常", MessageBoxButtons.OK, false))
+                                            {
+                                                return;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            mmmm.Add(s1 + "-" + s2, s1 + "-" + s2);
+                                        }
                                         //判断是否有重复助剂代码
-                                        for (int i = 0; i < dgvr.Index; i++)
+                                        /*for (int i = 0; i < dgvr.Index; i++)
                                         {
                                             if (dgv_Dye.Rows[i].Cells[1].Value != null)
                                             {
@@ -13837,7 +14008,7 @@ namespace SmartDyeing.FADM_Control
                                                     }
                                                 }
                                             }
-                                        }
+                                        }*/
                                     }
                                 }
                                 for (int i = 0; i < dgv_Dye.Columns.Count - 1; i++)
@@ -14311,6 +14482,8 @@ namespace SmartDyeing.FADM_Control
                             string value10 = mySelect.dy_type_comboBox1.Text.Equals("染色工艺") ? "1" : "2";//染色工艺还是后处理工艺 type 这里不要从这里取是否是染色工艺还是
                             if (value10.Equals("1"))
                             {
+                                Dictionary<string, string> TemMap = new Dictionary<string, string>();
+
                                 foreach (DataGridViewRow dr in s.dgv_dyconfiglisg.Rows)
                                 { //保存步骤号详细信息
                                     if (dr.Index < s.dgv_dyconfiglisg.RowCount)
@@ -14345,16 +14518,23 @@ namespace SmartDyeing.FADM_Control
                                                       "', '" + ll[7] + "', '" + ll[2] + "', '" + ll[8] + "', '" + ll[9] + "','" + ll[10] + "','',0,'" + SuperIndex + "');";
                                                 FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
 
+                                                if (TemMap.ContainsKey(value2))
+                                                {
 
-                                                string s_sql_0 = "INSERT INTO formula_handle_details (" +
-                                                      "Code,FormulaCode, VersionNum, TechnologyName, AssistantCode,AssistantName," +
-                                                      " FormulaDosage, UnitOfAccount, BottleNum, SettingConcentration," +
-                                                      " RealConcentration,  ObjectDropWeight, RealDropWeight," +
-                                                      " BottleSelection,No) VALUES('" + value9 + "'," +
-                                                      " '" + value7 + "', '" + value8 + "', '" + value2 + "', '" + ll[1] + "'," +
-                                                      " '" + ll[2] + "', '" + ll[3] + "', '" + ll[4] + "', '" + ll[5] + "'," +
-                                                      " '" + ll[6] + "', '" + ll[7] + "', '" + ll[8] + "', '" + ll[9] + "', '" + ll[10] + "', '" + SuperIndex + "');";
-                                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql_0);
+                                                }
+                                                else {
+                                                    string s_sql_0 = "INSERT INTO formula_handle_details (" +
+                                                         "Code,FormulaCode, VersionNum, TechnologyName, AssistantCode,AssistantName," +
+                                                         " FormulaDosage, UnitOfAccount, BottleNum, SettingConcentration," +
+                                                         " RealConcentration,  ObjectDropWeight, RealDropWeight," +
+                                                         " BottleSelection,No) VALUES('" + value9 + "'," +
+                                                         " '" + value7 + "', '" + value8 + "', '" + value2 + "', '" + ll[1] + "'," +
+                                                         " '" + ll[2] + "', '" + ll[3] + "', '" + ll[4] + "', '" + ll[5] + "'," +
+                                                         " '" + ll[6] + "', '" + ll[7] + "', '" + ll[8] + "', '" + ll[9] + "', '" + ll[10] + "', '" + SuperIndex + "');";
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql_0);
+                                                    TemMap.Add(value2, value2);
+                                                }
+                                               
 
                                             }
                                         }
@@ -15152,6 +15332,13 @@ namespace SmartDyeing.FADM_Control
                 pair.Value.Visible = false;
                 pair.Value.Close();
             }
+
+
+            foreach (KeyValuePair<string, NoActivateForm> pair in noActivateFormsList)
+            {
+                pair.Value.Visible = false;
+                pair.Value.Close();
+            }
         }
 
         private void Formula_MouseDown(object sender, MouseEventArgs e)
@@ -15166,6 +15353,13 @@ namespace SmartDyeing.FADM_Control
                 pair.Value.Visible = false;
                 pair.Value.Close();
             }
+
+            foreach (KeyValuePair<string, NoActivateForm> pair in noActivateFormsList)
+            {
+                pair.Value.Visible = false;
+                pair.Value.Close();
+            }
+
         }
 
         //手动切换了 染固色工艺

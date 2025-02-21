@@ -316,6 +316,15 @@ namespace SmartDyeing.FADM_Form
                             FADM_Form.CustomMessageBox.Show("时间/比例不能为0，请重新编辑！", "操作异常", MessageBoxButtons.OK, false);
                             return;
                         }
+                        
+                        
+                        /*if (cbo_TechnologyName.Text.Equals("加A") || cbo_TechnologyName.Text.Equals("加B") || cbo_TechnologyName.Text.Equals("加C") || cbo_TechnologyName.Text.Equals("加D") || cbo_TechnologyName.Text.Equals("加E") || cbo_TechnologyName.Text.Equals("加F") || cbo_TechnologyName.Text.Equals("加G") || cbo_TechnologyName.Text.Equals("Add A") || cbo_TechnologyName.Text.Equals("Add B") || cbo_TechnologyName.Text.Equals("Add C") || cbo_TechnologyName.Text.Equals("Add D") || cbo_TechnologyName.Text.Equals("Add E"))
+                        {
+                            txt_ProportionOrTime.Text = "100";
+                        }*/
+
+
+
                         if (_b_insertOrUpdate)
                         {
                             string s_sql = null;

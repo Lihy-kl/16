@@ -4748,8 +4748,15 @@ namespace SmartDyeing.FADM_Auto
                                         //只有一个配方在打
                                         else
                                         {
-                                            //直接下发
-                                            b_isSuc1 = true;
+                                            //判断是否滴液成功信号和批次列表数据杯号一致
+                                            if (dt_need.Rows.Count == 1)
+                                            {
+                                                if (FADM_Object.Communal._lis_dripSuccessCup.Contains(Convert.ToInt32(dt_need.Rows[0]["CupNum"].ToString())))
+                                                {
+                                                    //直接下发
+                                                    b_isSuc1 = true;
+                                                }
+                                            }
                                         }
                                     }
 
@@ -10641,10 +10648,9 @@ namespace SmartDyeing.FADM_Auto
                             FADM_Object.Communal._fadmSqlserver.ReviseData(
                                "UPDATE cup_details SET  Cooperate = 6 WHERE  CupNum = " + i_cupNo + " ;");
                             if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                myAlarm = new FADM_Object.MyAlarm(i_cupNo + "号关盖失败，是否继续执行?(继续执行请点是)", "SwitchCover", i_cupNo, 2, 12);
+                                myAlarm = new FADM_Object.MyAlarm(i_cupNo + "号关盖失败，请人工确定关盖完成后点是继续运行", "SwitchCover", i_cupNo, 2, 12);
                             else
-                                myAlarm = new FADM_Object.MyAlarm(i_cupNo + " Closing failure, do you want to continue? " +
-                                    "( Continue to perform please click Yes)", "SwitchCover", i_cupNo, 2, 12);
+                                myAlarm = new FADM_Object.MyAlarm(i_cupNo + " Closing failure, Please manually confirm that the point is to continue running after closing the cover", "SwitchCover", i_cupNo, 2, 12);
 
                             return;
                         }
@@ -13668,10 +13674,9 @@ namespace SmartDyeing.FADM_Auto
                                     FADM_Object.Communal._fadmSqlserver.ReviseData(
                                        "UPDATE cup_details SET  Cooperate = 6 WHERE  CupNum = " + i_cupNo + " ;");
                                     if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                        myAlarm = new FADM_Object.MyAlarm(i_cupNo + "号关盖失败，是否继续执行?(继续执行请点是)", "SwitchCover", i_cupNo, 2, 12);
+                                        myAlarm = new FADM_Object.MyAlarm(i_cupNo + "号关盖失败，请人工确定关盖完成后点是继续运行", "SwitchCover", i_cupNo, 2, 12);
                                     else
-                                        myAlarm = new FADM_Object.MyAlarm(i_cupNo + " Closing failure, do you want to continue? " +
-                                            "( Continue to perform please click Yes)", "SwitchCover", i_cupNo, 2, 12);
+                                        myAlarm = new FADM_Object.MyAlarm(i_cupNo + " Closing failure, Please manually confirm that the point is to continue running after closing the cover", "SwitchCover", i_cupNo, 2, 12);
 
                                     return;
                                 }
@@ -13834,10 +13839,9 @@ namespace SmartDyeing.FADM_Auto
                                         FADM_Object.Communal._fadmSqlserver.ReviseData(
                                            "UPDATE cup_details SET  Cooperate = 6 WHERE  CupNum = " + _dic_first_second[i_cupNo] + " ;");
                                         if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                            myAlarm = new FADM_Object.MyAlarm(_dic_first_second[i_cupNo] + "号关盖失败，是否继续执行?(继续执行请点是)", "SwitchCover", _dic_first_second[i_cupNo], 2, 12);
+                                            myAlarm = new FADM_Object.MyAlarm(_dic_first_second[i_cupNo] + "号关盖失败，请人工确定关盖完成后点是继续运行", "SwitchCover", _dic_first_second[i_cupNo], 2, 12);
                                         else
-                                            myAlarm = new FADM_Object.MyAlarm(_dic_first_second[i_cupNo] + " Closing failure, do you want to continue? " +
-                                                "( Continue to perform please click Yes)", "SwitchCover", _dic_first_second[i_cupNo], 2, 12);
+                                            myAlarm = new FADM_Object.MyAlarm(_dic_first_second[i_cupNo] + " Closing failure,Please manually confirm that the point is to continue running after closing the cover", "SwitchCover", _dic_first_second[i_cupNo], 2, 12);
 
                                         return;
                                     }
@@ -14109,7 +14113,7 @@ namespace SmartDyeing.FADM_Auto
                                     }
                                 }
 
-                                if (_dic_first_second[i_cupNo] != 0)
+                                if (_dic_first_second[i_cupNo_temp] != 0)
                                 {
 
                                     //对应副杯也要执行
@@ -14412,10 +14416,9 @@ namespace SmartDyeing.FADM_Auto
                                                     FADM_Object.Communal._fadmSqlserver.ReviseData(
                                                        "UPDATE cup_details SET  Cooperate = 6 WHERE  CupNum = " + i_cup_temp + " ;");
                                                     if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                                        myAlarm = new FADM_Object.MyAlarm(i_cup_temp + "号关盖失败，是否继续执行?(继续执行请点是)", "SwitchCover", i_cup_temp, 2, 12);
+                                                        myAlarm = new FADM_Object.MyAlarm(i_cup_temp + "号关盖失败，请人工确定关盖完成后点是继续运行", "SwitchCover", i_cup_temp, 2, 12);
                                                     else
-                                                        myAlarm = new FADM_Object.MyAlarm(i_cup_temp + " Closing failure, do you want to continue? " +
-                                                            "( Continue to perform please click Yes)", "SwitchCover", i_cup_temp, 2, 12);
+                                                        myAlarm = new FADM_Object.MyAlarm(i_cup_temp + " Closing failure, Please manually confirm that the point is to continue running after closing the cover", "SwitchCover", i_cup_temp, 2, 12);
 
                                                     return;
                                                 }
@@ -14577,10 +14580,9 @@ namespace SmartDyeing.FADM_Auto
                                                         FADM_Object.Communal._fadmSqlserver.ReviseData(
                                                            "UPDATE cup_details SET  Cooperate = 6 WHERE  CupNum = " + _dic_first_second[i_cup_temp] + " ;");
                                                         if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                                            myAlarm = new FADM_Object.MyAlarm(_dic_first_second[i_cup_temp] + "号关盖失败，是否继续执行?(继续执行请点是)", "SwitchCover", _dic_first_second[i_cup_temp], 2, 12);
+                                                            myAlarm = new FADM_Object.MyAlarm(_dic_first_second[i_cup_temp] + "号关盖失败，请人工确定关盖完成后点是继续运行", "SwitchCover", _dic_first_second[i_cup_temp], 2, 12);
                                                         else
-                                                            myAlarm = new FADM_Object.MyAlarm(_dic_first_second[i_cup_temp] + " Closing failure, do you want to continue? " +
-                                                                "( Continue to perform please click Yes)", "SwitchCover", _dic_first_second[i_cup_temp], 2, 12);
+                                                            myAlarm = new FADM_Object.MyAlarm(_dic_first_second[i_cup_temp] + " Closing failure, Please manually confirm that the point is to continue running after closing the cover", "SwitchCover", _dic_first_second[i_cup_temp], 2, 12);
 
                                                         return;
                                                     }
@@ -14997,10 +14999,9 @@ namespace SmartDyeing.FADM_Auto
                                             FADM_Object.Communal._fadmSqlserver.ReviseData(
                                                "UPDATE cup_details SET  Cooperate = 6 WHERE  CupNum = " + i_cup_temp + " ;");
                                             if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                                myAlarm = new FADM_Object.MyAlarm(i_cup_temp + "号关盖失败，是否继续执行?(继续执行请点是)", "SwitchCover", i_cup_temp, 2, 12);
+                                                myAlarm = new FADM_Object.MyAlarm(i_cup_temp + "号关盖失败，请人工确定关盖完成后点是继续运行", "SwitchCover", i_cup_temp, 2, 12);
                                             else
-                                                myAlarm = new FADM_Object.MyAlarm(i_cup_temp + " Closing failure, do you want to continue? " +
-                                                    "( Continue to perform please click Yes)", "SwitchCover", i_cup_temp, 2, 12);
+                                                myAlarm = new FADM_Object.MyAlarm(i_cup_temp + " Closing failure, Please manually confirm that the point is to continue running after closing the cover", "SwitchCover", i_cup_temp, 2, 12);
 
                                             return;
                                         }
@@ -15178,10 +15179,9 @@ namespace SmartDyeing.FADM_Auto
                                                     FADM_Object.Communal._fadmSqlserver.ReviseData(
                                                        "UPDATE cup_details SET  Cooperate = 6 WHERE  CupNum = " + _dic_first_second[i_cup_temp] + " ;");
                                                     if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                                        myAlarm = new FADM_Object.MyAlarm(_dic_first_second[i_cup_temp] + "号关盖失败，是否继续执行?(继续执行请点是)", "SwitchCover", _dic_first_second[i_cup_temp], 2, 12);
+                                                        myAlarm = new FADM_Object.MyAlarm(_dic_first_second[i_cup_temp] + "号关盖失败，请人工确定关盖完成后点是继续运行", "SwitchCover", _dic_first_second[i_cup_temp], 2, 12);
                                                     else
-                                                        myAlarm = new FADM_Object.MyAlarm(_dic_first_second[i_cup_temp] + " Closing failure, do you want to continue? " +
-                                                            "( Continue to perform please click Yes)", "SwitchCover", _dic_first_second[i_cup_temp], 2, 12);
+                                                        myAlarm = new FADM_Object.MyAlarm(_dic_first_second[i_cup_temp] + " Closing failure, Please manually confirm that the point is to continue running after closing the cover", "SwitchCover", _dic_first_second[i_cup_temp], 2, 12);
 
                                                     return;
                                                 }
@@ -15744,10 +15744,9 @@ namespace SmartDyeing.FADM_Auto
                                 FADM_Object.Communal._fadmSqlserver.ReviseData(
                                    "UPDATE cup_details SET  Cooperate = 6 WHERE  CupNum = " + i_cup_temp + " ;");
                                 if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                    myAlarm = new FADM_Object.MyAlarm(i_cup_temp + "号关盖失败，是否继续执行?(继续执行请点是)", "SwitchCover", i_cup_temp, 2, 12);
+                                    myAlarm = new FADM_Object.MyAlarm(i_cup_temp + "号关盖失败，请人工确定关盖完成后点是继续运行", "SwitchCover", i_cup_temp, 2, 12);
                                 else
-                                    myAlarm = new FADM_Object.MyAlarm(i_cup_temp + " Closing failure, do you want to continue? " +
-                                        "( Continue to perform please click Yes)", "SwitchCover", i_cup_temp, 2, 12);
+                                    myAlarm = new FADM_Object.MyAlarm(i_cup_temp + " Closing failure, Please manually confirm that the point is to continue running after closing the cover", "SwitchCover", i_cup_temp, 2, 12);
 
                                 return -1;
                             }

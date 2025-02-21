@@ -909,9 +909,16 @@ namespace SmartDyeing.FADM_Control
                     else
                     {
                         s.dgv_dyconfiglisg.Rows.Add(list[i][2].Trim(), list[i][3].Trim(), list[i][4].Trim(), list[i][5].Trim(), list[i][6].Trim(), list[i][7].Trim());
-                        if (list[i][3].Trim().Equals("加A") || list[i][3].Trim().Equals("加B") || list[i][3].Trim().Equals("加C") || list[i][3].Trim().Equals("加D") || list[i][3].Trim().Equals("加E") || list[i][3].Trim().Equals("加F") || list[i][3].Trim().Equals("加G") || list[i][3].Trim().Equals("加H") || list[i][3].Trim().Equals("加I") || list[i][3].Trim().Equals("加J") || list[i][3].Trim().Equals("加K") || list[i][3].Trim().Equals("加L") || list[i][3].Trim().Equals("加M") || list[i][3].Trim().Equals("加N"))
+                        if (list[i][3].Trim().Equals("加A") || list[i][3].Trim().Equals("加B") || list[i][3].Trim().Equals("加C") || list[i][3].Trim().Equals("加D") || list[i][3].Trim().Equals("加E") || list[i][3].Trim().Equals("加F") || list[i][3].Trim().Equals("加G") || list[i][3].Trim().Equals("加H") || list[i][3].Trim().Equals("加I") || list[i][3].Trim().Equals("加J") || list[i][3].Trim().Equals("加K") || list[i][3].Trim().Equals("加L") || list[i][3].Trim().Equals("加M") || list[i][3].Trim().Equals("加N") || list[i][3].Trim().Equals("Add A") || list[i][3].Trim().Equals("Add B") || list[i][3].Trim().Equals("Add C") || list[i][3].Trim().Equals("Add D") || list[i][3].Trim().Equals("Add E"))
                         {
-                            listYY.Add(list[i]);
+                            // 检查 listYY 中是否已经包含 list[i][3] 这个值
+                            bool exists = listYY.Any(item => item[3] == list[i][3].Trim());
+                            // 如果不存在，则添加到 listYY 中
+                            if (!exists)
+                            {
+                                listYY.Add(list[i]);
+
+                            }
                         }
                     }
 

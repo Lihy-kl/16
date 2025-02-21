@@ -883,6 +883,7 @@ namespace SmartDyeing.FADM_Object
                                     }
                                     else {
                                         lis_bottleNum.Add(UnitOfAccount);
+                                        dd.Value = null;
                                         dd.DataSource = lis_bottleNum;
                                         dd.Value = lis_bottleNum[0].ToString();
                                     }
