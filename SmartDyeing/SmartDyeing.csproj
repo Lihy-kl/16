@@ -135,6 +135,12 @@
     <Compile Include="FADM_Control\AbsBeater.Designer.cs">
       <DependentUpon>AbsBeater.cs</DependentUpon>
     </Compile>
+    <Compile Include="FADM_Control\ABSConfig.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\ABSConfig.Designer.cs">
+      <DependentUpon>ABSConfig.cs</DependentUpon>
+    </Compile>
     <Compile Include="FADM_Control\ABS_Formula.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -321,6 +327,18 @@
     <Compile Include="FADM_Control\myDyeSelect.Designer.cs">
       <DependentUpon>myDyeSelect.cs</DependentUpon>
     </Compile>
+    <Compile Include="FADM_Control\ParameterData.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\ParameterData.Designer.cs">
+      <DependentUpon>ParameterData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Control\SixteenBeater.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FADM_Control\SixteenBeater.Designer.cs">
+      <DependentUpon>SixteenBeater.cs</DependentUpon>
+    </Compile>
     <Compile Include="FADM_Control\S_MainBottle.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -404,6 +422,18 @@
     </Compile>
     <Compile Include="FADM_Form\AbsCheck.Designer.cs">
       <DependentUpon>AbsCheck.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\AbsCupDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\AbsCupDetails.Designer.cs">
+      <DependentUpon>AbsCupDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FADM_Form\ABSStep.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FADM_Form\ABSStep.Designer.cs">
+      <DependentUpon>ABSStep.cs</DependentUpon>
     </Compile>
     <Compile Include="FADM_Form\Admin.cs">
       <SubType>Form</SubType>
@@ -680,6 +710,9 @@
     <EmbeddedResource Include="FADM_Control\AbsBeater.resx">
       <DependentUpon>AbsBeater.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\ABSConfig.resx">
+      <DependentUpon>ABSConfig.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FADM_Control\ABS_Formula.en.resx">
       <DependentUpon>ABS_Formula.cs</DependentUpon>
     </EmbeddedResource>
@@ -831,6 +864,12 @@
     <EmbeddedResource Include="FADM_Control\myDyeSelect.resx">
       <DependentUpon>myDyeSelect.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\ParameterData.resx">
+      <DependentUpon>ParameterData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Control\SixteenBeater.resx">
+      <DependentUpon>SixteenBeater.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FADM_Control\S_MainBottle.en.resx">
       <DependentUpon>S_MainBottle.cs</DependentUpon>
     </EmbeddedResource>
@@ -893,6 +932,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FADM_Form\AbsCheck.resx">
       <DependentUpon>AbsCheck.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\AbsCupDetails.en.resx">
+      <DependentUpon>AbsCupDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\AbsCupDetails.resx">
+      <DependentUpon>AbsCupDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FADM_Form\ABSStep.resx">
+      <DependentUpon>ABSStep.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FADM_Form\Admin.en.resx">
       <DependentUpon>Admin.cs</DependentUpon>
