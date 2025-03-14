@@ -122,7 +122,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1252, 60</value>
+    <value>1067, 60</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 19</value>
@@ -628,8 +628,17 @@
   <data name="grp_out.Text" xml:space="preserve">
     <value>OutputMonitor</value>
   </data>
+  <data name="button4.Text" xml:space="preserve">
+    <value>Generate-Coordinate</value>
+  </data>
+  <data name="button3.Text" xml:space="preserve">
+    <value>Write-Coordinate</value>
+  </data>
+  <data name="button2.Text" xml:space="preserve">
+    <value>Test-Coordinate</value>
+  </data>
   <data name="RdoWetClamp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>281, 206</value>
+    <value>281, 156</value>
   </data>
   <data name="RdoWetClamp.Size" type="System.Drawing.Size, System.Drawing">
     <value>147, 23</value>
@@ -638,7 +647,7 @@
     <value>WetClothClip</value>
   </data>
   <data name="RdoDryClamp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>29, 206</value>
+    <value>29, 156</value>
   </data>
   <data name="RdoDryClamp.Size" type="System.Drawing.Size, System.Drawing">
     <value>147, 23</value>
@@ -647,7 +656,7 @@
     <value>DryClothClip</value>
   </data>
   <data name="RdoWetCloth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>281, 165</value>
+    <value>281, 115</value>
   </data>
   <data name="RdoWetCloth.Size" type="System.Drawing.Size, System.Drawing">
     <value>137, 23</value>
@@ -656,7 +665,7 @@
     <value>WeClothArea</value>
   </data>
   <data name="RdoDryCloth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>29, 165</value>
+    <value>29, 115</value>
   </data>
   <data name="RdoDryCloth.Size" type="System.Drawing.Size, System.Drawing">
     <value>147, 23</value>
@@ -665,7 +674,7 @@
     <value>DryClothArea</value>
   </data>
   <data name="RdoStress.Location" type="System.Drawing.Point, System.Drawing">
-    <value>29, 247</value>
+    <value>29, 197</value>
   </data>
   <data name="RdoStress.Size" type="System.Drawing.Size, System.Drawing">
     <value>207, 23</value>
@@ -674,7 +683,7 @@
     <value>PressureReliefArea</value>
   </data>
   <data name="RdoDecompression.Location" type="System.Drawing.Point, System.Drawing">
-    <value>29, 124</value>
+    <value>29, 74</value>
   </data>
   <data name="RdoDecompression.Size" type="System.Drawing.Size, System.Drawing">
     <value>197, 23</value>
@@ -683,7 +692,7 @@
     <value>DecompressionArea</value>
   </data>
   <data name="RdoBalance.Location" type="System.Drawing.Point, System.Drawing">
-    <value>281, 124</value>
+    <value>281, 74</value>
   </data>
   <data name="RdoBalance.Size" type="System.Drawing.Size, System.Drawing">
     <value>97, 23</value>
@@ -692,7 +701,7 @@
     <value>Balance</value>
   </data>
   <data name="RdoCup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>281, 83</value>
+    <value>281, 33</value>
   </data>
   <data name="RdoCup.Size" type="System.Drawing.Size, System.Drawing">
     <value>167, 23</value>
@@ -701,7 +710,7 @@
     <value>DispensingArea</value>
   </data>
   <data name="RdoBottle.Location" type="System.Drawing.Point, System.Drawing">
-    <value>29, 83</value>
+    <value>29, 33</value>
   </data>
   <data name="RdoBottle.Size" type="System.Drawing.Size, System.Drawing">
     <value>187, 23</value>
@@ -709,14 +718,17 @@
   <data name="RdoBottle.Text" xml:space="preserve">
     <value>MotherLiquidArea</value>
   </data>
+  <data name="BtnStartMove.Location" type="System.Drawing.Point, System.Drawing">
+    <value>176, 272</value>
+  </data>
   <data name="BtnStartMove.Text" xml:space="preserve">
     <value>Start</value>
   </data>
   <data name="TxtNum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>226, 297</value>
+    <value>226, 236</value>
   </data>
   <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>73, 302</value>
+    <value>73, 241</value>
   </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 19</value>

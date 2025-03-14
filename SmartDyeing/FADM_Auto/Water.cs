@@ -20,10 +20,10 @@ namespace SmartDyeing.FADM_Auto
                 FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "水校正启动");
 
                 MyModbusFun.Reset();
-                if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
-                {
-                    Lib_Card.ADT8940A1.Module.Home.Home.Home_XYZFinish = false;
-                }
+                //if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                //{
+                //    Lib_Card.ADT8940A1.Module.Home.Home.Home_XYZFinish = false;
+                //}
                 FADM_Object.Communal.WriteMachineStatus(5);
                 //回零
                 //if (!Lib_Card.ADT8940A1.Module.Home.Home.Home_XYZFinish)

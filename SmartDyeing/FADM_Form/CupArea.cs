@@ -175,7 +175,7 @@ namespace SmartDyeing.FADM_Form
                 panel1.Location = new System.Drawing.Point(10, 10);
                 this.Controls.Add(panel1);
 
-                if (Lib_Card.Configure.Parameter.Machine_Area1_DyeType == 0)
+                if (Lib_Card.Configure.Parameter.Machine_Area1_DyeType == 0 || Lib_Card.Configure.Parameter.Machine_Area1_DyeType == 5)
                 {
                     FADM_Control.TenBeater s = new TenBeater();
                     panel1.Controls.Add(s);
@@ -256,10 +256,50 @@ namespace SmartDyeing.FADM_Form
                             }
                         }
                     }
+
                     //12杯翻转缸
                     else if (Lib_Card.Configure.Parameter.Machine_Area1_DyeType == 2)
                     {
                         FADM_Control.TwelveBeater s = new TwelveBeater();
+                        panel1.Controls.Add(s);
+
+                        foreach (Control c1 in s.Controls)
+                        {
+                            if (c1 is GroupBox)
+                            {
+                                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                {
+                                    c1.Text = "一号染固色区";
+                                }
+                                else
+                                {
+
+                                    c1.Text = "No.1 dyeing and fixation area";
+                                }
+                                int i_n = 0;
+                                foreach (Control c2 in c1.Controls)
+                                {
+                                    if (c2 is SmartDyeing.FADM_Control.Cup)
+                                    {
+                                        ((SmartDyeing.FADM_Control.Cup)c2).Name = (Lib_Card.Configure.Parameter.Machine_Area1_CupMin + i_n).ToString();
+                                        ((SmartDyeing.FADM_Control.Cup)c2).NO = (Lib_Card.Configure.Parameter.Machine_Area1_CupMin + i_n).ToString();
+                                        ((SmartDyeing.FADM_Control.Cup)c2).Click += Cup_Click;
+                                        ((SmartDyeing.FADM_Control.Cup)c2).MouseLeave += Cup_MouseLeave;
+                                        _lis_cup.Add((SmartDyeing.FADM_Control.Cup)c2);
+                                        i_n++;
+                                    }
+                                    else if (c2 is Label)
+                                    {
+                                        _lis_lab.Add((Label)c2);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    //16杯翻转缸
+                    else if (Lib_Card.Configure.Parameter.Machine_Area1_DyeType == 4)
+                    {
+                        FADM_Control.SixteenBeater s = new SixteenBeater();
                         panel1.Controls.Add(s);
 
                         foreach (Control c1 in s.Controls)
@@ -436,7 +476,7 @@ namespace SmartDyeing.FADM_Form
                 panel2.Location = new System.Drawing.Point(10 + 375 + 10, 10);
                 this.Controls.Add(panel2);
 
-                if (Lib_Card.Configure.Parameter.Machine_Area2_DyeType == 0)
+                if (Lib_Card.Configure.Parameter.Machine_Area2_DyeType == 0 || Lib_Card.Configure.Parameter.Machine_Area2_DyeType == 5)
                 {
                     FADM_Control.TenBeater s = new TenBeater();
                     panel2.Controls.Add(s);
@@ -517,10 +557,50 @@ namespace SmartDyeing.FADM_Form
                             }
                         }
                     }
+
                     //12杯翻转缸
                     else if (Lib_Card.Configure.Parameter.Machine_Area2_DyeType == 2)
                     {
                         FADM_Control.TwelveBeater s = new TwelveBeater();
+                        panel2.Controls.Add(s);
+
+                        foreach (Control c1 in s.Controls)
+                        {
+                            if (c1 is GroupBox)
+                            {
+                                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                {
+                                    c1.Text = "二号染固色区";
+                                }
+                                else
+                                {
+
+                                    c1.Text = "No.2 dyeing and fixation area";
+                                }
+                                int i_n = 0;
+                                foreach (Control c2 in c1.Controls)
+                                {
+                                    if (c2 is SmartDyeing.FADM_Control.Cup)
+                                    {
+                                        ((SmartDyeing.FADM_Control.Cup)c2).Name = (Lib_Card.Configure.Parameter.Machine_Area2_CupMin + i_n).ToString();
+                                        ((SmartDyeing.FADM_Control.Cup)c2).NO = (Lib_Card.Configure.Parameter.Machine_Area2_CupMin + i_n).ToString();
+                                        ((SmartDyeing.FADM_Control.Cup)c2).Click += Cup_Click;
+                                        ((SmartDyeing.FADM_Control.Cup)c2).MouseLeave += Cup_MouseLeave;
+                                        _lis_cup.Add((SmartDyeing.FADM_Control.Cup)c2);
+                                        i_n++;
+                                    }
+                                    else if (c2 is Label)
+                                    {
+                                        _lis_lab.Add((Label)c2);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    //16杯翻转缸
+                    else if (Lib_Card.Configure.Parameter.Machine_Area2_DyeType == 4)
+                    {
+                        FADM_Control.SixteenBeater s = new SixteenBeater();
                         panel2.Controls.Add(s);
 
                         foreach (Control c1 in s.Controls)
@@ -693,7 +773,7 @@ namespace SmartDyeing.FADM_Form
                 panel3.Location = new System.Drawing.Point(10 + 375 + 10 + 375 + 10, 10);
                 this.Controls.Add(panel3);
 
-                if (Lib_Card.Configure.Parameter.Machine_Area3_DyeType == 0)
+                if (Lib_Card.Configure.Parameter.Machine_Area3_DyeType == 0 || Lib_Card.Configure.Parameter.Machine_Area3_DyeType == 5)
                 {
                     FADM_Control.TenBeater s = new TenBeater();
                     panel3.Controls.Add(s);
@@ -776,10 +856,50 @@ namespace SmartDyeing.FADM_Form
                             }
                         }
                     }
+
                     //12杯翻转缸
                     else if (Lib_Card.Configure.Parameter.Machine_Area3_DyeType == 2)
                     {
                         FADM_Control.TwelveBeater s = new TwelveBeater();
+                        panel3.Controls.Add(s);
+
+                        foreach (Control c1 in s.Controls)
+                        {
+                            if (c1 is GroupBox)
+                            {
+                                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                {
+                                    c1.Text = "三号染固色区";
+                                }
+                                else
+                                {
+
+                                    c1.Text = "No.3 dyeing and fixation area";
+                                }
+                                int i_n = 0;
+                                foreach (Control c2 in c1.Controls)
+                                {
+                                    if (c2 is SmartDyeing.FADM_Control.Cup)
+                                    {
+                                        ((SmartDyeing.FADM_Control.Cup)c2).Name = (Lib_Card.Configure.Parameter.Machine_Area3_CupMin + i_n).ToString();
+                                        ((SmartDyeing.FADM_Control.Cup)c2).NO = (Lib_Card.Configure.Parameter.Machine_Area3_CupMin + i_n).ToString();
+                                        ((SmartDyeing.FADM_Control.Cup)c2).Click += Cup_Click;
+                                        ((SmartDyeing.FADM_Control.Cup)c2).MouseLeave += Cup_MouseLeave;
+                                        _lis_cup.Add((SmartDyeing.FADM_Control.Cup)c2);
+                                        i_n++;
+                                    }
+                                    else if (c2 is Label)
+                                    {
+                                        _lis_lab.Add((Label)c2);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    //16杯翻转缸
+                    else if (Lib_Card.Configure.Parameter.Machine_Area3_DyeType == 4)
+                    {
+                        FADM_Control.SixteenBeater s = new SixteenBeater();
                         panel3.Controls.Add(s);
 
                         foreach (Control c1 in s.Controls)
@@ -951,7 +1071,7 @@ namespace SmartDyeing.FADM_Form
                 panel4.Location = new System.Drawing.Point(10, 10 + 300 + 10);
                 this.Controls.Add(panel4);
 
-                if (Lib_Card.Configure.Parameter.Machine_Area4_DyeType == 0)
+                if (Lib_Card.Configure.Parameter.Machine_Area4_DyeType == 0 || Lib_Card.Configure.Parameter.Machine_Area4_DyeType == 5)
                 {
                     FADM_Control.TenBeater s = new TenBeater();
                     panel4.Controls.Add(s);
@@ -1032,10 +1152,50 @@ namespace SmartDyeing.FADM_Form
                             }
                         }
                     }
+
                     //12杯翻转缸
                     else if (Lib_Card.Configure.Parameter.Machine_Area4_DyeType == 2)
                     {
                         FADM_Control.TwelveBeater s = new TwelveBeater();
+                        panel4.Controls.Add(s);
+
+                        foreach (Control c1 in s.Controls)
+                        {
+                            if (c1 is GroupBox)
+                            {
+                                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                {
+                                    c1.Text = "四号染固色区";
+                                }
+                                else
+                                {
+
+                                    c1.Text = "No.4 dyeing and fixation area";
+                                }
+                                int i_n = 0;
+                                foreach (Control c2 in c1.Controls)
+                                {
+                                    if (c2 is SmartDyeing.FADM_Control.Cup)
+                                    {
+                                        ((SmartDyeing.FADM_Control.Cup)c2).Name = (Lib_Card.Configure.Parameter.Machine_Area4_CupMin + i_n).ToString();
+                                        ((SmartDyeing.FADM_Control.Cup)c2).NO = (Lib_Card.Configure.Parameter.Machine_Area4_CupMin + i_n).ToString();
+                                        ((SmartDyeing.FADM_Control.Cup)c2).Click += Cup_Click;
+                                        ((SmartDyeing.FADM_Control.Cup)c2).MouseLeave += Cup_MouseLeave;
+                                        _lis_cup.Add((SmartDyeing.FADM_Control.Cup)c2);
+                                        i_n++;
+                                    }
+                                    else if (c2 is Label)
+                                    {
+                                        _lis_lab.Add((Label)c2);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    //16杯翻转缸
+                    else if (Lib_Card.Configure.Parameter.Machine_Area4_DyeType == 4)
+                    {
+                        FADM_Control.SixteenBeater s = new SixteenBeater();
                         panel4.Controls.Add(s);
 
                         foreach (Control c1 in s.Controls)
@@ -1207,7 +1367,7 @@ namespace SmartDyeing.FADM_Form
                 panel5.Location = new System.Drawing.Point(10 + 375 + 10, 10 + 300 + 10);
                 this.Controls.Add(panel5);
 
-                if (Lib_Card.Configure.Parameter.Machine_Area5_DyeType == 0)
+                if (Lib_Card.Configure.Parameter.Machine_Area5_DyeType == 0 || Lib_Card.Configure.Parameter.Machine_Area5_DyeType == 5)
                 {
                     FADM_Control.TenBeater s = new TenBeater();
                     panel5.Controls.Add(s);
@@ -1288,10 +1448,50 @@ namespace SmartDyeing.FADM_Form
                             }
                         }
                     }
+
                     //12杯翻转缸
                     else if (Lib_Card.Configure.Parameter.Machine_Area5_DyeType == 2)
                     {
                         FADM_Control.TwelveBeater s = new TwelveBeater();
+                        panel5.Controls.Add(s);
+
+                        foreach (Control c1 in s.Controls)
+                        {
+                            if (c1 is GroupBox)
+                            {
+                                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                {
+                                    c1.Text = "五号染固色区";
+                                }
+                                else
+                                {
+
+                                    c1.Text = "No.5 dyeing and fixation area";
+                                }
+                                int i_n = 0;
+                                foreach (Control c2 in c1.Controls)
+                                {
+                                    if (c2 is SmartDyeing.FADM_Control.Cup)
+                                    {
+                                        ((SmartDyeing.FADM_Control.Cup)c2).Name = (Lib_Card.Configure.Parameter.Machine_Area5_CupMin + i_n).ToString();
+                                        ((SmartDyeing.FADM_Control.Cup)c2).NO = (Lib_Card.Configure.Parameter.Machine_Area5_CupMin + i_n).ToString();
+                                        ((SmartDyeing.FADM_Control.Cup)c2).Click += Cup_Click;
+                                        ((SmartDyeing.FADM_Control.Cup)c2).MouseLeave += Cup_MouseLeave;
+                                        _lis_cup.Add((SmartDyeing.FADM_Control.Cup)c2);
+                                        i_n++;
+                                    }
+                                    else if (c2 is Label)
+                                    {
+                                        _lis_lab.Add((Label)c2);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    //16杯翻转缸
+                    else if (Lib_Card.Configure.Parameter.Machine_Area5_DyeType == 4)
+                    {
+                        FADM_Control.SixteenBeater s = new SixteenBeater();
                         panel5.Controls.Add(s);
 
                         foreach (Control c1 in s.Controls)
@@ -1462,7 +1662,7 @@ namespace SmartDyeing.FADM_Form
                 panel6.Location = new System.Drawing.Point(10 + 375 + 10 + 375 + 10, 10 + 300 + 10);
                 this.Controls.Add(panel6);
 
-                if (Lib_Card.Configure.Parameter.Machine_Area6_DyeType == 0)
+                if (Lib_Card.Configure.Parameter.Machine_Area6_DyeType == 0 || Lib_Card.Configure.Parameter.Machine_Area6_DyeType == 5)
                 {
                     FADM_Control.TenBeater s = new TenBeater();
                     panel6.Controls.Add(s);
@@ -1543,10 +1743,50 @@ namespace SmartDyeing.FADM_Form
                             }
                         }
                     }
+
                     //12杯翻转缸
                     else if (Lib_Card.Configure.Parameter.Machine_Area6_DyeType == 2)
                     {
                         FADM_Control.TwelveBeater s = new TwelveBeater();
+                        panel6.Controls.Add(s);
+
+                        foreach (Control c1 in s.Controls)
+                        {
+                            if (c1 is GroupBox)
+                            {
+                                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                {
+                                    c1.Text = "六号染固色区";
+                                }
+                                else
+                                {
+
+                                    c1.Text = "No.6 dyeing and fixation area";
+                                }
+                                int i_n = 0;
+                                foreach (Control c2 in c1.Controls)
+                                {
+                                    if (c2 is SmartDyeing.FADM_Control.Cup)
+                                    {
+                                        ((SmartDyeing.FADM_Control.Cup)c2).Name = (Lib_Card.Configure.Parameter.Machine_Area6_CupMin + i_n).ToString();
+                                        ((SmartDyeing.FADM_Control.Cup)c2).NO = (Lib_Card.Configure.Parameter.Machine_Area6_CupMin + i_n).ToString();
+                                        ((SmartDyeing.FADM_Control.Cup)c2).Click += Cup_Click;
+                                        ((SmartDyeing.FADM_Control.Cup)c2).MouseLeave += Cup_MouseLeave;
+                                        _lis_cup.Add((SmartDyeing.FADM_Control.Cup)c2);
+                                        i_n++;
+                                    }
+                                    else if (c2 is Label)
+                                    {
+                                        _lis_lab.Add((Label)c2);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    //16杯翻转缸
+                    else if (Lib_Card.Configure.Parameter.Machine_Area6_DyeType == 4)
+                    {
+                        FADM_Control.SixteenBeater s = new SixteenBeater();
                         panel6.Controls.Add(s);
 
                         foreach (Control c1 in s.Controls)

@@ -1,0 +1,649 @@
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace SmartDyeing.FADM_Control
+{
+    partial class SixteenBeater
+    {
+        /// <summary> 
+        /// 必需的设计器变量。
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary> 
+        /// 清理所有正在使用的资源。
+        /// </summary>
+        /// <param name="disposing">如果应释放托管资源，为 true；否则为 false。</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region 组件设计器生成的代码
+
+        /// <summary> 
+        /// 设计器支持所需的方法 - 不要修改
+        /// 使用代码编辑器修改此方法的内容。
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SixteenBeater));
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsm_AllOnline = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsm_AllOffline = new System.Windows.Forms.ToolStripMenuItem();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.cup1 = new SmartDyeing.FADM_Control.Cup();
+            this.cup2 = new SmartDyeing.FADM_Control.Cup();
+            this.cup3 = new SmartDyeing.FADM_Control.Cup();
+            this.cup4 = new SmartDyeing.FADM_Control.Cup();
+            this.cup5 = new SmartDyeing.FADM_Control.Cup();
+            this.cup6 = new SmartDyeing.FADM_Control.Cup();
+            this.cup16 = new SmartDyeing.FADM_Control.Cup();
+            this.cup15 = new SmartDyeing.FADM_Control.Cup();
+            this.cup14 = new SmartDyeing.FADM_Control.Cup();
+            this.cup13 = new SmartDyeing.FADM_Control.Cup();
+            this.cup12 = new SmartDyeing.FADM_Control.Cup();
+            this.cup11 = new SmartDyeing.FADM_Control.Cup();
+            this.cup10 = new SmartDyeing.FADM_Control.Cup();
+            this.cup9 = new SmartDyeing.FADM_Control.Cup();
+            this.cup8 = new SmartDyeing.FADM_Control.Cup();
+            this.cup7 = new SmartDyeing.FADM_Control.Cup();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsm_Online = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsm_Offline = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsm_Stop = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsm_IsFix = new System.Windows.Forms.ToolStripMenuItem();
+            this.groupBox1.SuspendLayout();
+            this.contextMenuStrip2.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.ContextMenuStrip = this.contextMenuStrip2;
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.label16);
+            this.groupBox1.Controls.Add(this.label15);
+            this.groupBox1.Controls.Add(this.label14);
+            this.groupBox1.Controls.Add(this.label13);
+            this.groupBox1.Controls.Add(this.label12);
+            this.groupBox1.Controls.Add(this.label11);
+            this.groupBox1.Controls.Add(this.label10);
+            this.groupBox1.Controls.Add(this.label9);
+            this.groupBox1.Controls.Add(this.cup1);
+            this.groupBox1.Controls.Add(this.cup2);
+            this.groupBox1.Controls.Add(this.cup3);
+            this.groupBox1.Controls.Add(this.cup4);
+            this.groupBox1.Controls.Add(this.cup5);
+            this.groupBox1.Controls.Add(this.cup6);
+            this.groupBox1.Controls.Add(this.cup7);
+            this.groupBox1.Controls.Add(this.cup8);
+            this.groupBox1.Controls.Add(this.cup16);
+            this.groupBox1.Controls.Add(this.cup15);
+            this.groupBox1.Controls.Add(this.cup14);
+            this.groupBox1.Controls.Add(this.cup13);
+            this.groupBox1.Controls.Add(this.cup12);
+            this.groupBox1.Controls.Add(this.cup11);
+            this.groupBox1.Controls.Add(this.cup10);
+            this.groupBox1.Controls.Add(this.cup9);
+            resources.ApplyResources(this.groupBox1, "groupBox1");
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.TabStop = false;
+            // 
+            // contextMenuStrip2
+            // 
+            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsm_AllOnline,
+            this.tsm_AllOffline});
+            this.contextMenuStrip2.Name = "contextMenuStrip2";
+            resources.ApplyResources(this.contextMenuStrip2, "contextMenuStrip2");
+            // 
+            // tsm_AllOnline
+            // 
+            this.tsm_AllOnline.Name = "tsm_AllOnline";
+            resources.ApplyResources(this.tsm_AllOnline, "tsm_AllOnline");
+            this.tsm_AllOnline.Click += new System.EventHandler(this.tsm_AllOnline_Click);
+            // 
+            // tsm_AllOffline
+            // 
+            this.tsm_AllOffline.Name = "tsm_AllOffline";
+            resources.ApplyResources(this.tsm_AllOffline, "tsm_AllOffline");
+            this.tsm_AllOffline.Click += new System.EventHandler(this.tsm_AllOffline_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoEllipsis = true;
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
+            // label2
+            // 
+            this.label2.AutoEllipsis = true;
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // label3
+            // 
+            this.label3.AutoEllipsis = true;
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
+            // 
+            // label4
+            // 
+            this.label4.AutoEllipsis = true;
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
+            // 
+            // label5
+            // 
+            this.label5.AutoEllipsis = true;
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.Name = "label5";
+            // 
+            // label6
+            // 
+            this.label6.AutoEllipsis = true;
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.Name = "label6";
+            // 
+            // label16
+            // 
+            this.label16.AutoEllipsis = true;
+            resources.ApplyResources(this.label16, "label16");
+            this.label16.Name = "label16";
+            // 
+            // label15
+            // 
+            this.label15.AutoEllipsis = true;
+            resources.ApplyResources(this.label15, "label15");
+            this.label15.Name = "label15";
+            // 
+            // label14
+            // 
+            this.label14.AutoEllipsis = true;
+            resources.ApplyResources(this.label14, "label14");
+            this.label14.Name = "label14";
+            // 
+            // label13
+            // 
+            this.label13.AutoEllipsis = true;
+            resources.ApplyResources(this.label13, "label13");
+            this.label13.Name = "label13";
+            // 
+            // label12
+            // 
+            this.label12.AutoEllipsis = true;
+            resources.ApplyResources(this.label12, "label12");
+            this.label12.Name = "label12";
+            // 
+            // label11
+            // 
+            this.label11.AutoEllipsis = true;
+            resources.ApplyResources(this.label11, "label11");
+            this.label11.Name = "label11";
+            // 
+            // label10
+            // 
+            this.label10.AutoEllipsis = true;
+            resources.ApplyResources(this.label10, "label10");
+            this.label10.Name = "label10";
+            // 
+            // label9
+            // 
+            this.label9.AutoEllipsis = true;
+            resources.ApplyResources(this.label9, "label9");
+            this.label9.Name = "label9";
+            // 
+            // label8
+            // 
+            this.label8.AutoEllipsis = true;
+            resources.ApplyResources(this.label8, "label8");
+            this.label8.Name = "label8";
+            // 
+            // label7
+            // 
+            this.label7.AutoEllipsis = true;
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.Name = "label7";
+            // 
+            // cup1
+            // 
+            this.cup1.BackColor = System.Drawing.Color.Transparent;
+            this.cup1.BottleColor = System.Drawing.Color.Black;
+            this.cup1.LiquidColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.cup1, "cup1");
+            this.cup1.MaxValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.cup1.Name = "cup1";
+            this.cup1.NO = "1";
+            this.cup1.Title = "";
+            this.cup1.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            // 
+            // cup2
+            // 
+            this.cup2.BackColor = System.Drawing.Color.Transparent;
+            this.cup2.BottleColor = System.Drawing.Color.Black;
+            this.cup2.LiquidColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.cup2, "cup2");
+            this.cup2.MaxValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.cup2.Name = "cup2";
+            this.cup2.NO = "2";
+            this.cup2.Title = "";
+            this.cup2.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            // 
+            // cup3
+            // 
+            this.cup3.BackColor = System.Drawing.Color.Transparent;
+            this.cup3.BottleColor = System.Drawing.Color.Black;
+            this.cup3.LiquidColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.cup3, "cup3");
+            this.cup3.MaxValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.cup3.Name = "cup3";
+            this.cup3.NO = "3";
+            this.cup3.Title = "";
+            this.cup3.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            // 
+            // cup4
+            // 
+            this.cup4.BackColor = System.Drawing.Color.Transparent;
+            this.cup4.BottleColor = System.Drawing.Color.Black;
+            this.cup4.LiquidColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.cup4, "cup4");
+            this.cup4.MaxValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.cup4.Name = "cup4";
+            this.cup4.NO = "4";
+            this.cup4.Title = "";
+            this.cup4.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            // 
+            // cup5
+            // 
+            this.cup5.BackColor = System.Drawing.Color.Transparent;
+            this.cup5.BottleColor = System.Drawing.Color.Black;
+            this.cup5.LiquidColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.cup5, "cup5");
+            this.cup5.MaxValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.cup5.Name = "cup5";
+            this.cup5.NO = "5";
+            this.cup5.Title = "";
+            this.cup5.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            // 
+            // cup6
+            // 
+            this.cup6.BackColor = System.Drawing.Color.Transparent;
+            this.cup6.BottleColor = System.Drawing.Color.Black;
+            this.cup6.LiquidColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.cup6, "cup6");
+            this.cup6.MaxValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.cup6.Name = "cup6";
+            this.cup6.NO = "6";
+            this.cup6.Title = "";
+            this.cup6.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            // 
+            // cup16
+            // 
+            this.cup16.BackColor = System.Drawing.Color.Transparent;
+            this.cup16.BottleColor = System.Drawing.Color.Black;
+            this.cup16.LiquidColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.cup16, "cup16");
+            this.cup16.MaxValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.cup16.Name = "cup16";
+            this.cup16.NO = "16";
+            this.cup16.Title = "";
+            this.cup16.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            // 
+            // cup15
+            // 
+            this.cup15.BackColor = System.Drawing.Color.Transparent;
+            this.cup15.BottleColor = System.Drawing.Color.Black;
+            this.cup15.LiquidColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.cup15, "cup15");
+            this.cup15.MaxValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.cup15.Name = "cup15";
+            this.cup15.NO = "15";
+            this.cup15.Title = "";
+            this.cup15.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            // 
+            // cup14
+            // 
+            this.cup14.BackColor = System.Drawing.Color.Transparent;
+            this.cup14.BottleColor = System.Drawing.Color.Black;
+            this.cup14.LiquidColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.cup14, "cup14");
+            this.cup14.MaxValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.cup14.Name = "cup14";
+            this.cup14.NO = "14";
+            this.cup14.Title = "";
+            this.cup14.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            // 
+            // cup13
+            // 
+            this.cup13.BackColor = System.Drawing.Color.Transparent;
+            this.cup13.BottleColor = System.Drawing.Color.Black;
+            this.cup13.LiquidColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.cup13, "cup13");
+            this.cup13.MaxValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.cup13.Name = "cup13";
+            this.cup13.NO = "13";
+            this.cup13.Title = "";
+            this.cup13.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            // 
+            // cup12
+            // 
+            this.cup12.BackColor = System.Drawing.Color.Transparent;
+            this.cup12.BottleColor = System.Drawing.Color.Black;
+            this.cup12.LiquidColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.cup12, "cup12");
+            this.cup12.MaxValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.cup12.Name = "cup12";
+            this.cup12.NO = "12";
+            this.cup12.Title = "";
+            this.cup12.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            // 
+            // cup11
+            // 
+            this.cup11.BackColor = System.Drawing.Color.Transparent;
+            this.cup11.BottleColor = System.Drawing.Color.Black;
+            this.cup11.LiquidColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.cup11, "cup11");
+            this.cup11.MaxValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.cup11.Name = "cup11";
+            this.cup11.NO = "11";
+            this.cup11.Title = "";
+            this.cup11.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            // 
+            // cup10
+            // 
+            this.cup10.BackColor = System.Drawing.Color.Transparent;
+            this.cup10.BottleColor = System.Drawing.Color.Black;
+            this.cup10.LiquidColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.cup10, "cup10");
+            this.cup10.MaxValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.cup10.Name = "cup10";
+            this.cup10.NO = "10";
+            this.cup10.Title = "";
+            this.cup10.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            // 
+            // cup9
+            // 
+            this.cup9.BackColor = System.Drawing.Color.Transparent;
+            this.cup9.BottleColor = System.Drawing.Color.Black;
+            this.cup9.LiquidColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.cup9, "cup9");
+            this.cup9.MaxValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.cup9.Name = "cup9";
+            this.cup9.NO = "9";
+            this.cup9.Title = "";
+            this.cup9.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            // 
+            // cup8
+            // 
+            this.cup8.BackColor = System.Drawing.Color.Transparent;
+            this.cup8.BottleColor = System.Drawing.Color.Black;
+            this.cup8.LiquidColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.cup8, "cup8");
+            this.cup8.MaxValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.cup8.Name = "cup8";
+            this.cup8.NO = "8";
+            this.cup8.Title = "";
+            this.cup8.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            // 
+            // cup7
+            // 
+            this.cup7.BackColor = System.Drawing.Color.Transparent;
+            this.cup7.BottleColor = System.Drawing.Color.Black;
+            this.cup7.LiquidColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.cup7, "cup7");
+            this.cup7.MaxValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.cup7.Name = "cup7";
+            this.cup7.NO = "7";
+            this.cup7.Title = "";
+            this.cup7.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsm_Online,
+            this.tsm_Offline,
+            this.tsm_Stop,
+            this.tsm_IsFix});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            resources.ApplyResources(this.contextMenuStrip1, "contextMenuStrip1");
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+            // 
+            // tsm_Online
+            // 
+            this.tsm_Online.Name = "tsm_Online";
+            resources.ApplyResources(this.tsm_Online, "tsm_Online");
+            this.tsm_Online.Click += new System.EventHandler(this.tsm_Online_Click);
+            // 
+            // tsm_Offline
+            // 
+            this.tsm_Offline.Name = "tsm_Offline";
+            resources.ApplyResources(this.tsm_Offline, "tsm_Offline");
+            this.tsm_Offline.Click += new System.EventHandler(this.tsm_Offline_Click);
+            // 
+            // tsm_Stop
+            // 
+            this.tsm_Stop.Name = "tsm_Stop";
+            resources.ApplyResources(this.tsm_Stop, "tsm_Stop");
+            this.tsm_Stop.Click += new System.EventHandler(this.tsm_Stop_Click);
+            // 
+            // tsm_IsFix
+            // 
+            this.tsm_IsFix.Name = "tsm_IsFix";
+            resources.ApplyResources(this.tsm_IsFix, "tsm_IsFix");
+            this.tsm_IsFix.Click += new System.EventHandler(this.tsm_IsFix_Click);
+            // 
+            // SixteenBeater
+            // 
+            resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.groupBox1);
+            this.Name = "SixteenBeater";
+            this.groupBox1.ResumeLayout(false);
+            this.contextMenuStrip2.ResumeLayout(false);
+            this.contextMenuStrip1.ResumeLayout(false);
+            this.ResumeLayout(false);
+
+        }
+
+        #endregion
+
+        public GroupBox groupBox1;
+        private Label label10;
+        private Label label9;
+        private Label label8;
+        private Label label7;
+        private Label label6;
+        private Label label5;
+        private Label label4;
+        private Label label3;
+        private Label label2;
+        private Label label1;
+        private Cup cup6;
+        private Cup cup7;
+        private Cup cup8;
+        private Cup cup9;
+        private Cup cup10;
+        private Cup cup5;
+        private Cup cup4;
+        private Cup cup3;
+        private Cup cup2;
+        private Cup cup1;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem tsm_Online;
+        private ToolStripMenuItem tsm_Offline;
+        private ContextMenuStrip contextMenuStrip2;
+        private ToolStripMenuItem tsm_AllOnline;
+        private ToolStripMenuItem tsm_AllOffline;
+        private ToolStripMenuItem tsm_Stop;
+        private ToolStripMenuItem tsm_IsFix;
+        private Label label12;
+        private Cup cup12;
+        private Label label11;
+        private Cup cup11;
+        private Label label16;
+        private Label label15;
+        private Label label14;
+        private Label label13;
+        private Cup cup16;
+        private Cup cup15;
+        private Cup cup14;
+        private Cup cup13;
+    }
+}

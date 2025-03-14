@@ -210,10 +210,146 @@ namespace Lib_Card.ADT8940A1.Module
                 }
                 
             }
+            if (iType == 1)
+                Thread.Sleep(2000);
             if (-1 == tongs.Tongs_Off())
                 return -1;
-            if (-1 == cylinder.CylinderUp(0))
-                return -1;
+            //开盖直接气缸上
+            if (iType == 0)
+            {
+                if (-1 == cylinder.CylinderUp(0))
+                    return -1;
+            }
+            //关盖时，离开下限位就重新气缸下
+            else
+            {
+                bool b_repress = false;
+                lab_repress:
+                //气缸上离开下限位
+                res = cylinder.CylinderUp(2);
+                if (res == -1)
+                {
+                    return -1;
+                }
+                //重新气缸下，再怼一次确认
+                res = cylinder.CylinderDown(2);
+                if (res == -1)
+                {
+                    return -1;
+                }
+                //气缸下不到位,重新关闭抓手
+                else if (res == -8)
+                {
+                    if (b_repress)
+                    {
+                        //正常气缸上
+                        res = cylinder.CylinderUp(0);
+                        if (res == -1)
+                        {
+                            return -1;
+                        }
+                        throw new Exception("二次关盖复压失败");
+                    }
+                    //第一次下怼确认不成功
+                    else
+                    {
+                        bool bfirst = true;
+                    lab_again:
+                        try
+                        {
+                            if (-1 == tongs.Tongs_On())
+                                return -1;
+                        }
+                        catch (Exception e)
+                        {
+                            if (e.Message == "抓手A关闭超时" || e.Message == "抓手B关闭超时")
+                            {
+                                //重新打开抓手
+                                if (-1 == tongs.Tongs_Off())
+                                    return -1;
+                                throw new Exception(e.Message);
+                            }
+                        }
+                        //判断针筒感应器是否有信号
+                        int iSyringe = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Syringe);
+                        if (Lib_Card.Configure.Parameter.Machine_isSyringe == 1)
+                        {
+                            iSyringe = 1;
+                        }
+                        if (-1 == iSyringe)
+                            return -1;
+                        else if (1 == iSyringe)
+                        {
+                            //正常气缸上
+                            res = cylinder.CylinderUp(0);
+                            if (res == -1)
+                            {
+                                return -1;
+                            }
+
+                            //正常气缸下,再关一次盖
+                            res = cylinder.CylinderDown(1);
+                            if (res == -1)
+                            {
+                                return -1;
+                            }
+                            else if (res == -9)
+                            {
+                                //重新打开抓手
+                                if (-1 == tongs.Tongs_Off())
+                                    return -1;
+                                //正常气缸上
+                                res = cylinder.CylinderUp(0);
+                                if (res == -1)
+                                {
+                                    return -1;
+                                }
+                                //直接报二次关盖失败
+                                throw new Exception("二次关盖失败");
+                            }
+                            else
+                            {
+                                //二次关盖成功,然后重新再怼一次
+                                if (!b_repress)
+                                {
+                                    b_repress = true;
+                                    goto lab_repress;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            //重新再抓一次啊
+                            if (bfirst)
+                            {
+                                bfirst = false;
+
+                                //重新打开抓手
+                                if (-1 == tongs.Tongs_Off())
+                                    return -1;
+
+                                goto lab_again;
+                            }
+                            //第二次抓取没有信号
+                            else
+                            {
+                                //重新打开抓手
+                                if (-1 == tongs.Tongs_Off())
+                                    return -1;
+                                //正常气缸上
+                                res = cylinder.CylinderUp(0);
+                                if (res == -1)
+                                {
+                                    return -1;
+                                }
+                                throw new Exception("二次关盖未发现杯盖");
+                            }
+                        }
+                    }
+
+                }
+
+            }
 
             return 0;
         }

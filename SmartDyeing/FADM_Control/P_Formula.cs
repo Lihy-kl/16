@@ -929,17 +929,17 @@ namespace SmartDyeing.FADM_Control
                 case Keys.Delete:
                     try
                     {
-                        string s_sql1 = "SELECT * FROM drop_head  where BatchName != '0' and Stage = '滴液'   order by CupNum  ;";
-                        DataTable dt_head_Drip = FADM_Object.Communal._fadmSqlserver.GetData(s_sql1);
+                        //string s_sql1 = "SELECT * FROM drop_head  where BatchName != '0' and Stage = '滴液'   order by CupNum  ;";
+                        //DataTable dt_head_Drip = FADM_Object.Communal._fadmSqlserver.GetData(s_sql1);
 
-                        if (dt_head_Drip.Rows.Count > 0)
-                        {
-                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                FADM_Form.CustomMessageBox.Show("滴液过程不能删除", "温馨提示", MessageBoxButtons.OK, false);
-                            else
-                                FADM_Form.CustomMessageBox.Show("The dripping process cannot be deleted", "Tips", MessageBoxButtons.OK, false);
-                            return;
-                        }
+                        //if (dt_head_Drip.Rows.Count > 0)
+                        //{
+                        //    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                        //        FADM_Form.CustomMessageBox.Show("滴液过程不能删除", "温馨提示", MessageBoxButtons.OK, false);
+                        //    else
+                        //        FADM_Form.CustomMessageBox.Show("The dripping process cannot be deleted", "Tips", MessageBoxButtons.OK, false);
+                        //    return;
+                        //}
 
                         _i_delect_index = Convert.ToInt16(dgv_BatchData.CurrentRow.Index);
                         string s_sql = null;
@@ -985,17 +985,17 @@ namespace SmartDyeing.FADM_Control
                     }
                     break;
                 case Keys.Insert:
-                    string s_sql2 = "SELECT * FROM drop_head  where BatchName != '0' and Stage = '滴液'   order by CupNum  ;";
-                    DataTable dt_head_Drip2 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql2);
+                    //string s_sql2 = "SELECT * FROM drop_head  where BatchName != '0' and Stage = '滴液'   order by CupNum  ;";
+                    //DataTable dt_head_Drip2 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql2);
 
-                    if (dt_head_Drip2.Rows.Count > 0)
-                    {
-                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                            FADM_Form.CustomMessageBox.Show("滴液过程不能插入", "温馨提示", MessageBoxButtons.OK, false);
-                        else
-                            FADM_Form.CustomMessageBox.Show("The liquid drop process cannot be interrupted", "Tips", MessageBoxButtons.OK, false);
-                        return;
-                    }
+                    //if (dt_head_Drip2.Rows.Count > 0)
+                    //{
+                    //    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                    //        FADM_Form.CustomMessageBox.Show("滴液过程不能插入", "温馨提示", MessageBoxButtons.OK, false);
+                    //    else
+                    //        FADM_Form.CustomMessageBox.Show("The liquid drop process cannot be interrupted", "Tips", MessageBoxButtons.OK, false);
+                    //    return;
+                    //}
                     dgv_BatchData_RowsAdded();
                     break;
                 default:
@@ -1021,32 +1021,50 @@ namespace SmartDyeing.FADM_Control
                             " FROM drop_head Order BY CupNum ;";
 
                 DataTable dt_formulahead = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                List<int> lis_cup = new List<int>();
+
+                for (int i = 0; i < dt_formulahead.Rows.Count; i++)
+                {
+                    //把正在滴液的排除
+                    if (dt_formulahead.Rows[i][dt_formulahead.Columns["BatchName"]].ToString() != "0")
+                    {
+                        lis_cup.Add(Convert.ToInt32( dt_formulahead.Rows[i][0].ToString()));
+                    }
+                }
 
                 if (dt_formulahead.Rows.Count > 0)
                 {
-
-                    if (dt_formulahead.Rows[0][dt_formulahead.Columns["BatchName"]].ToString() == "0")
+                    int i_cupNum = 1;
+                    //重新排杯号
+                    for (int i = 0; i < dt_formulahead.Rows.Count; i++)
                     {
-                        //重新排杯号
-                        for (int i = 0; i < dt_formulahead.Rows.Count; i++)
+                        if (dt_formulahead.Rows[i][dt_formulahead.Columns["BatchName"]].ToString() != "0")
+                            continue;
+
+                        //得到以前的杯号
+                        string s_oldCupNum = dt_formulahead.Rows[i][0].ToString();
+
+                        string s_code = dt_formulahead.Rows[i][1].ToString();
+
+                        string s_ver = dt_formulahead.Rows[i][2].ToString();
+                        la_rep:
+                        if(lis_cup.Contains(i_cupNum))
                         {
-                            //得到以前的杯号
-                            string s_oldCupNum = dt_formulahead.Rows[i][0].ToString();
-
-                            string s_code = dt_formulahead.Rows[i][1].ToString();
-
-                            string s_ver = dt_formulahead.Rows[i][2].ToString();
-
-                            //修改批次表头杯号
-                            s_sql = "UPDATE drop_head SET" +
-                                        " CupNum = '" + (i + 1) + "' where CupNum = '" + s_oldCupNum + "';";
-                            FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
-
-                            //修改批次详细表杯号
-                            s_sql = "UPDATE drop_details SET" +
-                                        " CupNum = '" + (i + 1) + "' where CupNum = '" + s_oldCupNum + "';";
-                            FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                            i_cupNum++;
+                            goto la_rep;
                         }
+
+                        //修改批次表头杯号
+                        s_sql = "UPDATE drop_head SET" +
+                                    " CupNum = '" + i_cupNum + "' where CupNum = '" + s_oldCupNum + "';";
+                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                        //修改批次详细表杯号
+                        s_sql = "UPDATE drop_details SET" +
+                                    " CupNum = '" + i_cupNum + "' where CupNum = '" + s_oldCupNum + "';";
+                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                        //杯号加1
+                        i_cupNum++;
                     }
                 }
 
@@ -2760,21 +2778,26 @@ namespace SmartDyeing.FADM_Control
 
                     }
 
-
-                    if (s_bottleLower != null ) //安全存量真才会进行弹框
+                    if (FADM_Object.Communal._b_isLowDrip)
                     {
-                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                            FADM_Form.CustomMessageBox.Show(s_bottleLower + "号母液瓶液量不足！", "母液量不足", MessageBoxButtons.OK, false);
-                        else
-                            FADM_Form.CustomMessageBox.Show( " Insufficient liquid volume in the "+s_bottleLower +" mother liquor bottle！", "Insufficient mother liquor volume", MessageBoxButtons.OK, false);
+                        if (s_bottleLower != null) //安全存量真才会进行弹框
+                        {
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                FADM_Form.CustomMessageBox.Show(s_bottleLower + "号母液瓶液量不足！", "母液量不足", MessageBoxButtons.OK, false);
+                            else
+                                FADM_Form.CustomMessageBox.Show(" Insufficient liquid volume in the " + s_bottleLower + " mother liquor bottle！", "Insufficient mother liquor volume", MessageBoxButtons.OK, false);
+                        }
                     }
-                    //这里加个生命周期检查 过期了就提示
-                    if (!string.IsNullOrEmpty(s_logPastDue))
+                    if (FADM_Object.Communal._b_isOutDrip)
                     {
-                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                            FADM_Form.CustomMessageBox.Show(s_logPastDue + "号母液瓶过期！", "过期", MessageBoxButtons.OK, false);
-                        else
-                            FADM_Form.CustomMessageBox.Show(s_logPastDue + "mother liquor bottle expired！", "expire", MessageBoxButtons.OK, false);
+                        //这里加个生命周期检查 过期了就提示
+                        if (!string.IsNullOrEmpty(s_logPastDue))
+                        {
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                FADM_Form.CustomMessageBox.Show(s_logPastDue + "号母液瓶过期！", "过期", MessageBoxButtons.OK, false);
+                            else
+                                FADM_Form.CustomMessageBox.Show(s_logPastDue + "mother liquor bottle expired！", "expire", MessageBoxButtons.OK, false);
+                        }
                     }
 
                     //查询配方是否存在重复瓶号
@@ -4461,11 +4484,40 @@ namespace SmartDyeing.FADM_Control
                 {
                     int i_cup = Convert.ToInt16(dgv_BatchData.CurrentRow.Cells[0].Value);
 
-                    string s_sql = "UPDATE drop_head SET CupNum = (CupNum + 1) WHERE CupNum >= " + i_cup + ";";
-                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                    //获取批次的批次表头
+                    string s_sql = "SELECT CupNum, FormulaCode, VersionNum, BatchName" +
+                                " FROM drop_head where CupNum>="+ i_cup + "  Order BY CupNum  desc;";
 
-                    s_sql = "UPDATE drop_details SET CupNum = (CupNum + 1) WHERE CupNum >= " + i_cup + ";";
-                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                    DataTable dt_formulahead = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                    List<int> lis_cup = new List<int>();
+                    int i_cupInex = 1;
+                    for (int i = 0; i < dt_formulahead.Rows.Count; i++)
+                    {
+                        //把正在滴液的排除
+                        if (dt_formulahead.Rows[i][dt_formulahead.Columns["BatchName"]].ToString() != "0")
+                        {
+                            lis_cup.Add(Convert.ToInt32(dt_formulahead.Rows[i][0].ToString()));
+                        }
+                    }
+                    
+                    for (int i = 0; i < dt_formulahead.Rows.Count; i++)
+                    {
+                        if (dt_formulahead.Rows[i][dt_formulahead.Columns["BatchName"]].ToString() != "0")
+                        {
+                            i_cupInex++;
+                            continue;
+                        }
+
+                        int i_cupNum= Convert.ToInt32(dt_formulahead.Rows[i][0].ToString());
+
+                        s_sql = "UPDATE drop_head SET CupNum = "+(i_cupInex+ i_cupNum) +" WHERE CupNum = " + i_cupNum + ";";
+                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                        s_sql = "UPDATE drop_details SET CupNum = "+(i_cupInex+ i_cupNum) +" WHERE CupNum = " + i_cupNum + ";";
+                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                        i_cupInex = 1;
+                    }
 
                     s_sql = "INSERT INTO drop_head (CupNum) VALUES(" + i_cup + ");";
                     FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);

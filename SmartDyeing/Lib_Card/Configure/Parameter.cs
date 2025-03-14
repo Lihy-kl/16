@@ -188,6 +188,8 @@
         /// 1：6杯摇摆机
         /// 2：12杯摇摆机
         /// 3：4杯摇摆机
+        /// 4：16杯摇摆机
+        /// 5：10杯摇摆机
         /// </summary>
         public static int Machine_Area1_DyeType { get; set; }
 
@@ -240,6 +242,8 @@
         /// 1：6杯摇摆机
         /// 2：12杯摇摆机
         /// 3：4杯摇摆机
+        /// 4：16杯摇摆机
+        /// 5：10杯摇摆机
         /// </summary>
         public static int Machine_Area2_DyeType { get; set; }
 
@@ -290,6 +294,8 @@
         /// 1：6杯摇摆机
         /// 2：12杯摇摆机
         /// 3：4杯摇摆机
+        /// 4：16杯摇摆机
+        /// 5：10杯摇摆机
         /// </summary>
         public static int Machine_Area3_DyeType { get; set; }
 
@@ -340,6 +346,8 @@
         /// 1：6杯摇摆机
         /// 2：12杯摇摆机
         /// 3：4杯摇摆机
+        /// 4：16杯摇摆机
+        /// 5：10杯摇摆机
         /// </summary>
         public static int Machine_Area4_DyeType { get; set; }
 
@@ -390,6 +398,8 @@
         /// 1：6杯摇摆机
         /// 2：12杯摇摆机
         /// 3：4杯摇摆机
+        /// 4：16杯摇摆机
+        /// 5：10杯摇摆机
         /// </summary>
         public static int Machine_Area5_DyeType { get; set; }
 
@@ -440,6 +450,8 @@
         /// 1：6杯摇摆机
         /// 2：12杯摇摆机
         /// 3：4杯摇摆机
+        /// 4：16杯摇摆机
+        /// 5：10杯摇摆机
         /// </summary>
         public static int Machine_Area6_DyeType { get; set; }
 
@@ -1439,6 +1451,126 @@
         /// </summary>
         public static int Coordinate_Cup36_IntervalY { get; set; }
 
+        /// <summary>
+        /// 37号杯X坐标
+        /// </summary>
+        public static int Coordinate_Cup37_IntervalX { get; set; }
+
+        /// <summary>
+        /// 37号杯Y坐标
+        /// </summary>
+        public static int Coordinate_Cup37_IntervalY { get; set; }
+
+        /// <summary>
+        /// 38号杯X坐标
+        /// </summary>
+        public static int Coordinate_Cup38_IntervalX { get; set; }
+
+        /// <summary>
+        /// 38号杯Y坐标
+        /// </summary>
+        public static int Coordinate_Cup38_IntervalY { get; set; }
+
+        /// <summary>
+        /// 39号杯X坐标
+        /// </summary>
+        public static int Coordinate_Cup39_IntervalX { get; set; }
+
+        /// <summary>
+        /// 39号杯Y坐标
+        /// </summary>
+        public static int Coordinate_Cup39_IntervalY { get; set; }
+
+        /// <summary>
+        /// 40号杯X坐标
+        /// </summary>
+        public static int Coordinate_Cup40_IntervalX { get; set; }
+
+        /// <summary>
+        /// 40号杯Y坐标
+        /// </summary>
+        public static int Coordinate_Cup40_IntervalY { get; set; }
+
+        /// <summary>
+        /// 41号杯X坐标
+        /// </summary>
+        public static int Coordinate_Cup41_IntervalX { get; set; }
+
+        /// <summary>
+        /// 41号杯Y坐标
+        /// </summary>
+        public static int Coordinate_Cup41_IntervalY { get; set; }
+
+        /// <summary>
+        /// 42号杯X坐标
+        /// </summary>
+        public static int Coordinate_Cup42_IntervalX { get; set; }
+
+        /// <summary>
+        /// 42号杯Y坐标
+        /// </summary>
+        public static int Coordinate_Cup42_IntervalY { get; set; }
+
+        /// <summary>
+        /// 43号杯X坐标
+        /// </summary>
+        public static int Coordinate_Cup43_IntervalX { get; set; }
+
+        /// <summary>
+        /// 43号杯Y坐标
+        /// </summary>
+        public static int Coordinate_Cup43_IntervalY { get; set; }
+
+        /// <summary>
+        /// 44号杯X坐标
+        /// </summary>
+        public static int Coordinate_Cup44_IntervalX { get; set; }
+
+        /// <summary>
+        /// 44号杯Y坐标
+        /// </summary>
+        public static int Coordinate_Cup44_IntervalY { get; set; }
+
+        /// <summary>
+        /// 45号杯X坐标
+        /// </summary>
+        public static int Coordinate_Cup45_IntervalX { get; set; }
+
+        /// <summary>
+        /// 45号杯Y坐标
+        /// </summary>
+        public static int Coordinate_Cup45_IntervalY { get; set; }
+
+        /// <summary>
+        /// 46号杯X坐标
+        /// </summary>
+        public static int Coordinate_Cup46_IntervalX { get; set; }
+
+        /// <summary>
+        /// 46号杯Y坐标
+        /// </summary>
+        public static int Coordinate_Cup46_IntervalY { get; set; }
+
+        /// <summary>
+        /// 47号杯X坐标
+        /// </summary>
+        public static int Coordinate_Cup47_IntervalX { get; set; }
+
+        /// <summary>
+        /// 47号杯Y坐标
+        /// </summary>
+        public static int Coordinate_Cup47_IntervalY { get; set; }
+
+        /// <summary>
+        /// 48号杯X坐标
+        /// </summary>
+        public static int Coordinate_Cup48_IntervalX { get; set; }
+
+        /// <summary>
+        /// 48号杯Y坐标
+        /// </summary>
+        public static int Coordinate_Cup48_IntervalY { get; set; }
+
 
 
         /// <summary>
@@ -1803,6 +1935,128 @@
         /// 36号杯盖Y坐标
         /// </summary>
         public static int Coordinate_CupCover36_IntervalY { get; set; }
+
+        /// <summary>
+        /// 37号杯盖X坐标
+        /// </summary>
+        public static int Coordinate_CupCover37_IntervalX { get; set; }
+
+
+        /// <summary>
+        /// 37号杯盖Y坐标
+        /// </summary>
+        public static int Coordinate_CupCover37_IntervalY { get; set; }
+
+        /// <summary>
+        /// 38号杯盖X坐标
+        /// </summary>
+        public static int Coordinate_CupCover38_IntervalX { get; set; }
+
+        /// <summary>
+        /// 38号杯盖Y坐标
+        /// </summary>
+        public static int Coordinate_CupCover38_IntervalY { get; set; }
+
+        /// <summary>
+        /// 39号杯盖X坐标
+        /// </summary>
+        public static int Coordinate_CupCover39_IntervalX { get; set; }
+
+        /// <summary>
+        /// 39号杯盖Y坐标
+        /// </summary>
+        public static int Coordinate_CupCover39_IntervalY { get; set; }
+
+        /// <summary>
+        /// 40号杯盖X坐标
+        /// </summary>
+        public static int Coordinate_CupCover40_IntervalX { get; set; }
+
+        /// <summary>
+        /// 40号杯盖Y坐标
+        /// </summary>
+        public static int Coordinate_CupCover40_IntervalY { get; set; }
+
+        /// <summary>
+        /// 41号杯盖X坐标
+        /// </summary>
+        public static int Coordinate_CupCover41_IntervalX { get; set; }
+
+        /// <summary>
+        /// 41号杯盖Y坐标
+        /// </summary>
+        public static int Coordinate_CupCover41_IntervalY { get; set; }
+
+        /// <summary>
+        /// 42号杯盖X坐标
+        /// </summary>
+        public static int Coordinate_CupCover42_IntervalX { get; set; }
+
+        /// <summary>
+        /// 42号杯盖Y坐标
+        /// </summary>
+        public static int Coordinate_CupCover42_IntervalY { get; set; }
+
+        /// <summary>
+        /// 43号杯盖X坐标
+        /// </summary>
+        public static int Coordinate_CupCover43_IntervalX { get; set; }
+
+        /// <summary>
+        /// 43号杯盖Y坐标
+        /// </summary>
+        public static int Coordinate_CupCover43_IntervalY { get; set; }
+
+        /// <summary>
+        /// 44号杯盖X坐标
+        /// </summary>
+        public static int Coordinate_CupCover44_IntervalX { get; set; }
+
+        /// <summary>
+        /// 44号杯盖Y坐标
+        /// </summary>
+        public static int Coordinate_CupCover44_IntervalY { get; set; }
+
+        /// <summary>
+        /// 45号杯盖X坐标
+        /// </summary>
+        public static int Coordinate_CupCover45_IntervalX { get; set; }
+
+        /// <summary>
+        /// 45号杯盖Y坐标
+        /// </summary>
+        public static int Coordinate_CupCover45_IntervalY { get; set; }
+
+        /// <summary>
+        /// 46号杯盖X坐标
+        /// </summary>
+        public static int Coordinate_CupCover46_IntervalX { get; set; }
+
+        /// <summary>
+        /// 46号杯盖Y坐标
+        /// </summary>
+        public static int Coordinate_CupCover46_IntervalY { get; set; }
+
+        /// <summary>
+        /// 47号杯盖X坐标
+        /// </summary>
+        public static int Coordinate_CupCover47_IntervalX { get; set; }
+
+
+        /// <summary>
+        /// 47号杯盖Y坐标
+        /// </summary>
+        public static int Coordinate_CupCover47_IntervalY { get; set; }
+
+        /// <summary>
+        /// 48号杯盖X坐标
+        /// </summary>
+        public static int Coordinate_CupCover48_IntervalX { get; set; }
+
+        /// <summary>
+        /// 48号杯盖Y坐标
+        /// </summary>
+        public static int Coordinate_CupCover48_IntervalY { get; set; }
 
         /// <summary>
         /// 干布区域1最小配液杯X轴坐标

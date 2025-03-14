@@ -88,6 +88,11 @@ namespace SmartDyeing.FADM_Auto
         
         public static s_Cup[] _cup_Temps = new s_Cup[Lib_Card.Configure.Parameter.Machine_Cup_Total];
 
+        public static FADM_Object.ParameterData[] _pd = new FADM_Object.ParameterData[SmartDyeing.FADM_Object.Communal._dic_SixteenCupNum.Count];
+        
+
+
+
         //是否停止
         public static int[] _ia_stop = new int[Lib_Card.Configure.Parameter.Machine_Cup_Total];
 
@@ -104,6 +109,7 @@ namespace SmartDyeing.FADM_Auto
         public bool _b_state = false;
 
         HMITCPModBus[] lis_ =  { FADM_Object.Communal._tcpDyeHMI1, FADM_Object.Communal._tcpDyeHMI2, FADM_Object.Communal._tcpDyeHMI3, FADM_Object.Communal._tcpDyeHMI4, FADM_Object.Communal._tcpDyeHMI5, FADM_Object.Communal._tcpDyeHMI6 };
+        HMITCPModBus[] lis_s = { FADM_Object.Communal._tcpDyeHMI1_s, FADM_Object.Communal._tcpDyeHMI2_s, FADM_Object.Communal._tcpDyeHMI3_s, FADM_Object.Communal._tcpDyeHMI4_s, FADM_Object.Communal._tcpDyeHMI5_s, FADM_Object.Communal._tcpDyeHMI6_s };
 
         public void WaitAdd()
         {
@@ -203,6 +209,7 @@ namespace SmartDyeing.FADM_Auto
 
                         //获取数据
                         List<FADM_Object.Data> lis_datas = new List<FADM_Object.Data>();
+                        List<FADM_Object.ParameterData> lis_pdatas = new List<FADM_Object.ParameterData>();
                         if (i == 0)
                         {
                             if (!FADM_Object.Communal._tcpDyeHMI1._b_Connect)
@@ -211,6 +218,45 @@ namespace SmartDyeing.FADM_Auto
                             }
                             FADM_Object.Communal._tcpDyeHMI1.DyeRead(ref lis_datas, Lib_Card.Configure.Parameter.Machine_Area1_DyeType);
                             i_dyeType = Lib_Card.Configure.Parameter.Machine_Area1_DyeType;
+                            
+
+                            if (i_dyeType == 4)
+                            {
+                                if (FADM_Object.Communal._b_refreshDye)
+                                {
+                                    FADM_Object.Communal._tcpDyeHMI1.DyeReadParameter(ref lis_pdatas);
+                                    if (lis_pdatas.Count == 4)
+                                    {
+                                        for (int p = 0; p < lis_pdatas.Count; p++)
+                                        {
+                                            lis_pdatas[p]._b_refresh = true;
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area1_CupMin + p * 2]] = lis_pdatas[p];
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area1_CupMin + p * 2 + 1]] = lis_pdatas[p];
+                                        }
+                                    }
+                                }
+                                List<FADM_Object.Data> lis_datas_s = new List<FADM_Object.Data>();
+                                if (!FADM_Object.Communal._tcpDyeHMI1_s._b_Connect)
+                                {
+                                    FADM_Object.Communal._tcpDyeHMI1_s.ReConnect();
+                                }
+                                FADM_Object.Communal._tcpDyeHMI1_s.DyeRead(ref lis_datas_s, Lib_Card.Configure.Parameter.Machine_Area1_DyeType);
+                                lis_datas.AddRange(lis_datas_s);
+                                if (FADM_Object.Communal._b_refreshDye)
+                                {
+                                    List<FADM_Object.ParameterData> lis_pdatas_s = new List<FADM_Object.ParameterData>();
+                                    FADM_Object.Communal._tcpDyeHMI1_s.DyeReadParameter(ref lis_pdatas_s);
+                                    if (lis_pdatas_s.Count == 4)
+                                    {
+                                        for (int p = 0; p < lis_pdatas_s.Count; p++)
+                                        {
+                                            lis_pdatas_s[p]._b_refresh = true;
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area1_CupMin + p * 2 + 8]] = lis_pdatas_s[p];
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area1_CupMin + p * 2 + 1 + 8]] = lis_pdatas_s[p];
+                                        }
+                                    }
+                                }
+                            }
                         }
                         else if (i == 1)
                         {
@@ -220,6 +266,45 @@ namespace SmartDyeing.FADM_Auto
                             }
                             FADM_Object.Communal._tcpDyeHMI2.DyeRead(ref lis_datas, Lib_Card.Configure.Parameter.Machine_Area2_DyeType);
                             i_dyeType = Lib_Card.Configure.Parameter.Machine_Area2_DyeType;
+
+                            if (i_dyeType == 4)
+                            {
+                                if (FADM_Object.Communal._b_refreshDye)
+                                {
+                                    FADM_Object.Communal._tcpDyeHMI2.DyeReadParameter(ref lis_pdatas);
+                                    if (lis_pdatas.Count == 4)
+                                    {
+                                        for (int p = 0; p < lis_pdatas.Count; p++)
+                                        {
+                                            lis_pdatas[p]._b_refresh = true;
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area2_CupMin + p * 2]] = lis_pdatas[p];
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area2_CupMin + p * 2 + 1]] = lis_pdatas[p];
+                                        }
+                                    }
+                                }
+
+                                List<FADM_Object.Data> lis_datas_s = new List<FADM_Object.Data>();
+                                if (!FADM_Object.Communal._tcpDyeHMI2_s._b_Connect)
+                                {
+                                    FADM_Object.Communal._tcpDyeHMI2_s.ReConnect();
+                                }
+                                FADM_Object.Communal._tcpDyeHMI2_s.DyeRead(ref lis_datas_s, Lib_Card.Configure.Parameter.Machine_Area2_DyeType);
+                                lis_datas.AddRange(lis_datas_s);
+                                if (FADM_Object.Communal._b_refreshDye)
+                                {
+                                    List<FADM_Object.ParameterData> lis_pdatas_s = new List<FADM_Object.ParameterData>();
+                                    FADM_Object.Communal._tcpDyeHMI2_s.DyeReadParameter(ref lis_pdatas_s);
+                                    if (lis_pdatas_s.Count == 4)
+                                    {
+                                        for (int p = 0; p < lis_pdatas_s.Count; p++)
+                                        {
+                                            lis_pdatas_s[p]._b_refresh = true;
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area2_CupMin + p * 2 + 8]] = lis_pdatas_s[p];
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area2_CupMin + p * 2 + 1 + 8]] = lis_pdatas_s[p];
+                                        }
+                                    }
+                                }
+                            }
                         }
                         else if (i == 2)
                         {
@@ -229,6 +314,45 @@ namespace SmartDyeing.FADM_Auto
                             }
                             FADM_Object.Communal._tcpDyeHMI3.DyeRead(ref lis_datas, Lib_Card.Configure.Parameter.Machine_Area3_DyeType);
                             i_dyeType = Lib_Card.Configure.Parameter.Machine_Area3_DyeType;
+
+                            if (i_dyeType == 4)
+                            {
+                                if (FADM_Object.Communal._b_refreshDye)
+                                {
+                                    FADM_Object.Communal._tcpDyeHMI3.DyeReadParameter(ref lis_pdatas);
+                                    if (lis_pdatas.Count == 4)
+                                    {
+                                        for (int p = 0; p < lis_pdatas.Count; p++)
+                                        {
+                                            lis_pdatas[p]._b_refresh = true;
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area3_CupMin + p * 2]] = lis_pdatas[p];
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area3_CupMin + p * 2 + 1]] = lis_pdatas[p];
+                                        }
+                                    }
+                                }
+
+                                List<FADM_Object.Data> lis_datas_s = new List<FADM_Object.Data>();
+                                if (!FADM_Object.Communal._tcpDyeHMI3_s._b_Connect)
+                                {
+                                    FADM_Object.Communal._tcpDyeHMI3_s.ReConnect();
+                                }
+                                FADM_Object.Communal._tcpDyeHMI3_s.DyeRead(ref lis_datas_s, Lib_Card.Configure.Parameter.Machine_Area3_DyeType);
+                                lis_datas.AddRange(lis_datas_s);
+                                if (FADM_Object.Communal._b_refreshDye)
+                                {
+                                    List<FADM_Object.ParameterData> lis_pdatas_s = new List<FADM_Object.ParameterData>();
+                                    FADM_Object.Communal._tcpDyeHMI3_s.DyeReadParameter(ref lis_pdatas_s);
+                                    if (lis_pdatas_s.Count == 4)
+                                    {
+                                        for (int p = 0; p < lis_pdatas_s.Count; p++)
+                                        {
+                                            lis_pdatas_s[p]._b_refresh = true;
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area3_CupMin + p * 2 + 8]] = lis_pdatas_s[p];
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area3_CupMin + p * 2 + 1 + 8]] = lis_pdatas_s[p];
+                                        }
+                                    }
+                                }
+                            }
                         }
                         else if (i == 3)
                         {
@@ -238,6 +362,45 @@ namespace SmartDyeing.FADM_Auto
                             }
                             FADM_Object.Communal._tcpDyeHMI4.DyeRead(ref lis_datas, Lib_Card.Configure.Parameter.Machine_Area4_DyeType);
                             i_dyeType = Lib_Card.Configure.Parameter.Machine_Area4_DyeType;
+
+                            if (i_dyeType == 4)
+                            {
+                                if (FADM_Object.Communal._b_refreshDye)
+                                {
+                                    FADM_Object.Communal._tcpDyeHMI4.DyeReadParameter(ref lis_pdatas);
+                                    if (lis_pdatas.Count == 4)
+                                    {
+                                        for (int p = 0; p < lis_pdatas.Count; p++)
+                                        {
+                                            lis_pdatas[p]._b_refresh = true;
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area4_CupMin + p * 2]] = lis_pdatas[p];
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area4_CupMin + p * 2 + 1]] = lis_pdatas[p];
+                                        }
+                                    }
+                                }
+
+                                List<FADM_Object.Data> lis_datas_s = new List<FADM_Object.Data>();
+                                if (!FADM_Object.Communal._tcpDyeHMI4_s._b_Connect)
+                                {
+                                    FADM_Object.Communal._tcpDyeHMI4_s.ReConnect();
+                                }
+                                FADM_Object.Communal._tcpDyeHMI4_s.DyeRead(ref lis_datas_s, Lib_Card.Configure.Parameter.Machine_Area4_DyeType);
+                                lis_datas.AddRange(lis_datas_s);
+                                if (FADM_Object.Communal._b_refreshDye)
+                                {
+                                    List<FADM_Object.ParameterData> lis_pdatas_s = new List<FADM_Object.ParameterData>();
+                                    FADM_Object.Communal._tcpDyeHMI4_s.DyeReadParameter(ref lis_pdatas_s);
+                                    if (lis_pdatas_s.Count == 4)
+                                    {
+                                        for (int p = 0; p < lis_pdatas_s.Count; p++)
+                                        {
+                                            lis_pdatas_s[p]._b_refresh = true;
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area4_CupMin + p * 2 + 8]] = lis_pdatas_s[p];
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area4_CupMin + p * 2 + 1 + 8]] = lis_pdatas_s[p];
+                                        }
+                                    }
+                                }
+                            }
                         }
                         else if (i == 4)
                         {
@@ -247,6 +410,45 @@ namespace SmartDyeing.FADM_Auto
                             }
                             FADM_Object.Communal._tcpDyeHMI5.DyeRead(ref lis_datas, Lib_Card.Configure.Parameter.Machine_Area5_DyeType);
                             i_dyeType = Lib_Card.Configure.Parameter.Machine_Area5_DyeType;
+
+                            if (i_dyeType == 4)
+                            {
+                                if (FADM_Object.Communal._b_refreshDye)
+                                {
+                                    FADM_Object.Communal._tcpDyeHMI5.DyeReadParameter(ref lis_pdatas);
+                                    if (lis_pdatas.Count == 4)
+                                    {
+                                        for (int p = 0; p < lis_pdatas.Count; p++)
+                                        {
+                                            lis_pdatas[p]._b_refresh = true;
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area5_CupMin + p * 2]] = lis_pdatas[p];
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area5_CupMin + p * 2 + 1]] = lis_pdatas[p];
+                                        }
+                                    }
+                                }
+
+                                List<FADM_Object.Data> lis_datas_s = new List<FADM_Object.Data>();
+                                if (!FADM_Object.Communal._tcpDyeHMI5_s._b_Connect)
+                                {
+                                    FADM_Object.Communal._tcpDyeHMI5_s.ReConnect();
+                                }
+                                FADM_Object.Communal._tcpDyeHMI5_s.DyeRead(ref lis_datas_s, Lib_Card.Configure.Parameter.Machine_Area5_DyeType);
+                                lis_datas.AddRange(lis_datas_s);
+                                if (FADM_Object.Communal._b_refreshDye)
+                                {
+                                    List<FADM_Object.ParameterData> lis_pdatas_s = new List<FADM_Object.ParameterData>();
+                                    FADM_Object.Communal._tcpDyeHMI5_s.DyeReadParameter(ref lis_pdatas_s);
+                                    if (lis_pdatas_s.Count == 4)
+                                    {
+                                        for (int p = 0; p < lis_pdatas_s.Count; p++)
+                                        {
+                                            lis_pdatas_s[p]._b_refresh = true;
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area5_CupMin + p * 2 + 8]] = lis_pdatas_s[p];
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area5_CupMin + p * 2 + 1 + 8]] = lis_pdatas_s[p];
+                                        }
+                                    }
+                                }
+                            }
                         }
                         else if (i == 5)
                         {
@@ -256,6 +458,45 @@ namespace SmartDyeing.FADM_Auto
                             }
                             FADM_Object.Communal._tcpDyeHMI6.DyeRead(ref lis_datas, Lib_Card.Configure.Parameter.Machine_Area6_DyeType);
                             i_dyeType = Lib_Card.Configure.Parameter.Machine_Area6_DyeType;
+
+                            if (i_dyeType == 4)
+                            {
+                                if (FADM_Object.Communal._b_refreshDye)
+                                {
+                                    FADM_Object.Communal._tcpDyeHMI6.DyeReadParameter(ref lis_pdatas);
+                                    if (lis_pdatas.Count == 4)
+                                    {
+                                        for (int p = 0; p < lis_pdatas.Count; p++)
+                                        {
+                                            lis_pdatas[p]._b_refresh = true;
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area6_CupMin + p * 2]] = lis_pdatas[p];
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area6_CupMin + p * 2 + 1]] = lis_pdatas[p];
+                                        }
+                                    }
+                                }
+
+                                List<FADM_Object.Data> lis_datas_s = new List<FADM_Object.Data>();
+                                if (!FADM_Object.Communal._tcpDyeHMI6_s._b_Connect)
+                                {
+                                    FADM_Object.Communal._tcpDyeHMI6_s.ReConnect();
+                                }
+                                FADM_Object.Communal._tcpDyeHMI6_s.DyeRead(ref lis_datas_s, Lib_Card.Configure.Parameter.Machine_Area6_DyeType);
+                                lis_datas.AddRange(lis_datas_s);
+                                if (FADM_Object.Communal._b_refreshDye)
+                                {
+                                    List<FADM_Object.ParameterData> lis_pdatas_s = new List<FADM_Object.ParameterData>();
+                                    FADM_Object.Communal._tcpDyeHMI6_s.DyeReadParameter(ref lis_pdatas_s);
+                                    if (lis_pdatas_s.Count == 4)
+                                    {
+                                        for (int p = 0; p < lis_pdatas_s.Count; p++)
+                                        {
+                                            lis_pdatas_s[p]._b_refresh = true;
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area6_CupMin + p * 2 + 8]] = lis_pdatas_s[p];
+                                            _pd[Communal._dic_SixteenCupNum[Lib_Card.Configure.Parameter.Machine_Area6_CupMin + p * 2 + 1 + 8]] = lis_pdatas_s[p];
+                                        }
+                                    }
+                                }
+                            }
                         }
                         //4杯和6杯翻转
                         if (i_dyeType == 1 || i_dyeType == 3)
@@ -2579,8 +2820,8 @@ namespace SmartDyeing.FADM_Auto
 
                             }
                         }
-                        //12杯翻转
-                        else if (i_dyeType == 2)
+                        //12杯翻转或10杯翻转
+                        else if (i_dyeType == 2|| i_dyeType == 5)
                         {
 
                             if (lis_datas.Count != 6)
@@ -2755,7 +2996,7 @@ namespace SmartDyeing.FADM_Auto
                             }
 
 
-                            for (int j = 0; j < lis_datas.Count; j++)
+                            for (int j = 0; j < (i_dyeType == 5 ? 5 : lis_datas.Count); j++)
                             {
                                 int i_cupmin = 0;
                                 if (i == 0)
@@ -6914,6 +7155,4385 @@ namespace SmartDyeing.FADM_Auto
 
                             }
                         }
+                        //16杯翻转
+                        else if (i_dyeType == 4)
+                        {
+
+                            if (lis_datas.Count != 8)
+                            {
+                                if (++_ai_iArray[i] > 5)
+                                {
+                                    //重置杯盖状态
+                                    if (i == 0)
+                                    {
+
+                                        for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus.Length; pp++)
+                                        {
+                                            FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus[pp] = false;
+                                        }
+
+                                        FADM_Object.Communal._tcpDyeHMI1._b_isGetVer = false;
+                                        FADM_Object.Communal._s_TouchVer1 = "";
+                                        FADM_Object.Communal._s_CardOneVer1 = "";
+                                        FADM_Object.Communal._s_CardTwoVer1 = "";
+                                    }
+                                    else if (i == 1)
+                                    {
+
+                                        for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus.Length; pp++)
+                                        {
+                                            FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus[pp] = false;
+                                        }
+
+                                        FADM_Object.Communal._tcpDyeHMI2._b_isGetVer = false;
+                                        FADM_Object.Communal._s_TouchVer2 = "";
+                                        FADM_Object.Communal._s_CardOneVer2 = "";
+                                        FADM_Object.Communal._s_CardTwoVer2 = "";
+                                    }
+                                    else if (i == 2)
+                                    {
+
+                                        for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus.Length; pp++)
+                                        {
+                                            FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus[pp] = false;
+                                        }
+
+                                        FADM_Object.Communal._tcpDyeHMI3._b_isGetVer = false;
+                                        FADM_Object.Communal._s_TouchVer3 = "";
+                                        FADM_Object.Communal._s_CardOneVer3 = "";
+                                        FADM_Object.Communal._s_CardTwoVer3 = "";
+                                    }
+                                    else if (i == 3)
+                                    {
+
+                                        for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus.Length; pp++)
+                                        {
+                                            FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus[pp] = false;
+                                        }
+
+                                        FADM_Object.Communal._tcpDyeHMI4._b_isGetVer = false;
+                                        FADM_Object.Communal._s_TouchVer4 = "";
+                                        FADM_Object.Communal._s_CardOneVer4 = "";
+                                        FADM_Object.Communal._s_CardTwoVer4 = "";
+                                    }
+                                    else if (i == 4)
+                                    {
+
+                                        for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus.Length; pp++)
+                                        {
+                                            FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus[pp] = false;
+                                        }
+
+                                        FADM_Object.Communal._tcpDyeHMI5._b_isGetVer = false;
+                                        FADM_Object.Communal._s_TouchVer5 = "";
+                                        FADM_Object.Communal._s_CardOneVer5 = "";
+                                        FADM_Object.Communal._s_CardTwoVer5 = "";
+                                    }
+                                    else if (i == 5)
+                                    {
+
+                                        for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus.Length; pp++)
+                                        {
+                                            FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus[pp] = false;
+                                        }
+
+                                        FADM_Object.Communal._tcpDyeHMI6._b_isGetVer = false;
+                                        FADM_Object.Communal._s_TouchVer6 = "";
+                                        FADM_Object.Communal._s_CardOneVer6 = "";
+                                        FADM_Object.Communal._s_CardTwoVer6 = "";
+                                    }
+                                    // FADM_Object.Communal._fadmSqlserver.InsertSpeechInfo((i_erea + 1) + "号打板机通讯异常");
+                                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                        FADM_Object.Communal._sa_dyeConFTime[i] = Lib_Card.CardObject.InsertD((i + 1) + "号打板机通讯异常", "Dye");
+                                    else
+                                        FADM_Object.Communal._sa_dyeConFTime[i] = Lib_Card.CardObject.InsertD("Communication abnormality of " + (i + 1) + " board making machine", "Dye");
+                                }
+                                continue;
+                            }
+                            else
+                            {
+                                _ai_iArray[i] = 0;
+                                if (FADM_Object.Communal._sa_dyeConFTime[i] != "")
+                                    Lib_Card.CardObject.DeleteD(FADM_Object.Communal._sa_dyeConFTime[i]);
+                                FADM_Object.Communal._sa_dyeConFTime[i] = "";
+                            }
+
+
+                            for (int j = 0; j < lis_datas.Count; j++)
+                            {
+                                int i_cupmin = 0;
+                                if (i == 0)
+                                {
+                                    i_cupmin = Lib_Card.Configure.Parameter.Machine_Area1_CupMin;
+                                }
+                                else if (i == 1)
+                                {
+                                    i_cupmin = Lib_Card.Configure.Parameter.Machine_Area2_CupMin;
+                                }
+                                else if (i == 2)
+                                {
+                                    i_cupmin = Lib_Card.Configure.Parameter.Machine_Area3_CupMin;
+                                }
+                                else if (i == 3)
+                                {
+                                    i_cupmin = Lib_Card.Configure.Parameter.Machine_Area4_CupMin;
+                                }
+                                else if (i == 4)
+                                {
+                                    i_cupmin = Lib_Card.Configure.Parameter.Machine_Area5_CupMin;
+                                }
+                                else if (i == 5)
+                                {
+                                    i_cupmin = Lib_Card.Configure.Parameter.Machine_Area6_CupMin;
+                                }
+
+                                int i_cupNo = i_cupmin - 1 + j * 2 + 1;
+
+                                //主杯数据
+                                _cup_Temps[i_cupNo - 1]._s_temp = string.Format("{0:F1}", Convert.ToDouble(lis_datas[j]._s_realTem) / 10.0);
+                                _cup_Temps[i_cupNo - 1]._s_statues = lis_datas[j]._s_currentState;
+                                _cup_Temps[i_cupNo - 1]._s_history = lis_datas[j]._s_history;
+                                _cup_Temps[i_cupNo - 1]._i_requesCupCover = Convert.ToInt32(lis_datas[j]._s_openInplace);
+                                _cup_Temps[i_cupNo - 1]._i_lockUp = Convert.ToInt32(lis_datas[j]._s_lockUp);
+                                _cup_Temps[i_cupNo - 1]._i_staus = Convert.ToInt32(lis_datas[j]._s_addWater);
+
+
+                                _cup_Temps[i_cupNo]._s_temp = string.Format("{0:F1}", Convert.ToDouble(lis_datas[j]._s_secondrealTem) / 10.0);
+                                _cup_Temps[i_cupNo]._s_statues = lis_datas[j]._s_currentState;
+                                _cup_Temps[i_cupNo]._s_history = lis_datas[j]._s_secondhistory;
+                                _cup_Temps[i_cupNo]._i_requesCupCover = Convert.ToInt32(lis_datas[j]._s_secondopenInplace);
+                                _cup_Temps[i_cupNo]._i_lockUp = Convert.ToInt32(lis_datas[j]._s_lockUp);
+                                _cup_Temps[i_cupNo]._i_staus = Convert.ToInt32(lis_datas[j]._s_addWater);
+
+                                //如果有放布申请，先查询是否可以执行
+                                if (lis_datas[j]._s_putcloth == "1")
+                                {
+                                    DataTable dt_need = FADM_Object.Communal._fadmSqlserver.GetData("Select * from drop_head where CupNum = " + i_cupNo + " Or CupNum =" + (i_cupNo + 1));
+                                    //只有一条记录，直接确认
+                                    if (dt_need.Rows.Count == 1)
+                                    {
+                                        //清空申请
+                                        if (i == 0)
+                                        {
+                                            int[] v = new int[1];
+                                            v[0] = 0;
+                                            if (0x0117 + j * 64 > 0x1FF)
+                                                FADM_Object.Communal._tcpDyeHMI1_s.Write((0x0117 + j*64)%(0x1FF+1), v);
+                                            else
+                                                FADM_Object.Communal._tcpDyeHMI1.Write((0x0117 + j*64), v);
+
+                                            v[0] = 1;
+                                            if (0x0014 + j * 64 > 0xFF)
+                                                FADM_Object.Communal._tcpDyeHMI1_s.Write((0x0014 + j * 64)%(0xFF+1), v);
+                                            else
+                                                FADM_Object.Communal._tcpDyeHMI1.Write(0x0014 + j * 64, v);
+                                        }
+                                        else if (i == 1)
+                                        {
+                                            int[] v = new int[1];
+                                            v[0] = 0;
+                                            if (0x0117 + j * 64 > 0x1FF)
+                                                FADM_Object.Communal._tcpDyeHMI2_s.Write((0x0117 + j * 64) % (0x1FF + 1), v);
+                                            else
+                                                FADM_Object.Communal._tcpDyeHMI2.Write((0x0117 + j * 64), v);
+
+                                            v[0] = 1;
+                                            if (0x0014 + j * 64 > 0xFF)
+                                                FADM_Object.Communal._tcpDyeHMI2_s.Write((0x0014 + j * 64) % (0xFF + 1), v);
+                                            else
+                                                FADM_Object.Communal._tcpDyeHMI2.Write(0x0014 + j * 64, v);
+                                        }
+                                        else if (i == 2)
+                                        {
+                                            int[] v = new int[1];
+                                            v[0] = 0;
+                                            if (0x0117 + j * 64 > 0x1FF)
+                                                FADM_Object.Communal._tcpDyeHMI3_s.Write((0x0117 + j * 64) % (0x1FF + 1), v);
+                                            else
+                                                FADM_Object.Communal._tcpDyeHMI3.Write((0x0117 + j * 64), v);
+
+                                            v[0] = 1;
+                                            if (0x0014 + j * 64 > 0xFF)
+                                                FADM_Object.Communal._tcpDyeHMI3_s.Write((0x0014 + j * 64) % (0xFF + 1), v);
+                                            else
+                                                FADM_Object.Communal._tcpDyeHMI3.Write(0x0014 + j * 64, v);
+                                        }
+                                        else if (i == 3)
+                                        {
+                                            int[] v = new int[1];
+                                            v[0] = 0;
+                                            if (0x0117 + j * 64 > 0x1FF)
+                                                FADM_Object.Communal._tcpDyeHMI4_s.Write((0x0117 + j * 64) % (0x1FF + 1), v);
+                                            else
+                                                FADM_Object.Communal._tcpDyeHMI4.Write((0x0117 + j * 64), v);
+
+                                            v[0] = 1;
+                                            if (0x0014 + j * 64 > 0xFF)
+                                                FADM_Object.Communal._tcpDyeHMI4_s.Write((0x0014 + j * 64) % (0xFF + 1), v);
+                                            else
+                                                FADM_Object.Communal._tcpDyeHMI4.Write(0x0014 + j * 64, v);
+                                        }
+                                        else if (i == 4)
+                                        {
+                                            int[] v = new int[1];
+                                            v[0] = 0;
+                                            if (0x0117 + j * 64 > 0x1FF)
+                                                FADM_Object.Communal._tcpDyeHMI5_s.Write((0x0117 + j * 64) % (0x1FF + 1), v);
+                                            else
+                                                FADM_Object.Communal._tcpDyeHMI5.Write((0x0117 + j * 64), v);
+
+                                            v[0] = 1;
+                                            if (0x0014 + j * 64 > 0xFF)
+                                                FADM_Object.Communal._tcpDyeHMI5_s.Write((0x0014 + j * 64) % (0xFF + 1), v);
+                                            else
+                                                FADM_Object.Communal._tcpDyeHMI5.Write(0x0014 + j * 64, v);
+                                        }
+                                        else if (i == 5)
+                                        {
+                                            int[] v = new int[1];
+                                            v[0] = 0;
+                                            if (0x0117 + j * 64 > 0x1FF)
+                                                FADM_Object.Communal._tcpDyeHMI6_s.Write((0x0117 + j * 64) % (0x1FF + 1), v);
+                                            else
+                                                FADM_Object.Communal._tcpDyeHMI6.Write((0x0117 + j * 64), v);
+
+                                            v[0] = 1;
+                                            if (0x0014 + j * 64 > 0xFF)
+                                                FADM_Object.Communal._tcpDyeHMI6_s.Write((0x0014 + j * 64) % (0xFF + 1), v);
+                                            else
+                                                FADM_Object.Communal._tcpDyeHMI6.Write(0x0014 + j * 64, v);
+                                        }
+                                    }
+                                    //两条记录
+                                    else if (dt_need.Rows.Count == 2)
+                                    {
+                                        //如果两个杯都完成，就下发
+                                        if (dt_need.Rows[0]["CupFinish"].ToString() == "1" && dt_need.Rows[1]["CupFinish"].ToString() == "1")
+                                        {
+                                            //清空申请
+                                            if (i == 0)
+                                            {
+                                                int[] v = new int[1];
+                                                v[0] = 0;
+                                                if (0x0117 + j * 64 > 0x1FF)
+                                                    FADM_Object.Communal._tcpDyeHMI1_s.Write((0x0117 + j * 64) % (0x1FF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI1.Write((0x0117 + j * 64), v);
+
+                                                v[0] = 1;
+                                                if (0x0014 + j * 64 > 0xFF)
+                                                    FADM_Object.Communal._tcpDyeHMI1_s.Write((0x0014 + j * 64) % (0xFF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI1.Write(0x0014 + j * 64, v);
+                                            }
+                                            else if (i == 1)
+                                            {
+                                                int[] v = new int[1];
+                                                v[0] = 0;
+                                                if (0x0117 + j * 64 > 0x1FF)
+                                                    FADM_Object.Communal._tcpDyeHMI2_s.Write((0x0117 + j * 64) % (0x1FF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI2.Write((0x0117 + j * 64), v);
+
+                                                v[0] = 1;
+                                                if (0x0014 + j * 64 > 0xFF)
+                                                    FADM_Object.Communal._tcpDyeHMI2_s.Write((0x0014 + j * 64) % (0xFF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI2.Write(0x0014 + j * 64, v);
+                                            }
+                                            else if (i == 2)
+                                            {
+                                                int[] v = new int[1];
+                                                v[0] = 0;
+                                                if (0x0117 + j * 64 > 0x1FF)
+                                                    FADM_Object.Communal._tcpDyeHMI3_s.Write((0x0117 + j * 64) % (0x1FF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI3.Write((0x0117 + j * 64), v);
+
+                                                v[0] = 1;
+                                                if (0x0014 + j * 64 > 0xFF)
+                                                    FADM_Object.Communal._tcpDyeHMI3_s.Write((0x0014 + j * 64) % (0xFF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI3.Write(0x0014 + j * 64, v);
+                                            }
+                                            else if (i == 3)
+                                            {
+                                                int[] v = new int[1];
+                                                v[0] = 0;
+                                                if (0x0117 + j * 64 > 0x1FF)
+                                                    FADM_Object.Communal._tcpDyeHMI4_s.Write((0x0117 + j * 64) % (0x1FF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI4.Write((0x0117 + j * 64), v);
+
+                                                v[0] = 1;
+                                                if (0x0014 + j * 64 > 0xFF)
+                                                    FADM_Object.Communal._tcpDyeHMI4_s.Write((0x0014 + j * 64) % (0xFF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI4.Write(0x0014 + j * 64, v);
+                                            }
+                                            else if (i == 4)
+                                            {
+                                                int[] v = new int[1];
+                                                v[0] = 0;
+                                                if (0x0117 + j * 64 > 0x1FF)
+                                                    FADM_Object.Communal._tcpDyeHMI5_s.Write((0x0117 + j * 64) % (0x1FF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI5.Write((0x0117 + j * 64), v);
+
+                                                v[0] = 1;
+                                                if (0x0014 + j * 64 > 0xFF)
+                                                    FADM_Object.Communal._tcpDyeHMI5_s.Write((0x0014 + j * 64) % (0xFF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI5.Write(0x0014 + j * 64, v);
+                                            }
+                                            else if (i == 5)
+                                            {
+                                                int[] v = new int[1];
+                                                v[0] = 0;
+                                                if (0x0117 + j * 64 > 0x1FF)
+                                                    FADM_Object.Communal._tcpDyeHMI6_s.Write((0x0117 + j * 64) % (0x1FF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI6.Write((0x0117 + j * 64), v);
+
+                                                v[0] = 1;
+                                                if (0x0014 + j * 64 > 0xFF)
+                                                    FADM_Object.Communal._tcpDyeHMI6_s.Write((0x0014 + j * 64) % (0xFF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI6.Write(0x0014 + j * 64, v);
+                                            }
+                                        }
+                                        //有没滴液完成就不确认下一步
+                                        else
+                                        {
+                                            //清空申请
+                                            if (i == 0)
+                                            {
+                                                int[] v = new int[1];
+                                                v[0] = 0;
+                                                if (0x0117 + j * 64 > 0x1FF)
+                                                    FADM_Object.Communal._tcpDyeHMI1_s.Write((0x0117 + j * 64) % (0x1FF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI1.Write((0x0117 + j * 64), v);
+
+                                                v[0] = 2;
+                                                if (0x0014 + j * 64 > 0xFF)
+                                                    FADM_Object.Communal._tcpDyeHMI1_s.Write((0x0014 + j * 64) % (0xFF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI1.Write(0x0014 + j * 64, v);
+                                            }
+                                            else if (i == 1)
+                                            {
+                                                int[] v = new int[1];
+                                                v[0] = 0;
+                                                if (0x0117 + j * 64 > 0x1FF)
+                                                    FADM_Object.Communal._tcpDyeHMI2_s.Write((0x0117 + j * 64) % (0x1FF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI2.Write((0x0117 + j * 64), v);
+
+                                                v[0] = 2;
+                                                if (0x0014 + j * 64 > 0xFF)
+                                                    FADM_Object.Communal._tcpDyeHMI2_s.Write((0x0014 + j * 64) % (0xFF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI2.Write(0x0014 + j * 64, v);
+                                            }
+                                            else if (i == 2)
+                                            {
+                                                int[] v = new int[1];
+                                                v[0] = 0;
+                                                if (0x0117 + j * 64 > 0x1FF)
+                                                    FADM_Object.Communal._tcpDyeHMI3_s.Write((0x0117 + j * 64) % (0x1FF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI3.Write((0x0117 + j * 64), v);
+
+                                                v[0] = 2;
+                                                if (0x0014 + j * 64 > 0xFF)
+                                                    FADM_Object.Communal._tcpDyeHMI3_s.Write((0x0014 + j * 64) % (0xFF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI3.Write(0x0014 + j * 64, v);
+                                            }
+                                            else if (i == 3)
+                                            {
+                                                int[] v = new int[1];
+                                                v[0] = 0;
+                                                if (0x0117 + j * 64 > 0x1FF)
+                                                    FADM_Object.Communal._tcpDyeHMI4_s.Write((0x0117 + j * 64) % (0x1FF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI4.Write((0x0117 + j * 64), v);
+
+                                                v[0] = 2;
+                                                if (0x0014 + j * 64 > 0xFF)
+                                                    FADM_Object.Communal._tcpDyeHMI4_s.Write((0x0014 + j * 64) % (0xFF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI4.Write(0x0014 + j * 64, v);
+                                            }
+                                            else if (i == 4)
+                                            {
+                                                int[] v = new int[1];
+                                                v[0] = 0;
+                                                if (0x0117 + j * 64 > 0x1FF)
+                                                    FADM_Object.Communal._tcpDyeHMI5_s.Write((0x0117 + j * 64) % (0x1FF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI5.Write((0x0117 + j * 64), v);
+
+                                                v[0] = 2;
+                                                if (0x0014 + j * 64 > 0xFF)
+                                                    FADM_Object.Communal._tcpDyeHMI5_s.Write((0x0014 + j * 64) % (0xFF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI5.Write(0x0014 + j * 64, v);
+                                            }
+                                            else if (i == 5)
+                                            {
+                                                int[] v = new int[1];
+                                                v[0] = 0;
+                                                if (0x0117 + j * 64 > 0x1FF)
+                                                    FADM_Object.Communal._tcpDyeHMI6_s.Write((0x0117 + j * 64) % (0x1FF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI6.Write((0x0117 + j * 64), v);
+
+                                                v[0] = 2;
+                                                if (0x0014 + j * 64 > 0xFF)
+                                                    FADM_Object.Communal._tcpDyeHMI6_s.Write((0x0014 + j * 64) % (0xFF + 1), v);
+                                                else
+                                                    FADM_Object.Communal._tcpDyeHMI6.Write(0x0014 + j * 64, v);
+                                            }
+                                        }
+                                    }
+                                }
+
+
+                                if ("0" == lis_datas[j]._s_addWater)
+                                {
+                                    _cup_Temps[i_cupNo - 1]._i_addStatus = 0;
+                                    _cup_Temps[i_cupNo]._i_addStatus = 0;
+                                }
+                                if ("4" != lis_datas[j]._s_openInplace)
+                                {
+                                    _cup_Temps[i_cupNo - 1]._i_requesadd = 0;
+                                }
+                                if ("4" != lis_datas[j]._s_secondopenInplace)
+                                {
+                                    _cup_Temps[i_cupNo]._i_requesadd = 0;
+                                }
+                                if ("0" == lis_datas[j]._s_openInplace)
+                                {
+                                    _cup_Temps[i_cupNo - 1]._i_cover = 0;
+                                }
+                                if ("0" == lis_datas[j]._s_secondopenInplace)
+                                {
+                                    _cup_Temps[i_cupNo]._i_cover = 0;
+                                }
+                                //主杯
+                                //if (lis_useCup.Contains(i_cupNo))
+                                {
+                                    if (_cup_Temps[i_cupNo - 1]._i_cover == 0)
+                                    {
+                                        //加入开盖，关盖请求
+                                        if (lis_datas[j]._s_openInplace == "1" && lis_datas[j]._s_lockUp == "1")
+                                        {
+                                            if (lis_datas[j]._s_currentState == "0" || lis_datas[j]._s_currentState == "6")
+                                            {
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                        "UPDATE cup_details SET Cooperate = 2,DyeType=2,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + i_cupNo + " and Cooperate=0;");
+                                            }
+                                            else
+                                            {
+                                                //查询对应步号，找到对应是后处理还是染色工艺
+                                                DataTable dt_dye_details = FADM_Object.Communal._fadmSqlserver.GetData("Select * from dye_details where StepNum = '" + lis_datas[j]._s_currentStepNum + "' and CupNum = " + i_cupNo);
+                                                if (dt_dye_details.Rows.Count > 0)
+                                                {
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                        "UPDATE cup_details SET Cooperate = 2,ReceptionTime='" + DateTime.Now + "',DyeType = '" + dt_dye_details.Rows[0]["DyeType"].ToString() + "' WHERE CupNum = " + i_cupNo + " and Cooperate=0;");
+                                                }
+                                                else
+                                                {
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                            "UPDATE cup_details SET Cooperate = 2,DyeType=2,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + i_cupNo + " and Cooperate=0;");
+                                                }
+                                            }
+                                            _cup_Temps[i_cupNo - 1]._i_cover = 1;
+                                        }
+                                        else if (lis_datas[j]._s_openInplace == "2" && lis_datas[j]._s_lockUp == "1")
+                                        {
+                                            if (lis_datas[j]._s_currentState == "0" || lis_datas[j]._s_currentState == "6")
+                                            {
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                        "UPDATE cup_details SET Cooperate = 5,DyeType=2,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + i_cupNo + " and Cooperate=0;");
+                                            }
+                                            else
+                                            {
+                                                //查询对应步号，找到对应是后处理还是染色工艺
+                                                DataTable dt_dye_details = FADM_Object.Communal._fadmSqlserver.GetData("Select * from dye_details where StepNum = '" + lis_datas[j]._s_currentStepNum + "' and CupNum = " + i_cupNo);
+                                                if (dt_dye_details.Rows.Count > 0)
+                                                {
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                        "UPDATE cup_details SET Cooperate = 5,ReceptionTime='" + DateTime.Now + "',DyeType = '" + dt_dye_details.Rows[0]["DyeType"].ToString() + "' WHERE CupNum = " + i_cupNo + " and Cooperate=0;");
+                                                }
+                                                else
+                                                {
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                            "UPDATE cup_details SET Cooperate = 5,DyeType=2,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + i_cupNo + " and Cooperate=0;");
+                                                }
+                                            }
+                                            _cup_Temps[i_cupNo - 1]._i_cover = 1;
+                                        }
+                                    }
+                                    else if (lis_datas[j]._s_openInplace == "1" || lis_datas[j]._s_openInplace == "2")
+                                    {
+                                        DataTable dt_cup_details1 = FADM_Object.Communal._fadmSqlserver.GetData("Select * from cup_details where  CupNum = " + i_cupNo);
+                                        if (dt_cup_details1.Rows.Count > 0)
+                                        {
+                                            if (dt_cup_details1.Rows[0]["Cooperate"].ToString() == "0")
+                                            {
+                                                //判断Cooperate字段是否为0，如果为0就
+                                                _cup_Temps[i_cupNo - 1]._i_cover = 0;
+                                            }
+                                        }
+                                    }
+                                }
+                                //副杯
+                                //if (lis_useCup.Contains(i_cupNo+1))
+                                {
+                                    if (_cup_Temps[i_cupNo]._i_cover == 0)
+                                    {
+                                        //加入开盖，关盖请求
+                                        if (lis_datas[j]._s_secondopenInplace == "1" && lis_datas[j]._s_lockUp == "1")
+                                        {
+                                            if (lis_datas[j]._s_currentState == "0" || lis_datas[j]._s_currentState == "6")
+                                            {
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                        "UPDATE cup_details SET Cooperate = 2,DyeType=2,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + (i_cupNo + 1) + " and Cooperate=0;");
+                                            }
+                                            else
+                                            {
+                                                //查询对应步号，找到对应是后处理还是染色工艺
+                                                DataTable dt_dye_details = FADM_Object.Communal._fadmSqlserver.GetData("Select * from dye_details where StepNum = '" + lis_datas[j]._s_currentStepNum + "' and CupNum = " + (i_cupNo + 1));
+                                                if (dt_dye_details.Rows.Count > 0)
+                                                {
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                        "UPDATE cup_details SET Cooperate = 2,ReceptionTime='" + DateTime.Now + "',DyeType = '" + dt_dye_details.Rows[0]["DyeType"].ToString() + "' WHERE CupNum = " + (i_cupNo + 1) + " and Cooperate=0;");
+                                                }
+                                                else
+                                                {
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                            "UPDATE cup_details SET Cooperate = 2,DyeType=2,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + (i_cupNo + 1) + " and Cooperate=0;");
+                                                }
+                                            }
+                                            _cup_Temps[i_cupNo]._i_cover = 1;
+                                        }
+                                        else if (lis_datas[j]._s_secondopenInplace == "2" && lis_datas[j]._s_lockUp == "1")
+                                        {
+                                            if (lis_datas[j]._s_currentState == "0" || lis_datas[j]._s_currentState == "6")
+                                            {
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                        "UPDATE cup_details SET Cooperate = 5,DyeType=2,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + (i_cupNo + 1) + " and Cooperate=0;");
+                                            }
+                                            else
+                                            {
+                                                //查询对应步号，找到对应是后处理还是染色工艺
+                                                DataTable dt_dye_details = FADM_Object.Communal._fadmSqlserver.GetData("Select * from dye_details where StepNum = '" + lis_datas[j]._s_currentStepNum + "' and CupNum = " + (i_cupNo + 1));
+                                                if (dt_dye_details.Rows.Count > 0)
+                                                {
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                        "UPDATE cup_details SET Cooperate = 5,ReceptionTime='" + DateTime.Now + "',DyeType = '" + dt_dye_details.Rows[0]["DyeType"].ToString() + "' WHERE CupNum = " + (i_cupNo + 1) + " and Cooperate=0;");
+                                                }
+                                                else
+                                                {
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                            "UPDATE cup_details SET Cooperate = 5,DyeType=2,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + (i_cupNo + 1) + " and Cooperate=0;");
+                                                }
+                                            }
+                                            _cup_Temps[i_cupNo]._i_cover = 1;
+                                        }
+                                    }
+                                    else if (lis_datas[j]._s_secondopenInplace == "1" || lis_datas[j]._s_openInplace == "2")
+                                    {
+                                        DataTable dt_cup_details1 = FADM_Object.Communal._fadmSqlserver.GetData("Select * from cup_details where  CupNum = " + (i_cupNo + 1));
+                                        if (dt_cup_details1.Rows.Count > 0)
+                                        {
+                                            if (dt_cup_details1.Rows[0]["Cooperate"].ToString() == "0")
+                                            {
+                                                //判断Cooperate字段是否为0，如果为0就
+                                                _cup_Temps[i_cupNo]._i_cover = 0;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (i == 0)
+                                {
+                                    //重新获取版本
+                                    if (!FADM_Object.Communal._tcpDyeHMI1._b_isGetVer)
+                                    {
+                                        int[] ia_ver = new int[6];
+                                        if (FADM_Object.Communal._tcpDyeHMI1.ReadVer(ref ia_ver,4) == 0)
+                                        {
+                                            //FADM_Object.Communal._s_TouchVer1 = (ia_ver[0] / 10.0).ToString("f1") + (ia_ver[1] / 100.0).ToString("f2");
+                                            FADM_Object.Communal._s_CardOneVer1 = ia_ver[0].ToString("d4");
+                                            if (FADM_Object.Communal._tcpDyeHMI1_s.ReadVer(ref ia_ver, 4) == 0)
+                                            {
+                                                FADM_Object.Communal._s_CardTwoVer1 = ia_ver[0].ToString("d4");
+                                            }
+
+                                            FADM_Object.Communal._tcpDyeHMI1._b_isGetVer = true;
+                                        }
+                                    }
+                                }
+                                else if (i == 1)
+                                {
+                                    //重新获取版本
+                                    if (!FADM_Object.Communal._tcpDyeHMI2._b_isGetVer)
+                                    {
+                                        int[] ia_ver = new int[6];
+                                        if (FADM_Object.Communal._tcpDyeHMI2.ReadVer(ref ia_ver,4) == 0)
+                                        {
+                                            //FADM_Object.Communal._s_TouchVer2 = (ia_ver[0] / 10.0).ToString("f1") + (ia_ver[1] / 100.0).ToString("f2");
+                                            FADM_Object.Communal._s_CardOneVer2 = ia_ver[0].ToString("d4");
+                                            if (FADM_Object.Communal._tcpDyeHMI2_s.ReadVer(ref ia_ver, 4) == 0)
+                                                FADM_Object.Communal._s_CardTwoVer2 = ia_ver[0].ToString("d4");
+
+                                            FADM_Object.Communal._tcpDyeHMI2._b_isGetVer = true;
+                                        }
+                                    }
+                                }
+                                else if (i == 2)
+                                {
+                                    //重新获取版本
+                                    if (!FADM_Object.Communal._tcpDyeHMI3._b_isGetVer)
+                                    {
+                                        int[] ia_ver = new int[6];
+                                        if (FADM_Object.Communal._tcpDyeHMI3.ReadVer(ref ia_ver, 4) == 0)
+                                        {
+                                            //FADM_Object.Communal._s_TouchVer3 = (ia_ver[0] / 10.0).ToString("f1") + (ia_ver[1] / 100.0).ToString("f2");
+                                            FADM_Object.Communal._s_CardOneVer3 = ia_ver[0].ToString("d4");
+                                            if (FADM_Object.Communal._tcpDyeHMI3_s.ReadVer(ref ia_ver,4) == 0)
+                                                FADM_Object.Communal._s_CardTwoVer3 = ia_ver[0].ToString("d4");
+
+                                            FADM_Object.Communal._tcpDyeHMI3._b_isGetVer = true;
+                                        }
+                                    }
+                                }
+                                else if (i == 3)
+                                {
+                                    //重新获取版本
+                                    if (!FADM_Object.Communal._tcpDyeHMI4._b_isGetVer)
+                                    {
+                                        int[] ia_ver = new int[6];
+                                        if (FADM_Object.Communal._tcpDyeHMI4.ReadVer(ref ia_ver,4) == 0)
+                                        {
+                                            //FADM_Object.Communal._s_TouchVer4 = (ia_ver[0] / 10.0).ToString("f1") + (ia_ver[1] / 100.0).ToString("f2");
+                                            FADM_Object.Communal._s_CardOneVer4 = ia_ver[0].ToString("d4");
+                                            if (FADM_Object.Communal._tcpDyeHMI4_s.ReadVer(ref ia_ver, 4) == 0)
+                                                FADM_Object.Communal._s_CardTwoVer4 = ia_ver[0].ToString("d4");
+
+                                            FADM_Object.Communal._tcpDyeHMI4._b_isGetVer = true;
+                                        }
+                                    }
+                                }
+                                else if (i == 4)
+                                {
+                                    //重新获取版本
+                                    if (!FADM_Object.Communal._tcpDyeHMI5._b_isGetVer)
+                                    {
+                                        int[] ia_ver = new int[6];
+                                        if (FADM_Object.Communal._tcpDyeHMI5.ReadVer(ref ia_ver,4) == 0)
+                                        {
+                                            //FADM_Object.Communal._s_TouchVer5 = (ia_ver[0] / 10.0).ToString("f1") + (ia_ver[1] / 100.0).ToString("f2");
+                                            FADM_Object.Communal._s_CardOneVer5 = ia_ver[0].ToString("d4");
+                                            if (FADM_Object.Communal._tcpDyeHMI5_s.ReadVer(ref ia_ver) == 0)
+                                                FADM_Object.Communal._s_CardTwoVer5 = ia_ver[0].ToString("d4");
+
+                                            FADM_Object.Communal._tcpDyeHMI5._b_isGetVer = true;
+                                        }
+                                    }
+                                }
+                                else if (i == 5)
+                                {
+                                    //重新获取版本
+                                    if (!FADM_Object.Communal._tcpDyeHMI6._b_isGetVer)
+                                    {
+                                        int[] ia_ver = new int[6];
+                                        if (FADM_Object.Communal._tcpDyeHMI6.ReadVer(ref ia_ver,4) == 0)
+                                        {
+                                            //FADM_Object.Communal._s_TouchVer6 = (ia_ver[0] / 10.0).ToString("f1") + (ia_ver[1] / 100.0).ToString("f2");
+                                            FADM_Object.Communal._s_CardOneVer6 = ia_ver[0].ToString("d4");
+                                            if (FADM_Object.Communal._tcpDyeHMI6.ReadVer(ref ia_ver,4) == 0)
+                                                FADM_Object.Communal._s_CardTwoVer6 = ia_ver[0].ToString("d4");
+
+                                            FADM_Object.Communal._tcpDyeHMI6._b_isGetVer = true;
+                                        }
+                                    }
+                                }
+
+
+
+                                //同步数据库杯盖状态到打板机
+                                SynCover(i_cupNo, i_cupmin, i,4);
+                                SynCover(i_cupNo + 1, i_cupmin, i,4);
+
+
+                                string[] sa_statues = { "待机", "运行中", "暂停", "保温运行", "排水", "滴液", "停止中" };
+                                string[] sa_technology = { "", "冷行", "温控", "加药", "放布", "出布", "排液", "洗杯", "加水", "搅拌", "待机保温", "快速冷却", "取小样", "测PH" };
+
+                                //更新报警
+                                int i_warm_temp = Convert.ToInt32(lis_datas[j]._s_Warm);
+                                //主杯
+                                i_warm_temp = Convert.ToInt32(lis_datas[j]._s_Warm) & 0x1F;
+                                if (i_warm_temp != FADM_Object.Communal._ia_alarmNum1[i_cupNo - 1])
+                                {
+                                    //原来没有报警
+                                    if (FADM_Object.Communal._ia_alarmNum1[i_cupNo - 1] == 0)
+                                    {
+                                        FADM_Object.Communal._ia_alarmNum1[i_cupNo - 1] = i_warm_temp;
+                                        string s_alarm = "";
+                                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                        {
+                                            //判断第0位
+                                            if ((i_warm_temp & 0x01) > 0)
+                                            {
+                                                s_alarm += "超极限温度,";
+                                            }
+                                            if ((i_warm_temp & 0x02) > 0)
+                                            {
+                                                s_alarm += "电机电流过大,";
+                                            }
+                                            if ((i_warm_temp & 0x04) > 0)
+                                            {
+                                                s_alarm += "高于安全温度进入冷行,";
+                                            }
+                                            if ((i_warm_temp & 0x08) > 0)
+                                            {
+                                                s_alarm += "回原点超时,";
+                                            }
+                                            if ((i_warm_temp & 0x10) > 0)
+                                            {
+                                                s_alarm += "上下锁止信号异常,";
+                                            }
+                                            s_alarm = i_cupNo + "号杯" + s_alarm;
+                                        }
+                                        else
+                                        {
+                                            if ((i_warm_temp & 0x01) > 0)
+                                            {
+                                                s_alarm += "Overlimit temperature,";
+                                            }
+                                            if ((i_warm_temp & 0x02) > 0)
+                                            {
+                                                s_alarm += "Excessive motor current,";
+                                            }
+                                            if ((i_warm_temp & 0x04) > 0)
+                                            {
+                                                s_alarm += "Above the safe temperature enter the cold line,";
+                                            }
+                                            if ((i_warm_temp & 0x08) > 0)
+                                            {
+                                                s_alarm += "Back to origin timeout,";
+                                            }
+                                            if ((i_warm_temp & 0x10) > 0)
+                                            {
+                                                s_alarm += "The upper and lower lock signals are abnormal,";
+                                            }
+                                            s_alarm = i_cupNo + " Cup " + s_alarm;
+                                        }
+                                        s_alarm = s_alarm.Remove(s_alarm.Length - 1, 1);
+
+
+                                        FADM_Object.Communal._sa_dyeAlarm1[i_cupNo - 1] = Lib_Card.CardObject.InsertD(s_alarm, "Dye");
+                                    }
+                                    //原来有报警
+                                    else
+                                    {
+                                        FADM_Object.Communal._ia_alarmNum1[i_cupNo - 1] = i_warm_temp;
+                                        Lib_Card.CardObject.DeleteD(FADM_Object.Communal._sa_dyeAlarm1[i_cupNo - 1]);
+                                        if (i_warm_temp != 0)
+                                        {
+                                            string s_alarm = "";
+                                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                            {
+                                                //判断第0位
+                                                if ((i_warm_temp & 0x01) > 0)
+                                                {
+                                                    s_alarm += "超极限温度,";
+                                                }
+                                                if ((i_warm_temp & 0x02) > 0)
+                                                {
+                                                    s_alarm += "电机电流过大,";
+                                                }
+                                                if ((i_warm_temp & 0x04) > 0)
+                                                {
+                                                    s_alarm += "高于安全温度进入冷行,";
+                                                }
+                                                if ((i_warm_temp & 0x08) > 0)
+                                                {
+                                                    s_alarm += "回原点超时,";
+                                                }
+                                                if ((i_warm_temp & 0x10) > 0)
+                                                {
+                                                    s_alarm += "上下锁止信号异常,";
+                                                }
+                                                s_alarm = i_cupNo + "号杯" + s_alarm;
+                                            }
+                                            else
+                                            {
+                                                if ((i_warm_temp & 0x01) > 0)
+                                                {
+                                                    s_alarm += "Overlimit temperature,";
+                                                }
+                                                if ((i_warm_temp & 0x02) > 0)
+                                                {
+                                                    s_alarm += "Excessive motor current,";
+                                                }
+                                                if ((i_warm_temp & 0x04) > 0)
+                                                {
+                                                    s_alarm += "Above the safe temperature enter the cold line,";
+                                                }
+                                                if ((i_warm_temp & 0x08) > 0)
+                                                {
+                                                    s_alarm += "Back to origin timeout,";
+                                                }
+                                                if ((i_warm_temp & 0x10) > 0)
+                                                {
+                                                    s_alarm += "The upper and lower lock signals are abnormal,";
+                                                }
+                                                s_alarm = i_cupNo + " Cup " + s_alarm;
+                                            }
+                                            s_alarm = s_alarm.Remove(s_alarm.Length - 1, 1);
+
+                                            FADM_Object.Communal._sa_dyeAlarm1[i_cupNo - 1] = Lib_Card.CardObject.InsertD(s_alarm, "Dye");
+                                        }
+                                    }
+                                }
+
+                                //副杯
+                                i_warm_temp = Convert.ToInt32(lis_datas[j]._s_Warm) & 0x7A;
+                                if (i_warm_temp != FADM_Object.Communal._ia_alarmNum1[i_cupNo])
+                                {
+                                    //原来没有报警
+                                    if (FADM_Object.Communal._ia_alarmNum1[i_cupNo] == 0)
+                                    {
+                                        FADM_Object.Communal._ia_alarmNum1[i_cupNo] = i_warm_temp;
+                                        string s_alarm = "";
+                                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                        {
+                                            //判断第0位
+                                            if ((i_warm_temp & 0x01) > 0)
+                                            {
+                                                s_alarm += "超极限温度,";
+                                            }
+                                            if ((i_warm_temp & 0x02) > 0)
+                                            {
+                                                s_alarm += "电机电流过大,";
+                                            }
+                                            if ((i_warm_temp & 0x04) > 0)
+                                            {
+                                                s_alarm += "高于安全温度进入冷行,";
+                                            }
+                                            if ((i_warm_temp & 0x08) > 0)
+                                            {
+                                                s_alarm += "回原点超时,";
+                                            }
+                                            if ((i_warm_temp & 0x10) > 0)
+                                            {
+                                                s_alarm += "上下锁止信号异常,";
+                                            }
+                                            if ((i_warm_temp & 0x20) > 0)
+                                            {
+                                                s_alarm += "超极限温度,";
+                                            }
+                                            if ((i_warm_temp & 0x40) > 0)
+                                            {
+                                                s_alarm += "高于安全温度进入冷行,";
+                                            }
+                                            s_alarm = (i_cupNo + 1) + "号杯" + s_alarm;
+                                        }
+                                        else
+                                        {
+                                            if ((i_warm_temp & 0x01) > 0)
+                                            {
+                                                s_alarm += "Overlimit temperature,";
+                                            }
+                                            if ((i_warm_temp & 0x02) > 0)
+                                            {
+                                                s_alarm += "Excessive motor current,";
+                                            }
+                                            if ((i_warm_temp & 0x04) > 0)
+                                            {
+                                                s_alarm += "Above the safe temperature enter the cold line,";
+                                            }
+                                            if ((i_warm_temp & 0x08) > 0)
+                                            {
+                                                s_alarm += "Back to origin timeout,";
+                                            }
+                                            if ((i_warm_temp & 0x10) > 0)
+                                            {
+                                                s_alarm += "The upper and lower lock signals are abnormal,";
+                                            }
+                                            if ((i_warm_temp & 0x20) > 0)
+                                            {
+                                                s_alarm += "Overlimit temperature,";
+                                            }
+                                            if ((i_warm_temp & 0x40) > 0)
+                                            {
+                                                s_alarm += "Above the safe temperature enter the cold line,";
+                                            }
+                                            s_alarm = (i_cupNo + 1) + " Cup " + s_alarm;
+                                        }
+                                        s_alarm = s_alarm.Remove(s_alarm.Length - 1, 1);
+
+
+                                        FADM_Object.Communal._sa_dyeAlarm1[i_cupNo] = Lib_Card.CardObject.InsertD(s_alarm, "Dye");
+                                    }
+                                    //原来有报警
+                                    else
+                                    {
+                                        FADM_Object.Communal._ia_alarmNum1[i_cupNo] = i_warm_temp;
+                                        Lib_Card.CardObject.DeleteD(FADM_Object.Communal._sa_dyeAlarm1[i_cupNo]);
+                                        if (i_warm_temp != 0)
+                                        {
+                                            string s_alarm = "";
+                                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                            {
+                                                //判断第0位
+                                                if ((i_warm_temp & 0x01) > 0)
+                                                {
+                                                    s_alarm += "超极限温度,";
+                                                }
+                                                if ((i_warm_temp & 0x02) > 0)
+                                                {
+                                                    s_alarm += "电机电流过大,";
+                                                }
+                                                if ((i_warm_temp & 0x04) > 0)
+                                                {
+                                                    s_alarm += "高于安全温度进入冷行,";
+                                                }
+                                                if ((i_warm_temp & 0x08) > 0)
+                                                {
+                                                    s_alarm += "回原点超时,";
+                                                }
+                                                if ((i_warm_temp & 0x10) > 0)
+                                                {
+                                                    s_alarm += "上下锁止信号异常,";
+                                                }
+                                                if ((i_warm_temp & 0x20) > 0)
+                                                {
+                                                    s_alarm += "超极限温度,";
+                                                }
+                                                if ((i_warm_temp & 0x40) > 0)
+                                                {
+                                                    s_alarm += "高于安全温度进入冷行,";
+                                                }
+                                                s_alarm = (i_cupNo + 1) + "号杯" + s_alarm;
+                                            }
+                                            else
+                                            {
+                                                if ((i_warm_temp & 0x01) > 0)
+                                                {
+                                                    s_alarm += "Overlimit temperature,";
+                                                }
+                                                if ((i_warm_temp & 0x02) > 0)
+                                                {
+                                                    s_alarm += "Excessive motor current,";
+                                                }
+                                                if ((i_warm_temp & 0x04) > 0)
+                                                {
+                                                    s_alarm += "Above the safe temperature enter the cold line,";
+                                                }
+                                                if ((i_warm_temp & 0x08) > 0)
+                                                {
+                                                    s_alarm += "Back to origin timeout,";
+                                                }
+                                                if ((i_warm_temp & 0x10) > 0)
+                                                {
+                                                    s_alarm += "The upper and lower lock signals are abnormal,";
+                                                }
+                                                if ((i_warm_temp & 0x20) > 0)
+                                                {
+                                                    s_alarm += "Overlimit temperature,";
+                                                }
+                                                if ((i_warm_temp & 0x40) > 0)
+                                                {
+                                                    s_alarm += "Above the safe temperature enter the cold line,";
+                                                }
+                                                s_alarm = (i_cupNo + 1) + " Cup " + s_alarm;
+                                            }
+                                            s_alarm = s_alarm.Remove(s_alarm.Length - 1, 1);
+
+                                            FADM_Object.Communal._sa_dyeAlarm1[i_cupNo] = Lib_Card.CardObject.InsertD(s_alarm, "Dye");
+                                        }
+                                    }
+                                }
+
+                                if ("0" != lis_datas[j]._s_currentState)
+                                {
+                                    if ("3" != lis_datas[j]._s_currentState)
+                                    {
+                                        //主杯
+                                        if (lis_useCup.Contains(i_cupNo))
+                                        {
+                                            //运行非温控
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                           "UPDATE cup_details SET StepStartTime = '" + DateTime.Now + "' " +
+                                           "WHERE CupNum = " + i_cupNo + " AND Statues != '下线'  AND TechnologyName != '" +
+                                           sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] + "';");
+                                        }
+                                        //副杯
+                                        if (lis_useCup.Contains(i_cupNo + 1))
+                                        {
+                                            //运行非温控
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                           "UPDATE cup_details SET StepStartTime = '" + DateTime.Now + "' " +
+                                           "WHERE CupNum = " + (i_cupNo + 1) + " AND Statues != '下线'  AND TechnologyName != '" +
+                                           sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] + "';");
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        //主杯
+                                        if (lis_useCup.Contains(i_cupNo))
+                                        {
+                                            //保温运行
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                            "UPDATE cup_details SET " +
+                                            "StepStartTime = '" + DateTime.Now + "' " +
+                                            "WHERE CupNum = " + i_cupNo + " AND TechnologyName != '保温运行' AND Statues != '下线';");
+                                        }
+                                        //副杯
+                                        if (lis_useCup.Contains(i_cupNo + 1))
+                                        {
+                                            //保温运行
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                            "UPDATE cup_details SET " +
+                                            "StepStartTime = '" + DateTime.Now + "' " +
+                                            "WHERE CupNum = " + (i_cupNo + 1) + " AND TechnologyName != '保温运行' AND Statues != '下线';");
+                                        }
+                                    }
+
+                                }
+
+
+                                //当前杯染固色完成
+                                if ("1" == lis_datas[j]._s_isTotalFinish || "2" == lis_datas[j]._s_isTotalFinish
+                                    || "3" == lis_datas[j]._s_isTotalFinish || "4" == lis_datas[j]._s_isTotalFinish
+                                     || "5" == lis_datas[j]._s_isTotalFinish || "6" == lis_datas[j]._s_isTotalFinish)
+                                {
+                                    //重置
+                                    _ia_stopSend[i_cupNo - 1] = 0;
+
+                                    int[] ia_zero = new int[16];
+                                    for (int k = 0; k < 16; k++)
+                                    {
+                                        ia_zero[k] = 0;
+                                    }
+                                    ia_zero[1] = 0x0D0D;
+                                    ia_zero[2] = 0x0D0D;
+                                    ia_zero[3] = 0x0D0D;
+                                    ia_zero[4] = 0x0D0D;
+                                    DyeHMIWriteSigle(i, j, 0x00, 64, ia_zero,4);
+
+
+
+
+                                    //清空全部完成标记位
+                                    ia_zero = new int[1];
+                                    ia_zero[0] = 0;
+                                    DyeHMIWriteSigle(i, j, 0x101, 64, ia_zero,4);
+
+                                    if ("1" == lis_datas[j]._s_isTotalFinish)
+                                    {
+                                        //主杯
+                                        if (lis_useCup.Contains(i_cupNo))
+                                        {
+                                            _cup_Temps[i_cupNo - 1]._b_start = false;
+                                            _cup_Temps[i_cupNo - 1]._b_finish = true;
+                                            Thread thread = new Thread(Finish);
+                                            thread.Start(i_cupNo);
+                                        }
+                                        //副杯
+                                        if (lis_useCup.Contains(i_cupNo + 1))
+                                        {
+                                            _cup_Temps[i_cupNo]._b_start = false;
+                                            _cup_Temps[i_cupNo]._b_finish = true;
+                                            Thread thread = new Thread(Finish);
+                                            thread.Start(i_cupNo + 1);
+                                        }
+
+                                        if (!lis_useCup.Contains(i_cupNo) && !lis_useCup.Contains(i_cupNo + 1))
+                                        {
+                                            _cup_Temps[i_cupNo - 1]._b_start = false;
+                                            _cup_Temps[i_cupNo - 1]._b_finish = true;
+                                            Thread thread = new Thread(Finish);
+                                            thread.Start(i_cupNo);
+
+                                            _cup_Temps[i_cupNo]._b_start = false;
+                                            _cup_Temps[i_cupNo]._b_finish = true;
+                                            Thread thread1 = new Thread(Finish);
+                                            thread1.Start(i_cupNo + 1);
+                                        }
+
+
+
+                                    }
+                                    else if ("2" == lis_datas[j]._s_isTotalFinish)
+                                    {
+                                        //主杯
+                                        if (lis_useCup.Contains(i_cupNo))
+                                        {
+                                            //失败洗杯结束
+                                            FADM_Object.Communal._lis_dripFailCupFinish.Add(i_cupNo);
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", i_cupNo + "号配液杯失败洗杯完成");
+                                        }
+                                        //副杯
+                                        if (lis_useCup.Contains(i_cupNo + 1))
+                                        {
+                                            //失败洗杯结束
+                                            FADM_Object.Communal._lis_dripFailCupFinish.Add(i_cupNo + 1);
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (i_cupNo + 1) + "号配液杯失败洗杯完成");
+                                        }
+
+                                    }
+                                    else if ("3" == lis_datas[j]._s_isTotalFinish)
+                                    {
+                                        //前洗杯结束
+                                        lock (this)
+                                        {
+                                            DataTable dt_cup1 = FADM_Object.Communal._fadmSqlserver.GetData("Select * from cup_details where CupNum = " + i_cupNo + " Or  CupNum = " + (i_cupNo + 1) + " order by CupNum;");
+                                            //主杯
+                                            if (lis_useCup.Contains(i_cupNo))
+                                            {
+                                                FADM_Object.Communal._lis_washCupFinish.Add(i_cupNo);
+                                                FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", i_cupNo + "号配液杯前洗杯完成");
+                                            }
+                                            else
+                                            {
+                                                if (dt_cup1.Rows[0]["Statues"].ToString() == "前洗杯")
+                                                {
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData("UPDATE cup_details SET  Statues = '待机'  WHERE CupNum = "
+                                                        + i_cupNo + " ;");
+                                                }
+                                            }
+                                            //副杯
+                                            if (lis_useCup.Contains(i_cupNo + 1))
+                                            {
+                                                FADM_Object.Communal._lis_washCupFinish.Add(i_cupNo + 1);
+                                                FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (i_cupNo + 1) + "号配液杯前洗杯完成");
+                                            }
+                                            else
+                                            {
+                                                if (dt_cup1.Rows[1]["Statues"].ToString() == "前洗杯")
+                                                {
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData("UPDATE cup_details SET  Statues = '待机'  WHERE CupNum = "
+                                                        + (i_cupNo + 1) + " ;");
+
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                    else if ("4" == lis_datas[j]._s_isTotalFinish)
+                                    {
+                                        //主杯
+                                        if (lis_useCup.Contains(i_cupNo))
+                                        {
+                                            _cup_Temps[i_cupNo - 1]._b_start = false;
+                                            _cup_Temps[i_cupNo - 1]._b_finish = true;
+                                            Thread thread = new Thread(Finish);
+                                            thread.Start(i_cupNo);
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", i_cupNo + "号杯电流过大，异常退出");
+                                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                new FADM_Object.MyAlarm(i_cupNo + "号杯电流过大，异常退出", "温馨提示");
+                                            else
+                                                new FADM_Object.MyAlarm(" The " + i_cupNo + " cup current is too large, abnormal exit", "Tips");
+                                        }
+                                        //副杯
+                                        if (lis_useCup.Contains(i_cupNo + 1))
+                                        {
+                                            _cup_Temps[i_cupNo]._b_start = false;
+                                            _cup_Temps[i_cupNo]._b_finish = true;
+                                            Thread thread = new Thread(Finish);
+                                            thread.Start(i_cupNo + 1);
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (i_cupNo + 1) + "号杯电流过大，异常退出");
+                                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                new FADM_Object.MyAlarm((i_cupNo + 1) + "号杯电流过大，异常退出", "温馨提示");
+                                            else
+                                                new FADM_Object.MyAlarm(" The " + (i_cupNo + 1) + " cup current is too large, abnormal exit", "Tips");
+                                        }
+
+                                    }
+                                    else if ("6" == lis_datas[j]._s_isTotalFinish)
+                                    {
+                                        //主杯
+                                        if (lis_useCup.Contains(i_cupNo))
+                                        {
+                                            _cup_Temps[i_cupNo - 1]._b_start = false;
+                                            _cup_Temps[i_cupNo - 1]._b_finish = true;
+                                            Thread thread = new Thread(Finish);
+                                            thread.Start(i_cupNo);
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", i_cupNo + "号超极限温度，异常退出");
+                                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                new FADM_Object.MyAlarm(i_cupNo + "号超极限温度，异常退出", "温馨提示");
+                                            else
+                                                new FADM_Object.MyAlarm(" The " + i_cupNo + " cup Overlimit temperature, abnormal exit", "Tips");
+                                        }
+                                        //副杯
+                                        if (lis_useCup.Contains(i_cupNo + 1))
+                                        {
+                                            _cup_Temps[i_cupNo]._b_start = false;
+                                            _cup_Temps[i_cupNo]._b_finish = true;
+                                            Thread thread = new Thread(Finish);
+                                            thread.Start(i_cupNo + 1);
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (i_cupNo + 1) + "号超极限温度，异常退出");
+                                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                new FADM_Object.MyAlarm((i_cupNo + 1) + "号超极限温度，异常退出", "温馨提示");
+                                            else
+                                                new FADM_Object.MyAlarm(" The " + (i_cupNo + 1) + " cup Overlimit temperature, abnormal exit", "Tips");
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        //主杯
+                                        if (lis_useCup.Contains(i_cupNo))
+                                        {
+                                            _cup_Temps[i_cupNo - 1]._b_start = false;
+                                            _cup_Temps[i_cupNo - 1]._b_finish = true;
+                                            Thread thread = new Thread(Finish);
+                                            thread.Start(i_cupNo);
+
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (i_cupNo) + "号杯上下锁止信号异常，异常退出");
+                                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                new FADM_Object.MyAlarm(i_cupNo + "号杯上下锁止信号异常，异常退出", "温馨提示");
+                                            else
+                                                new FADM_Object.MyAlarm(" The " + i_cupNo + " cup upper and lower lock signals are abnormal, abnormal exit", "Tips");
+                                        }
+                                        //副杯
+                                        if (lis_useCup.Contains(i_cupNo + 1))
+                                        {
+                                            _cup_Temps[i_cupNo]._b_start = false;
+                                            _cup_Temps[i_cupNo]._b_finish = true;
+                                            Thread thread = new Thread(Finish);
+                                            thread.Start(i_cupNo + 1);
+
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (i_cupNo + 1) + "号杯上下锁止信号异常，异常退出");
+                                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                new FADM_Object.MyAlarm((i_cupNo + 1) + "号杯上下锁止信号异常，异常退出", "温馨提示");
+                                            else
+                                                new FADM_Object.MyAlarm(" The " + (i_cupNo + 1) + " cup upper and lower lock signals are abnormal, abnormal exit", "Tips");
+                                        }
+                                    }
+
+
+                                    continue;
+                                }
+
+                                if ("0" == lis_datas[j]._s_currentState)
+                                {
+                                    //待机
+
+                                }
+
+                                else if ("1" == lis_datas[j]._s_currentState)
+                                {
+                                    //主杯
+                                    if (lis_useCup.Contains(i_cupNo))
+                                    {
+                                        //运行中
+                                        if ("3" != lis_datas[j]._s_dripFail)
+                                            _cup_Temps[i_cupNo - 1]._b_start = true;
+                                    }
+                                    //副杯
+                                    if (lis_useCup.Contains(i_cupNo + 1))
+                                    {
+                                        //运行中
+                                        if ("3" != lis_datas[j]._s_dripFail)
+                                            _cup_Temps[i_cupNo]._b_start = true;
+                                    }
+                                }
+                                else if ("2" == lis_datas[j]._s_currentState)
+                                {
+                                    //主杯
+                                    if (lis_useCup.Contains(i_cupNo))
+                                    {
+                                        //暂停
+                                        _cup_Temps[i_cupNo - 1]._b_start = false;
+                                    }
+                                    //副杯
+                                    if (lis_useCup.Contains(i_cupNo + 1))
+                                    {
+                                        //暂停
+                                        _cup_Temps[i_cupNo]._b_start = false;
+                                    }
+                                }
+                                else if ("3" == lis_datas[j]._s_currentState)
+                                {
+                                    //主杯
+                                    if (lis_useCup.Contains(i_cupNo))
+                                    {
+                                        //保温运行
+                                        _cup_Temps[i_cupNo - 1]._b_start = true;
+                                    }
+                                    //副杯
+                                    if (lis_useCup.Contains(i_cupNo + 1))
+                                    {
+                                        //保温运行
+                                        _cup_Temps[i_cupNo]._b_start = true;
+                                    }
+                                }
+                                else if ("4" == lis_datas[j]._s_currentState)
+                                {
+                                    //主杯
+                                    if (lis_useCup.Contains(i_cupNo))
+                                    {
+                                        //排水
+                                        _cup_Temps[i_cupNo - 1]._b_start = true;
+                                    }
+                                    //副杯
+                                    if (lis_useCup.Contains(i_cupNo + 1))
+                                    {
+                                        //排水
+                                        _cup_Temps[i_cupNo]._b_start = true;
+                                    }
+                                }
+                                else if ("5" == lis_datas[j]._s_currentState)
+                                {
+                                    //主杯
+                                    if (lis_useCup.Contains(i_cupNo))
+                                    {
+                                        //滴液
+                                        _cup_Temps[i_cupNo - 1]._b_start = false;
+                                    }
+                                    //副杯
+                                    if (lis_useCup.Contains(i_cupNo + 1))
+                                    {
+                                        //滴液
+                                        _cup_Temps[i_cupNo]._b_start = false;
+                                    }
+                                }
+                                else if ("6" == lis_datas[j]._s_currentState)
+                                {
+                                    //主杯
+                                    if (lis_useCup.Contains(i_cupNo))
+                                    {
+                                        //停止中
+                                        _cup_Temps[i_cupNo - 1]._b_start = false;
+                                    }
+                                    //副杯
+                                    if (lis_useCup.Contains(i_cupNo + 1))
+                                    {
+                                        //停止中
+                                        _cup_Temps[i_cupNo]._b_start = false;
+                                    }
+                                    //如果都没使用，两个都要停止
+                                    if (!lis_useCup.Contains(i_cupNo) && !lis_useCup.Contains(i_cupNo))
+                                    {
+                                        //停止中
+                                        _cup_Temps[i_cupNo - 1]._b_start = false;
+                                        _cup_Temps[i_cupNo]._b_start = false;
+                                    }
+                                }
+
+
+
+
+                                if ("0" == lis_datas[j]._s_currentState)
+                                {
+                                    //主杯
+                                    if (lis_useCup.Contains(i_cupNo))
+                                    {
+                                        if (_cup_Temps[i_cupNo - 1]._b_finish == false && _cup_Temps[i_cupNo - 1]._b_start == false)
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                "UPDATE cup_details SET RealTemp = '" + _cup_Temps[i_cupNo - 1]._s_temp + "', " +
+                                                "StepNum = " + lis_datas[j]._s_currentStepNum + ", " +
+                                                "TechnologyName = '" + sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] + "', " +
+                                                "Statues = '" + sa_statues[Convert.ToInt16(lis_datas[j]._s_currentState)] + "' " +
+                                                "WHERE CupNum = " + i_cupNo + " AND Statues != '下线' AND Statues != '检查待机状态' " +
+                                                "AND Statues != '检查历史状态' AND Statues != '等待准备状态' AND Statues != '失败洗杯' " +
+                                                "AND Statues != '前洗杯' ;");
+
+                                            _cup_Temps[i_cupNo - 1]._b_start = false;
+                                        }
+                                    }
+                                    //副杯
+                                    if (lis_useCup.Contains(i_cupNo + 1))
+                                    {
+                                        if (_cup_Temps[i_cupNo]._b_finish == false && _cup_Temps[i_cupNo]._b_start == false)
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                "UPDATE cup_details SET RealTemp = '" + _cup_Temps[i_cupNo]._s_temp + "', " +
+                                                "StepNum = " + lis_datas[j]._s_currentStepNum + ", " +
+                                                "TechnologyName = '" + sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] + "', " +
+                                                "Statues = '" + sa_statues[Convert.ToInt16(lis_datas[j]._s_currentState)] + "' " +
+                                                "WHERE CupNum = " + (i_cupNo + 1) + " AND Statues != '下线' AND Statues != '检查待机状态' " +
+                                                "AND Statues != '检查历史状态' AND Statues != '等待准备状态' AND Statues != '失败洗杯' " +
+                                                "AND Statues != '前洗杯' ;");
+
+                                            _cup_Temps[i_cupNo]._b_start = false;
+                                        }
+                                    }
+                                }
+                                else if ("1" == lis_datas[j]._s_currentState)
+                                {
+                                    //主杯
+                                    if (lis_useCup.Contains(i_cupNo))
+                                    {
+                                        if ("2" == lis_datas[j]._s_currentCraft)
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                            "UPDATE cup_details SET RealTemp = '" + _cup_Temps[i_cupNo - 1]._s_temp + "', " +
+                                            "StepNum = " + lis_datas[j]._s_currentStepNum + ", " +
+                                            "TechnologyName = '" + sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] + "' " +
+                                            "WHERE CupNum = " + i_cupNo + " AND Statues != '下线' ;");
+                                        }
+                                        else
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                           "UPDATE cup_details SET RealTemp = '" + _cup_Temps[i_cupNo - 1]._s_temp + "', " +
+                                           "StepNum = " + lis_datas[j]._s_currentStepNum + ", " +
+                                           "TechnologyName = '" + sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] + "' " +
+                                           "WHERE CupNum = " + i_cupNo + " AND Statues != '下线';");
+                                        }
+                                    }
+                                    //副杯
+                                    if (lis_useCup.Contains(i_cupNo + 1))
+                                    {
+                                        if ("2" == lis_datas[j]._s_currentCraft)
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                            "UPDATE cup_details SET RealTemp = '" + _cup_Temps[i_cupNo]._s_temp + "', " +
+                                            "StepNum = " + lis_datas[j]._s_currentStepNum + ", " +
+                                            "TechnologyName = '" + sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] + "' " +
+                                            "WHERE CupNum = " + (i_cupNo + 1) + " AND Statues != '下线' ;");
+                                        }
+                                        else
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                           "UPDATE cup_details SET RealTemp = '" + _cup_Temps[i_cupNo]._s_temp + "', " +
+                                           "StepNum = " + lis_datas[j]._s_currentStepNum + ", " +
+                                           "TechnologyName = '" + sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] + "' " +
+                                           "WHERE CupNum = " + (i_cupNo + 1) + " AND Statues != '下线';");
+                                        }
+                                    }
+                                }
+                                else if ("3" == lis_datas[j]._s_currentState)
+                                {
+                                    //主杯
+                                    if (lis_useCup.Contains(i_cupNo))
+                                    {
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                       "UPDATE cup_details SET RealTemp = '" + _cup_Temps[i_cupNo - 1]._s_temp + "', " +
+                                       "StepNum = " + lis_datas[j]._s_currentStepNum + ", " +
+                                       "TechnologyName = '" + sa_statues[Convert.ToInt16(lis_datas[j]._s_currentState)] + "' " +
+                                       "WHERE CupNum = " + i_cupNo + " AND Statues != '下线';");
+                                    }
+                                    //副杯
+                                    if (lis_useCup.Contains(i_cupNo + 1))
+                                    {
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                       "UPDATE cup_details SET RealTemp = '" + _cup_Temps[i_cupNo]._s_temp + "', " +
+                                       "StepNum = " + lis_datas[j]._s_currentStepNum + ", " +
+                                       "TechnologyName = '" + sa_statues[Convert.ToInt16(lis_datas[j]._s_currentState)] + "' " +
+                                       "WHERE CupNum = " + (i_cupNo + 1) + " AND Statues != '下线';");
+                                    }
+                                }
+
+
+                                else if ("5" == lis_datas[j]._s_currentState)
+                                {
+                                    //主杯
+                                    if (lis_useCup.Contains(i_cupNo))
+                                    {
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                        "UPDATE cup_details SET RealTemp = '" + _cup_Temps[i_cupNo - 1]._s_temp + "', " +
+                                        "StepNum = " + lis_datas[j]._s_currentStepNum + ", " +
+                                        "TechnologyName = '" + sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] + "', " +
+                                        "Statues = '" + sa_statues[Convert.ToInt16(lis_datas[j]._s_currentState)] + "' " +
+                                        "WHERE CupNum = " + i_cupNo + " AND Statues = '等待准备状态' AND Statues != '下线';");
+                                    }
+                                    //副杯
+                                    if (lis_useCup.Contains(i_cupNo + 1))
+                                    {
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                        "UPDATE cup_details SET RealTemp = '" + _cup_Temps[i_cupNo]._s_temp + "', " +
+                                        "StepNum = " + lis_datas[j]._s_currentStepNum + ", " +
+                                        "TechnologyName = '" + sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] + "', " +
+                                        "Statues = '" + sa_statues[Convert.ToInt16(lis_datas[j]._s_currentState)] + "' " +
+                                        "WHERE CupNum = " + (i_cupNo + 1) + " AND Statues = '等待准备状态' AND Statues != '下线';");
+                                    }
+                                }
+                                else if ("6" == lis_datas[j]._s_currentState)
+                                {
+                                    //主杯
+                                    if (lis_useCup.Contains(i_cupNo))
+                                    {
+                                        if ("2" == lis_datas[j]._s_currentCraft)
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE cup_details SET RealTemp = '" + _cup_Temps[i_cupNo - 1]._s_temp + "', " +
+                                               "StepNum = " + lis_datas[j]._s_currentStepNum + ", " +
+                                               "TechnologyName = '" + sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] + "', " +
+                                               "Statues = '" + sa_statues[Convert.ToInt16(lis_datas[j]._s_currentState)] + "' " +
+                                               "WHERE CupNum = " + i_cupNo + " AND Statues != '下线'  AND TechnologyName != '保温运行';");
+                                        }
+                                        else
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                "UPDATE cup_details SET RealTemp = '" + _cup_Temps[i_cupNo - 1]._s_temp + "', " +
+                                                "StepNum = " + lis_datas[j]._s_currentStepNum + ", " +
+                                                "TechnologyName = '" + sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] + "', " +
+                                                "Statues = '" + sa_statues[Convert.ToInt16(lis_datas[j]._s_currentState)] + "' " +
+                                                "WHERE CupNum = " + i_cupNo + " AND Statues != '下线' ;");
+                                        }
+                                    }
+                                    //副杯
+                                    if (lis_useCup.Contains(i_cupNo + 1))
+                                    {
+                                        if ("2" == lis_datas[j]._s_currentCraft)
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE cup_details SET RealTemp = '" + _cup_Temps[i_cupNo]._s_temp + "', " +
+                                               "StepNum = " + lis_datas[j]._s_currentStepNum + ", " +
+                                               "TechnologyName = '" + sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] + "', " +
+                                               "Statues = '" + sa_statues[Convert.ToInt16(lis_datas[j]._s_currentState)] + "' " +
+                                               "WHERE CupNum = " + (i_cupNo + 1) + " AND Statues != '下线'  AND TechnologyName != '保温运行';");
+                                        }
+                                        else
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                "UPDATE cup_details SET RealTemp = '" + _cup_Temps[i_cupNo]._s_temp + "', " +
+                                                "StepNum = " + lis_datas[j]._s_currentStepNum + ", " +
+                                                "TechnologyName = '" + sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] + "', " +
+                                                "Statues = '" + sa_statues[Convert.ToInt16(lis_datas[j]._s_currentState)] + "' " +
+                                                "WHERE CupNum = " + (i_cupNo + 1) + " AND Statues != '下线' ;");
+                                        }
+                                    }
+
+                                    if (!lis_useCup.Contains(i_cupNo) && !lis_useCup.Contains(i_cupNo + 1))
+                                    {
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                "UPDATE cup_details SET RealTemp = '" + _cup_Temps[i_cupNo - 1]._s_temp + "', " +
+                                                "StepNum = " + lis_datas[j]._s_currentStepNum + ", " +
+                                                "TechnologyName = '" + sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] + "', " +
+                                                "Statues = '" + sa_statues[Convert.ToInt16(lis_datas[j]._s_currentState)] + "' " +
+                                                "WHERE CupNum = " + i_cupNo + " AND Statues != '下线' ;");
+
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                "UPDATE cup_details SET RealTemp = '" + _cup_Temps[i_cupNo]._s_temp + "', " +
+                                                "StepNum = " + lis_datas[j]._s_currentStepNum + ", " +
+                                                "TechnologyName = '" + sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] + "', " +
+                                                "Statues = '" + sa_statues[Convert.ToInt16(lis_datas[j]._s_currentState)] + "' " +
+                                                "WHERE CupNum = " + (i_cupNo + 1) + " AND Statues != '下线' ;");
+                                    }
+                                }
+                                else
+                                {
+                                    //主杯
+                                    if (lis_useCup.Contains(i_cupNo))
+                                    {
+                                        if ("2" == lis_datas[j]._s_currentCraft)
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE cup_details SET RealTemp = '" + _cup_Temps[i_cupNo - 1]._s_temp + "', " +
+                                               "StepNum = " + lis_datas[j]._s_currentStepNum + ", " +
+                                               "TechnologyName = '" + sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] + "', " +
+                                               "Statues = '" + sa_statues[Convert.ToInt16(lis_datas[j]._s_currentState)] + "' " +
+                                               "WHERE CupNum = " + i_cupNo + " AND Statues != '下线'  AND TechnologyName != '保温运行';");
+                                        }
+                                        else
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                "UPDATE cup_details SET RealTemp = '" + _cup_Temps[i_cupNo - 1]._s_temp + "', " +
+                                                "StepNum = " + lis_datas[j]._s_currentStepNum + ", " +
+                                                "TechnologyName = '" + sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] + "', " +
+                                                "Statues = '" + sa_statues[Convert.ToInt16(lis_datas[j]._s_currentState)] + "' " +
+                                                "WHERE CupNum = " + i_cupNo + " AND Statues != '下线' ;");
+                                        }
+                                    }
+                                    //副杯
+                                    if (lis_useCup.Contains(i_cupNo + 1))
+                                    {
+                                        if ("2" == lis_datas[j]._s_currentCraft)
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE cup_details SET RealTemp = '" + _cup_Temps[i_cupNo]._s_temp + "', " +
+                                               "StepNum = " + lis_datas[j]._s_currentStepNum + ", " +
+                                               "TechnologyName = '" + sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] + "', " +
+                                               "Statues = '" + sa_statues[Convert.ToInt16(lis_datas[j]._s_currentState)] + "' " +
+                                               "WHERE CupNum = " + (i_cupNo + 1) + " AND Statues != '下线'  AND TechnologyName != '保温运行';");
+                                        }
+                                        else
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                "UPDATE cup_details SET RealTemp = '" + _cup_Temps[i_cupNo]._s_temp + "', " +
+                                                "StepNum = " + lis_datas[j]._s_currentStepNum + ", " +
+                                                "TechnologyName = '" + sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] + "', " +
+                                                "Statues = '" + sa_statues[Convert.ToInt16(lis_datas[j]._s_currentState)] + "' " +
+                                                "WHERE CupNum = " + (i_cupNo + 1) + " AND Statues != '下线' ;");
+                                        }
+                                    }
+                                }
+
+                                if ("4" == lis_datas[j]._s_currentCraft)
+                                {
+                                    if (FADM_Object.Communal._b_isNeedConfirm)
+                                    {
+                                        DataTable dt_need = FADM_Object.Communal._fadmSqlserver.GetData("Select * from drop_head where CupNum = " + i_cupNo + " Or CupNum =" + (i_cupNo + 1));
+
+                                        //只有一条记录，直接确认
+                                        if (dt_need.Rows.Count == 1)
+                                        {
+                                            //判断一下等待列表有等待的，如果有也先不放布
+                                            string P_str_sqltemp1 = "SELECT  * FROM wait_list WHERE  CupNum = " + Communal._dic_first_second[Convert.ToInt32(dt_need.Rows[0]["CupNum"].ToString())] + " and Type = 3  order by IndexNum;";
+                                            DataTable dataTabletemp1 = FADM_Object.Communal._fadmSqlserver.GetData(P_str_sqltemp1);
+                                            bool b_have = false;
+                                            foreach (DataRow dr in dataTabletemp1.Rows)
+                                            {
+                                                if (JudDyeingCode(dt_need.Rows[0]["FormulaCode"].ToString(), dt_need.Rows[0]["VersionNum"].ToString(), dr["FormulaCode"].ToString(), dr["VersionNum"].ToString()) == 0)
+                                                {
+                                                    b_have = true;
+                                                    break;
+                                                }
+                                            }
+                                            if (!b_have)
+                                            {
+                                                //主杯
+                                                if (lis_useCup.Contains(i_cupNo))
+                                                {
+                                                    if (_cup_Temps[i_cupNo - 1]._s_inTime == null)
+                                                    {
+                                                        // FADM_Object.Communal._fadmSqlserver.InsertSpeechInfo(i_cupNo + "号杯放布");
+
+
+                                                        if (Communal._b_isUseClamp)
+                                                        {
+                                                            string s_sql_cup = "SELECT * FROM cup_details WHERE CupNum = " + i_cupNo + " And Cooperate=0;";
+                                                            DataTable dt_cup = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_cup);
+                                                            if (dt_cup.Rows.Count > 0)
+                                                            {
+                                                                _cup_Temps[i_cupNo - 1]._s_inTime = "1";
+
+                                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                            "UPDATE cup_details SET Cooperate = 8,DyeType=1,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + i_cupNo + " and Cooperate=0;");
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                                _cup_Temps[i_cupNo - 1]._s_inTime = Lib_Card.CardObject.InsertD(i_cupNo + "号杯放布", "Dye");
+                                                            else
+                                                                _cup_Temps[i_cupNo - 1]._s_inTime = Lib_Card.CardObject.InsertD(i_cupNo + " cup cloth placement", "Dye");
+                                                        }
+                                                    }
+                                                }
+                                                //副杯
+                                                if (lis_useCup.Contains(i_cupNo + 1))
+                                                {
+                                                    if (_cup_Temps[i_cupNo]._s_inTime == null)
+                                                    {
+                                                        // FADM_Object.Communal._fadmSqlserver.InsertSpeechInfo(i_cupNo + "号杯放布");
+
+
+                                                        if (Communal._b_isUseClamp)
+                                                        {
+                                                            string s_sql_cup = "SELECT * FROM cup_details WHERE CupNum = " + (i_cupNo + 1) + " And Cooperate=0;";
+                                                            DataTable dt_cup = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_cup);
+                                                            if (dt_cup.Rows.Count > 0)
+                                                            {
+                                                                _cup_Temps[i_cupNo]._s_inTime = "1";
+
+                                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                            "UPDATE cup_details SET Cooperate = 8,DyeType=1,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + (i_cupNo + 1) + " and Cooperate=0;");
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                                _cup_Temps[i_cupNo]._s_inTime = Lib_Card.CardObject.InsertD((i_cupNo + 1) + "号杯放布", "Dye");
+                                                            else
+                                                                _cup_Temps[i_cupNo]._s_inTime = Lib_Card.CardObject.InsertD((i_cupNo + 1) + " cup cloth placement", "Dye");
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        //两条记录
+                                        else if (dt_need.Rows.Count == 2)
+                                        {
+                                            //如果两个杯都完成，就下发
+                                            if (dt_need.Rows[0]["CupFinish"].ToString() == "1" && dt_need.Rows[1]["CupFinish"].ToString() == "1")
+                                            {
+                                                //Thread.Sleep(2000);
+                                                DataTable dt_need_cup = FADM_Object.Communal._fadmSqlserver.GetData("Select * from cup_details where CupNum = " + i_cupNo + " Or CupNum =" + (i_cupNo + 1));
+
+                                                if (dt_need_cup.Rows[0]["TotalStep"] is DBNull || dt_need_cup.Rows[1]["TotalStep"] is DBNull
+                                                    || dt_need_cup.Rows[0]["Statues"].ToString() == "失败洗杯" || dt_need_cup.Rows[1]["Statues"].ToString() == "失败洗杯"
+                                                    )
+                                                {
+                                                }
+                                                else
+                                                {
+                                                    //主杯
+                                                    if (lis_useCup.Contains(i_cupNo))
+                                                    {
+                                                        if (_cup_Temps[i_cupNo - 1]._s_inTime == null)
+                                                        {
+                                                            // FADM_Object.Communal._fadmSqlserver.InsertSpeechInfo(i_cupNo + "号杯放布");
+
+
+                                                            if (Communal._b_isUseClamp)
+                                                            {
+                                                                string s_sql_cup = "SELECT * FROM cup_details WHERE CupNum = " + i_cupNo + " And Cooperate=0;";
+                                                                DataTable dt_cup = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_cup);
+                                                                if (dt_cup.Rows.Count > 0)
+                                                                {
+                                                                    _cup_Temps[i_cupNo - 1]._s_inTime = "1";
+
+                                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                                "UPDATE cup_details SET Cooperate = 8,DyeType=1,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + i_cupNo + " and Cooperate=0;");
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                                    _cup_Temps[i_cupNo - 1]._s_inTime = Lib_Card.CardObject.InsertD(i_cupNo + "号杯放布", "Dye");
+                                                                else
+                                                                    _cup_Temps[i_cupNo - 1]._s_inTime = Lib_Card.CardObject.InsertD(i_cupNo + " cup cloth placement", "Dye");
+                                                            }
+                                                        }
+                                                    }
+                                                    //副杯
+                                                    if (lis_useCup.Contains(i_cupNo + 1))
+                                                    {
+                                                        if (_cup_Temps[i_cupNo]._s_inTime == null)
+                                                        {
+                                                            // FADM_Object.Communal._fadmSqlserver.InsertSpeechInfo(i_cupNo + "号杯放布");
+
+
+                                                            if (Communal._b_isUseClamp)
+                                                            {
+                                                                string s_sql_cup = "SELECT * FROM cup_details WHERE CupNum = " + (i_cupNo + 1) + " And Cooperate=0;";
+                                                                DataTable dt_cup = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_cup);
+                                                                if (dt_cup.Rows.Count > 0)
+                                                                {
+                                                                    _cup_Temps[i_cupNo]._s_inTime = "1";
+
+                                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                                "UPDATE cup_details SET Cooperate = 8,DyeType=1,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + (i_cupNo + 1) + " and Cooperate=0;");
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                                    _cup_Temps[i_cupNo]._s_inTime = Lib_Card.CardObject.InsertD((i_cupNo + 1) + "号杯放布", "Dye");
+                                                                else
+                                                                    _cup_Temps[i_cupNo]._s_inTime = Lib_Card.CardObject.InsertD((i_cupNo + 1) + " cup cloth placement", "Dye");
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                            }
+                                        }
+
+                                    }
+                                    else
+                                    {
+
+                                        //主杯
+                                        if (lis_useCup.Contains(i_cupNo))
+                                        {
+                                            if (_cup_Temps[i_cupNo - 1]._s_inTime == null)
+                                            {
+                                                // FADM_Object.Communal._fadmSqlserver.InsertSpeechInfo(i_cupNo + "号杯放布");
+
+
+                                                if (Communal._b_isUseClamp)
+                                                {
+                                                    string s_sql_cup = "SELECT * FROM cup_details WHERE CupNum = " + i_cupNo + " And Cooperate=0;";
+                                                    DataTable dt_cup = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_cup);
+                                                    if (dt_cup.Rows.Count > 0)
+                                                    {
+                                                        _cup_Temps[i_cupNo - 1]._s_inTime = "1";
+
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                    "UPDATE cup_details SET Cooperate = 8,DyeType=1,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + i_cupNo + " and Cooperate=0;");
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                        _cup_Temps[i_cupNo - 1]._s_inTime = Lib_Card.CardObject.InsertD(i_cupNo + "号杯放布", "Dye");
+                                                    else
+                                                        _cup_Temps[i_cupNo - 1]._s_inTime = Lib_Card.CardObject.InsertD(i_cupNo + " cup cloth placement", "Dye");
+                                                }
+                                            }
+                                        }
+                                        //副杯
+                                        if (lis_useCup.Contains(i_cupNo + 1))
+                                        {
+                                            if (_cup_Temps[i_cupNo]._s_inTime == null)
+                                            {
+                                                // FADM_Object.Communal._fadmSqlserver.InsertSpeechInfo(i_cupNo + "号杯放布");
+
+
+                                                if (Communal._b_isUseClamp)
+                                                {
+                                                    string s_sql_cup = "SELECT * FROM cup_details WHERE CupNum = " + (i_cupNo + 1) + " And Cooperate=0;";
+                                                    DataTable dt_cup = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_cup);
+                                                    if (dt_cup.Rows.Count > 0)
+                                                    {
+                                                        _cup_Temps[i_cupNo]._s_inTime = "1";
+
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                    "UPDATE cup_details SET Cooperate = 8,DyeType=1,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + (i_cupNo + 1) + " and Cooperate=0;");
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                        _cup_Temps[i_cupNo]._s_inTime = Lib_Card.CardObject.InsertD((i_cupNo + 1) + "号杯放布", "Dye");
+                                                    else
+                                                        _cup_Temps[i_cupNo]._s_inTime = Lib_Card.CardObject.InsertD((i_cupNo + 1) + " cup cloth placement", "Dye");
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                }
+                                else if ("5" == lis_datas[j]._s_currentCraft)
+                                {
+                                    //主杯
+                                    if (lis_useCup.Contains(i_cupNo))
+                                    {
+                                        if (_cup_Temps[i_cupNo - 1]._s_outTime == null)
+                                        {
+
+                                            //判断已经开盖，才加入出布播报
+                                            if (_cup_Temps[i_cupNo - 1]._i_cupCover == 2)
+                                            {
+                                                //FADM_Object.Communal._fadmSqlserver.InsertSpeechInfo(i_cupNo + "号杯出布");
+
+                                                if (Communal._b_isUseClamp)
+                                                {
+                                                    if (Communal._b_isUseClampOut)
+                                                    {
+                                                        //查询状态,如果是关盖，而且没有操作动作，就给个开盖申请
+                                                        string s_sql_cup = "SELECT * FROM cup_details WHERE CupNum = " + i_cupNo + " And Cooperate=0;";
+                                                        DataTable dt_cup = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_cup);
+                                                        if (dt_cup.Rows.Count > 0)
+                                                        {
+                                                            _cup_Temps[i_cupNo - 1]._s_outTime = "2";
+
+                                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                        "UPDATE cup_details SET Cooperate = 9,DyeType=1,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + i_cupNo + " and Cooperate=0;");
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                            _cup_Temps[i_cupNo - 1]._s_outTime = Lib_Card.CardObject.InsertD(i_cupNo + "号杯出布", "Dye");
+                                                        else
+                                                            _cup_Temps[i_cupNo - 1]._s_outTime = Lib_Card.CardObject.InsertD(i_cupNo + " cup discharge", "Dye");
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                        _cup_Temps[i_cupNo - 1]._s_outTime = Lib_Card.CardObject.InsertD(i_cupNo + "号杯出布", "Dye");
+                                                    else
+                                                        _cup_Temps[i_cupNo - 1]._s_outTime = Lib_Card.CardObject.InsertD(i_cupNo + " cup discharge", "Dye");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                //锁止后才发送申请
+                                                if (_cup_Temps[i_cupNo - 1]._i_lockUp == 1)
+                                                {
+                                                    if (Communal._b_isUseClamp)
+                                                    {
+                                                        if (Communal._b_isUseClampOut)
+                                                        {
+                                                            if (Communal._b_isUseClampOut)
+                                                            {
+                                                                //查询状态,如果是关盖，而且没有操作动作，就给个开盖申请
+                                                                string s_sql_cup = "SELECT * FROM cup_details WHERE CupNum = " + i_cupNo + " And Cooperate=0;";
+                                                                DataTable dt_cup = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_cup);
+                                                                if (dt_cup.Rows.Count > 0)
+                                                                {
+                                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                                           "UPDATE cup_details SET Cooperate = '2' WHERE CupNum = " + i_cupNo + ";");
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                        }
+                                    }
+
+                                    //副杯
+                                    if (lis_useCup.Contains(i_cupNo + 1))
+                                    {
+                                        if (_cup_Temps[i_cupNo]._s_outTime == null)
+                                        {
+
+                                            //判断已经开盖，才加入出布播报
+                                            if (_cup_Temps[i_cupNo]._i_cupCover == 2)
+                                            {
+                                                //FADM_Object.Communal._fadmSqlserver.InsertSpeechInfo(i_cupNo + "号杯出布");
+
+                                                if (Communal._b_isUseClamp)
+                                                {
+                                                    if (Communal._b_isUseClampOut)
+                                                    {
+                                                        //查询状态,如果是关盖，而且没有操作动作，就给个开盖申请
+                                                        string s_sql_cup = "SELECT * FROM cup_details WHERE CupNum = " + (i_cupNo + 1) + " And Cooperate=0;";
+                                                        DataTable dt_cup = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_cup);
+                                                        if (dt_cup.Rows.Count > 0)
+                                                        {
+                                                            _cup_Temps[i_cupNo]._s_outTime = "2";
+
+                                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                        "UPDATE cup_details SET Cooperate = 9,DyeType=1,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + (i_cupNo + 1) + " and Cooperate=0;");
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                            _cup_Temps[i_cupNo]._s_outTime = Lib_Card.CardObject.InsertD((i_cupNo + 1) + "号杯出布", "Dye");
+                                                        else
+                                                            _cup_Temps[i_cupNo]._s_outTime = Lib_Card.CardObject.InsertD((i_cupNo + 1) + " cup discharge", "Dye");
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                        _cup_Temps[i_cupNo]._s_outTime = Lib_Card.CardObject.InsertD((i_cupNo + 1) + "号杯出布", "Dye");
+                                                    else
+                                                        _cup_Temps[i_cupNo]._s_outTime = Lib_Card.CardObject.InsertD((i_cupNo + 1) + " cup discharge", "Dye");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (_cup_Temps[i_cupNo]._i_lockUp == 1)
+                                                {
+                                                    if (Communal._b_isUseClamp)
+                                                    {
+                                                        if (Communal._b_isUseClampOut)
+                                                        {
+                                                            if (Communal._b_isUseClampOut)
+                                                            {
+                                                                //查询状态,如果是关盖，而且没有操作动作，就给个开盖申请
+                                                                string s_sql_cup = "SELECT * FROM cup_details WHERE CupNum = " + (i_cupNo + 1) + " And Cooperate=0;";
+                                                                DataTable dt_cup = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_cup);
+                                                                if (dt_cup.Rows.Count > 0)
+                                                                {
+                                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                                           "UPDATE cup_details SET Cooperate = '2' WHERE CupNum = " + (i_cupNo + 1) + ";");
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+
+                                        }
+                                    }
+
+                                    if (!lis_useCup.Contains(i_cupNo) && !lis_useCup.Contains(i_cupNo + 1))
+                                    {
+                                        if (_cup_Temps[i_cupNo - 1]._s_outTime == null)
+                                        {
+
+                                            //判断已经开盖，才加入出布播报
+                                            if (_cup_Temps[i_cupNo - 1]._i_cupCover == 2)
+                                            {
+                                                //FADM_Object.Communal._fadmSqlserver.InsertSpeechInfo(i_cupNo + "号杯出布");
+
+                                                if (Communal._b_isUseClamp)
+                                                {
+                                                    if (Communal._b_isUseClampOut)
+                                                    {
+                                                        _cup_Temps[i_cupNo]._s_outTime = "2";
+
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                    "UPDATE cup_details SET Cooperate = 9,DyeType=1,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + (i_cupNo + 1) + " and Cooperate=0;");
+                                                    }
+                                                    else
+                                                    {
+                                                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                            _cup_Temps[i_cupNo]._s_outTime = Lib_Card.CardObject.InsertD((i_cupNo + 1) + "号杯出布", "Dye");
+                                                        else
+                                                            _cup_Temps[i_cupNo]._s_outTime = Lib_Card.CardObject.InsertD((i_cupNo + 1) + " cup discharge", "Dye");
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                        _cup_Temps[i_cupNo - 1]._s_outTime = Lib_Card.CardObject.InsertD(i_cupNo + "号杯出布", "Dye");
+                                                    else
+                                                        _cup_Temps[i_cupNo - 1]._s_outTime = Lib_Card.CardObject.InsertD(i_cupNo + " cup discharge", "Dye");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (_cup_Temps[i_cupNo - 1]._i_lockUp == 1)
+                                                {
+                                                    if (Communal._b_isUseClamp)
+                                                    {
+                                                        if (Communal._b_isUseClampOut)
+                                                        {
+                                                            //查询状态,如果是关盖，而且没有操作动作，就给个开盖申请
+                                                            string s_sql_cup = "SELECT * FROM cup_details WHERE CupNum = " + i_cupNo + " And Cooperate=0;";
+                                                            DataTable dt_cup = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_cup);
+                                                            if (dt_cup.Rows.Count > 0)
+                                                            {
+                                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                                       "UPDATE cup_details SET Cooperate = '2' WHERE CupNum = " + i_cupNo + ";");
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+
+                                        }
+
+                                        if (_cup_Temps[i_cupNo]._s_outTime == null)
+                                        {
+
+                                            //判断已经开盖，才加入出布播报
+                                            if (_cup_Temps[i_cupNo]._i_cupCover == 2)
+                                            {
+                                                //FADM_Object.Communal._fadmSqlserver.InsertSpeechInfo(i_cupNo + "号杯出布");
+
+                                                if (Communal._b_isUseClamp)
+                                                {
+                                                    if (Communal._b_isUseClampOut)
+                                                    {
+                                                        string s_sql_cup = "SELECT * FROM cup_details WHERE CupNum = " + (i_cupNo + 1) + " And Cooperate=0;";
+                                                        DataTable dt_cup = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_cup);
+                                                        if (dt_cup.Rows.Count > 0)
+                                                        {
+                                                            _cup_Temps[i_cupNo]._s_outTime = "2";
+
+                                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                        "UPDATE cup_details SET Cooperate = 9,DyeType=1,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + (i_cupNo + 1) + " and Cooperate=0;");
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                        _cup_Temps[i_cupNo]._s_outTime = Lib_Card.CardObject.InsertD((i_cupNo + 1) + "号杯出布", "Dye");
+                                                    else
+                                                        _cup_Temps[i_cupNo]._s_outTime = Lib_Card.CardObject.InsertD((i_cupNo + 1) + " cup discharge", "Dye");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (_cup_Temps[i_cupNo]._i_lockUp == 1)
+                                                {
+                                                    if (Communal._b_isUseClamp)
+                                                    {
+                                                        if (Communal._b_isUseClampOut)
+                                                        {
+                                                            //查询状态,如果是关盖，而且没有操作动作，就给个开盖申请
+                                                            string s_sql_cup = "SELECT * FROM cup_details WHERE CupNum = " + (i_cupNo + 1) + " And Cooperate=0;";
+                                                            DataTable dt_cup = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_cup);
+                                                            if (dt_cup.Rows.Count > 0)
+                                                            {
+                                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                                       "UPDATE cup_details SET Cooperate = '2' WHERE CupNum = " + (i_cupNo + 1) + ";");
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+
+                                        }
+                                    }
+
+
+                                }
+                                else
+                                {
+                                    //主杯
+                                    //if (lis_useCup.Contains(i_cupNo))
+                                    {
+                                        //FADM_Object.Communal._fadmSqlserver.DeleteSpeechInfo(i_cupNo + "号杯放布");
+                                        //FADM_Object.Communal._fadmSqlserver.DeleteSpeechInfo(i_cupNo + "号杯出布");
+                                        if (_cup_Temps[i_cupNo - 1]._s_inTime != null)
+                                            Lib_Card.CardObject.DeleteD(_cup_Temps[i_cupNo - 1]._s_inTime);
+                                        _cup_Temps[i_cupNo - 1]._s_inTime = null;
+                                        if (_cup_Temps[i_cupNo - 1]._s_outTime != null)
+                                            Lib_Card.CardObject.DeleteD(_cup_Temps[i_cupNo - 1]._s_outTime);
+                                        _cup_Temps[i_cupNo - 1]._s_outTime = null;
+                                    }
+                                    //副杯
+                                    //if (lis_useCup.Contains(i_cupNo + 1))
+                                    {
+                                        //FADM_Object.Communal._fadmSqlserver.DeleteSpeechInfo(i_cupNo + "号杯放布");
+                                        //FADM_Object.Communal._fadmSqlserver.DeleteSpeechInfo(i_cupNo + "号杯出布");
+                                        if (_cup_Temps[i_cupNo]._s_inTime != null)
+                                            Lib_Card.CardObject.DeleteD(_cup_Temps[i_cupNo]._s_inTime);
+                                        _cup_Temps[i_cupNo]._s_inTime = null;
+                                        if (_cup_Temps[i_cupNo]._s_outTime != null)
+                                            Lib_Card.CardObject.DeleteD(_cup_Temps[i_cupNo]._s_outTime);
+                                        _cup_Temps[i_cupNo]._s_outTime = null;
+                                    }
+                                }
+
+
+                                //停止染色的杯号
+                                if (FADM_Object.Communal._lis_dripStopCup.Contains(i_cupNo) || FADM_Object.Communal._lis_dripStopCup.Contains(i_cupNo + 1))
+                                {
+                                    if (!lis_useCup.Contains(i_cupNo) && !lis_useCup.Contains(i_cupNo + 1))
+                                    {
+                                        int[] ia_zero = new int[1];
+                                        ia_zero[0] = 0;
+                                        DyeHMIWrite(i_cupNo, 0x13, 0x13, ia_zero);
+                                    }
+                                    if (sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] != "加药" && sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] != "加水")
+                                    {
+                                        if ("6" != lis_datas[j]._s_currentState)
+                                        {
+                                            //停止信号
+                                            int[] ia_zero = new int[1];
+                                            ia_zero[0] = 2;
+                                            DyeHMIWriteSigle(i, j, 0x00, 64, ia_zero,4);
+
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", i_cupNo + "号配液杯染固色停止启动");
+                                        }
+                                        //主杯
+                                        if (_lis_dripStopCup.Contains(i_cupNo))
+                                        {
+                                            //滴液完成数组移除当前杯号
+                                            FADM_Object.Communal._lis_dripStopCup.Remove(i_cupNo);
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                      "UPDATE cup_details SET TotalWeight = 0, StepStartTime = '" + DateTime.Now + "' WHERE CupNum = " + i_cupNo + ";");
+                                        }
+                                        //副杯
+                                        if (_lis_dripStopCup.Contains(i_cupNo + 1))
+                                        {
+
+                                            //滴液完成数组移除当前杯号
+                                            FADM_Object.Communal._lis_dripStopCup.Remove(i_cupNo + 1);
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                      "UPDATE cup_details SET TotalWeight = 0, StepStartTime = '" + DateTime.Now + "' WHERE CupNum = " + (i_cupNo + 1) + ";");
+                                        }
+
+                                        continue;
+                                    }
+
+                                }
+
+                                if (FADM_Object.Communal._b_isNeedConfirm)
+                                {
+
+                                    bool b_isSuc1 = false;
+                                    //是否另外一轮，这样就不用下发
+                                    bool b_isSucOther1 = false;
+                                    bool b_isSucOther2 = false;
+                                    if (FADM_Object.Communal._lis_dripSuccessCup.Contains(i_cupNo) || FADM_Object.Communal._lis_dripSuccessCup.Contains(i_cupNo + 1))
+                                    {
+                                        //先判断是否第二轮
+                                        DataTable dt_need = FADM_Object.Communal._fadmSqlserver.GetData("Select * from drop_head where (CupNum = " + i_cupNo + " Or CupNum =" + (i_cupNo + 1) + ") And BatchName != '0' order by CupNum");
+                                        //主副杯都存在打板配方
+                                        if (dt_need.Rows.Count == 2)
+                                        {
+                                            //同一批次
+                                            if (dt_need.Rows[0]["BatchName"].ToString() == dt_need.Rows[1]["BatchName"].ToString())
+                                            {
+                                                //必须等待两个都滴液完成才下发
+                                                b_isSuc1 = true;
+                                            }
+                                            //不同批次
+                                            else
+                                            {
+                                                if (Convert.ToInt32(dt_need.Rows[0]["BatchName"].ToString().Substring(8, 4)) > Convert.ToInt32(dt_need.Rows[1]["BatchName"].ToString().Substring(8, 4)))
+                                                {
+                                                    //这里相当于是第二轮，不要下发，直接更改一下状态
+                                                    b_isSucOther1 = true;
+                                                }
+                                                else
+                                                {
+                                                    //这里相当于是第二轮，不要下发，直接更改一下状态
+                                                    b_isSucOther2 = true;
+                                                }
+                                            }
+                                        }
+                                        //只有一个配方在打
+                                        else
+                                        {
+                                            //判断是否滴液成功信号和批次列表数据杯号一致
+                                            if (dt_need.Rows.Count == 1)
+                                            {
+                                                if (FADM_Object.Communal._lis_dripSuccessCup.Contains(Convert.ToInt32(dt_need.Rows[0]["CupNum"].ToString())))
+                                                {
+                                                    //直接下发
+                                                    b_isSuc1 = true;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    //当前杯刚滴液成功
+                                    if (b_isSuc1 && "5" == lis_datas[j]._s_currentState)
+                                    {
+
+                                        //把对应杯号温度曲线描点数据清空
+                                        if (lis_useCup.Contains(i_cupNo))
+                                        {
+                                            Txt.DeleteTXT(i_cupNo);
+                                            Txt.DeleteMarkTXT(i_cupNo);
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                           "UPDATE cup_details SET RecordIndex = 0 WHERE CupNum = " +
+                                           i_cupNo + "  ;");
+                                        }
+                                        if (lis_useCup.Contains(i_cupNo + 1))
+                                        {
+                                            Txt.DeleteTXT(i_cupNo + 1);
+                                            Txt.DeleteMarkTXT(i_cupNo + 1);
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                           "UPDATE cup_details SET RecordIndex = 0 WHERE CupNum = " +
+                                           (i_cupNo + 1) + "  ;");
+                                        }
+
+                                        //重置数据
+                                        int[] ia_zero = new int[16];
+                                        for (int k1 = 0; k1 < 16; k1++)
+                                        {
+                                            ia_zero[k1] = 0;
+                                        }
+                                        ia_zero[1] = 0x0D0D;
+                                        ia_zero[2] = 0x0D0D;
+                                        ia_zero[3] = 0x0D0D;
+                                        ia_zero[4] = 0x0D0D;
+                                        DyeHMIWriteSigle(i, j, 0x00, 64, ia_zero,4);
+
+
+
+
+
+                                        //染固色代码,总步号，滴液状态
+                                        ia_zero = new int[6];
+                                        byte[] byta_send = new byte[19];
+                                        //染固色代码
+                                        string s_sql = "SELECT * FROM drop_head WHERE CupNum = " + (lis_useCup.Contains(i_cupNo) ? i_cupNo : (i_cupNo + 1)) + ";";
+                                        DataTable dt_drop_head = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+
+                                        string s_assistantName = dt_drop_head.Rows[0]["DyeingCode"].ToString();
+                                        string[] sa_name = { "000D", "000D", "000D", "000D", "000D", "000D", "000D", "000D" };
+                                        byte[] byta_assistantName = { 0x00, 0x0D, 0x00, 0x0D, 0x00, 0x0D, 0x00, 0x0D, 0x00, 0x0D, 0x00, 0x0D, 0x00, 0x0D, 0x00, 0x0D };
+                                        int i_k = 0;
+                                        for (int j1 = 0; j1 < s_assistantName.Length && j1 < sa_name.Length; j1++)
+                                        {
+                                            Encoding fromEcoding = Encoding.GetEncoding("UTF-8");//返回utf-8的编码
+                                            Encoding toEcoding = Encoding.GetEncoding("gb2312");
+                                            byte[] byta_fromBytes = fromEcoding.GetBytes(s_assistantName[j1].ToString());
+                                            byte[] byta_tobytes = Encoding.Convert(fromEcoding, toEcoding, byta_fromBytes);
+                                            if (byta_tobytes.Length > 1)
+                                            {
+                                                sa_name[i_k] = byta_tobytes[1].ToString("X") + byta_tobytes[0].ToString("X");
+                                                byta_assistantName[2 * i_k] = byta_tobytes[1];
+                                                byta_assistantName[2 * i_k + 1] = byta_tobytes[0];
+                                            }
+                                            else if (byta_tobytes.Length == 1)
+                                            {
+                                                if (i_k - 1 >= 0)
+                                                {
+                                                    string s = (sa_name[i_k - 1]).Substring(0, 2);
+                                                    if (s == "00")
+                                                    {
+                                                        sa_name[i_k - 1] = byta_tobytes[0].ToString("X") + sa_name[i_k - 1].Substring(2);
+                                                        //byta_assistantName[2 * (i_k - 1) + 1] = byta_assistantName[2 * (i_k - 1)];
+                                                        byta_assistantName[2 * (i_k - 1)] = byta_tobytes[0];
+                                                        i_k--;
+                                                    }
+                                                    else
+                                                    {
+                                                        sa_name[i_k] = "00" + byta_tobytes[0].ToString("X");
+                                                        byta_assistantName[2 * i_k] = 0x00;
+                                                        byta_assistantName[2 * i_k + 1] = byta_tobytes[0];
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    sa_name[i_k] = "00" + byta_tobytes[0].ToString("X");
+                                                    byta_assistantName[2 * i_k] = 0x00;
+                                                    byta_assistantName[2 * i_k + 1] = byta_tobytes[0];
+                                                }
+                                            }
+                                            i_k++;
+                                        }
+
+                                        ia_zero[0] = byta_assistantName[0] << 8 | byta_assistantName[1];
+                                        ia_zero[1] = byta_assistantName[2] << 8 | byta_assistantName[3];
+                                        ia_zero[2] = byta_assistantName[4] << 8 | byta_assistantName[5];
+                                        ia_zero[3] = byta_assistantName[6] << 8 | byta_assistantName[7];
+
+
+                                        //总步数
+                                        s_sql = "SELECT * FROM dye_details WHERE CupNum = " + (lis_useCup.Contains(i_cupNo) ? i_cupNo : (i_cupNo + 1)) + " ORDER BY StepNum DESC;";
+                                        dt_drop_head = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                        ia_zero[4] = Convert.ToInt32(dt_drop_head.Rows[0]["StepNum"].ToString());
+                                        ia_zero[5] = 1;
+
+                                        DyeHMIWriteSigle(i, j, 0x01, 64, ia_zero,4);
+
+
+                                        //启动
+                                        ia_zero = new int[1];
+                                        ia_zero[0] = 1;
+
+                                        DyeHMIWriteSigle(i, j, 0x00, 64, ia_zero,4);
+                                        //主杯
+                                        if (lis_useCup.Contains(i_cupNo))
+                                        {
+                                            //修改总步号
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                            "UPDATE cup_details SET TotalStep = " + dt_drop_head.Rows[0]["StepNum"] + " WHERE CupNum = " + i_cupNo + ";");
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", i_cupNo + "号配液杯染固色启动");
+                                            //滴液完成数组移除当前杯号
+                                            FADM_Object.Communal._lis_dripSuccessCup.Remove(i_cupNo);
+                                            //重置
+                                            _ia_stopSend[i_cupNo - 1] = 0;
+                                        }
+                                        //副杯
+                                        if (lis_useCup.Contains(i_cupNo + 1))
+                                        {
+                                            //修改总步号
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                            "UPDATE cup_details SET TotalStep = " + dt_drop_head.Rows[0]["StepNum"] + " WHERE CupNum = " + (i_cupNo + 1) + ";");
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (i_cupNo + 1) + "号配液杯染固色启动");
+                                            //滴液完成数组移除当前杯号
+                                            FADM_Object.Communal._lis_dripSuccessCup.Remove(i_cupNo + 1);
+                                            //重置
+                                            _ia_stopSend[i_cupNo] = 0;
+                                        }
+                                        continue;
+                                    }
+
+                                    if (b_isSucOther1 || b_isSucOther2)
+                                    {
+                                        //把对应杯号温度曲线描点数据清空
+                                        if (b_isSucOther1)
+                                        {
+                                            if (lis_useCup.Contains(i_cupNo))
+                                            {
+                                                Txt.DeleteTXT(i_cupNo);
+                                                Txt.DeleteMarkTXT(i_cupNo);
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE cup_details SET RecordIndex = 0 WHERE CupNum = " +
+                                               i_cupNo + "  ;");
+
+                                                Txt.WriteMarkTXT(i_cupNo, "放布", "1");
+
+                                                //更新开始时间
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                "UPDATE dye_details SET StartTime = '" + DateTime.Now + "' WHERE CupNum = " + i_cupNo +
+                                                " AND StepNum = 1;");
+                                            }
+                                        }
+                                        if (b_isSucOther2)
+                                        {
+                                            if (lis_useCup.Contains(i_cupNo + 1))
+                                            {
+                                                Txt.DeleteTXT(i_cupNo + 1);
+                                                Txt.DeleteMarkTXT(i_cupNo + 1);
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE cup_details SET RecordIndex = 0 WHERE CupNum = " +
+                                               (i_cupNo + 1) + "  ;");
+
+                                                Txt.WriteMarkTXT(i_cupNo + 1, "放布", "1");
+
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE dye_details SET StartTime = '" + DateTime.Now + "' WHERE CupNum = " + (i_cupNo + 1) +
+                                               " AND StepNum = 1;");
+                                            }
+                                        }
+
+                                        if (b_isSucOther1)
+                                        {
+                                            //主杯
+                                            if (lis_useCup.Contains(i_cupNo))
+                                            {
+                                                //修改总步号
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                "UPDATE cup_details SET TotalStep = (select TotalStep from cup_details where CupNum = " + (i_cupNo + 1) + ") where CupNum = " + i_cupNo + ";");
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                "UPDATE cup_details SET StepNum = (select StepNum from cup_details where CupNum = " + (i_cupNo + 1) + ") where CupNum = " + i_cupNo + ";");
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                "UPDATE cup_details SET TechnologyName = (select TechnologyName from cup_details where CupNum = " + (i_cupNo + 1) + ") where CupNum = " + i_cupNo + ";");
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                "UPDATE cup_details SET Statues = (select Statues from cup_details where CupNum = " + (i_cupNo + 1) + ") where CupNum = " + i_cupNo + ";");
+                                                FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", i_cupNo + "号配液杯染固色启动");
+                                                //滴液完成数组移除当前杯号
+                                                FADM_Object.Communal._lis_dripSuccessCup.Remove(i_cupNo);
+                                                //重置
+                                                _ia_stopSend[i_cupNo - 1] = 0;
+                                            }
+                                        }
+                                        if (b_isSucOther2)
+                                        {
+                                            //副杯
+                                            if (lis_useCup.Contains(i_cupNo + 1))
+                                            {
+                                                //修改总步号
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                "UPDATE cup_details SET TotalStep = (select TotalStep from cup_details where CupNum = " + i_cupNo + ") where CupNum = " + (i_cupNo + 1) + ";");
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                "UPDATE cup_details SET StepNum = (select StepNum from cup_details where CupNum = " + i_cupNo + ") where CupNum = " + (i_cupNo + 1) + ";");
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                "UPDATE cup_details SET TechnologyName = (select TechnologyName from cup_details where CupNum = " + i_cupNo + ") where CupNum = " + (i_cupNo + 1) + ";");
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                "UPDATE cup_details SET Statues = (select Statues from cup_details where CupNum = " + i_cupNo + ") where CupNum = " + (i_cupNo + 1) + ";");
+                                                FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (i_cupNo + 1) + "号配液杯染固色启动");
+                                                //滴液完成数组移除当前杯号
+                                                FADM_Object.Communal._lis_dripSuccessCup.Remove(i_cupNo + 1);
+                                                //重置
+                                                _ia_stopSend[i_cupNo] = 0;
+                                            }
+                                        }
+                                        continue;
+                                    }
+
+                                    int i_isfail1 = 0;
+                                    bool b_isFail1 = false;
+                                    if (lis_useCup.Contains(i_cupNo))
+                                    {
+                                        if (FADM_Object.Communal._lis_dripFailCup.Contains(i_cupNo))
+                                        {
+                                            if (lis_useCup.Contains(i_cupNo + 1))
+                                            {
+                                                //if (FADM_Object.Communal._lis_dripFailCup.Contains(i_cupNo + 1))
+                                                {
+                                                    b_isFail1 = true;
+                                                    i_isfail1 = 0;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                b_isFail1 = true;
+                                                i_isfail1 = 1;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (lis_useCup.Contains(i_cupNo + 1))
+                                        {
+                                            if (FADM_Object.Communal._lis_dripFailCup.Contains(i_cupNo + 1))
+                                            {
+                                                b_isFail1 = true;
+                                                i_isfail1 = 2;
+                                            }
+                                        }
+                                    }
+
+                                    //当前杯刚滴液失败
+                                    if ((b_isFail1 && "5" == lis_datas[j]._s_currentState)
+                                        || (FADM_Object.Communal._b_isNeedConfirm && (FADM_Object.Communal._lis_dripFailCup.Contains(i_cupNo) || FADM_Object.Communal._lis_dripFailCup.Contains(i_cupNo + 1))))
+                                    {
+                                        int[] ia_fail = new int[1];
+                                        //如果是第二轮才失败时，就直接发使用双杯来洗杯
+                                        if (b_isFail1)
+                                            ia_fail[0] = i_isfail1;
+                                        else
+                                            ia_fail[0] = 0;
+                                        DyeHMIWriteSigle(i, j, 0x13, 64, ia_fail,4);
+
+                                        //失败洗杯
+                                        //染固色代码,总步号，滴液状态
+                                        int[] ia_zero = new int[6];
+                                        byte[] byta_send = new byte[19];
+                                        //染固色代码
+                                        byte[] byta_bytes = Encoding.GetEncoding("GBK").GetBytes("失败洗杯");
+                                        for (int k = 7; k < 15; k++)
+                                        {
+                                            if (k - 7 > byta_bytes.Length - 1)
+                                                byta_send[k] = 0x0D;
+                                            else
+                                            {
+                                                if (0 == k % 2)
+                                                {
+                                                    byta_send[k] = byta_bytes[k - 8];
+                                                }
+                                                else
+                                                {
+                                                    if (k % 7 + 1 < byta_bytes.Length)
+                                                        byta_send[k] = byta_bytes[k % 7 + 1];
+                                                    else
+                                                        byta_send[k] = 0x0D;
+                                                }
+                                            }
+                                        }
+                                        ia_zero[0] = byta_send[7] << 8 | byta_send[8];
+                                        ia_zero[1] = byta_send[9] << 8 | byta_send[10];
+                                        ia_zero[2] = byta_send[11] << 8 | byta_send[12];
+                                        ia_zero[3] = byta_send[13] << 8 | byta_send[14];
+
+                                        //总步数
+                                        ia_zero[4] = 1;
+                                        ia_zero[5] = 2;
+
+                                        DyeHMIWriteSigle(i, j, 0x01, 64, ia_zero, 4);
+
+                                        //启动
+                                        ia_zero = new int[1];
+                                        ia_zero[0] = 1;
+
+
+                                        DyeHMIWriteSigle(i, j, 0x00, 64, ia_zero,4);
+
+
+                                        //修改批次号
+
+                                        if (lis_useCup.Contains(i_cupNo) && lis_useCup.Contains(i_cupNo + 1))
+                                        {
+                                            DataTable dt_need = FADM_Object.Communal._fadmSqlserver.GetData("Select * from drop_head where (CupNum = " + i_cupNo + " Or CupNum =" + (i_cupNo + 1) + ") And BatchName != '0'  order by CupNum");
+                                            if (dt_need.Rows.Count == 2)
+                                            {
+                                                if (dt_need.Rows[0]["BatchName"].ToString() != dt_need.Rows[1]["BatchName"].ToString())
+                                                {
+                                                    if (Convert.ToInt32(dt_need.Rows[0]["BatchName"].ToString().Substring(8, 4)) > Convert.ToInt32(dt_need.Rows[1]["BatchName"].ToString().Substring(8, 4)))
+                                                    {
+                                                        string s_bat = "";
+                                                        s_bat = dt_need.Rows[0]["BatchName"].ToString();
+
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE drop_head SET BatchName = '" + s_bat + "' WHERE CupNum = " + (i_cupNo + 1) + ";");
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE drop_details SET BatchName = '" + s_bat + "' WHERE CupNum = " + (i_cupNo + 1) + ";");
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE dye_details SET BatchName = '" + s_bat + "' WHERE CupNum = " + (i_cupNo + 1) + ";");
+
+                                                    }
+                                                    else if (Convert.ToInt32(dt_need.Rows[0]["BatchName"].ToString().Substring(8, 4)) < Convert.ToInt32(dt_need.Rows[1]["BatchName"].ToString().Substring(8, 4)))
+                                                    {
+                                                        string s_bat = "";
+                                                        s_bat = dt_need.Rows[1]["BatchName"].ToString();
+
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE drop_head SET BatchName = '" + s_bat + "' WHERE CupNum = " + i_cupNo + ";");
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE drop_details SET BatchName = '" + s_bat + "' WHERE CupNum = " + i_cupNo + ";");
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE dye_details SET BatchName = '" + s_bat + "' WHERE CupNum = " + i_cupNo + ";");
+                                                    }
+
+                                                }
+                                            }
+                                        }
+
+                                        //主杯
+                                        if (lis_useCup.Contains(i_cupNo))
+                                        {
+
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", i_cupNo + "号配液杯失败洗杯启动");
+                                            //
+                                            //if(!FADM_Object.Communal._lis_dripFailCup.Contains(i_cupNo))
+                                            //{
+                                            //    //如果滴液失败不包含这个杯号，就要判断批次号是否一致，如果不一致就把上一批批次号改为最新，否则重新滴液会有问题
+                                            //    //先判断是否第二轮
+                                            //    DataTable dt_need = FADM_Object.Communal._fadmSqlserver.GetData("Select * from drop_head where (CupNum = " + i_cupNo + " Or CupNum =" + (i_cupNo + 1) + ") And BatchName != '0'  order by CupNum");
+                                            //    if(dt_need.Rows.Count == 2)
+                                            //    {
+                                            //        if (dt_need.Rows[0]["BatchName"].ToString() != dt_need.Rows[1]["BatchName"].ToString())
+                                            //        {
+                                            //            //i_cupNo这个杯号需要修改
+                                            //            string s_bat = "";
+                                            //            if(Convert.ToInt32(dt_need.Rows[0]["CupNum"].ToString())== i_cupNo+1)
+                                            //            {
+                                            //                s_bat = dt_need.Rows[0]["BatchName"].ToString();
+                                            //            }
+                                            //            else
+                                            //            {
+                                            //                s_bat = dt_need.Rows[1]["BatchName"].ToString();
+                                            //            }
+
+                                            //            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                            //   "UPDATE drop_head SET BatchName = '"+ s_bat+"' WHERE CupNum = " + i_cupNo + ";");
+                                            //            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                            //   "UPDATE drop_details SET BatchName = '" + s_bat + "' WHERE CupNum = " + i_cupNo + ";");
+                                            //            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                            //   "UPDATE dye_details SET BatchName = '" + s_bat + "' WHERE CupNum = " + i_cupNo + ";");
+                                            //        }
+                                            //    }
+                                            //}
+                                            //滴液完成数组移除当前杯号
+                                            FADM_Object.Communal._lis_dripFailCup.Remove(i_cupNo);
+
+                                            if (FADM_Object.Communal._lis_dripSuccessCup.Contains(i_cupNo))
+                                            {
+                                                FADM_Object.Communal._lis_dripSuccessCup.Remove(i_cupNo);
+                                            }
+
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE cup_details SET Statues = '失败洗杯', TotalStep = 1 WHERE CupNum = " + i_cupNo + ";");
+                                        }
+                                        //副杯
+                                        if (lis_useCup.Contains(i_cupNo + 1))
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (i_cupNo + 1) + "号配液杯失败洗杯启动");
+                                            //
+                                            //if (!FADM_Object.Communal._lis_dripFailCup.Contains(i_cupNo+1))
+                                            //{
+                                            //    //如果滴液失败不包含这个杯号，就要判断批次号是否一致，如果不一致就把上一批批次号改为最新，否则重新滴液会有问题
+                                            //    //先判断是否第二轮
+                                            //    DataTable dt_need = FADM_Object.Communal._fadmSqlserver.GetData("Select * from drop_head where (CupNum = " + i_cupNo + " Or CupNum =" + (i_cupNo + 1) + ") And BatchName != '0'  order by CupNum");
+                                            //    if (dt_need.Rows.Count == 2)
+                                            //    {
+                                            //        if (dt_need.Rows[0]["BatchName"].ToString() != dt_need.Rows[1]["BatchName"].ToString())
+                                            //        {
+                                            //            //i_cupNo+1这个杯号需要修改
+                                            //            string s_bat = "";
+                                            //            if (Convert.ToInt32(dt_need.Rows[0]["CupNum"].ToString()) == i_cupNo)
+                                            //            {
+                                            //                s_bat = dt_need.Rows[0]["BatchName"].ToString();
+                                            //            }
+                                            //            else
+                                            //            {
+                                            //                s_bat = dt_need.Rows[1]["BatchName"].ToString();
+                                            //            }
+
+                                            //            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                            //   "UPDATE drop_head SET BatchName = '" + s_bat + "' WHERE CupNum = " + (i_cupNo+1) + ";");
+                                            //            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                            //   "UPDATE drop_details SET BatchName = '" + s_bat + "' WHERE CupNum = " + (i_cupNo + 1) + ";");
+                                            //            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                            //   "UPDATE dye_details SET BatchName = '" + s_bat + "' WHERE CupNum = " + (i_cupNo + 1) + ";");
+                                            //        }
+                                            //    }
+                                            //}
+
+                                            //滴液完成数组移除当前杯号
+                                            FADM_Object.Communal._lis_dripFailCup.Remove((i_cupNo + 1));
+
+                                            if (FADM_Object.Communal._lis_dripSuccessCup.Contains(i_cupNo + 1))
+                                            {
+                                                FADM_Object.Communal._lis_dripSuccessCup.Remove(i_cupNo + 1);
+                                            }
+
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE cup_details SET Statues = '失败洗杯', TotalStep = 1 WHERE CupNum = " + (i_cupNo + 1) + ";");
+                                        }
+                                        continue;
+                                    }
+                                }
+                                else
+                                {
+                                    bool b_isSuc1 = false;
+                                    if (lis_useCup.Contains(i_cupNo))
+                                    {
+                                        if (FADM_Object.Communal._lis_dripSuccessCup.Contains(i_cupNo))
+                                        {
+                                            if (lis_useCup.Contains(i_cupNo + 1))
+                                            {
+                                                if (FADM_Object.Communal._lis_dripSuccessCup.Contains(i_cupNo + 1))
+                                                {
+                                                    b_isSuc1 = true;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                b_isSuc1 = true;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (lis_useCup.Contains(i_cupNo + 1))
+                                        {
+                                            if (FADM_Object.Communal._lis_dripSuccessCup.Contains(i_cupNo + 1))
+                                            {
+                                                b_isSuc1 = true;
+                                            }
+                                        }
+                                    }
+
+                                    //当前杯刚滴液成功
+                                    if (b_isSuc1 && "5" == lis_datas[j]._s_currentState)
+                                    {
+
+                                        //把对应杯号温度曲线描点数据清空
+                                        if (lis_useCup.Contains(i_cupNo))
+                                        {
+                                            Txt.DeleteTXT(i_cupNo);
+                                            Txt.DeleteMarkTXT(i_cupNo);
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                           "UPDATE cup_details SET RecordIndex = 0 WHERE CupNum = " +
+                                           i_cupNo + "  ;");
+                                        }
+                                        if (lis_useCup.Contains(i_cupNo + 1))
+                                        {
+                                            Txt.DeleteTXT(i_cupNo + 1);
+                                            Txt.DeleteMarkTXT(i_cupNo + 1);
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                           "UPDATE cup_details SET RecordIndex = 0 WHERE CupNum = " +
+                                           (i_cupNo + 1) + "  ;");
+                                        }
+
+                                        //重置数据
+                                        int[] ia_zero = new int[16];
+                                        for (int k1 = 0; k1 < 16; k1++)
+                                        {
+                                            ia_zero[k1] = 0;
+                                        }
+                                        ia_zero[1] = 0x0D0D;
+                                        ia_zero[2] = 0x0D0D;
+                                        ia_zero[3] = 0x0D0D;
+                                        ia_zero[4] = 0x0D0D;
+                                        DyeHMIWriteSigle(i, j, 0x00, 64, ia_zero,4);
+
+
+
+
+
+                                        //染固色代码,总步号，滴液状态
+                                        ia_zero = new int[6];
+                                        byte[] byta_send = new byte[19];
+                                        //染固色代码
+                                        string s_sql = "SELECT * FROM drop_head WHERE CupNum = " + (lis_useCup.Contains(i_cupNo) ? i_cupNo : (i_cupNo + 1)) + ";";
+                                        DataTable dt_drop_head = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+
+                                        string s_assistantName = dt_drop_head.Rows[0]["DyeingCode"].ToString();
+                                        string[] sa_name = { "000D", "000D", "000D", "000D", "000D", "000D", "000D", "000D" };
+                                        byte[] byta_assistantName = { 0x00, 0x0D, 0x00, 0x0D, 0x00, 0x0D, 0x00, 0x0D, 0x00, 0x0D, 0x00, 0x0D, 0x00, 0x0D, 0x00, 0x0D };
+                                        int i_k = 0;
+                                        for (int j1 = 0; j1 < s_assistantName.Length && j1 < sa_name.Length; j1++)
+                                        {
+                                            Encoding fromEcoding = Encoding.GetEncoding("UTF-8");//返回utf-8的编码
+                                            Encoding toEcoding = Encoding.GetEncoding("gb2312");
+                                            byte[] byta_fromBytes = fromEcoding.GetBytes(s_assistantName[j1].ToString());
+                                            byte[] byta_tobytes = Encoding.Convert(fromEcoding, toEcoding, byta_fromBytes);
+                                            if (byta_tobytes.Length > 1)
+                                            {
+                                                sa_name[i_k] = byta_tobytes[1].ToString("X") + byta_tobytes[0].ToString("X");
+                                                byta_assistantName[2 * i_k] = byta_tobytes[1];
+                                                byta_assistantName[2 * i_k + 1] = byta_tobytes[0];
+                                            }
+                                            else if (byta_tobytes.Length == 1)
+                                            {
+                                                if (i_k - 1 >= 0)
+                                                {
+                                                    string s = (sa_name[i_k - 1]).Substring(0, 2);
+                                                    if (s == "00")
+                                                    {
+                                                        sa_name[i_k - 1] = byta_tobytes[0].ToString("X") + sa_name[i_k - 1].Substring(2);
+                                                        //byta_assistantName[2 * (i_k - 1) + 1] = byta_assistantName[2 * (i_k - 1)];
+                                                        byta_assistantName[2 * (i_k - 1)] = byta_tobytes[0];
+                                                        i_k--;
+                                                    }
+                                                    else
+                                                    {
+                                                        sa_name[i_k] = "00" + byta_tobytes[0].ToString("X");
+                                                        byta_assistantName[2 * i_k] = 0x00;
+                                                        byta_assistantName[2 * i_k + 1] = byta_tobytes[0];
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    sa_name[i_k] = "00" + byta_tobytes[0].ToString("X");
+                                                    byta_assistantName[2 * i_k] = 0x00;
+                                                    byta_assistantName[2 * i_k + 1] = byta_tobytes[0];
+                                                }
+                                            }
+                                            i_k++;
+                                        }
+
+                                        ia_zero[0] = byta_assistantName[0] << 8 | byta_assistantName[1];
+                                        ia_zero[1] = byta_assistantName[2] << 8 | byta_assistantName[3];
+                                        ia_zero[2] = byta_assistantName[4] << 8 | byta_assistantName[5];
+                                        ia_zero[3] = byta_assistantName[6] << 8 | byta_assistantName[7];
+
+
+                                        //总步数
+                                        s_sql = "SELECT * FROM dye_details WHERE CupNum = " + (lis_useCup.Contains(i_cupNo) ? i_cupNo : (i_cupNo + 1)) + " ORDER BY StepNum DESC;";
+                                        dt_drop_head = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                        ia_zero[4] = Convert.ToInt32(dt_drop_head.Rows[0]["StepNum"].ToString());
+                                        ia_zero[5] = 1;
+
+                                        DyeHMIWriteSigle(i, j, 0x01, 64, ia_zero,4);
+
+                                        ////发送AB杯选择
+                                        //if (lis_useCup.Contains(i_cupNo) && lis_useCup.Contains(i_cupNo + 1))
+                                        //{
+                                        //    ia_zero = new int[1];
+                                        //    ia_zero[0] = 0;
+                                        //}
+                                        //else
+                                        //{
+                                        //    if (i_cupNo < Communal._dic_first_second[i_cupNo])
+                                        //    {
+                                        //        ia_zero[0] = 1;
+                                        //    }
+                                        //    else
+                                        //    {
+                                        //        ia_zero[0] = 2;
+                                        //    }
+                                        //}
+                                        //DyeHMIWriteSigle(i, j, 119, 64, ia_zero);
+
+
+                                        //启动
+                                        ia_zero = new int[1];
+                                        ia_zero[0] = 1;
+
+                                        DyeHMIWriteSigle(i, j, 0x00, 64, ia_zero,4);
+                                        //主杯
+                                        if (lis_useCup.Contains(i_cupNo))
+                                        {
+                                            //修改总步号
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                            "UPDATE cup_details SET TotalStep = " + dt_drop_head.Rows[0]["StepNum"] + " WHERE CupNum = " + i_cupNo + ";");
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", i_cupNo + "号配液杯染固色启动");
+                                            //滴液完成数组移除当前杯号
+                                            FADM_Object.Communal._lis_dripSuccessCup.Remove(i_cupNo);
+                                            //重置
+                                            _ia_stopSend[i_cupNo - 1] = 0;
+                                        }
+                                        //副杯
+                                        if (lis_useCup.Contains(i_cupNo + 1))
+                                        {
+                                            //修改总步号
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                            "UPDATE cup_details SET TotalStep = " + dt_drop_head.Rows[0]["StepNum"] + " WHERE CupNum = " + (i_cupNo + 1) + ";");
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (i_cupNo + 1) + "号配液杯染固色启动");
+                                            //滴液完成数组移除当前杯号
+                                            FADM_Object.Communal._lis_dripSuccessCup.Remove(i_cupNo + 1);
+                                            //重置
+                                            _ia_stopSend[i_cupNo] = 0;
+                                        }
+                                        continue;
+                                    }
+
+
+                                    int i_isfail1 = 0;
+                                    bool b_isFail1 = false;
+                                    if (lis_useCup.Contains(i_cupNo))
+                                    {
+                                        if (FADM_Object.Communal._lis_dripFailCup.Contains(i_cupNo))
+                                        {
+                                            if (lis_useCup.Contains(i_cupNo + 1))
+                                            {
+                                                //if (FADM_Object.Communal._lis_dripFailCup.Contains(i_cupNo + 1))
+                                                {
+                                                    b_isFail1 = true;
+                                                    i_isfail1 = 0;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                b_isFail1 = true;
+                                                i_isfail1 = 1;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (lis_useCup.Contains(i_cupNo + 1))
+                                        {
+                                            if (FADM_Object.Communal._lis_dripFailCup.Contains(i_cupNo + 1))
+                                            {
+                                                b_isFail1 = true;
+                                                i_isfail1 = 2;
+                                            }
+                                        }
+                                    }
+
+                                    //当前杯刚滴液失败
+                                    if (b_isFail1 && "5" == lis_datas[j]._s_currentState)
+                                    {
+                                        int[] ia_fail = new int[1];
+                                        ia_fail[0] = i_isfail1;
+                                        DyeHMIWriteSigle(i, j, 0x13, 64, ia_fail,4);
+
+                                        //失败洗杯
+                                        //染固色代码,总步号，滴液状态
+                                        int[] ia_zero = new int[6];
+                                        byte[] byta_send = new byte[19];
+                                        //染固色代码
+                                        byte[] byta_bytes = Encoding.GetEncoding("GBK").GetBytes("失败洗杯");
+                                        for (int k = 7; k < 15; k++)
+                                        {
+                                            if (k - 7 > byta_bytes.Length - 1)
+                                                byta_send[k] = 0x0D;
+                                            else
+                                            {
+                                                if (0 == k % 2)
+                                                {
+                                                    byta_send[k] = byta_bytes[k - 8];
+                                                }
+                                                else
+                                                {
+                                                    if (k % 7 + 1 < byta_bytes.Length)
+                                                        byta_send[k] = byta_bytes[k % 7 + 1];
+                                                    else
+                                                        byta_send[k] = 0x0D;
+                                                }
+                                            }
+                                        }
+                                        ia_zero[0] = byta_send[7] << 8 | byta_send[8];
+                                        ia_zero[1] = byta_send[9] << 8 | byta_send[10];
+                                        ia_zero[2] = byta_send[11] << 8 | byta_send[12];
+                                        ia_zero[3] = byta_send[13] << 8 | byta_send[14];
+
+                                        //总步数
+                                        ia_zero[4] = 1;
+                                        ia_zero[5] = 2;
+
+                                        DyeHMIWriteSigle(i, j, 0x01, 64, ia_zero,4);
+
+
+
+                                        //启动
+                                        ia_zero = new int[1];
+                                        ia_zero[0] = 1;
+
+
+                                        DyeHMIWriteSigle(i, j, 0x00, 64, ia_zero,4);
+
+                                        //主杯
+                                        if (lis_useCup.Contains(i_cupNo))
+                                        {
+
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", i_cupNo + "号配液杯失败洗杯启动");
+                                            //滴液完成数组移除当前杯号
+                                            FADM_Object.Communal._lis_dripFailCup.Remove(i_cupNo);
+
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE cup_details SET Statues = '失败洗杯', TotalStep = 1 WHERE CupNum = " + i_cupNo + ";");
+                                        }
+                                        //副杯
+                                        if (lis_useCup.Contains(i_cupNo + 1))
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (i_cupNo + 1) + "号配液杯失败洗杯启动");
+                                            //滴液完成数组移除当前杯号
+                                            FADM_Object.Communal._lis_dripFailCup.Remove((i_cupNo + 1));
+
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE cup_details SET Statues = '失败洗杯', TotalStep = 1 WHERE CupNum = " + (i_cupNo + 1) + ";");
+                                        }
+                                        continue;
+                                    }
+                                }
+
+
+                                int i_iswash1 = 0;
+                                bool b_iswash1 = false;
+                                if (FADM_Object.Communal._b_isNeedConfirm)
+                                {
+                                    if (FADM_Object.Communal._lis_washCup.Contains(i_cupNo))
+                                    {
+                                        if (FADM_Object.Communal._lis_washCup.Contains(i_cupNo + 1))
+                                        {
+                                            b_iswash1 = true;
+                                            i_iswash1 = 0;
+                                        }
+                                        else
+                                        {
+                                            b_iswash1 = true;
+                                            i_iswash1 = 1;
+                                        }
+                                    }
+                                    else if (FADM_Object.Communal._lis_washCup.Contains(i_cupNo + 1))
+                                    {
+                                        b_iswash1 = true;
+                                        i_iswash1 = 2;
+                                    }
+
+                                }
+                                else
+                                {
+                                    if (lis_useCup.Contains(i_cupNo))
+                                    {
+                                        if (FADM_Object.Communal._lis_washCup.Contains(i_cupNo))
+                                        {
+                                            if (lis_useCup.Contains(i_cupNo + 1))
+                                            {
+                                                if (FADM_Object.Communal._lis_washCup.Contains(i_cupNo + 1))
+                                                {
+                                                    b_iswash1 = true;
+                                                    i_iswash1 = 0;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                b_iswash1 = true;
+                                                i_iswash1 = 1;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (lis_useCup.Contains(i_cupNo + 1))
+                                        {
+                                            if (FADM_Object.Communal._lis_washCup.Contains(i_cupNo + 1))
+                                            {
+                                                b_iswash1 = true;
+                                                i_iswash1 = 2;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                //当前杯前洗杯
+                                if (b_iswash1 && "0" == lis_datas[j]._s_currentState)
+                                {
+
+                                    int[] ia_wash = new int[1];
+                                    ia_wash[0] = i_iswash1;
+                                    DyeHMIWriteSigle(i, j, 0x13, 64, ia_wash,4);
+
+                                    //失败洗杯
+                                    //染固色代码,总步号，滴液状态
+                                    int[] ia_zero = new int[6];
+                                    byte[] byta_send = new byte[19];
+                                    //染固色代码
+                                    byte[] byta_bytes = Encoding.GetEncoding("GBK").GetBytes("前洗杯");
+                                    for (int k = 7; k < 15; k++)
+                                    {
+                                        if (k - 7 > byta_bytes.Length - 1)
+                                            byta_send[k] = 0x0D;
+                                        else
+                                        {
+                                            if (0 == k % 2)
+                                            {
+                                                byta_send[k] = byta_bytes[k - 8];
+                                            }
+                                            else
+                                            {
+                                                if (k % 7 + 1 < byta_bytes.Length)
+                                                    byta_send[k] = byta_bytes[k % 7 + 1];
+                                                else
+                                                    byta_send[k] = 0x0D;
+                                            }
+                                        }
+                                    }
+                                    ia_zero[0] = byta_send[7] << 8 | byta_send[8];
+                                    ia_zero[1] = byta_send[9] << 8 | byta_send[10];
+                                    ia_zero[2] = byta_send[11] << 8 | byta_send[12];
+                                    ia_zero[3] = byta_send[13] << 8 | byta_send[14];
+
+                                    //总步数
+                                    ia_zero[4] = 1;
+                                    ia_zero[5] = 3;
+
+                                    DyeHMIWriteSigle(i, j, 0x01, 64, ia_zero,4);
+
+
+
+                                    //启动
+                                    ia_zero = new int[1];
+                                    ia_zero[0] = 1;
+
+                                    DyeHMIWriteSigle(i, j, 0x00, 64, ia_zero,4);
+                                    if (FADM_Object.Communal._b_isNeedConfirm)
+                                    {
+                                        //主杯
+                                        if (FADM_Object.Communal._lis_washCup.Contains(i_cupNo))
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", i_cupNo + "号配液杯前洗杯启动");
+                                            //滴液完成数组移除当前杯号
+                                            FADM_Object.Communal._lis_washCup.Remove(i_cupNo);
+
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE cup_details SET Statues = '前洗杯', TotalStep = 1 WHERE CupNum = " + i_cupNo + ";");
+                                        }
+                                        //副杯
+                                        if (FADM_Object.Communal._lis_washCup.Contains(i_cupNo + 1))
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (i_cupNo + 1) + "号配液杯前洗杯启动");
+                                            //滴液完成数组移除当前杯号
+                                            FADM_Object.Communal._lis_washCup.Remove((i_cupNo + 1));
+
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE cup_details SET Statues = '前洗杯', TotalStep = 1 WHERE CupNum = " + (i_cupNo + 1) + ";");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //主杯
+                                        if (lis_useCup.Contains(i_cupNo))
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", i_cupNo + "号配液杯前洗杯启动");
+                                            //滴液完成数组移除当前杯号
+                                            FADM_Object.Communal._lis_washCup.Remove(i_cupNo);
+
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE cup_details SET Statues = '前洗杯', TotalStep = 1 WHERE CupNum = " + i_cupNo + ";");
+                                        }
+                                        //副杯
+                                        if (lis_useCup.Contains(i_cupNo + 1))
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (i_cupNo + 1) + "号配液杯前洗杯启动");
+                                            //滴液完成数组移除当前杯号
+                                            FADM_Object.Communal._lis_washCup.Remove((i_cupNo + 1));
+
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE cup_details SET Statues = '前洗杯', TotalStep = 1 WHERE CupNum = " + (i_cupNo + 1) + ";");
+                                        }
+                                    }
+                                    continue;
+                                }
+
+
+
+                                //洗杯加水
+                                if ("1" == lis_datas[j]._s_addWater)
+                                {
+                                    DataTable dt_cup1 = FADM_Object.Communal._fadmSqlserver.GetData("Select * from cup_details where CupNum = " + i_cupNo + " Or  CupNum = " + (i_cupNo + 1) + " order by CupNum;");
+                                    //主杯
+                                    if (lis_useCup.Contains(i_cupNo) || dt_cup1.Rows[0]["Statues"].ToString() == "停止中" || dt_cup1.Rows[0]["Statues"].ToString() == "前洗杯")
+                                    {
+                                        if (_cup_Temps[i_cupNo - 1]._i_addStatus == 0)
+                                        {
+
+                                            Lib_Card.CardObject.DeleteD(_cup_Temps[i_cupNo - 1]._s_outTime);
+                                            _cup_Temps[i_cupNo - 1]._s_outTime = null;
+                                            _cup_Temps[i_cupNo - 1]._s_inTime = null;
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE dye_details SET Cooperate = 0 WHERE CupNum = " + i_cupNo + ";");
+
+
+                                            if (lis_datas[j]._s_currentState == "0" || lis_datas[j]._s_currentState == "6")
+                                            {
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                        "UPDATE cup_details SET DyeType=2,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + i_cupNo + "  ;");
+                                            }
+                                            else
+                                            {
+                                                //查询对应步号，找到对应是后处理还是染色工艺
+                                                DataTable dt_dye_details = FADM_Object.Communal._fadmSqlserver.GetData("Select * from dye_details where StepNum = '" + lis_datas[j]._s_currentStepNum + "' and CupNum = " + i_cupNo);
+                                                if (dt_dye_details.Rows.Count > 0)
+                                                {
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                        "UPDATE cup_details SET ReceptionTime='" + DateTime.Now + "',DyeType = '" + dt_dye_details.Rows[0]["DyeType"].ToString() + "' WHERE CupNum = " + i_cupNo + ";");
+                                                }
+                                                else
+                                                {
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                            "UPDATE cup_details SET DyeType=2,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + i_cupNo + " ;");
+                                                }
+                                            }
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                "UPDATE cup_details SET Cooperate = 4 WHERE CupNum = " + i_cupNo + " And Cooperate !=6;");
+                                            Txt.WriteTXTC(i_cupNo, "收到洗杯加水");
+
+                                            //检查是否已把数据库更新
+                                            DataTable dt_cup = _fadmSqlserver.GetData("Select * from cup_details WHERE CupNum = " + i_cupNo + " ;");
+                                            if (dt_cup.Rows.Count > 0)
+                                            {
+                                                if (dt_cup.Rows[0]["Cooperate"].ToString() == "4")
+                                                    _cup_Temps[i_cupNo - 1]._i_addStatus = 1;
+                                            }
+                                        }
+                                    }
+                                    //副杯
+                                    if (lis_useCup.Contains(i_cupNo + 1) || dt_cup1.Rows[1]["Statues"].ToString() == "停止中" || dt_cup1.Rows[1]["Statues"].ToString() == "前洗杯")
+                                    {
+                                        if (_cup_Temps[i_cupNo]._i_addStatus == 0)
+                                        {
+                                            Lib_Card.CardObject.DeleteD(_cup_Temps[i_cupNo]._s_outTime);
+                                            _cup_Temps[i_cupNo]._s_outTime = null;
+                                            _cup_Temps[i_cupNo]._s_inTime = null;
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE dye_details SET Cooperate = 0 WHERE CupNum = " + (i_cupNo + 1) + ";");
+
+
+                                            if (lis_datas[j]._s_currentState == "0" || lis_datas[j]._s_currentState == "6")
+                                            {
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                        "UPDATE cup_details SET DyeType=2,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + (i_cupNo + 1) + "  ;");
+                                            }
+                                            else
+                                            {
+                                                //查询对应步号，找到对应是后处理还是染色工艺
+                                                DataTable dt_dye_details = FADM_Object.Communal._fadmSqlserver.GetData("Select * from dye_details where StepNum = '" + lis_datas[j]._s_currentStepNum + "' and CupNum = " + (i_cupNo + 1));
+                                                if (dt_dye_details.Rows.Count > 0)
+                                                {
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                        "UPDATE cup_details SET ReceptionTime='" + DateTime.Now + "',DyeType = '" + dt_dye_details.Rows[0]["DyeType"].ToString() + "' WHERE CupNum = " + (i_cupNo + 1) + ";");
+                                                }
+                                                else
+                                                {
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                            "UPDATE cup_details SET DyeType=2,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + (i_cupNo + 1) + " ;");
+                                                }
+                                            }
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                "UPDATE cup_details SET Cooperate = 4 WHERE CupNum = " + (i_cupNo + 1) + " And Cooperate !=6;");
+                                            Txt.WriteTXTC((i_cupNo + 1), "收到洗杯加水");
+
+                                            //检查是否已把数据库更新
+                                            DataTable dt_cup = _fadmSqlserver.GetData("Select * from cup_details WHERE CupNum = " + (i_cupNo + 1) + " ;");
+                                            if (dt_cup.Rows.Count > 0)
+                                            {
+                                                if (dt_cup.Rows[0]["Cooperate"].ToString() == "4")
+                                                    _cup_Temps[i_cupNo]._i_addStatus = 1;
+                                            }
+                                        }
+                                    }
+
+                                    continue;
+                                }
+                                else if ("2" == lis_datas[j]._s_addWater)
+                                {
+
+                                    //主杯
+                                    if (lis_useCup.Contains(i_cupNo))
+                                    {
+                                        if (_cup_Temps[i_cupNo - 1]._i_addStatus == 0)
+                                        {
+                                            //加药
+                                            string s_sql = "SELECT * FROM dye_details WHERE CupNum = " + i_cupNo + " AND " +
+                                          "StepNum = " + (Convert.ToInt16(lis_datas[j]._s_currentStepNum)) + ";";
+                                            DataTable dt_dye_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                            if (dt_dye_details.Rows.Count == 0)
+                                            {
+                                                goto lab_se;
+                                            }
+                                            int i_finish = Convert.ToInt16(dt_dye_details.Rows[0]["Finish"]);
+                                            if (i_finish != 0)
+                                                goto lab_se;
+
+
+
+                                            if (dt_dye_details.Rows[0]["BottleNum"] is DBNull)
+                                                goto lab_se;
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE cup_details SET Cooperate = 0 WHERE CupNum = " + i_cupNo + ";");
+
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                              "UPDATE dye_details SET Cooperate = 0 WHERE CupNum = " + i_cupNo + " AND StepNum != " + lis_datas[j]._s_currentStepNum + ";");
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                              "UPDATE dye_details SET Cooperate = 1,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + i_cupNo + " AND StepNum = " + lis_datas[j]._s_currentStepNum + " AND Cooperate not in (5,6,7,8,9) ;");
+
+                                            //检查是否已把数据库更新
+                                            DataTable dt_cup = _fadmSqlserver.GetData("Select * from dye_details WHERE CupNum = " + i_cupNo + " AND StepNum = " + lis_datas[j]._s_currentStepNum + " ;");
+                                            if (dt_cup.Rows.Count > 0)
+                                            {
+                                                if (dt_cup.Rows[0]["Cooperate"].ToString() == "1")
+                                                    _cup_Temps[i_cupNo - 1]._i_addStatus = 1;
+                                            }
+                                        }
+                                    }
+                                lab_se:
+                                    //副杯
+                                    if (lis_useCup.Contains(i_cupNo + 1))
+                                    {
+                                        if (_cup_Temps[i_cupNo]._i_addStatus == 0)
+                                        {
+                                            //加药
+                                            string s_sql = "SELECT * FROM dye_details WHERE CupNum = " + (i_cupNo + 1) + " AND " +
+                                                  "StepNum = " + (Convert.ToInt16(lis_datas[j]._s_currentStepNum)) + ";";
+                                            DataTable dt_dye_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                            if (dt_dye_details.Rows.Count == 0)
+                                            {
+                                                continue;
+                                            }
+                                            int i_finish = Convert.ToInt16(dt_dye_details.Rows[0]["Finish"]);
+                                            if (i_finish != 0)
+                                                continue;
+
+
+
+                                            if (dt_dye_details.Rows[0]["BottleNum"] is DBNull)
+                                                continue;
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                               "UPDATE cup_details SET Cooperate = 0 WHERE CupNum = " + (i_cupNo + 1) + ";");
+
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                              "UPDATE dye_details SET Cooperate = 0 WHERE CupNum = " + (i_cupNo + 1) + " AND StepNum != " + lis_datas[j]._s_currentStepNum + ";");
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                              "UPDATE dye_details SET Cooperate = 1,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + (i_cupNo + 1) + " AND StepNum = " + lis_datas[j]._s_currentStepNum + " AND Cooperate not in (5,6,7,8,9) ;");
+
+                                            //检查是否已把数据库更新
+                                            DataTable dt_cup = _fadmSqlserver.GetData("Select * from dye_details WHERE CupNum = " + (i_cupNo + 1) + " AND StepNum = " + lis_datas[j]._s_currentStepNum + " ;");
+                                            if (dt_cup.Rows.Count > 0)
+                                            {
+                                                if (dt_cup.Rows[0]["Cooperate"].ToString() == "1")
+                                                    _cup_Temps[i_cupNo]._i_addStatus = 1;
+                                            }
+                                        }
+                                    }
+
+                                    continue;
+
+                                }
+                                else if ("3" == lis_datas[j]._s_addWater)
+                                {
+                                    //流程加水
+
+
+
+                                    //主杯
+                                    if (lis_useCup.Contains(i_cupNo))
+                                    {
+                                        if (_cup_Temps[i_cupNo - 1]._i_addStatus == 0)
+                                        {
+
+                                            string s_sql = "SELECT * FROM dye_details WHERE CupNum = " + i_cupNo + " AND " +
+                                       "StepNum = " + (Convert.ToInt16(lis_datas[j]._s_currentStepNum)) + ";";
+                                            DataTable dt_dye_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                            if (dt_dye_details.Rows.Count == 0)
+                                            {
+                                                goto lab_se;
+                                            }
+                                            int i_finish = Convert.ToInt16(dt_dye_details.Rows[0]["Finish"]);
+                                            if (i_finish != 0)
+                                                goto lab_se;
+
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                             "UPDATE cup_details SET Cooperate = 0 WHERE CupNum = " + i_cupNo + ";");
+
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                              "UPDATE dye_details SET Cooperate = 0 WHERE CupNum = " + i_cupNo + " AND StepNum != " + lis_datas[j]._s_currentStepNum + " ;");
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                              "UPDATE dye_details SET Cooperate = 3,ReceptionTime='" + DateTime.Now + "'  WHERE CupNum = " + i_cupNo + " AND StepNum = " + lis_datas[j]._s_currentStepNum + " And Cooperate !=9;");
+                                            Txt.WriteTXTC(i_cupNo, "收到流程加水");
+
+                                            //检查是否已把数据库更新
+                                            DataTable dt_cup = _fadmSqlserver.GetData("Select * from dye_details WHERE CupNum = " + i_cupNo + " AND StepNum = " + lis_datas[j]._s_currentStepNum + " ;");
+                                            if (dt_cup.Rows.Count > 0)
+                                            {
+                                                if (dt_cup.Rows[0]["Cooperate"].ToString() == "3")
+                                                    _cup_Temps[i_cupNo - 1]._i_addStatus = 1;
+                                            }
+                                        }
+                                    }
+                                lab_se:
+                                    //副杯
+                                    if (lis_useCup.Contains(i_cupNo + 1))
+                                    {
+                                        if (_cup_Temps[i_cupNo]._i_addStatus == 0)
+                                        {
+                                            string s_sql = "SELECT * FROM dye_details WHERE CupNum = " + (i_cupNo + 1) + " AND " +
+                                              "StepNum = " + (Convert.ToInt16(lis_datas[j]._s_currentStepNum)) + ";";
+                                            DataTable dt_dye_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                            if (dt_dye_details.Rows.Count == 0)
+                                            {
+                                                continue;
+                                            }
+                                            int i_finish = Convert.ToInt16(dt_dye_details.Rows[0]["Finish"]);
+                                            if (i_finish != 0)
+                                                continue;
+
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                             "UPDATE cup_details SET Cooperate = 0 WHERE CupNum = " + (i_cupNo + 1) + ";");
+
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                              "UPDATE dye_details SET Cooperate = 0 WHERE CupNum = " + (i_cupNo + 1) + " AND StepNum != " + lis_datas[j]._s_currentStepNum + " ;");
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                              "UPDATE dye_details SET Cooperate = 3,ReceptionTime='" + DateTime.Now + "'  WHERE CupNum = " + (i_cupNo + 1) + " AND StepNum = " + lis_datas[j]._s_currentStepNum + " And Cooperate !=9;");
+                                            Txt.WriteTXTC((i_cupNo + 1), "收到流程加水");
+
+                                            //检查是否已把数据库更新
+                                            DataTable dt_cup = _fadmSqlserver.GetData("Select * from dye_details WHERE CupNum = " + (i_cupNo + 1) + " AND StepNum = " + lis_datas[j]._s_currentStepNum + " ;");
+                                            if (dt_cup.Rows.Count > 0)
+                                            {
+                                                if (dt_cup.Rows[0]["Cooperate"].ToString() == "3")
+                                                    _cup_Temps[i_cupNo]._i_addStatus = 1;
+                                            }
+                                        }
+                                    }
+
+                                    continue;
+
+
+                                }
+
+                                //等待数据
+                                if ("1" == lis_datas[j]._s_waitData && "6" != lis_datas[j]._s_currentState)
+                                {
+
+
+
+                                    string s_sql;
+                                    //if ("2" == lis_datas[i_index]._s_currentCraft)
+                                    //{
+                                    //    //当前步是温控
+                                    //    s_sql = "UPDATE dye_details SET OvertempNum = " + Convert.ToInt16(lis_datas[i_index]._s_overTemTimes) + ", " +
+                                    //        "OvertempTime = " + Convert.ToInt16(lis_datas[i_index]._s_overTime) + " WHERE CupNum = " + i_cupNo + " AND " +
+                                    //        "StepNum = " + Convert.ToInt16(lis_datas[i_index]._s_currentStepNum) + ";";
+                                    //    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                    //}
+
+
+                                    //滴液成功
+                                    if ("1" == lis_datas[j]._s_dripFail)
+                                    {
+                                        //主杯
+                                        if (lis_useCup.Contains(i_cupNo))
+                                        {
+                                            if (_cup_Temps[i_cupNo - 1]._b_tagging == false)
+                                            {
+                                                if (sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] == "加药" || sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] == "加水")
+                                                {
+                                                    //判断是否接收到停止信号
+                                                    if (FADM_Object.Communal._lis_dripStopCup.Contains(i_cupNo) || _ia_stopSend[i_cupNo - 1] == 1)
+                                                    {
+                                                        //没有发送就发一次停止
+                                                        if (_ia_stopSend[i_cupNo - 1] == 0)
+                                                        {
+                                                            _ia_stopSend[i_cupNo - 1] = 1;
+
+                                                            if ("6" != lis_datas[j]._s_currentState)
+                                                            {
+                                                                //发送停止
+                                                                int[] ai_zero1 = new int[1];
+                                                                ai_zero1[0] = 2;
+                                                                DyeHMIWriteSigle(i, j, 0x00, 64, ai_zero1,4);
+
+                                                                FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", i_cupNo + "号配液杯染固色停止启动");
+                                                            }
+                                                            //滴液完成数组移除当前杯号
+                                                            FADM_Object.Communal._lis_dripStopCup.Remove(i_cupNo);
+                                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                                      "UPDATE cup_details SET TotalWeight = 0, StepStartTime = '" + DateTime.Now + "' WHERE CupNum = " + i_cupNo + ";");
+
+                                                            if (lis_useCup.Contains(i_cupNo + 1))
+                                                            {
+                                                                if ("6" != lis_datas[j]._s_currentState)
+                                                                {
+                                                                    FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (i_cupNo + 1) + "号配液杯染固色停止启动");
+                                                                }
+                                                                //滴液完成数组移除当前杯号
+                                                                FADM_Object.Communal._lis_dripStopCup.Remove(i_cupNo + 1);
+                                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                                          "UPDATE cup_details SET TotalWeight = 0, StepStartTime = '" + DateTime.Now + "' WHERE CupNum = " + (i_cupNo + 1) + ";");
+                                                            }
+
+
+                                                            continue;
+                                                        }
+                                                        else
+                                                        {
+                                                            continue;
+                                                        }
+                                                    }
+                                                }
+
+
+                                                //复位等待数据
+                                                int[] ai_zero = new int[1];
+                                                ai_zero[0] = 0;
+                                                DyeHMIWriteSigle(i, j, 0x100, 64, ai_zero,4);
+
+                                                //写入下一步工艺
+                                                s_sql = "SELECT * FROM dye_details WHERE CupNum = " + (lis_useCup.Contains(i_cupNo) ? i_cupNo : i_cupNo + 1) + " AND " +
+                                                       "StepNum = " + (Convert.ToInt16(lis_datas[j]._s_currentStepNum) + 1) + ";";
+                                                DataTable dt_dye_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                                if (0 == dt_dye_details.Rows.Count)
+                                                    continue;
+
+                                                s_sql = "SELECT * FROM cup_details WHERE CupNum = " + (lis_useCup.Contains(i_cupNo) ? i_cupNo : i_cupNo + 1) + ";";
+                                                DataTable dt_cup_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                                                string s_technologyName = dt_dye_details.Rows[0]["TechnologyName"].ToString();
+
+                                                FADM_Object.Communal._fadmSqlserver.InsertRun(
+                                                "Dail", i_cupNo + "号配液杯执行(" + Convert.ToInt32(dt_dye_details.Rows[0]["StepNum"]) + ":" + s_technologyName + ")");
+                                                if (Convert.ToInt16(lis_datas[j]._s_currentStepNum) != 0)
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                        "UPDATE dye_details SET FinishTime = '" + DateTime.Now + "', Finish = 1 WHERE CupNum = " + i_cupNo +
+                                                        " AND StepNum = " + (Convert.ToInt16(lis_datas[j]._s_currentStepNum)) + ";");
+
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                    "UPDATE dye_details SET StartTime = '" + DateTime.Now + "' WHERE CupNum = " + i_cupNo +
+                                                    " AND StepNum = " + (Convert.ToInt16(lis_datas[j]._s_currentStepNum) + 1) + ";");
+
+
+
+                                                if (Convert.ToInt16(dt_dye_details.Rows[0]["Temp"]) == 0)
+                                                {
+                                                    if (Convert.ToInt16(dt_dye_details.Rows[0]["Time"]) == 0)
+                                                    {
+                                                        s_sql = "UPDATE cup_details SET Statues = '" + dt_dye_details.Rows[0]["Code"] +
+                                                            "',SetTemp = null, SetTime = null WHERE CupNum = " + i_cupNo + ";";
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                                    }
+                                                    else
+                                                    {
+                                                        s_sql = "UPDATE cup_details SET Statues = '" + dt_dye_details.Rows[0]["Code"] +
+                                                            "',SetTemp = null, SetTime = '" + Convert.ToInt32(dt_dye_details.Rows[0]["Time"]) + "' WHERE CupNum = " + i_cupNo + ";";
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (Convert.ToInt16(dt_dye_details.Rows[0]["Time"]) == 0)
+                                                    {
+                                                        s_sql = "UPDATE cup_details SET Statues = '" + dt_dye_details.Rows[0]["Code"] + "',SetTemp = '" +
+                                                            Convert.ToInt32(dt_dye_details.Rows[0]["Temp"]) + "', SetTime = null WHERE CupNum = " + i_cupNo + ";";
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                                    }
+                                                    else
+                                                    {
+                                                        s_sql = "UPDATE cup_details SET Statues = '" + dt_dye_details.Rows[0]["Code"] +
+                                                            "',SetTemp = '" + Convert.ToInt32(dt_dye_details.Rows[0]["Temp"]) + "', SetTime = '" +
+                                                            Convert.ToInt32(dt_dye_details.Rows[0]["Time"]) + "' WHERE CupNum = " + i_cupNo + ";";
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                                    }
+                                                }
+
+
+                                                _cup_Temps[i_cupNo - 1]._s_technologyName = s_technologyName;
+                                                //如果上一步是加药，而且工艺一样就不用再画点
+                                                if (Convert.ToInt16(lis_datas[j]._s_currentStepNum) > 0)
+                                                {
+                                                    s_sql = "SELECT * FROM dye_details WHERE CupNum = " + i_cupNo + " AND " +
+                                                           "StepNum = " + (Convert.ToInt16(lis_datas[j]._s_currentStepNum)) + ";";
+                                                    DataTable dt_dye_details_last = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                                    if (dt_dye_details_last.Rows.Count > 0)
+                                                    {
+                                                        if (dt_dye_details_last.Rows[0]["TechnologyName"].ToString() == dt_dye_details.Rows[0]["TechnologyName"].ToString())
+                                                        {
+                                                            if (dt_dye_details_last.Rows[0]["TechnologyName"].ToString().Contains("加") && dt_dye_details_last.Rows[0]["TechnologyName"].ToString() != "加水")
+                                                            {
+                                                                _cup_Temps[i_cupNo - 1]._b_tagging = false;
+                                                            }
+                                                            else
+                                                            {
+                                                                _cup_Temps[i_cupNo - 1]._b_tagging = true;
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            _cup_Temps[i_cupNo - 1]._b_tagging = true;
+                                                        }
+                                                        if (Communal._b_isUseCloth)
+                                                        {
+                                                            //如果是放布
+                                                            if (dt_dye_details_last.Rows[0]["TechnologyName"].ToString() == "放布")
+                                                            {
+                                                                //获取对应放布区域
+                                                                string s_sqldrop_head = "SELECT * FROM drop_head WHERE CupNum = " + i_cupNo + ";";
+                                                                DataTable dt_drop_head = FADM_Object.Communal._fadmSqlserver.GetData(s_sqldrop_head);
+                                                                if (dt_drop_head.Rows.Count > 0)
+                                                                {
+                                                                    try
+                                                                    {
+                                                                        if (!(dt_drop_head.Rows[0]["ClothNum"] is DBNull))
+                                                                        {
+                                                                            if (Convert.ToInt32(dt_drop_head.Rows[0]["ClothNum"].ToString()) != 0)
+                                                                            {
+                                                                                //把对应放布区置为空闲
+
+                                                                                //滴液区
+                                                                                int[] ia_values2 = new int[1];
+                                                                                ia_values2[0] = 3;
+
+                                                                                int TXT = Convert.ToInt32(dt_drop_head.Rows[0]["ClothNum"].ToString());
+                                                                                int bb = 10000 + 3000 - 1 + Convert.ToInt32(TXT) - 1;
+
+                                                                            Labelbb:
+                                                                                int statte = FADM_Object.Communal.HMIBaClo.Write(bb, ia_values2);
+                                                                                if (statte == -1)
+                                                                                {
+                                                                                    //FADM_Form.CustomMessageBox.Show("锁定杯位布重状态失败", "温馨提示", MessageBoxButtons.OK, false);
+                                                                                    goto Labelbb;
+                                                                                }
+                                                                                string s_sql1 = "update Lay set Status=0 where Number = " + TXT + " ; ";
+                                                                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql1);
+                                                                                Lib_Log.Log.writeLogException("=======放布后重置布位状态 bb" + bb);
+
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    catch
+                                                                    {
+
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        _cup_Temps[i_cupNo - 1]._b_tagging = true;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    _cup_Temps[i_cupNo - 1]._b_tagging = true;
+                                                }
+
+
+
+
+                                                //下发下一步工艺
+                                                //计算排液时间用于下发
+                                                int i_time = 0;
+                                                int i_time2 = 0;
+                                                ai_zero = new int[10];
+                                                //当前步号
+                                                ai_zero[0] = Convert.ToInt32(dt_dye_details.Rows[0]["StepNum"]);
+                                                //当前名称
+                                                if ("冷行" == s_technologyName || "Cool line" == s_technologyName)
+                                                    ai_zero[1] = 0x01;
+                                                else if ("温控" == s_technologyName || "Temperature control" == s_technologyName)
+                                                    ai_zero[1] = 0x02;
+
+                                                else if ("放布" == s_technologyName || "Entering the fabric" == s_technologyName)
+                                                {
+                                                    ai_zero[1] = 0x04;
+
+                                                    //更新当前液量，当前液量加上布重X脱水水比
+                                                    s_sql = "select * from drop_head  WHERE CupNum = " + i_cupNo + ";";
+                                                    DataTable dt = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                                                    if (dt.Rows.Count > 0)
+                                                    {
+                                                        double d_clothWeight = Convert.ToDouble(dt.Rows[0]["ClothWeight"].ToString()) * Convert.ToDouble(dt.Rows[0]["AnhydrationWR"].ToString());
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                "UPDATE cup_details SET TotalWeight = TotalWeight + " + d_clothWeight + " WHERE CupNum = " + i_cupNo + ";");
+                                                    }
+
+
+                                                }
+
+                                                else if ("出布" == s_technologyName || "Outgoing fabric" == s_technologyName)
+                                                    ai_zero[1] = 0x05;
+
+                                                else if ("排液" == s_technologyName || "Drainage" == s_technologyName)
+                                                {
+                                                    ai_zero[1] = 0x06;
+                                                    //主杯
+                                                    if (lis_useCup.Contains(i_cupNo))
+                                                    {
+                                                        //更新当前液量，布重X非脱水水比
+                                                        s_sql = "select * from drop_head  WHERE CupNum = " + i_cupNo + ";";
+                                                        DataTable dt_drop_head = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                                                        DataTable dt_cup_details2 = FADM_Object.Communal._fadmSqlserver.GetData("select TotalWeight from cup_details WHERE CupNum = " + i_cupNo + "; ");
+                                                        if (dt_cup_details2.Rows[0][0] != System.DBNull.Value)
+                                                        {
+                                                            i_time = Convert.ToInt32(Convert.ToDouble(dt_cup_details2.Rows[0][0].ToString()) * 1.3);
+                                                            if (i_time < 100)
+                                                            {
+                                                                i_time = 100;
+                                                            }
+                                                            i_time /= 10;
+                                                        }
+
+                                                        if (dt_drop_head.Rows.Count > 0)
+                                                        {
+                                                            double d_clothWeight = Convert.ToDouble(dt_drop_head.Rows[0]["ClothWeight"].ToString()) * Convert.ToDouble(dt_drop_head.Rows[0]["Non_AnhydrationWR"].ToString());
+                                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                    "UPDATE cup_details SET TotalWeight =  " + d_clothWeight + " WHERE CupNum = " + i_cupNo + ";");
+                                                        }
+                                                    }
+                                                    //副杯
+                                                    if (lis_useCup.Contains(i_cupNo + 1))
+                                                    {
+                                                        DataTable dt_cup_details2 = FADM_Object.Communal._fadmSqlserver.GetData("select TotalWeight from cup_details WHERE CupNum = " + (i_cupNo + 1) + "; ");
+                                                        if (dt_cup_details2.Rows[0][0] != System.DBNull.Value)
+                                                        {
+                                                            i_time2 = Convert.ToInt32(Convert.ToDouble(dt_cup_details2.Rows[0][0].ToString()) * 1.3);
+                                                            if (i_time2 < 100)
+                                                            {
+                                                                i_time2 = 100;
+                                                            }
+                                                            i_time2 /= 10;
+                                                        }
+                                                    }
+
+                                                    //选择排液时间长的
+
+                                                    if (i_time2 > i_time)
+                                                    {
+                                                        i_time = i_time2;
+                                                    }
+                                                }
+                                                else if ("洗杯" == s_technologyName || "Wash the cup" == s_technologyName)
+                                                {
+                                                    ai_zero[1] = 0x07;
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                   "UPDATE cup_details SET TotalWeight = 0 WHERE CupNum = " + i_cupNo + ";");
+
+                                                }
+                                                else if ("加水" == s_technologyName || "Add Water" == s_technologyName)
+                                                    ai_zero[1] = 0x08;
+                                                else if ("搅拌" == s_technologyName || "Stir" == s_technologyName)
+                                                    ai_zero[1] = 0x09;
+                                                else if ("取小样" == s_technologyName || "Sample" == s_technologyName)
+                                                    ai_zero[1] = 0x0C;
+                                                else if ("测PH" == s_technologyName || "Test PH" == s_technologyName)
+                                                    ai_zero[1] = 0x0D;
+                                                else
+                                                    ai_zero[1] = 0x03;
+
+
+                                                //目标温度
+                                                ai_zero[2] = Convert.ToInt32(Convert.ToDouble(dt_dye_details.Rows[0]["Temp"]) * 10);
+                                                //温度速率
+                                                ai_zero[3] = Convert.ToInt32(Convert.ToDouble(dt_dye_details.Rows[0]["TempSpeed"]) * 10);
+
+
+                                                //保温时间/分
+                                                ai_zero[4] = Convert.ToInt32(dt_dye_details.Rows[0]["Time"]);
+
+                                                //排水时间
+                                                ai_zero[5] = Convert.ToInt32(Convert.ToDouble(dt_dye_details.Rows[0]["RotorSpeed"]) * 10);
+                                                if ("排液" == s_technologyName || "Drainage" == s_technologyName)
+                                                {
+                                                    ai_zero[6] = i_time;
+                                                }
+                                                else
+                                                {
+                                                    if ("出布" == s_technologyName || "Outgoing fabric" == s_technologyName)
+                                                    {
+                                                        if (Communal._b_isUseClamp)
+                                                            ai_zero[6] = 1;
+                                                        else
+                                                            ai_zero[6] = 0;
+                                                    }
+                                                    else
+                                                        ai_zero[6] = 0;
+                                                }
+
+                                                //接受完成
+                                                ai_zero[7] = 1;
+
+                                                //
+                                                ai_zero[8] = 0;
+
+                                                //传当前液量
+                                                if (dt_cup_details.Rows[0]["TotalWeight"] != System.DBNull.Value)
+                                                {
+                                                    if (Convert.ToDouble(dt_cup_details.Rows[0]["TotalWeight"]) > 0)
+                                                    {
+                                                        ai_zero[9] = Convert.ToInt32(Convert.ToDouble(dt_cup_details.Rows[0]["TotalWeight"]) * 100);
+                                                    }
+                                                    else
+                                                    {
+                                                        ai_zero[9] = 0;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    ai_zero[9] = 0;
+                                                }
+
+
+                                                DyeHMIWriteSigle(i, j, 0x07, 64, ai_zero,4);
+                                            }
+                                        }
+                                        //副杯
+                                        if (lis_useCup.Contains(i_cupNo + 1))
+                                        {
+                                            if (_cup_Temps[i_cupNo]._b_tagging == false)
+                                            {
+                                                if (sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] == "加药" || sa_technology[Convert.ToInt16(lis_datas[j]._s_currentCraft)] == "加水")
+                                                {
+                                                    //判断是否接收到停止信号
+                                                    if (FADM_Object.Communal._lis_dripStopCup.Contains(i_cupNo + 1) || _ia_stopSend[i_cupNo] == 1)
+                                                    {
+                                                        //当主杯没发送过停止时，就发送停止信号
+                                                        if (_ia_stopSend[i_cupNo - 1] != 1)
+                                                        {
+                                                            //没有发送就发一次停止
+                                                            if (_ia_stopSend[i_cupNo] == 0)
+                                                            {
+                                                                _ia_stopSend[i_cupNo] = 1;
+                                                                _ia_stopSend[i_cupNo - 1] = 1;
+
+                                                                if ("6" != lis_datas[j]._s_currentState)
+                                                                {
+                                                                    //发送停止
+                                                                    int[] ai_zero1 = new int[1];
+                                                                    ai_zero1[0] = 2;
+                                                                    DyeHMIWriteSigle(i, j, 0x00, 64, ai_zero1,4);
+
+                                                                    FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (i_cupNo + 1) + "号配液杯染固色停止启动");
+                                                                }
+                                                                //滴液完成数组移除当前杯号
+                                                                FADM_Object.Communal._lis_dripStopCup.Remove(i_cupNo + 1);
+                                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                                          "UPDATE cup_details SET TotalWeight = 0, StepStartTime = '" + DateTime.Now + "' WHERE CupNum = " + (i_cupNo + 1) + ";");
+
+                                                                //把主杯数据也停止
+                                                                if (lis_useCup.Contains(i_cupNo))
+                                                                {
+                                                                    if ("6" != lis_datas[j]._s_currentState)
+                                                                    {
+                                                                        FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (i_cupNo) + "号配液杯染固色停止启动");
+                                                                    }
+                                                                    //滴液完成数组移除当前杯号
+                                                                    FADM_Object.Communal._lis_dripStopCup.Remove(i_cupNo);
+                                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                                              "UPDATE cup_details SET TotalWeight = 0, StepStartTime = '" + DateTime.Now + "' WHERE CupNum = " + (i_cupNo) + ";");
+                                                                }
+
+
+                                                                continue;
+                                                            }
+                                                            else
+                                                            {
+                                                                continue;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                                //单独使用副杯
+                                                if (!lis_useCup.Contains(i_cupNo))
+                                                {
+                                                    //复位等待数据
+                                                    int[] ai_zero = new int[1];
+                                                    ai_zero[0] = 0;
+                                                    DyeHMIWriteSigle(i, j, 0x100, 64, ai_zero,4);
+                                                }
+
+
+                                                //写入下一步工艺
+                                                s_sql = "SELECT * FROM dye_details WHERE CupNum = " + (i_cupNo + 1) + " AND " +
+                                                       "StepNum = " + (Convert.ToInt16(lis_datas[j]._s_currentStepNum) + 1) + ";";
+                                                DataTable dt_dye_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                                if (0 == dt_dye_details.Rows.Count)
+                                                    continue;
+
+                                                s_sql = "SELECT * FROM cup_details WHERE CupNum = " + (i_cupNo + 1) + ";";
+                                                DataTable dt_cup_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                                                string s_technologyName = dt_dye_details.Rows[0]["TechnologyName"].ToString();
+
+                                                FADM_Object.Communal._fadmSqlserver.InsertRun(
+                                                    "Dail", (i_cupNo + 1) + "号配液杯执行(" + Convert.ToInt32(dt_dye_details.Rows[0]["StepNum"]) + ":" + s_technologyName + ")");
+                                                if (Convert.ToInt16(lis_datas[j]._s_currentStepNum) != 0)
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                        "UPDATE dye_details SET FinishTime = '" + DateTime.Now + "', Finish = 1 WHERE CupNum = " + (i_cupNo + 1) +
+                                                        " AND StepNum = " + (Convert.ToInt16(lis_datas[j]._s_currentStepNum)) + ";");
+
+                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                    "UPDATE dye_details SET StartTime = '" + DateTime.Now + "' WHERE CupNum = " + (i_cupNo + 1) +
+                                                    " AND StepNum = " + (Convert.ToInt16(lis_datas[j]._s_currentStepNum) + 1) + ";");
+
+
+
+                                                if (Convert.ToInt16(dt_dye_details.Rows[0]["Temp"]) == 0)
+                                                {
+                                                    if (Convert.ToInt16(dt_dye_details.Rows[0]["Time"]) == 0)
+                                                    {
+                                                        s_sql = "UPDATE cup_details SET Statues = '" + dt_dye_details.Rows[0]["Code"] +
+                                                            "',SetTemp = null, SetTime = null WHERE CupNum = " + (i_cupNo + 1) + ";";
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                                    }
+                                                    else
+                                                    {
+                                                        s_sql = "UPDATE cup_details SET Statues = '" + dt_dye_details.Rows[0]["Code"] +
+                                                            "',SetTemp = null, SetTime = '" + Convert.ToInt32(dt_dye_details.Rows[0]["Time"]) + "' WHERE CupNum = " + (i_cupNo + 1) + ";";
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (Convert.ToInt16(dt_dye_details.Rows[0]["Time"]) == 0)
+                                                    {
+                                                        s_sql = "UPDATE cup_details SET Statues = '" + dt_dye_details.Rows[0]["Code"] + "',SetTemp = '" +
+                                                            Convert.ToInt32(dt_dye_details.Rows[0]["Temp"]) + "', SetTime = null WHERE CupNum = " + (i_cupNo + 1) + ";";
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                                    }
+                                                    else
+                                                    {
+                                                        s_sql = "UPDATE cup_details SET Statues = '" + dt_dye_details.Rows[0]["Code"] +
+                                                            "',SetTemp = '" + Convert.ToInt32(dt_dye_details.Rows[0]["Temp"]) + "', SetTime = '" +
+                                                            Convert.ToInt32(dt_dye_details.Rows[0]["Time"]) + "' WHERE CupNum = " + (i_cupNo + 1) + ";";
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                                    }
+                                                }
+
+
+                                                _cup_Temps[i_cupNo]._s_technologyName = s_technologyName;
+                                                //如果上一步是加药，而且工艺一样就不用再画点
+                                                if (Convert.ToInt16(lis_datas[j]._s_currentStepNum) > 0)
+                                                {
+                                                    s_sql = "SELECT * FROM dye_details WHERE CupNum = " + (i_cupNo + 1) + " AND " +
+                                                           "StepNum = " + (Convert.ToInt16(lis_datas[j]._s_currentStepNum)) + ";";
+                                                    DataTable dt_dye_details_last = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                                    if (dt_dye_details_last.Rows.Count > 0)
+                                                    {
+                                                        if (dt_dye_details_last.Rows[0]["TechnologyName"].ToString() == dt_dye_details.Rows[0]["TechnologyName"].ToString())
+                                                        {
+                                                            if (dt_dye_details_last.Rows[0]["TechnologyName"].ToString().Contains("加") && dt_dye_details_last.Rows[0]["TechnologyName"].ToString() != "加水")
+                                                            {
+                                                                _cup_Temps[i_cupNo]._b_tagging = false;
+                                                            }
+                                                            else
+                                                            {
+                                                                _cup_Temps[i_cupNo]._b_tagging = true;
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            _cup_Temps[i_cupNo]._b_tagging = true;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        _cup_Temps[i_cupNo]._b_tagging = true;
+                                                    }
+                                                    if (Communal._b_isUseCloth)
+                                                    {
+                                                        //如果是放布
+                                                        if (dt_dye_details_last.Rows[0]["TechnologyName"].ToString() == "放布")
+                                                        {
+                                                            //获取对应放布区域
+                                                            string s_sqldrop_head = "SELECT * FROM drop_head WHERE CupNum = " + (i_cupNo + 1) + ";";
+                                                            DataTable dt_drop_head = FADM_Object.Communal._fadmSqlserver.GetData(s_sqldrop_head);
+                                                            if (dt_drop_head.Rows.Count > 0)
+                                                            {
+                                                                try
+                                                                {
+                                                                    if (!(dt_drop_head.Rows[0]["ClothNum"] is DBNull))
+                                                                    {
+                                                                        if (Convert.ToInt32(dt_drop_head.Rows[0]["ClothNum"].ToString()) != 0)
+                                                                        {
+                                                                            //把对应放布区置为空闲
+
+                                                                            //滴液区
+                                                                            int[] ia_values2 = new int[1];
+                                                                            ia_values2[0] = 3;
+
+                                                                            int TXT = Convert.ToInt32(dt_drop_head.Rows[0]["ClothNum"].ToString());
+                                                                            int bb = 10000 + 3000 - 1 + Convert.ToInt32(TXT) - 1;
+
+                                                                        Labelbb:
+                                                                            int statte = FADM_Object.Communal.HMIBaClo.Write(bb, ia_values2);
+                                                                            if (statte == -1)
+                                                                            {
+                                                                                //FADM_Form.CustomMessageBox.Show("锁定杯位布重状态失败", "温馨提示", MessageBoxButtons.OK, false);
+                                                                                goto Labelbb;
+                                                                            }
+                                                                            string s_sql1 = "update Lay set Status=0 where Number = " + TXT + " ; ";
+                                                                            FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql1);
+                                                                            Lib_Log.Log.writeLogException("=======放布后重置布位状态 bb" + bb);
+
+                                                                        }
+                                                                    }
+                                                                }
+                                                                catch
+                                                                {
+
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    _cup_Temps[i_cupNo]._b_tagging = true;
+                                                }
+
+
+
+                                                //单独使用副杯
+                                                if (!lis_useCup.Contains(i_cupNo))
+                                                {
+
+                                                    //下发下一步工艺
+                                                    //计算排液时间用于下发
+                                                    int i_time = 0;
+                                                    int[] ai_zero = new int[10];
+                                                    //当前步号
+                                                    ai_zero[0] = Convert.ToInt32(dt_dye_details.Rows[0]["StepNum"]);
+                                                    //当前名称
+                                                    if ("冷行" == s_technologyName || "Cool line" == s_technologyName)
+                                                        ai_zero[1] = 0x01;
+                                                    else if ("温控" == s_technologyName || "Temperature control" == s_technologyName)
+                                                        ai_zero[1] = 0x02;
+
+                                                    else if ("放布" == s_technologyName || "Entering the fabric" == s_technologyName)
+                                                    {
+                                                        ai_zero[1] = 0x04;
+                                                        //更新当前液量，当前液量加上布重X脱水水比
+                                                        s_sql = "select * from drop_head  WHERE CupNum = " + (i_cupNo + 1) + ";";
+                                                        DataTable dt = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                                                        if (dt.Rows.Count > 0)
+                                                        {
+                                                            double d_clothWeight = Convert.ToDouble(dt.Rows[0]["ClothWeight"].ToString()) * Convert.ToDouble(dt.Rows[0]["AnhydrationWR"].ToString());
+                                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                    "UPDATE cup_details SET TotalWeight = TotalWeight + " + d_clothWeight + " WHERE CupNum = " + (i_cupNo + 1) + ";");
+                                                        }
+                                                    }
+
+                                                    else if ("出布" == s_technologyName || "Outgoing fabric" == s_technologyName)
+                                                        ai_zero[1] = 0x05;
+
+                                                    else if ("排液" == s_technologyName || "Drainage" == s_technologyName)
+                                                    {
+                                                        ai_zero[1] = 0x06;
+
+                                                        //更新当前液量，布重X非脱水水比
+                                                        s_sql = "select * from drop_head  WHERE CupNum = " + (i_cupNo + 1) + ";";
+                                                        DataTable dt_drop_head = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                                                        DataTable dt_cup_details2 = FADM_Object.Communal._fadmSqlserver.GetData("select TotalWeight from cup_details WHERE CupNum = " + (i_cupNo + 1) + "; ");
+                                                        if (dt_cup_details2.Rows[0][0] != System.DBNull.Value)
+                                                        {
+                                                            i_time = Convert.ToInt32(Convert.ToDouble(dt_cup_details2.Rows[0][0].ToString()) * 1.3);
+                                                            if (i_time < 100)
+                                                            {
+                                                                i_time = 100;
+                                                            }
+                                                            i_time /= 10;
+                                                        }
+
+                                                        if (dt_drop_head.Rows.Count > 0)
+                                                        {
+                                                            double d_clothWeight = Convert.ToDouble(dt_drop_head.Rows[0]["ClothWeight"].ToString()) * Convert.ToDouble(dt_drop_head.Rows[0]["Non_AnhydrationWR"].ToString());
+                                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                    "UPDATE cup_details SET TotalWeight =  " + d_clothWeight + " WHERE CupNum = " + (i_cupNo + 1) + ";");
+                                                        }
+                                                    }
+                                                    else if ("洗杯" == s_technologyName || "Wash the cup" == s_technologyName)
+                                                    {
+                                                        ai_zero[1] = 0x07;
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                           "UPDATE cup_details SET TotalWeight = 0 WHERE CupNum = " + (i_cupNo + 1) + ";");
+                                                    }
+                                                    else if ("加水" == s_technologyName || "Add Water" == s_technologyName)
+                                                        ai_zero[1] = 0x08;
+                                                    else if ("搅拌" == s_technologyName || "Stir" == s_technologyName)
+                                                        ai_zero[1] = 0x09;
+                                                    else if ("取小样" == s_technologyName || "Sample" == s_technologyName)
+                                                        ai_zero[1] = 0x0C;
+                                                    else if ("测PH" == s_technologyName || "Test PH" == s_technologyName)
+                                                        ai_zero[1] = 0x0D;
+                                                    else
+                                                        ai_zero[1] = 0x03;
+
+
+                                                    //目标温度
+                                                    ai_zero[2] = Convert.ToInt32(Convert.ToDouble(dt_dye_details.Rows[0]["Temp"]) * 10);
+                                                    //温度速率
+                                                    ai_zero[3] = Convert.ToInt32(Convert.ToDouble(dt_dye_details.Rows[0]["TempSpeed"]) * 10);
+
+
+                                                    //保温时间/分
+                                                    ai_zero[4] = Convert.ToInt32(dt_dye_details.Rows[0]["Time"]);
+
+                                                    //排水时间
+                                                    ai_zero[5] = Convert.ToInt32(Convert.ToDouble(dt_dye_details.Rows[0]["RotorSpeed"]) * 10);
+                                                    if ("排液" == s_technologyName || "Drainage" == s_technologyName)
+                                                    {
+                                                        ai_zero[6] = i_time;
+                                                    }
+                                                    else
+                                                    {
+                                                        if ("出布" == s_technologyName || "Outgoing fabric" == s_technologyName)
+                                                        {
+                                                            if (Communal._b_isUseClamp)
+                                                                ai_zero[6] = 1;
+                                                            else
+                                                                ai_zero[6] = 0;
+                                                        }
+                                                        else
+                                                            ai_zero[6] = 0;
+                                                    }
+
+                                                    //接受完成
+                                                    ai_zero[7] = 1;
+
+                                                    //
+                                                    ai_zero[8] = 0;
+
+                                                    //传当前液量
+                                                    if (dt_cup_details.Rows[0]["TotalWeight"] != System.DBNull.Value)
+                                                    {
+                                                        if (Convert.ToDouble(dt_cup_details.Rows[0]["TotalWeight"]) > 0)
+                                                        {
+                                                            ai_zero[9] = Convert.ToInt32(Convert.ToDouble(dt_cup_details.Rows[0]["TotalWeight"]) * 100);
+                                                        }
+                                                        else
+                                                        {
+                                                            ai_zero[9] = 0;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        ai_zero[9] = 0;
+                                                    }
+
+
+                                                    DyeHMIWriteSigle(i, j, 0x07, 64, ai_zero,4);
+                                                }
+                                                else
+                                                {
+                                                    //需要把副杯当前液量也更新一下
+                                                    //下发下一步工艺
+                                                    //计算排液时间用于下发
+                                                    int i_time = 0;
+                                                    int[] ai_zero = new int[10];
+                                                    //当前步号
+                                                    ai_zero[0] = Convert.ToInt32(dt_dye_details.Rows[0]["StepNum"]);
+                                                    //当前名称
+                                                    if ("冷行" == s_technologyName || "Cool line" == s_technologyName)
+                                                        ai_zero[1] = 0x01;
+                                                    else if ("温控" == s_technologyName || "Temperature control" == s_technologyName)
+                                                        ai_zero[1] = 0x02;
+
+                                                    else if ("放布" == s_technologyName || "Entering the fabric" == s_technologyName)
+                                                    {
+                                                        ai_zero[1] = 0x04;
+                                                        //更新当前液量，当前液量加上布重X脱水水比
+                                                        s_sql = "select * from drop_head  WHERE CupNum = " + (i_cupNo + 1) + ";";
+                                                        DataTable dt = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                                                        if (dt.Rows.Count > 0)
+                                                        {
+                                                            double d_clothWeight = Convert.ToDouble(dt.Rows[0]["ClothWeight"].ToString()) * Convert.ToDouble(dt.Rows[0]["AnhydrationWR"].ToString());
+                                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                    "UPDATE cup_details SET TotalWeight = TotalWeight + " + d_clothWeight + " WHERE CupNum = " + (i_cupNo + 1) + ";");
+                                                        }
+                                                    }
+
+                                                    else if ("出布" == s_technologyName || "Outgoing fabric" == s_technologyName)
+                                                        ai_zero[1] = 0x05;
+
+                                                    else if ("排液" == s_technologyName || "Drainage" == s_technologyName)
+                                                    {
+                                                        ai_zero[1] = 0x06;
+
+                                                        //更新当前液量，布重X非脱水水比
+                                                        s_sql = "select * from drop_head  WHERE CupNum = " + (i_cupNo + 1) + ";";
+                                                        DataTable dt_drop_head = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                                                        DataTable dt_cup_details2 = FADM_Object.Communal._fadmSqlserver.GetData("select TotalWeight from cup_details WHERE CupNum = " + (i_cupNo + 1) + "; ");
+                                                        if (dt_cup_details2.Rows[0][0] != System.DBNull.Value)
+                                                        {
+                                                            i_time = Convert.ToInt32(Convert.ToDouble(dt_cup_details2.Rows[0][0].ToString()) * 1.3);
+                                                            if (i_time < 100)
+                                                            {
+                                                                i_time = 100;
+                                                            }
+                                                            i_time /= 10;
+                                                        }
+
+                                                        if (dt_drop_head.Rows.Count > 0)
+                                                        {
+                                                            double d_clothWeight = Convert.ToDouble(dt_drop_head.Rows[0]["ClothWeight"].ToString()) * Convert.ToDouble(dt_drop_head.Rows[0]["Non_AnhydrationWR"].ToString());
+                                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                    "UPDATE cup_details SET TotalWeight =  " + d_clothWeight + " WHERE CupNum = " + (i_cupNo + 1) + ";");
+                                                        }
+                                                    }
+                                                    else if ("洗杯" == s_technologyName || "Wash the cup" == s_technologyName)
+                                                    {
+                                                        ai_zero[1] = 0x07;
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                           "UPDATE cup_details SET TotalWeight = 0 WHERE CupNum = " + (i_cupNo + 1) + ";");
+                                                    }
+                                                    else if ("加水" == s_technologyName || "Add Water" == s_technologyName)
+                                                        ai_zero[1] = 0x08;
+                                                    else if ("搅拌" == s_technologyName || "Stir" == s_technologyName)
+                                                        ai_zero[1] = 0x09;
+                                                    else if ("取小样" == s_technologyName || "Sample" == s_technologyName)
+                                                        ai_zero[1] = 0x0C;
+                                                    else if ("测PH" == s_technologyName || "Test PH" == s_technologyName)
+                                                        ai_zero[1] = 0x0D;
+                                                    else
+                                                        ai_zero[1] = 0x03;
+
+
+                                                    //目标温度
+                                                    ai_zero[2] = Convert.ToInt32(Convert.ToDouble(dt_dye_details.Rows[0]["Temp"]) * 10);
+                                                    //温度速率
+                                                    ai_zero[3] = Convert.ToInt32(Convert.ToDouble(dt_dye_details.Rows[0]["TempSpeed"]) * 10);
+
+
+                                                    //保温时间/分
+                                                    ai_zero[4] = Convert.ToInt32(dt_dye_details.Rows[0]["Time"]);
+
+                                                    //排水时间
+                                                    ai_zero[5] = Convert.ToInt32(Convert.ToDouble(dt_dye_details.Rows[0]["RotorSpeed"]) * 10);
+                                                    if ("排液" == s_technologyName || "Drainage" == s_technologyName)
+                                                    {
+                                                        ai_zero[6] = i_time;
+                                                    }
+                                                    else
+                                                    {
+                                                        if ("出布" == s_technologyName || "Outgoing fabric" == s_technologyName)
+                                                        {
+                                                            if (Communal._b_isUseClamp)
+                                                                ai_zero[6] = 1;
+                                                            else
+                                                                ai_zero[6] = 0;
+                                                        }
+                                                        else
+                                                            ai_zero[6] = 0;
+                                                    }
+
+                                                    //接受完成
+                                                    ai_zero[7] = 1;
+
+                                                    //
+                                                    ai_zero[8] = 0;
+
+                                                    //传当前液量
+                                                    if (dt_cup_details.Rows[0]["TotalWeight"] != System.DBNull.Value)
+                                                    {
+                                                        if (Convert.ToDouble(dt_cup_details.Rows[0]["TotalWeight"]) > 0)
+                                                        {
+                                                            ai_zero[9] = Convert.ToInt32(Convert.ToDouble(dt_cup_details.Rows[0]["TotalWeight"]) * 100);
+                                                        }
+                                                        else
+                                                        {
+                                                            ai_zero[9] = 0;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        ai_zero[9] = 0;
+                                                    }
+
+
+
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                    else if ("3" == lis_datas[j]._s_dripFail || "2" == lis_datas[j]._s_dripFail)
+                                    {
+                                        //复位等待数据
+                                        int[] ia_zero = new int[1];
+                                        ia_zero[0] = 0;
+
+
+                                        DyeHMIWriteSigle(i, j, 0x100, 64, ia_zero,4);
+
+                                        //
+                                        ia_zero = new int[8];
+                                        //当前步号
+                                        ia_zero[0] = 1;
+                                        //当前步名称
+                                        ia_zero[1] = 7;
+                                        //目标温度
+                                        ia_zero[2] = 0;
+                                        //温度速率
+                                        ia_zero[3] = 0;
+                                        //保温时间/分
+                                        ia_zero[4] = 1;
+                                        //转子速率
+                                        ia_zero[5] = 0;
+                                        //排水时间
+                                        ia_zero[6] = 0;
+                                        //接收完成
+                                        ia_zero[7] = 1;
+
+
+                                        DyeHMIWriteSigle(i, j, 0x07, 64, ia_zero,4);
+
+                                        //主杯
+                                        if (lis_useCup.Contains(i_cupNo) && lis_useCup.Contains(i_cupNo + 1))
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", i_cupNo + "号配液杯执行(1:洗杯)工艺");
+
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (i_cupNo + 1) + "号配液杯执行(1:洗杯)工艺");
+
+                                        }
+                                        else if (lis_useCup.Contains(i_cupNo))
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", i_cupNo + "号配液杯执行(1:洗杯)工艺");
+                                        }
+                                        else
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (i_cupNo + 1) + "号配液杯执行(1:洗杯)工艺");
+                                        }
+
+
+                                    }
+
+
+
+                                    continue;
+
+                                }
+                                //等待主副杯一起有信号才保存信号
+                                //主杯信号
+                                if ("4" == lis_datas[j]._s_openInplace && ((lis_useCup.Contains(i_cupNo + 1) && "4" == lis_datas[j]._s_secondopenInplace) || !lis_useCup.Contains(i_cupNo + 1)))
+                                {
+                                    //申请加药信号
+
+                                    if (_cup_Temps[i_cupNo - 1]._i_requesadd == 0)
+                                    //if (FADM_Object.Communal.ReadDyeThread() == null && _i_state == 2)
+                                    {
+                                        //先判断拿回来步号是否已经完成，有时候会步号延迟
+                                        DataTable dt_finish = _fadmSqlserver.GetData("Select * from dye_details WHERE CupNum = " + i_cupNo + " AND StepNum = " + lis_datas[j]._s_currentStepNum + " And Finish = 1;");
+                                        if (dt_finish.Rows.Count > 0)
+                                        {
+                                            continue;
+                                        }
+
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                          "UPDATE dye_details SET Cooperate = 0 WHERE CupNum = " + i_cupNo + " AND StepNum != " + lis_datas[j]._s_currentStepNum + ";");
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                          "UPDATE dye_details SET Cooperate = 10,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + i_cupNo + " AND StepNum = " + lis_datas[j]._s_currentStepNum + " AND Cooperate not in (5,6,7,8,9) ;");
+
+                                        //检查是否已把数据库更新
+                                        DataTable dt_cup = _fadmSqlserver.GetData("Select * from dye_details WHERE CupNum = " + i_cupNo + " AND StepNum = " + lis_datas[j]._s_currentStepNum + " ;");
+                                        if (dt_cup.Rows.Count > 0)
+                                        {
+                                            if (dt_cup.Rows[0]["Cooperate"].ToString() == "10" || dt_cup.Rows[0]["Cooperate"].ToString() == "5" || dt_cup.Rows[0]["Cooperate"].ToString() == "6")
+                                                _cup_Temps[i_cupNo - 1]._i_requesadd = 1;
+                                        }
+
+                                    }
+
+
+
+                                    //continue;
+
+                                }
+
+                                //副杯信号
+                                if ("4" == lis_datas[j]._s_secondopenInplace && ((lis_useCup.Contains(i_cupNo) && "4" == lis_datas[j]._s_openInplace) || !lis_useCup.Contains(i_cupNo)))
+                                {
+                                    //申请加药信号
+
+                                    if (_cup_Temps[i_cupNo]._i_requesadd == 0)
+                                    //if (FADM_Object.Communal.ReadDyeThread() == null && _i_state == 2)
+                                    {
+                                        //先判断拿回来步号是否已经完成，有时候会步号延迟
+                                        DataTable dt_finish = _fadmSqlserver.GetData("Select * from dye_details WHERE CupNum = " + (i_cupNo + 1) + " AND StepNum = " + lis_datas[j]._s_currentStepNum + " And Finish = 1;");
+                                        if (dt_finish.Rows.Count > 0)
+                                        {
+                                            continue;
+                                        }
+
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                          "UPDATE dye_details SET Cooperate = 0 WHERE CupNum = " + (i_cupNo + 1) + " AND StepNum != " + lis_datas[j]._s_currentStepNum + ";");
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                          "UPDATE dye_details SET Cooperate = 10,ReceptionTime='" + DateTime.Now + "' WHERE CupNum = " + (i_cupNo + 1) + " AND StepNum = " + lis_datas[j]._s_currentStepNum + " AND Cooperate not in (5,6,7,8,9) ;");
+
+                                        //检查是否已把数据库更新
+                                        DataTable dt_cup = _fadmSqlserver.GetData("Select * from dye_details WHERE CupNum = " + (i_cupNo + 1) + " AND StepNum = " + lis_datas[j]._s_currentStepNum + " ;");
+                                        if (dt_cup.Rows.Count > 0)
+                                        {
+                                            if (dt_cup.Rows[0]["Cooperate"].ToString() == "10" || dt_cup.Rows[0]["Cooperate"].ToString() == "5" || dt_cup.Rows[0]["Cooperate"].ToString() == "6")
+                                                _cup_Temps[i_cupNo]._i_requesadd = 1;
+                                        }
+
+                                    }
+
+
+
+                                    //continue;
+
+                                }
+
+                            }
+                        }
                         //10杯转子缸
                         else
                         {
@@ -8401,10 +13021,10 @@ namespace SmartDyeing.FADM_Auto
                 //FADM_Auto.Reset.IOReset();
 
                 //加药
-                if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
-                {
-                    Home.Home_XYZFinish = false;
-                }
+                //if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                //{
+                //    Home.Home_XYZFinish = false;
+                //}
 
             labTop:
                 //Lib_Log.Log.writeLogException("检查是否有其他动作启动");
@@ -8465,52 +13085,13 @@ namespace SmartDyeing.FADM_Auto
                                 break;
                         }
 
-                        //发送启动
-                        int[] values = new int[5];
-                        values[0] = 1;
-                        values[1] = 0;
-                        values[2] = 0;
-                        values[3] = 0;
-                        values[4] = 3;
-                        if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                        {
-                            FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                        }
-
-                        //写入测量数据
-                        int d_1 = 0;
-                        d_1 = Convert.ToInt32(60 * 1000) / 65536;
-                        int i_d_11 = Convert.ToInt32(60 * 1000) % 65536;
-
-                        int d_2 = 0;
-                        d_2 = (Convert.ToInt32(Lib_Card.Configure.Parameter.Other_AbsAddWater * 1000) + 10000) / 65536;
-                        int i_d_22 = (Convert.ToInt32(Lib_Card.Configure.Parameter.Other_AbsAddWater * 1000) + 10000) % 65536;
-
-                        int d_3 = 0;
-                        d_3 = Lib_Card.Configure.Parameter.Other_WashStirTime / 65536;
-                        int i_d_33 = Lib_Card.Configure.Parameter.Other_WashStirTime % 65536;
-
-                        int d_4 = 0;
-                        d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                        int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                        int d_5 = 0;
-                        d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                        int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                        int[] ia_array = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3 };
-                        if (Convert.ToInt32(i_cupNo) == 1)
-                            FADM_Object.Communal._tcpModBusAbs.Write(1010, ia_array);
-                        else
-                            FADM_Object.Communal._tcpModBusAbs.Write(1060, ia_array);
-
-                        if (Convert.ToInt32(i_cupNo) == 1)
-                            FADM_Object.Communal._tcpModBusAbs.Write(800, values);
-                        else
-                            FADM_Object.Communal._tcpModBusAbs.Write(810, values);
+                        
 
                         string s_sql = "UPDATE abs_cup_details SET Statues='洗杯',IsUsing = 1,Type=0,Cooperate=0  WHERE CupNum = " + i_cupNo + " ;";
                         FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                        SmartDyeing.FADM_Auto.MyAbsorbance.Generate(2, i_cupNo);
+                        SmartDyeing.FADM_Auto.MyAbsorbance.SendData(i_cupNo);
 
                         if (dt_cupordye_details.Rows[0]["Type"].ToString() != "2" && dt_cupordye_details.Rows[0]["Type"].ToString() != "4" && dt_cupordye_details.Rows[0]["Type"].ToString() != "6" && dt_cupordye_details.Rows[0]["Type"].ToString() != "7" && dt_cupordye_details.Rows[0]["Type"].ToString() != "8" && dt_cupordye_details.Rows[0]["Type"].ToString() != "9")
                         {
@@ -8532,52 +13113,13 @@ namespace SmartDyeing.FADM_Auto
                                         break;
                                 }
 
-                                //发送启动
-                                int[] values_f = new int[5];
-                                values_f[0] = 1;
-                                values_f[1] = 0;
-                                values_f[2] = 0;
-                                values_f[3] = 0;
-                                values_f[4] = 3;
-                                if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                {
-                                    FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                }
-
-                                //写入测量数据
-                                int d_11 = 0;
-                                d_11 = Convert.ToInt32(100 * 1000 * 2) / 65536;
-                                int i_d_111 = Convert.ToInt32(100 * 1000 * 2) % 65536;
-
-                                int d_21 = 0;
-                                d_21 = (Convert.ToInt32(Lib_Card.Configure.Parameter.Other_AbsAddWater * 1000) + 10000) / 65536;
-                                int i_d_221 = (Convert.ToInt32(Lib_Card.Configure.Parameter.Other_AbsAddWater * 1000) + 10000) % 65536;
-
-                                int d_31 = 0;
-                                d_31 = Lib_Card.Configure.Parameter.Other_WashStirTime / 65536;
-                                int i_d_331 = Lib_Card.Configure.Parameter.Other_WashStirTime % 65536;
-
-                                int d_41 = 0;
-                                d_41 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                int i_d_441 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                int d_51 = 0;
-                                d_51 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                                int i_d_551 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                                int[] ia_array1 = new int[] { i_d_111, d_11, i_d_221, d_21, i_d_331, d_31 };
-                                if (Convert.ToInt32(1) == 1)
-                                    FADM_Object.Communal._tcpModBusAbs.Write(1010, ia_array1);
-                                else
-                                    FADM_Object.Communal._tcpModBusAbs.Write(1060, ia_array1);
-
-                                if (Convert.ToInt32(1) == 1)
-                                    FADM_Object.Communal._tcpModBusAbs.Write(800, values_f);
-                                else
-                                    FADM_Object.Communal._tcpModBusAbs.Write(810, values_f);
+                                
 
                                 string s_sql1 = "UPDATE abs_cup_details SET Statues='洗杯',IsUsing = 1,Type=0  WHERE CupNum = " + 1 + " ;";
                                 FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql1);
+
+                                SmartDyeing.FADM_Auto.MyAbsorbance.Generate(2, 1);
+                                SmartDyeing.FADM_Auto.MyAbsorbance.SendData(1);
                             }
                         }
 
@@ -8633,52 +13175,13 @@ namespace SmartDyeing.FADM_Auto
                                         break;
                                 }
 
-                                //发送启动
-                                int[] values_f = new int[5];
-                                values_f[0] = 1;
-                                values_f[1] = 0;
-                                values_f[2] = 0;
-                                values_f[3] = 0;
-                                values_f[4] = 3;
-                                if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                {
-                                    FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                }
-
-                                //写入测量数据
-                                int d_1 = 0;
-                                d_1 = Convert.ToInt32(100 * 1000 * 2) / 65536;
-                                int i_d_11 = Convert.ToInt32(100 * 1000 * 2) % 65536;
-
-                                int d_2 = 0;
-                                d_2 = (Convert.ToInt32(Lib_Card.Configure.Parameter.Other_AbsAddWater * 1000) + 10000) / 65536;
-                                int i_d_22 = (Convert.ToInt32(Lib_Card.Configure.Parameter.Other_AbsAddWater * 1000) + 10000) % 65536;
-
-                                int d_3 = 0;
-                                d_3 = Lib_Card.Configure.Parameter.Other_WashStirTime / 65536;
-                                int i_d_33 = Lib_Card.Configure.Parameter.Other_WashStirTime % 65536;
-
-                                int d_4 = 0;
-                                d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                int d_5 = 0;
-                                d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                                int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                                int[] ia_array = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3 };
-                                if (Convert.ToInt32(1) == 1)
-                                    FADM_Object.Communal._tcpModBusAbs.Write(1010, ia_array);
-                                else
-                                    FADM_Object.Communal._tcpModBusAbs.Write(1060, ia_array);
-
-                                if (Convert.ToInt32(1) == 1)
-                                    FADM_Object.Communal._tcpModBusAbs.Write(800, values_f);
-                                else
-                                    FADM_Object.Communal._tcpModBusAbs.Write(810, values_f);
+                                
 
                                 string s_sql = "UPDATE abs_cup_details SET Statues='洗杯',IsUsing = 1,Type=0  WHERE CupNum = " + 1 + " ;";
                                 FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                SmartDyeing.FADM_Auto.MyAbsorbance.Generate(2, 1);
+                                SmartDyeing.FADM_Auto.MyAbsorbance.SendData(1);
                             }
                         }
 
@@ -8821,52 +13324,13 @@ namespace SmartDyeing.FADM_Auto
                                                     break;
                                             }
 
-                                            //发送启动
-                                            int[] values_f = new int[5];
-                                            values_f[0] = 1;
-                                            values_f[1] = 0;
-                                            values_f[2] = 0;
-                                            values_f[3] = 0;
-                                            values_f[4] = 3;
-                                            if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                            {
-                                                FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                            }
-
-                                            //写入测量数据
-                                            int d_1 = 0;
-                                            d_1 = Convert.ToInt32(100 * 1000 * 2) / 65536;
-                                            int i_d_11 = Convert.ToInt32(100 * 1000 * 2) % 65536;
-
-                                            int d_2 = 0;
-                                            d_2 = (Convert.ToInt32(Lib_Card.Configure.Parameter.Other_AbsAddWater * 1000) + 10000) / 65536;
-                                            int i_d_22 = (Convert.ToInt32(Lib_Card.Configure.Parameter.Other_AbsAddWater * 1000) + 10000) % 65536;
-
-                                            int d_3 = 0;
-                                            d_3 = Lib_Card.Configure.Parameter.Other_WashStirTime / 65536;
-                                            int i_d_33 = Lib_Card.Configure.Parameter.Other_WashStirTime % 65536;
-
-                                            int d_4 = 0;
-                                            d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                            int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                            int d_5 = 0;
-                                            d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                                            int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                                            int[] ia_array = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3 };
-                                            if (Convert.ToInt32(1) == 1)
-                                                FADM_Object.Communal._tcpModBusAbs.Write(1010, ia_array);
-                                            else
-                                                FADM_Object.Communal._tcpModBusAbs.Write(1060, ia_array);
-
-                                            if (Convert.ToInt32(1) == 1)
-                                                FADM_Object.Communal._tcpModBusAbs.Write(800, values_f);
-                                            else
-                                                FADM_Object.Communal._tcpModBusAbs.Write(810, values_f);
+                                            
 
                                             string s_sql = "UPDATE abs_cup_details SET Statues='洗杯',IsUsing = 1,Type=0  WHERE CupNum = " + 1 + " ;";
                                             FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                            SmartDyeing.FADM_Auto.MyAbsorbance.Generate(2, 1);
+                                            SmartDyeing.FADM_Auto.MyAbsorbance.SendData(1);
                                         }
                                     }
 
@@ -8999,52 +13463,13 @@ namespace SmartDyeing.FADM_Auto
                                                     break;
                                             }
 
-                                            //发送启动
-                                            int[] values_f = new int[5];
-                                            values_f[0] = 1;
-                                            values_f[1] = 0;
-                                            values_f[2] = 0;
-                                            values_f[3] = 0;
-                                            values_f[4] = 3;
-                                            if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                            {
-                                                FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                            }
-
-                                            //写入测量数据
-                                            int d_1 = 0;
-                                            d_1 = Convert.ToInt32(100 * 1000 * 2) / 65536;
-                                            int i_d_11 = Convert.ToInt32(100 * 1000 * 2) % 65536;
-
-                                            int d_2 = 0;
-                                            d_2 = (Convert.ToInt32(Lib_Card.Configure.Parameter.Other_AbsAddWater * 1000) + 10000) / 65536;
-                                            int i_d_22 = (Convert.ToInt32(Lib_Card.Configure.Parameter.Other_AbsAddWater * 1000) + 10000) % 65536;
-
-                                            int d_3 = 0;
-                                            d_3 = Lib_Card.Configure.Parameter.Other_WashStirTime / 65536;
-                                            int i_d_33 = Lib_Card.Configure.Parameter.Other_WashStirTime % 65536;
-
-                                            int d_4 = 0;
-                                            d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                            int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                            int d_5 = 0;
-                                            d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                                            int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                                            int[] ia_array = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3 };
-                                            if (Convert.ToInt32(1) == 1)
-                                                FADM_Object.Communal._tcpModBusAbs.Write(1010, ia_array);
-                                            else
-                                                FADM_Object.Communal._tcpModBusAbs.Write(1060, ia_array);
-
-                                            if (Convert.ToInt32(1) == 1)
-                                                FADM_Object.Communal._tcpModBusAbs.Write(800, values_f);
-                                            else
-                                                FADM_Object.Communal._tcpModBusAbs.Write(810, values_f);
+                                            
 
                                             string s_sql = "UPDATE abs_cup_details SET Statues='洗杯',IsUsing = 1,Type=0  WHERE CupNum = " + 1 + " ;";
                                             FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                            SmartDyeing.FADM_Auto.MyAbsorbance.Generate(2, 1);
+                                            SmartDyeing.FADM_Auto.MyAbsorbance.SendData(1);
                                         }
                                     }
 
@@ -9149,52 +13574,13 @@ namespace SmartDyeing.FADM_Auto
                                             break;
                                     }
 
-                                    //发送启动
-                                    int[] values_f = new int[5];
-                                    values_f[0] = 1;
-                                    values_f[1] = 0;
-                                    values_f[2] = 0;
-                                    values_f[3] = 0;
-                                    values_f[4] = 3;
-                                    if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                    {
-                                        FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                    }
-
-                                    //写入测量数据
-                                    int d_1 = 0;
-                                    d_1 = Convert.ToInt32(100 * 1000 * 2) / 65536;
-                                    int i_d_11 = Convert.ToInt32(100 * 1000 * 2) % 65536;
-
-                                    int d_2 = 0;
-                                    d_2 = (Convert.ToInt32(Lib_Card.Configure.Parameter.Other_AbsAddWater * 1000) + 10000) / 65536;
-                                    int i_d_22 = (Convert.ToInt32(Lib_Card.Configure.Parameter.Other_AbsAddWater * 1000) + 10000) % 65536;
-
-                                    int d_3 = 0;
-                                    d_3 = Lib_Card.Configure.Parameter.Other_WashStirTime / 65536;
-                                    int i_d_33 = Lib_Card.Configure.Parameter.Other_WashStirTime % 65536;
-
-                                    int d_4 = 0;
-                                    d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                    int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                    int d_5 = 0;
-                                    d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                                    int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                                    int[] ia_array = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3 };
-                                    if (Convert.ToInt32(1) == 1)
-                                        FADM_Object.Communal._tcpModBusAbs.Write(1010, ia_array);
-                                    else
-                                        FADM_Object.Communal._tcpModBusAbs.Write(1060, ia_array);
-
-                                    if (Convert.ToInt32(1) == 1)
-                                        FADM_Object.Communal._tcpModBusAbs.Write(800, values_f);
-                                    else
-                                        FADM_Object.Communal._tcpModBusAbs.Write(810, values_f);
+                                    
 
                                     string s_sql = "UPDATE abs_cup_details SET Statues='洗杯',IsUsing = 1,Type=0  WHERE CupNum = " + 1 + " ;";
                                     FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                    SmartDyeing.FADM_Auto.MyAbsorbance.Generate(2, 1);
+                                    SmartDyeing.FADM_Auto.MyAbsorbance.SendData(1);
                                 }
 
                                 double d_total = 0.0;
@@ -9292,52 +13678,13 @@ namespace SmartDyeing.FADM_Auto
                                             break;
                                     }
 
-                                    //发送启动
-                                    int[] values_f = new int[5];
-                                    values_f[0] = 1;
-                                    values_f[1] = 0;
-                                    values_f[2] = 0;
-                                    values_f[3] = 0;
-                                    values_f[4] = 3;
-                                    if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                    {
-                                        FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                    }
-
-                                    //写入测量数据
-                                    int d_1 = 0;
-                                    d_1 = Convert.ToInt32(100 * 1000 * 2) / 65536;
-                                    int i_d_11 = Convert.ToInt32(100 * 1000 * 2) % 65536;
-
-                                    int d_2 = 0;
-                                    d_2 = (Convert.ToInt32(Lib_Card.Configure.Parameter.Other_AbsAddWater * 1000) + 10000) / 65536;
-                                    int i_d_22 = (Convert.ToInt32(Lib_Card.Configure.Parameter.Other_AbsAddWater * 1000) + 10000) % 65536;
-
-                                    int d_3 = 0;
-                                    d_3 = Lib_Card.Configure.Parameter.Other_WashStirTime / 65536;
-                                    int i_d_33 = Lib_Card.Configure.Parameter.Other_WashStirTime % 65536;
-
-                                    int d_4 = 0;
-                                    d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                    int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                    int d_5 = 0;
-                                    d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                                    int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                                    int[] ia_array = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3 };
-                                    if (Convert.ToInt32(1) == 1)
-                                        FADM_Object.Communal._tcpModBusAbs.Write(1010, ia_array);
-                                    else
-                                        FADM_Object.Communal._tcpModBusAbs.Write(1060, ia_array);
-
-                                    if (Convert.ToInt32(1) == 1)
-                                        FADM_Object.Communal._tcpModBusAbs.Write(800, values_f);
-                                    else
-                                        FADM_Object.Communal._tcpModBusAbs.Write(810, values_f);
+                                    
 
                                     string s_sql = "UPDATE abs_cup_details SET Statues='洗杯',IsUsing = 1,Type=0  WHERE CupNum = " + 1 + " ;";
                                     FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                    SmartDyeing.FADM_Auto.MyAbsorbance.Generate(2, 1);
+                                    SmartDyeing.FADM_Auto.MyAbsorbance.SendData(1);
                                 }
 
                                 double d_total = 0.0;
@@ -9978,8 +14325,16 @@ namespace SmartDyeing.FADM_Auto
                         //放布完成
                         ia_zero[0] = 2;
 
-
-                        DyeHMIWrite(i_cupNo, 120, 120, ia_zero);
+                        if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] != 4)
+                            DyeHMIWrite(i_cupNo, 120, 120, ia_zero);
+                        else
+                        {
+                            int[] ia_zeroz = new int[2];
+                            //放布完成
+                            ia_zeroz[0] = 1;
+                            ia_zeroz[1] = 0;
+                            DyeHMIWrite(i_cupNo, 0x211, 120, ia_zeroz);
+                        }
                     }
                     //6杯放布完成
                     else
@@ -10041,8 +14396,16 @@ namespace SmartDyeing.FADM_Auto
                         //出布完成
                         ia_zero[0] = 1;
 
-
-                        DyeHMIWrite(i_cupNo, 120, 120, ia_zero);
+                        if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] != 4)
+                            DyeHMIWrite(i_cupNo, 120, 120, ia_zero);
+                        else
+                        {
+                            int[] ia_zeroz = new int[2];
+                            //放布完成
+                            ia_zeroz[0] = 1;
+                            ia_zeroz[1] = 0;
+                            DyeHMIWrite(i_cupNo, 0x20F, 120, ia_zeroz);
+                        }
                     }
                     else
                     {
@@ -10654,6 +15017,45 @@ namespace SmartDyeing.FADM_Auto
 
                             return;
                         }
+                        else if ("二次关盖未发现杯盖" == ex.Message)
+                        {
+
+                            FADM_Object.MyAlarm myAlarm;
+                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                               "UPDATE cup_details SET  Cooperate = 6 WHERE  CupNum = " + i_cupNo + " ;");
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                myAlarm = new FADM_Object.MyAlarm(i_cupNo + "号二次关盖未发现杯盖，请人工确定关盖完成后点是继续运行", "SwitchCover", i_cupNo, 2, 12);
+                            else
+                                myAlarm = new FADM_Object.MyAlarm(i_cupNo + " No lid was found after closing the lid again, Please manually confirm that the point is to continue running after closing the cover", "SwitchCover", i_cupNo, 2, 12);
+
+                            return;
+                        }
+                        else if ("二次关盖复压失败" == ex.Message)
+                        {
+
+                            FADM_Object.MyAlarm myAlarm;
+                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                               "UPDATE cup_details SET  Cooperate = 6 WHERE  CupNum = " + i_cupNo + " ;");
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                myAlarm = new FADM_Object.MyAlarm(i_cupNo + "号二次关盖复压失败，请人工确定关盖完成后点是继续运行", "SwitchCover", i_cupNo, 2, 12);
+                            else
+                                myAlarm = new FADM_Object.MyAlarm(i_cupNo + " Failed to close the cover again, Please manually confirm that the point is to continue running after closing the cover", "SwitchCover", i_cupNo, 2, 12);
+
+                            return;
+                        }
+                        else if ("二次关盖失败" == ex.Message)
+                        {
+
+                            FADM_Object.MyAlarm myAlarm;
+                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                               "UPDATE cup_details SET  Cooperate = 6 WHERE  CupNum = " + i_cupNo + " ;");
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                myAlarm = new FADM_Object.MyAlarm(i_cupNo + "号二次关盖失败，请人工确定关盖完成后点是继续运行", "SwitchCover", i_cupNo, 2, 12);
+                            else
+                                myAlarm = new FADM_Object.MyAlarm(i_cupNo + " Failed to close the cover twice, Please manually confirm that the point is to continue running after closing the cover", "SwitchCover", i_cupNo, 2, 12);
+
+                            return;
+                        }
                         else if ("放盖区取盖失败" == ex.Message)
                         {
 
@@ -10820,7 +15222,7 @@ namespace SmartDyeing.FADM_Auto
                 }
                 
                 //先判断是否开盖
-                if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNO] == 1||SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNO] == 2|| SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNO] == 3)
+                if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNO] == 1||SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNO] == 2|| SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNO] == 3 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNO] == 4 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNO] == 5)
                 {
                     //如果关盖状态，就先执行开盖动作
                     if (_cup_Temps[i_cupNO - 1]._i_cupCover == 1)
@@ -11846,7 +16248,7 @@ namespace SmartDyeing.FADM_Auto
                 //针检
                 if ((0 >= i_adjust || false == b_checkSuccess) && !b_checkFail)
                 {
-                    int i_res= new BottleCheck().MyDripCheck(i_minBottleNo, true, 2); //针检
+                    int i_res= new BottleCheck().MyDripCheck(i_minBottleNo, true, 0); //针检
                     if (-1 == i_res)
                     {
                         FADM_Object.Communal.WriteDripWait(true);
@@ -11877,6 +16279,31 @@ namespace SmartDyeing.FADM_Auto
                         //夹不到针筒时选择否，直接退出
                         throw new Exception("收到退出消息");
                     }
+                    else if(-2 == i_res)
+                    {
+                        //加测试母液
+                        if (i_type == 1)
+                        {
+                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                     "UPDATE abs_cup_details SET  Cooperate = 7 WHERE   CupNum = " + i_cupNo + " ;");
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                new FADM_Object.MyAlarm(i_bottleNo + "号母液瓶未发现针筒，请确认无误后点确定", i_cupNo, 7);
+                            else
+                                new FADM_Object.MyAlarm("No syringe was found in the" + i_bottleNo + "  mother liquor bottle. Please confirm if there are no errors and click OK", i_cupNo, 7);
+                        }
+                        //加溶解剂
+                        else
+                        {
+                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                     "UPDATE abs_cup_details SET  Cooperate = 8 WHERE   CupNum = " + i_cupNo + " ;");
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                new FADM_Object.MyAlarm(i_bottleNo + "号母液瓶未发现针筒，请确认无误后点确定", i_cupNo, 8);
+                            else
+                                new FADM_Object.MyAlarm("No syringe was found in the" + i_bottleNo + "  mother liquor bottle. Please confirm if there are no errors and click OK", i_cupNo, 8);
+                        }
+                        FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "未发现针筒抽液退出");
+                        return -1;
+                    }
                     if (b_checkFail)
                     {
                         s_sql = "update bottle_details set AdjustValue = 3900 where AdjustValue =0 And " +
@@ -11885,7 +16312,6 @@ namespace SmartDyeing.FADM_Auto
                     }
                     goto label9;
                 }
-
 
                 //计算脉冲
                 Dictionary<int, int> dic_pulse = new Dictionary<int, int>();
@@ -12031,6 +16457,12 @@ namespace SmartDyeing.FADM_Auto
                         else
                             new FADM_Object.MyAlarm(" The number of pre-drops in mother liquor bottle " + i_bottleNo + "  is too small, please check whether the actual amount of liquid is too low" +
                             "( Continue to perform please click Yes)", i_cupNo, 9);
+
+                        //回一次原点再继续，担心失步导致后续母液抽不了
+                        int i_state = MyModbusFun.goHome();
+                        if (0 != i_state && -2 != i_state)
+                            throw new Exception("驱动异常");
+
                     }
                     else
                     {
@@ -12042,6 +16474,11 @@ namespace SmartDyeing.FADM_Auto
                         else
                             new FADM_Object.MyAlarm(" The number of pre-drops in mother liquor bottle " + i_bottleNo + "  is too small, please check whether the actual amount of liquid is too low" +
                             "( Continue to perform please click Yes)", i_cupNo, 10);
+
+                        //回一次原点再继续，担心失步导致后续母液抽不了
+                        int i_state = MyModbusFun.goHome();
+                        if (0 != i_state && -2 != i_state)
+                            throw new Exception("驱动异常");
                     }
                     return -2;
 
@@ -12534,6 +16971,39 @@ namespace SmartDyeing.FADM_Auto
                             //复位加药启动信号
                             int[] ia_zero = new int[1];
                             //
+                            if (SmartDyeing.FADM_Object.Communal._dic_dyeType[kvp.Key] != 4)
+                            {
+                                ia_zero[0] = 0;
+                                DyeHMIWrite(kvp.Key, 509, 309, ia_zero);
+
+                                //发送加药完成
+                                ia_zero = new int[1];
+                                //
+                                ia_zero[0] = 2;
+
+                                DyeHMIWrite(kvp.Key, 115, 114, ia_zero);
+                            }
+                            else
+                            {
+                                ia_zero[0] = 0;
+                                DyeHMIWrite(kvp.Key, 0x109, 309, ia_zero);
+
+                                //发送加药完成
+                                ia_zero = new int[1];
+                                //
+                                ia_zero[0] = 2;
+
+                                DyeHMIWrite(kvp.Key, 0x0F, 114, ia_zero);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //复位加药启动信号
+                        int[] ia_zero = new int[1];
+                        //
+                        if (SmartDyeing.FADM_Object.Communal._dic_dyeType[kvp.Key] != 4)
+                        {
                             ia_zero[0] = 0;
                             DyeHMIWrite(kvp.Key, 509, 309, ia_zero);
 
@@ -12544,21 +17014,18 @@ namespace SmartDyeing.FADM_Auto
 
                             DyeHMIWrite(kvp.Key, 115, 114, ia_zero);
                         }
-                    }
-                    else
-                    {
-                        //复位加药启动信号
-                        int[] ia_zero = new int[1];
-                        //
-                        ia_zero[0] = 0;
-                        DyeHMIWrite(kvp.Key, 509, 309, ia_zero);
+                        else
+                        {
+                            ia_zero[0] = 0;
+                            DyeHMIWrite(kvp.Key, 0x109, 309, ia_zero);
 
-                        //发送加药完成
-                        ia_zero = new int[1];
-                        //
-                        ia_zero[0] = 2;
+                            //发送加药完成
+                            ia_zero = new int[1];
+                            //
+                            ia_zero[0] = 2;
 
-                        DyeHMIWrite(kvp.Key, 115, 114, ia_zero);
+                            DyeHMIWrite(kvp.Key, 0x0F, 114, ia_zero);
+                        }
                     }
 
                 }
@@ -12624,6 +17091,39 @@ namespace SmartDyeing.FADM_Auto
                             //复位加药启动信号
                             int[] ia_zero = new int[1];
                             //
+                            if (SmartDyeing.FADM_Object.Communal._dic_dyeType[kvp.Key] != 4)
+                            {
+                                ia_zero[0] = 0;
+                                DyeHMIWrite(kvp.Key, 509, 309, ia_zero);
+
+                                //发送加药完成
+                                ia_zero = new int[1];
+                                //
+                                ia_zero[0] = 2;
+
+                                DyeHMIWrite(kvp.Key, 115, 114, ia_zero);
+                            }
+                            else
+                            {
+                                ia_zero[0] = 0;
+                                DyeHMIWrite(kvp.Key, 0x109, 309, ia_zero);
+
+                                //发送加药完成
+                                ia_zero = new int[1];
+                                //
+                                ia_zero[0] = 2;
+
+                                DyeHMIWrite(kvp.Key, 0x0F, 114, ia_zero);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //复位加药启动信号
+                        int[] ia_zero = new int[1];
+                        //
+                        if (SmartDyeing.FADM_Object.Communal._dic_dyeType[kvp.Key] != 4)
+                        {
                             ia_zero[0] = 0;
                             DyeHMIWrite(kvp.Key, 509, 309, ia_zero);
 
@@ -12634,21 +17134,18 @@ namespace SmartDyeing.FADM_Auto
 
                             DyeHMIWrite(kvp.Key, 115, 114, ia_zero);
                         }
-                    }
-                    else
-                    {
-                        //复位加药启动信号
-                        int[] ia_zero = new int[1];
-                        //
-                        ia_zero[0] = 0;
-                        DyeHMIWrite(kvp.Key, 509, 309, ia_zero);
+                        else
+                        {
+                            ia_zero[0] = 0;
+                            DyeHMIWrite(kvp.Key, 0x109, 309, ia_zero);
 
-                        //发送加药完成
-                        ia_zero = new int[1];
-                        //
-                        ia_zero[0] = 2;
+                            //发送加药完成
+                            ia_zero = new int[1];
+                            //
+                            ia_zero[0] = 2;
 
-                        DyeHMIWrite(kvp.Key, 115, 114, ia_zero);
+                            DyeHMIWrite(kvp.Key, 0x0F, 114, ia_zero);
+                        }
                     }
 
                 }
@@ -12697,6 +17194,11 @@ namespace SmartDyeing.FADM_Auto
                     "( Continue to perform please click Yes)", i_bottleNo, 6, MessageBoxButtons.YesNo);
                 if(!_lis_warmBottle.Contains(i_bottleNo))
                     _lis_warmBottle.Add(i_bottleNo);
+
+                //回一次原点再继续，担心失步导致后续母液抽不了
+                int i_state = MyModbusFun.goHome();
+                if (0 != i_state && -2 != i_state)
+                    throw new Exception("驱动异常");
                 return -1;
 
             }
@@ -13016,16 +17518,32 @@ namespace SmartDyeing.FADM_Auto
                         //清空申请加药标记
                         int[] ia_zero1 = new int[1];
                         //
-                        ia_zero1[0] = 0;
+                        if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] != 4)
+                        {
+                            ia_zero1[0] = 0;
 
-                        DyeHMIWrite(i_cupNo, 508, 309, ia_zero1);
+                            DyeHMIWrite(i_cupNo, 508, 309, ia_zero1);
 
-                        //发送加药开始
-                        ia_zero1 = new int[1];
-                        //
-                        ia_zero1[0] = 3;
+                            //发送加药开始
+                            ia_zero1 = new int[1];
+                            //
+                            ia_zero1[0] = 3;
 
-                        DyeHMIWrite(i_cupNo, 115, 114, ia_zero1);
+                            DyeHMIWrite(i_cupNo, 115, 114, ia_zero1);
+                        }
+                        else
+                        {
+                            ia_zero1[0] = 0;
+
+                            DyeHMIWrite(i_cupNo, 0x108, 309, ia_zero1);
+
+                            //发送加药开始
+                            ia_zero1 = new int[1];
+                            //
+                            ia_zero1[0] = 3;
+
+                            DyeHMIWrite(i_cupNo, 0x0F, 114, ia_zero1);
+                        }
                     }
 
                     //是否需要我清空申请加药
@@ -13059,7 +17577,7 @@ namespace SmartDyeing.FADM_Auto
                         if (_cup_Temps[i_cupNo - 1]._i_requesCupCover == 1)
                         {
                             //执行开盖
-                            if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 3)
+                            if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 3 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 4 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 5)
                             {
                                 //如果关盖状态，就先执行开盖动作
                                 if (FADM_Auto.Dye._cup_Temps[i_cupNo - 1]._i_cupCover == 1)
@@ -13210,7 +17728,7 @@ namespace SmartDyeing.FADM_Auto
                             if (_cup_Temps[_dic_first_second[i_cupNo] - 1]._i_requesCupCover == 1)
                             {
                                 //执行开盖
-                                if (SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo]] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo]] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo]] == 3)
+                                if (SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo]] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo]] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo]] == 3 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo]] == 4 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo]] == 5)
                                 {
                                     //如果关盖状态，就先执行开盖动作
                                     if (FADM_Auto.Dye._cup_Temps[_dic_first_second[i_cupNo] - 1]._i_cupCover == 1)
@@ -13521,16 +18039,19 @@ namespace SmartDyeing.FADM_Auto
                             //
                             ia_zero[0] = 0;
 
-
-                            DyeHMIWrite(i_cupNo, 509, 309, ia_zero);
-
+                            if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] != 4)
+                                DyeHMIWrite(i_cupNo, 509, 309, ia_zero);
+                            else
+                                DyeHMIWrite(i_cupNo, 0x109, 309, ia_zero);
 
                             ia_zero = new int[1];
                             //
                             ia_zero[0] = 2;
 
-
-                            DyeHMIWrite(i_cupNo, 115, 114, ia_zero);
+                            if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] != 4)
+                                DyeHMIWrite(i_cupNo, 115, 114, ia_zero);
+                            else
+                                DyeHMIWrite(i_cupNo, 0x0F, 114, ia_zero);
 
                             FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", i_cupNO + "号配液杯加水完成");
                             if (b_sec)
@@ -13580,7 +18101,7 @@ namespace SmartDyeing.FADM_Auto
                     {
                         //判断是否翻转缸，如果是就执行关盖动作
                         //关盖
-                        if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 3)
+                        if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 3 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 4 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 5)
                         {
 
                         label3:
@@ -13759,7 +18280,7 @@ namespace SmartDyeing.FADM_Auto
                         //判断是否开盖状态
                         if (_cup_Temps[SmartDyeing.FADM_Object.Communal._dic_first_second[i_cupNo] - 1]._i_cupCover == 2)
                         {
-                            if (SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo]] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo]] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo]] == 3)
+                            if (SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo]] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo]] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo]] == 3 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo]] == 4 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo]] == 5)
                             {
 
                             label3:
@@ -13910,16 +18431,32 @@ namespace SmartDyeing.FADM_Auto
                                         //清空申请加药标记
                                         int[] ia_zero1 = new int[1];
                                         //
-                                        ia_zero1[0] = 0;
+                                        if (SmartDyeing.FADM_Object.Communal._dic_dyeType[lis_needAddCup[i]] != 4)
+                                        {
+                                            ia_zero1[0] = 0;
 
-                                        DyeHMIWrite(lis_needAddCup[i], 508, 309, ia_zero1);
+                                            DyeHMIWrite(lis_needAddCup[i], 508, 309, ia_zero1);
 
-                                        //发送加药开始
-                                        ia_zero1 = new int[1];
-                                        //
-                                        ia_zero1[0] = 3;
+                                            //发送加药开始
+                                            ia_zero1 = new int[1];
+                                            //
+                                            ia_zero1[0] = 3;
 
-                                        DyeHMIWrite(lis_needAddCup[i], 115, 114, ia_zero1);
+                                            DyeHMIWrite(lis_needAddCup[i], 115, 114, ia_zero1);
+                                        }
+                                        else
+                                        {
+                                            ia_zero1[0] = 0;
+
+                                            DyeHMIWrite(lis_needAddCup[i], 0x108, 309, ia_zero1);
+
+                                            //发送加药开始
+                                            ia_zero1 = new int[1];
+                                            //
+                                            ia_zero1[0] = 3;
+
+                                            DyeHMIWrite(lis_needAddCup[i], 0x0F, 114, ia_zero1);
+                                        }
                                         lis_send.Add(lis_needAddCup[i]);
 
                                         FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", lis_needAddCup[i] + "发送开始加药信号");
@@ -13969,7 +18506,7 @@ namespace SmartDyeing.FADM_Auto
                                 if (_cup_Temps[i_cupNo_temp - 1]._i_requesCupCover == 1)
                                 {
                                     //执行开盖
-                                    if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo_temp] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo_temp] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo_temp] == 3)
+                                    if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo_temp] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo_temp] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo_temp] == 3 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo_temp] == 4 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo_temp] == 5)
                                     {
                                         //如果关盖状态，就先执行开盖动作
                                         if (FADM_Auto.Dye._cup_Temps[i_cupNo_temp - 1]._i_cupCover == 1)
@@ -14127,7 +18664,7 @@ namespace SmartDyeing.FADM_Auto
                                     if (_cup_Temps[_dic_first_second[i_cupNo_temp] - 1]._i_requesCupCover == 1)
                                     {
                                         //执行开盖
-                                        if (SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo_temp]] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo_temp]] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo_temp]] == 3)
+                                        if (SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo_temp]] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo_temp]] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo_temp]] == 3 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo_temp]] == 4 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cupNo_temp]] == 5)
                                         {
                                             //如果关盖状态，就先执行开盖动作
                                             if (FADM_Auto.Dye._cup_Temps[_dic_first_second[i_cupNo_temp] - 1]._i_cupCover == 1)
@@ -14296,7 +18833,7 @@ namespace SmartDyeing.FADM_Auto
                             int i_cup_temp = Convert.ToInt32(dr["CupNum"]);
                             int i_step_temp = Convert.ToInt32(dr["StepNum"]);
                             //判断下一步是否加水或加药
-                            DataTable dt_s = FADM_Object.Communal._fadmSqlserver.GetData("Select * from dye_details where  BatchName !='0' And CupNum = " + _dic_first_second[i_cup_temp] + " And StepNum = " + (i_step_temp)+ " and Finish =0 and Cooperate = 1");
+                            DataTable dt_s = FADM_Object.Communal._fadmSqlserver.GetData("Select * from dye_details where  BatchName !='0' And CupNum = " + _dic_first_second[i_cup_temp] + " And StepNum = " + (i_step_temp)+ " and Finish =0");
                             if(dt_s.Rows.Count >0)
                             {
                                 if (-1 == CycleAddMed(dt_s))
@@ -14319,7 +18856,7 @@ namespace SmartDyeing.FADM_Auto
                                 if (!dt.Rows[0]["TechnologyName"].ToString().Contains("加"))
                                 {
                                     lis_cupExclude.Add(i_cup_temp);
-                                    if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 3)
+                                    if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 3 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 4 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 5)
                                     {
                                         //如果关盖状态，就先执行开盖动作
                                         if (FADM_Auto.Dye._cup_Temps[i_cup_temp - 1]._i_cupCover == 2)
@@ -14498,7 +19035,7 @@ namespace SmartDyeing.FADM_Auto
                                     DataTable dt_s = FADM_Object.Communal._fadmSqlserver.GetData("Select * from dye_details where CupNum = " + _dic_first_second[i_cup_temp] + " And StepNum = " + (i_step_temp+1) );
                                     if (dt_s.Rows.Count > 0)
                                     {
-                                        if (SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cup_temp]] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cup_temp]] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cup_temp]] == 3)
+                                        if (SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cup_temp]] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cup_temp]] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cup_temp]] == 3 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cup_temp]] == 4 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cup_temp]] == 5)
                                         {
                                             if (FADM_Auto.Dye._cup_Temps[_dic_first_second[i_cup_temp] - 1]._i_cupCover == 2)
                                             {
@@ -14706,9 +19243,10 @@ namespace SmartDyeing.FADM_Auto
                                                 //
                                                 ia_zero[0] = 0;
 
-
-                                                DyeHMIWrite(i_cupNo, 509, 309, ia_zero);
-
+                                                if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] != 4)
+                                                    DyeHMIWrite(i_cupNo, 509, 309, ia_zero);
+                                                else
+                                                    DyeHMIWrite(i_cupNo, 0x109, 309, ia_zero);
 
 
 
@@ -14718,8 +19256,10 @@ namespace SmartDyeing.FADM_Auto
                                                 //
                                                 ia_zero[0] = 2;
 
-
-                                                DyeHMIWrite(i_cupNo, 115, 114, ia_zero);
+                                                if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] != 4)
+                                                    DyeHMIWrite(i_cupNo, 115, 114, ia_zero);
+                                                else
+                                                    DyeHMIWrite(i_cupNo, 0x0F, 114, ia_zero);
                                             }
                                         }
                                         else
@@ -14729,10 +19269,10 @@ namespace SmartDyeing.FADM_Auto
                                             //
                                             ia_zero[0] = 0;
 
-
-                                            DyeHMIWrite(i_cupNo, 509, 309, ia_zero);
-
-
+                                            if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] != 4)
+                                                DyeHMIWrite(i_cupNo, 509, 309, ia_zero);
+                                            else
+                                                DyeHMIWrite(i_cupNo, 0x109, 309, ia_zero);
 
 
 
@@ -14741,8 +19281,10 @@ namespace SmartDyeing.FADM_Auto
                                             //
                                             ia_zero[0] = 2;
 
-
-                                            DyeHMIWrite(i_cupNo, 115, 114, ia_zero);
+                                            if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] != 4)
+                                                DyeHMIWrite(i_cupNo, 115, 114, ia_zero);
+                                            else
+                                                DyeHMIWrite(i_cupNo, 0x0F, 114, ia_zero);
                                         }
 
                                         
@@ -14809,9 +19351,10 @@ namespace SmartDyeing.FADM_Auto
                                             //
                                             ia_zero[0] = 0;
 
-
-                                            DyeHMIWrite(i_cupNo, 509, 309, ia_zero);
-
+                                            if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] != 4)
+                                                DyeHMIWrite(i_cupNo, 509, 309, ia_zero);
+                                            else
+                                                DyeHMIWrite(i_cupNo, 0x109, 309, ia_zero);
 
 
 
@@ -14821,8 +19364,10 @@ namespace SmartDyeing.FADM_Auto
                                             //
                                             ia_zero[0] = 2;
 
-
-                                            DyeHMIWrite(i_cupNo, 115, 114, ia_zero);
+                                            if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] != 4)
+                                                DyeHMIWrite(i_cupNo, 115, 114, ia_zero);
+                                            else
+                                                DyeHMIWrite(i_cupNo, 0x0F, 114, ia_zero);
                                         }
                                     }
                                     //重新再判断下一步
@@ -14845,6 +19390,11 @@ namespace SmartDyeing.FADM_Auto
                                             else
                                                 new FADM_Object.MyAlarm(" The number of pre-drops in mother liquor bottle " + i_bN + "  is too small, please check whether the actual amount of liquid is too low" +
                                                 "( Continue to perform please click Yes)", i_bN, 6, MessageBoxButtons.YesNo);
+
+                                            //回一次原点再继续，担心失步导致后续母液抽不了
+                                            int i_state = MyModbusFun.goHome();
+                                            if (0 != i_state && -2 != i_state)
+                                                throw new Exception("驱动异常");
 
                                             goto la_s;
                                         }
@@ -14870,7 +19420,7 @@ namespace SmartDyeing.FADM_Auto
                                     dt_s = FADM_Object.Communal._fadmSqlserver.GetData("Select * from dye_details where  BatchName !='0' And CupNum = " + _dic_first_second[i_cup_temp] + " And StepNum = " + (i_step_temp + 1));
                                     if (dt_s.Rows.Count > 0)
                                     {
-                                        if (dt_s.Rows[0]["Finish"].ToString() == "0"&& dt_s.Rows[0]["Cooperate"].ToString() == "1")
+                                        if (dt_s.Rows[0]["Finish"].ToString() == "0"/*&& dt_s.Rows[0]["Cooperate"].ToString() == "1"*/)
                                         {
                                             int i_bN = Convert.ToInt32(dt_s.Rows[0]["BottleNum"].ToString());
                                             int i_cN = Convert.ToInt32(dt_s.Rows[0]["CupNum"].ToString());
@@ -14884,6 +19434,11 @@ namespace SmartDyeing.FADM_Auto
                                                 else
                                                     new FADM_Object.MyAlarm(" The number of pre-drops in mother liquor bottle " + i_bN + "  is too small, please check whether the actual amount of liquid is too low" +
                                                     "( Continue to perform please click Yes)", i_bN, 6, MessageBoxButtons.YesNo);
+
+                                                //回一次原点再继续，担心失步导致后续母液抽不了
+                                                int i_state = MyModbusFun.goHome();
+                                                if (0 != i_state && -2 != i_state)
+                                                    throw new Exception("驱动异常");
 
                                                 continue;
                                             }
@@ -14903,7 +19458,7 @@ namespace SmartDyeing.FADM_Auto
 
                             //判断是否翻转缸，如果是就执行关盖动作
                             //关盖
-                            if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 3)
+                            if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 3 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 4 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 5)
                             {
                                 if (FADM_Auto.Dye._cup_Temps[i_cup_temp - 1]._i_cupCover == 2)
                                 {
@@ -15083,7 +19638,7 @@ namespace SmartDyeing.FADM_Auto
                                     //副杯
                                     //判断是否翻转缸，如果是就执行关盖动作
                                     //关盖
-                                    if (SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cup_temp]] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cup_temp]] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cup_temp]] == 3)
+                                    if (SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cup_temp]] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cup_temp]] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cup_temp]] == 3 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cup_temp]] == 4 || SmartDyeing.FADM_Object.Communal._dic_dyeType[_dic_first_second[i_cup_temp]] == 5)
                                     {
                                         if (FADM_Auto.Dye._cup_Temps[_dic_first_second[i_cup_temp] - 1]._i_cupCover == 2)
                                         {
@@ -15325,7 +19880,7 @@ namespace SmartDyeing.FADM_Auto
 
                 int i_mRes;
                 int i_cupNo = i_cupNO;
-                if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 3)
+                if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 3 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 4 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 5)
                 {
                     //如果关盖状态，就先执行开盖动作
                     if (_cup_Temps[i_cupNO - 1]._i_cupCover == 1)
@@ -15565,16 +20120,20 @@ namespace SmartDyeing.FADM_Auto
                         //
                         ia_zero[0] = 0;
 
-
-                        DyeHMIWrite(i_cupNo, 509, 309, ia_zero);
+                        if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] != 4)
+                            DyeHMIWrite(i_cupNo, 509, 309, ia_zero);
+                        else
+                            DyeHMIWrite(i_cupNo, 0x109, 309, ia_zero);
 
 
                         ia_zero = new int[1];
                         //
                         ia_zero[0] = 2;
 
-
-                        DyeHMIWrite(i_cupNo, 115, 114, ia_zero);
+                        if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] != 4)
+                            DyeHMIWrite(i_cupNo, 115, 114, ia_zero);
+                        else
+                            DyeHMIWrite(i_cupNo, 0x0F, 114, ia_zero);
                     }
                 }
                 else
@@ -15586,16 +20145,19 @@ namespace SmartDyeing.FADM_Auto
                         //
                         ia_zero[0] = 0;
 
-
-                        DyeHMIWrite(i_cupNo, 509, 309, ia_zero);
-
+                        if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] != 4)
+                            DyeHMIWrite(i_cupNo, 509, 309, ia_zero);
+                        else
+                            DyeHMIWrite(i_cupNo, 0x109, 309, ia_zero);
 
                         ia_zero = new int[1];
                         //
                         ia_zero[0] = 2;
 
-
-                        DyeHMIWrite(i_cupNo, 115, 114, ia_zero);
+                        if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] != 4)
+                            DyeHMIWrite(i_cupNo, 115, 114, ia_zero);
+                        else
+                            DyeHMIWrite(i_cupNo, 0x0F, 114, ia_zero);
                     }
                 }
 
@@ -15650,7 +20212,7 @@ namespace SmartDyeing.FADM_Auto
 
                 if (_cup_Temps[i_cup_temp - 1]._i_cupCover == 2)
                 {
-                    if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 3)
+                    if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 3 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 4 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cup_temp] == 5)
                     {
                     //执行关盖
                     label3:
@@ -15940,85 +20502,223 @@ namespace SmartDyeing.FADM_Auto
 
             if (iCupNO >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area1_CupMin.ToString()) && iCupNO <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area1_CupMax.ToString()))
             {
-                if (!FADM_Object.Communal._tcpDyeHMI1._b_Connect)
+                if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] != 4)
                 {
-                    FADM_Object.Communal._tcpDyeHMI1.ReConnect();
+                    if (!FADM_Object.Communal._tcpDyeHMI1._b_Connect)
+                    {
+                        FADM_Object.Communal._tcpDyeHMI1.ReConnect();
+                    }
                 }
-                int i_cupnum = Lib_Card.Configure.Parameter.Machine_Area1_CupMin;
+                    int i_cupnum = Lib_Card.Configure.Parameter.Machine_Area1_CupMin;
                 if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 3)
                     FADM_Object.Communal._tcpDyeHMI1.Write(iNewStart + 64 * ((iCupNO - i_cupnum + 1 - 1) % 6), values);
-                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 2)
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 5)
                     FADM_Object.Communal._tcpDyeHMI1.Write(iNewStart + 64 * (((iCupNO - i_cupnum + 1 - 1) / 2) % 6), values);
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 4)
+                {
+                    if (iCupNO - i_cupnum < 8)
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI1._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI1.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI1.Write(iNewStart + 64 * (((iCupNO - i_cupnum + 1 - 1) / 2) % 4), values);
+                    }
+                    else
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI1_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI1_s.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI1_s.Write(iNewStart + 64 * (((iCupNO - i_cupnum + 1 - 1) / 2) % 4), values);
+                    }
+
+                }
                 else
                     FADM_Object.Communal._tcpDyeHMI1.Write(iOldStart + 16 * ((iCupNO - i_cupnum + 1 - 1) % 10), values);
             }
             else if (iCupNO >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area2_CupMin.ToString()) && iCupNO <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area2_CupMax.ToString()))
             {
-                if (!FADM_Object.Communal._tcpDyeHMI2._b_Connect)
+                if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] != 4)
                 {
-                    FADM_Object.Communal._tcpDyeHMI2.ReConnect();
+                    if (!FADM_Object.Communal._tcpDyeHMI2._b_Connect)
+                    {
+                        FADM_Object.Communal._tcpDyeHMI2.ReConnect();
+                    }
                 }
                 int i_cupnum = Lib_Card.Configure.Parameter.Machine_Area2_CupMin;
                 if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 1  || SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 3)
                     FADM_Object.Communal._tcpDyeHMI2.Write(iNewStart + 64 * ((iCupNO - i_cupnum + 1 - 1) % 6), values);
-                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 2)
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 5)
                     FADM_Object.Communal._tcpDyeHMI2.Write(iNewStart + 64 * (((iCupNO - i_cupnum + 1 - 1)/ 2) %6), values);
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 4)
+                {
+                    if (iCupNO - i_cupnum < 8)
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI2._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI2.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI2.Write(iNewStart + 64 * (((iCupNO - i_cupnum + 1 - 1) / 2) % 4), values);
+                    }
+                    else
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI2_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI2_s.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI2_s.Write(iNewStart + 64 * (((iCupNO - i_cupnum + 1 - 1) / 2) % 4), values);
+                    }
+
+                }
                 else
                     FADM_Object.Communal._tcpDyeHMI2.Write(iOldStart + 16 * ((iCupNO - i_cupnum + 1 - 1) % 10), values);
             }
             else if (iCupNO >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area3_CupMin.ToString()) && iCupNO <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area3_CupMax.ToString()))
             {
-                if (!FADM_Object.Communal._tcpDyeHMI3._b_Connect)
+                if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] != 4)
                 {
-                    FADM_Object.Communal._tcpDyeHMI3.ReConnect();
+                    if (!FADM_Object.Communal._tcpDyeHMI3._b_Connect)
+                    {
+                        FADM_Object.Communal._tcpDyeHMI3.ReConnect();
+                    }
                 }
                 int i_cupnum = Lib_Card.Configure.Parameter.Machine_Area3_CupMin;
                 if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 1  || SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 3)
                     FADM_Object.Communal._tcpDyeHMI3.Write(iNewStart + 64 * ((iCupNO - i_cupnum + 1 - 1) % 6), values);
-                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 2)
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 2|| SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 5)
                     FADM_Object.Communal._tcpDyeHMI3.Write(iNewStart + 64 * (((iCupNO - i_cupnum + 1 - 1)/ 2) %6), values);
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 4)
+                {
+                    if (iCupNO - i_cupnum < 8)
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI3._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI3.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI3.Write(iNewStart + 64 * (((iCupNO - i_cupnum + 1 - 1) / 2) % 4), values);
+                    }
+                    else
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI3_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI3_s.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI3_s.Write(iNewStart + 64 * (((iCupNO - i_cupnum + 1 - 1) / 2) % 4), values);
+                    }
+
+                }
                 else
                     FADM_Object.Communal._tcpDyeHMI3.Write(iOldStart + 16 * ((iCupNO - i_cupnum + 1 - 1) % 10), values);
             }
             else if (iCupNO >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area4_CupMin.ToString()) && iCupNO <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area4_CupMax.ToString()))
             {
-                if (!FADM_Object.Communal._tcpDyeHMI4._b_Connect)
+                if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] != 4)
                 {
-                    FADM_Object.Communal._tcpDyeHMI4.ReConnect();
+                    if (!FADM_Object.Communal._tcpDyeHMI4._b_Connect)
+                    {
+                        FADM_Object.Communal._tcpDyeHMI4.ReConnect();
+                    }
                 }
                 int i_cupnum = Lib_Card.Configure.Parameter.Machine_Area4_CupMin;
                 if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 3)
                     FADM_Object.Communal._tcpDyeHMI4.Write(iNewStart + 64 * ((iCupNO - i_cupnum + 1 - 1) % 6), values);
-                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 2)
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 5)
                     FADM_Object.Communal._tcpDyeHMI4.Write(iNewStart + 64 * (((iCupNO - i_cupnum + 1 - 1)/ 2) %6), values);
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 4)
+                {
+                    if (iCupNO - i_cupnum < 8)
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI4._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI4.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI4.Write(iNewStart + 64 * (((iCupNO - i_cupnum + 1 - 1) / 2) % 4), values);
+                    }
+                    else
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI4_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI4_s.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI4_s.Write(iNewStart + 64 * (((iCupNO - i_cupnum + 1 - 1) / 2) % 4), values);
+                    }
+
+                }
                 else
                     FADM_Object.Communal._tcpDyeHMI4.Write(iOldStart + 16 * ((iCupNO - i_cupnum + 1 - 1) % 10), values);
             }
             else if (iCupNO >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area5_CupMin.ToString()) && iCupNO <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area5_CupMax.ToString()))
             {
-                if (!FADM_Object.Communal._tcpDyeHMI5._b_Connect)
+                if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] != 4)
                 {
-                    FADM_Object.Communal._tcpDyeHMI5.ReConnect();
+                    if (!FADM_Object.Communal._tcpDyeHMI5._b_Connect)
+                    {
+                        FADM_Object.Communal._tcpDyeHMI5.ReConnect();
+                    }
                 }
                 int i_cupnum = Lib_Card.Configure.Parameter.Machine_Area5_CupMin;
                 if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 3)
                     FADM_Object.Communal._tcpDyeHMI5.Write(iNewStart + 64 * ((iCupNO - i_cupnum + 1 - 1) % 6), values);
-                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 2)
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 5)
                     FADM_Object.Communal._tcpDyeHMI5.Write(iNewStart + 64 * (((iCupNO - i_cupnum + 1 - 1)/ 2) %6), values);
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 4)
+                {
+                    if (iCupNO - i_cupnum < 8)
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI5._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI5.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI5.Write(iNewStart + 64 * (((iCupNO - i_cupnum + 1 - 1) / 2) % 4), values);
+                    }
+                    else
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI5_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI5_s.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI5_s.Write(iNewStart + 64 * (((iCupNO - i_cupnum + 1 - 1) / 2) % 4), values);
+                    }
+
+                }
                 else
                     FADM_Object.Communal._tcpDyeHMI5.Write(iOldStart + 16 * ((iCupNO - i_cupnum + 1 - 1) % 10), values);
             }
             else if (iCupNO >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area6_CupMin.ToString()) && iCupNO <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area6_CupMax.ToString()))
             {
-                if (!FADM_Object.Communal._tcpDyeHMI6._b_Connect)
+                if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] != 4)
                 {
-                    FADM_Object.Communal._tcpDyeHMI6.ReConnect();
+                    if (!FADM_Object.Communal._tcpDyeHMI6._b_Connect)
+                    {
+                        FADM_Object.Communal._tcpDyeHMI6.ReConnect();
+                    }
                 }
                 int i_cupnum = Lib_Card.Configure.Parameter.Machine_Area6_CupMin;
                 if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 3)
                     FADM_Object.Communal._tcpDyeHMI6.Write(iNewStart + 64 * ((iCupNO - i_cupnum + 1 - 1) % 6), values);
-                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 2)
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 2|| SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 5)
                     FADM_Object.Communal._tcpDyeHMI6.Write(iNewStart + 64 * (((iCupNO - i_cupnum + 1 - 1)/ 2) %6), values);
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[iCupNO] == 4)
+                {
+                    if (iCupNO - i_cupnum < 8)
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI6._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI6.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI6.Write(iNewStart + 64 * (((iCupNO - i_cupnum + 1 - 1) / 2) % 4), values);
+                    }
+                    else
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI6_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI6_s.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI6_s.Write(iNewStart + 64 * (((iCupNO - i_cupnum + 1 - 1) / 2) % 4), values);
+                    }
+
+                }
                 else
                     FADM_Object.Communal._tcpDyeHMI6.Write(iOldStart + 16 * ((iCupNO - i_cupnum + 1 - 1) % 10), values);
             }
@@ -16088,6 +20788,189 @@ namespace SmartDyeing.FADM_Auto
         }
 
         /// <summary>
+        /// 打版机读写交互
+        /// i_erea：打版机区域号
+        /// i_index：对应工位
+        /// i_start：操作开始地址
+        /// i_num:对应一杯寄存器数量，转子16，摇摆机64
+        ///  ia_values：操作值
+        /// </summary>
+
+
+        public static void DyeHMIWriteSigle(int i_erea, int i_index, int i_start, int i_num, int[] ia_values,int i_type)
+        {
+            if (i_type == 4)
+            {
+                if (i_erea == 0)
+                {
+                    if ((i_start + i_num * i_index > 0xFF && i_start < 0x100))
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI1_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI1_s.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI1_s.Write((i_start + i_num * i_index)%(0xFF+1), ia_values);
+                    }
+                    else if ( i_start + i_num * i_index > 0x1FF && i_start >= 0x100)
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI1_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI1_s.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI1_s.Write((i_start + i_num * i_index) % (0x1FF + 1)+0x100, ia_values);
+                    }
+                    else
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI1._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI1.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI1.Write(i_start + i_num * i_index, ia_values);
+                    }
+                }
+                else if (i_erea == 1)
+                {
+                    if ((i_start + i_num * i_index > 0xFF && i_start < 0x100))
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI2_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI2_s.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI2_s.Write((i_start + i_num * i_index) % (0xFF + 1), ia_values);
+                    }
+                    else if (i_start + i_num * i_index > 0x1FF && i_start >= 0x100)
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI2_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI2_s.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI2_s.Write((i_start + i_num * i_index) % (0x1FF + 1) + 0x100, ia_values);
+                    }
+                    else
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI2._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI2.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI2.Write(i_start + i_num * i_index, ia_values);
+                    }
+                }
+                else if (i_erea == 2)
+                {
+                    if ((i_start + i_num * i_index > 0xFF && i_start < 0x100))
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI3_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI3_s.ReConnect();
+                        }
+                        int p = (i_start + i_num * i_index) % (0xFF + 1);
+                        FADM_Object.Communal._tcpDyeHMI3_s.Write((i_start + i_num * i_index) % (0xFF + 1), ia_values);
+                    }
+
+                    else if (i_start + i_num * i_index > 0x1FF && i_start >= 0x100)
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI3_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI3_s.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI3_s.Write((i_start + i_num * i_index) % (0x1FF + 1) + 0x100, ia_values);
+                    }
+                    else
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI3._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI3.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI3.Write(i_start + i_num * i_index, ia_values);
+                    }
+                }
+                else if (i_erea == 3)
+                {
+                    if ((i_start + i_num * i_index > 0xFF && i_start < 0x100))
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI4_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI4_s.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI4_s.Write((i_start + i_num * i_index) % (0xFF + 1), ia_values);
+                    }
+                    else if (i_start + i_num * i_index > 0x1FF && i_start >= 0x100)
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI4_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI4_s.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI4_s.Write((i_start + i_num * i_index) % (0x1FF + 1) + 0x100, ia_values);
+                    }
+                    else
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI4._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI4.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI4.Write(i_start + i_num * i_index, ia_values);
+                    }
+                }
+                else if (i_erea == 4)
+                {
+                    if ((i_start + i_num * i_index > 0xFF && i_start < 0x100))
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI5_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI5_s.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI5_s.Write((i_start + i_num * i_index) % (0xFF + 1), ia_values);
+                    }
+
+                    else if (i_start + i_num * i_index > 0x1FF && i_start >= 0x100)
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI5_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI5_s.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI5_s.Write((i_start + i_num * i_index) % (0x1FF + 1) + 0x100, ia_values);
+                    }
+                    else
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI5._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI5.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI5.Write(i_start + i_num * i_index, ia_values);
+                    }
+                }
+                else if (i_erea == 5)
+                {
+                    if ((i_start + i_num * i_index > 0xFF && i_start < 0x100))
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI6_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI6_s.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI6_s.Write((i_start + i_num * i_index) % (0xFF + 1), ia_values);
+                    }
+
+                    else if (i_start + i_num * i_index > 0x1FF && i_start >= 0x100)
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI6_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI6_s.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI6_s.Write((i_start + i_num * i_index) % (0x1FF + 1) + 0x100, ia_values);
+                    }
+                    else
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI6._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI6.ReConnect();
+                        }
+                        FADM_Object.Communal._tcpDyeHMI6.Write(i_start + i_num * i_index, ia_values);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// 同步打板机杯盖状态
         /// i_cupNo：杯号
         /// i_states:杯盖状态 1 关盖 2开盖
@@ -16138,6 +21021,102 @@ namespace SmartDyeing.FADM_Auto
             }
 
         }
+        /// <summary>
+        /// 同步打板机杯盖状态,用于16杯TCP通讯两块板
+        /// i_cupNo：杯号
+        /// i_states:杯盖状态 1 关盖 2开盖
+        /// </summary>
+        public void SynCover(int i_cupNo, int i_cupmin, int i,int i_type)
+        {
+            if (i_type == 4)
+            {
+                int i_index = 0;
+                i_index = i_cupNo - i_cupmin;
+                if (i_index < 8)
+                {
+                    if (i_index % 2 == 0)
+                    {
+                        if (!lis_[i]._b_isSendCoverStatus[i_index])
+                        {
+                            string s_sqlCupdetail = "SELECT * FROM cup_details WHERE CupNum = " + i_cupNo + ";";
+                            DataTable dt_cup_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sqlCupdetail);
+                            if (dt_cup_details.Rows.Count > 0)
+                            {
+                                _cup_Temps[i_cupNo - 1]._i_cupCover = Convert.ToInt32(dt_cup_details.Rows[0]["CoverStatus"].ToString());
+                                int[] ia_cupstatus = new int[1];
+                                ia_cupstatus[0] = Convert.ToInt32(dt_cup_details.Rows[0]["CoverStatus"].ToString());
+                                //修改盖子状态
+                                if (lis_[i].Write(0x11 + 64 * (((i_cupNo - i_cupmin + 1 - 1) / 2) % 6), ia_cupstatus) == 0)
+                                {
+                                    lis_[i]._b_isSendCoverStatus[i_index] = true;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (!lis_[i]._b_isSendCoverStatus[i_index])
+                        {
+                            string s_sqlCupdetail = "SELECT * FROM cup_details WHERE CupNum = " + i_cupNo + ";";
+                            DataTable dt_cup_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sqlCupdetail);
+                            if (dt_cup_details.Rows.Count > 0)
+                            {
+                                _cup_Temps[i_cupNo - 1]._i_cupCover = Convert.ToInt32(dt_cup_details.Rows[0]["CoverStatus"].ToString());
+                                int[] ia_cupstatus = new int[1];
+                                ia_cupstatus[0] = Convert.ToInt32(dt_cup_details.Rows[0]["CoverStatus"].ToString());
+                                //修改盖子状态
+                                if (lis_[i].Write(0x12 + 64 * (((i_cupNo - i_cupmin + 1 - 1) / 2) % 6), ia_cupstatus) == 0)
+                                {
+                                    lis_[i]._b_isSendCoverStatus[i_index] = true;
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (i_index % 2 == 0)
+                    {
+                        if (!lis_[i]._b_isSendCoverStatus[i_index])
+                        {
+                            string s_sqlCupdetail = "SELECT * FROM cup_details WHERE CupNum = " + i_cupNo + ";";
+                            DataTable dt_cup_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sqlCupdetail);
+                            if (dt_cup_details.Rows.Count > 0)
+                            {
+                                _cup_Temps[i_cupNo - 1]._i_cupCover = Convert.ToInt32(dt_cup_details.Rows[0]["CoverStatus"].ToString());
+                                int[] ia_cupstatus = new int[1];
+                                ia_cupstatus[0] = Convert.ToInt32(dt_cup_details.Rows[0]["CoverStatus"].ToString());
+                                //修改盖子状态
+                                if (lis_s[i].Write(0x11 + 64 * (((i_cupNo - i_cupmin + 1 - 1) / 2) % 4), ia_cupstatus) == 0)
+                                {
+                                    lis_[i]._b_isSendCoverStatus[i_index] = true;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (!lis_[i]._b_isSendCoverStatus[i_index])
+                        {
+                            string s_sqlCupdetail = "SELECT * FROM cup_details WHERE CupNum = " + i_cupNo + ";";
+                            DataTable dt_cup_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sqlCupdetail);
+                            if (dt_cup_details.Rows.Count > 0)
+                            {
+                                _cup_Temps[i_cupNo - 1]._i_cupCover = Convert.ToInt32(dt_cup_details.Rows[0]["CoverStatus"].ToString());
+                                int[] ia_cupstatus = new int[1];
+                                ia_cupstatus[0] = Convert.ToInt32(dt_cup_details.Rows[0]["CoverStatus"].ToString());
+                                //修改盖子状态
+                                if (lis_s[i].Write(0x12 + 64 * (((i_cupNo - i_cupmin + 1 - 1) / 2) % 4), ia_cupstatus) == 0)
+                                {
+                                    lis_[i]._b_isSendCoverStatus[i_index] = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
 
 
 
@@ -16153,9 +21132,12 @@ namespace SmartDyeing.FADM_Auto
             int[] ia_zero = new int[1]; 
             if (i_cupNo >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area1_CupMin.ToString()) && i_cupNo <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area1_CupMax.ToString()))
             {
-                if (!FADM_Object.Communal._tcpDyeHMI1._b_Connect)
+                if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] != 4)
                 {
-                    FADM_Object.Communal._tcpDyeHMI1.ReConnect();
+                    if (!FADM_Object.Communal._tcpDyeHMI1._b_Connect)
+                    {
+                        FADM_Object.Communal._tcpDyeHMI1.ReConnect();
+                    }
                 }
                 int i_cupnum = Lib_Card.Configure.Parameter.Machine_Area1_CupMin;
 
@@ -16168,8 +21150,9 @@ namespace SmartDyeing.FADM_Auto
                     //修改盖子状态
                     FADM_Object.Communal._tcpDyeHMI1.Write(117 + 64 * ((i_cupNo - i_cupnum + 1 - 1) % 6), ia_zero);
                 }
-                else
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 5)
                 {
+
                     //主杯
                     if((i_cupNo - i_cupnum)%2==0)
                     {
@@ -16191,13 +21174,73 @@ namespace SmartDyeing.FADM_Auto
                         FADM_Object.Communal._tcpDyeHMI1.Write(118 + 64 * (((i_cupNo - i_cupnum + 1 - 1)/ 2) %6), ia_zero);
                     }
                 }
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 4)
+                {
+                    if (i_cupNo - i_cupnum < 8)
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI1._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI1.ReConnect();
+                        }
+                        //主杯
+                        if ((i_cupNo - i_cupnum) % 2 == 0)
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI1.Write(0x108 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI1.Write(0x11 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
+                        //副杯
+                        else
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI1.Write(0x116 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI1.Write(0x12 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
+                    }
+                    else
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI1_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI1_s.ReConnect();
+                        }
+                        //主杯
+                        if ((i_cupNo - i_cupnum) % 2 == 0)
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI1_s.Write(0x108 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI1_s.Write(0x11 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
+                        //副杯
+                        else
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI1_s.Write(0x116 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI1_s.Write(0x12 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
+                    }
+                }
 
             }
             else if (i_cupNo >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area2_CupMin.ToString()) && i_cupNo <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area2_CupMax.ToString()))
             {
-                if (!FADM_Object.Communal._tcpDyeHMI2._b_Connect)
+                if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] != 4)
                 {
-                    FADM_Object.Communal._tcpDyeHMI2.ReConnect();
+                    if (!FADM_Object.Communal._tcpDyeHMI2._b_Connect)
+                    {
+                        FADM_Object.Communal._tcpDyeHMI2.ReConnect();
+                    }
                 }
                 int i_cupnum = Lib_Card.Configure.Parameter.Machine_Area2_CupMin;
                 if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 3)
@@ -16209,7 +21252,7 @@ namespace SmartDyeing.FADM_Auto
                     //修改盖子状态
                     FADM_Object.Communal._tcpDyeHMI2.Write(117 + 64 * ((i_cupNo - i_cupnum + 1 - 1) % 6), ia_zero);
                 }
-                else
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 5)
                 {
                     //主杯
                     if ((i_cupNo - i_cupnum) % 2 == 0)
@@ -16232,14 +21275,74 @@ namespace SmartDyeing.FADM_Auto
                         FADM_Object.Communal._tcpDyeHMI2.Write(118 + 64 * (((i_cupNo - i_cupnum + 1 - 1)/ 2) %6), ia_zero);
                     }
                 }
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 4)
+                {
+                    if (i_cupNo - i_cupnum < 8)
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI2._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI2.ReConnect();
+                        }
+                        //主杯
+                        if ((i_cupNo - i_cupnum) % 2 == 0)
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI2.Write(0x108 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI2.Write(0x11 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
+                        //副杯
+                        else
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI2.Write(0x116 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI2.Write(0x12 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
+                    }
+                    else
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI2_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI2_s.ReConnect();
+                        }
+                        //主杯
+                        if ((i_cupNo - i_cupnum) % 2 == 0)
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI2_s.Write(0x108 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI2_s.Write(0x11 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
+                        //副杯
+                        else
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI2_s.Write(0x116 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI2_s.Write(0x12 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
+                    }
+                }
 
             }
             else if (i_cupNo >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area3_CupMin.ToString()) && i_cupNo <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area3_CupMax.ToString()))
             {
                 int i_cupnum = Lib_Card.Configure.Parameter.Machine_Area3_CupMin;
-                if (!FADM_Object.Communal._tcpDyeHMI3._b_Connect)
+                if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] != 4)
                 {
-                    FADM_Object.Communal._tcpDyeHMI3.ReConnect();
+                    if (!FADM_Object.Communal._tcpDyeHMI3._b_Connect)
+                    {
+                        FADM_Object.Communal._tcpDyeHMI3.ReConnect();
+                    }
                 }
                 if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 3)
                 {
@@ -16250,7 +21353,7 @@ namespace SmartDyeing.FADM_Auto
                     //修改盖子状态
                     FADM_Object.Communal._tcpDyeHMI3.Write(117 + 64 * ((i_cupNo - i_cupnum + 1 - 1) % 6), ia_zero);
                 }
-                else
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 5)
                 {
                     //主杯
                     if ((i_cupNo - i_cupnum) % 2 == 0)
@@ -16273,13 +21376,73 @@ namespace SmartDyeing.FADM_Auto
                         FADM_Object.Communal._tcpDyeHMI3.Write(118 + 64 * (((i_cupNo - i_cupnum + 1 - 1)/ 2) %6), ia_zero);
                     }
                 }
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 4)
+                {
+                    if (i_cupNo - i_cupnum < 8)
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI3._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI3.ReConnect();
+                        }
+                        //主杯
+                        if ((i_cupNo - i_cupnum) % 2 == 0)
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI3.Write(0x108 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI3.Write(0x11 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
+                        //副杯
+                        else
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI3.Write(0x116 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI3.Write(0x12 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
+                    }
+                    else
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI3_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI3_s.ReConnect();
+                        }
+                        //主杯
+                        if ((i_cupNo - i_cupnum) % 2 == 0)
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI3_s.Write(0x108 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI3_s.Write(0x11 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
+                        //副杯
+                        else
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI3_s.Write(0x116 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI3_s.Write(0x12 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
+                    }
+                }
 
             }
             else if (i_cupNo >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area4_CupMin.ToString()) && i_cupNo <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area4_CupMax.ToString()))
             {
-                if (!FADM_Object.Communal._tcpDyeHMI4._b_Connect)
+                if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] != 4)
                 {
-                    FADM_Object.Communal._tcpDyeHMI4.ReConnect();
+                    if (!FADM_Object.Communal._tcpDyeHMI4._b_Connect)
+                    {
+                        FADM_Object.Communal._tcpDyeHMI4.ReConnect();
+                    }
                 }
                 int i_cupnum = Lib_Card.Configure.Parameter.Machine_Area4_CupMin;
                 if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 3)
@@ -16291,7 +21454,7 @@ namespace SmartDyeing.FADM_Auto
                     //修改盖子状态
                     FADM_Object.Communal._tcpDyeHMI4.Write(117 + 64 * ((i_cupNo - i_cupnum + 1 - 1) % 6), ia_zero);
                 }
-                else
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 5)
                 {
                     //主杯
                     if ((i_cupNo - i_cupnum) % 2 == 0)
@@ -16314,13 +21477,73 @@ namespace SmartDyeing.FADM_Auto
                         FADM_Object.Communal._tcpDyeHMI4.Write(118 + 64 * (((i_cupNo - i_cupnum + 1 - 1)/ 2) %6), ia_zero);
                     }
                 }
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 4)
+                {
+                    if (i_cupNo - i_cupnum < 8)
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI4._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI4.ReConnect();
+                        }
+                        //主杯
+                        if ((i_cupNo - i_cupnum) % 2 == 0)
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI4.Write(0x108 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI4.Write(0x11 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
+                        //副杯
+                        else
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI4.Write(0x116 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI4.Write(0x12 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
+                    }
+                    else
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI4_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI4_s.ReConnect();
+                        }
+                        //主杯
+                        if ((i_cupNo - i_cupnum) % 2 == 0)
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI4_s.Write(0x108 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI4_s.Write(0x11 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
+                        //副杯
+                        else
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI4_s.Write(0x116 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI4_s.Write(0x12 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
+                    }
+                }
 
             }
             else if (i_cupNo >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area5_CupMin.ToString()) && i_cupNo <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area5_CupMax.ToString()))
             {
-                if (!FADM_Object.Communal._tcpDyeHMI5._b_Connect)
+                if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] != 4)
                 {
-                    FADM_Object.Communal._tcpDyeHMI5.ReConnect();
+                    if (!FADM_Object.Communal._tcpDyeHMI5._b_Connect)
+                    {
+                        FADM_Object.Communal._tcpDyeHMI5.ReConnect();
+                    }
                 }
                 int i_cupnum = Lib_Card.Configure.Parameter.Machine_Area5_CupMin;
                 if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 3)
@@ -16332,7 +21555,7 @@ namespace SmartDyeing.FADM_Auto
                     //修改盖子状态
                     FADM_Object.Communal._tcpDyeHMI5.Write(117 + 64 * ((i_cupNo - i_cupnum + 1 - 1) % 6), ia_zero);
                 }
-                else
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 5)
                 {
                     //主杯
                     if ((i_cupNo - i_cupnum) % 2 == 0)
@@ -16355,13 +21578,73 @@ namespace SmartDyeing.FADM_Auto
                         FADM_Object.Communal._tcpDyeHMI5.Write(118 + 64 * (((i_cupNo - i_cupnum + 1 - 1)/ 2) %6), ia_zero);
                     }
                 }
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 4)
+                {
+                    if (i_cupNo - i_cupnum < 8)
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI5._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI5.ReConnect();
+                        }
+                        //主杯
+                        if ((i_cupNo - i_cupnum) % 2 == 0)
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI5.Write(0x108 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI5.Write(0x11 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
+                        //副杯
+                        else
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI5.Write(0x116 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI5.Write(0x12 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
+                    }
+                    else
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI5_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI5_s.ReConnect();
+                        }
+                        //主杯
+                        if ((i_cupNo - i_cupnum) % 2 == 0)
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI5_s.Write(0x108 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI5_s.Write(0x11 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
+                        //副杯
+                        else
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI5_s.Write(0x116 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI5_s.Write(0x12 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
+                    }
+                }
 
             }
             else if (i_cupNo >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area6_CupMin.ToString()) && i_cupNo <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area6_CupMax.ToString()))
             {
-                if (!FADM_Object.Communal._tcpDyeHMI6._b_Connect)
+                if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] != 4)
                 {
-                    FADM_Object.Communal._tcpDyeHMI6.ReConnect();
+                    if (!FADM_Object.Communal._tcpDyeHMI6._b_Connect)
+                    {
+                        FADM_Object.Communal._tcpDyeHMI6.ReConnect();
+                    }
                 }
                 int i_cupnum = Lib_Card.Configure.Parameter.Machine_Area6_CupMin;
                 if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 3)
@@ -16373,7 +21656,7 @@ namespace SmartDyeing.FADM_Auto
                     //修改盖子状态
                     FADM_Object.Communal._tcpDyeHMI6.Write(117 + 64 * ((i_cupNo - i_cupnum + 1 - 1) % 6), ia_zero);
                 }
-                else
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 5)
                 {
                     //主杯
                     if ((i_cupNo - i_cupnum) % 2 == 0)
@@ -16394,6 +21677,63 @@ namespace SmartDyeing.FADM_Auto
                         ia_zero[0] = i_states;
                         //修改盖子状态
                         FADM_Object.Communal._tcpDyeHMI6.Write(118 + 64 * (((i_cupNo - i_cupnum + 1 - 1)/ 2) %6), ia_zero);
+                    }
+                }
+                else if (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_cupNo] == 4)
+                {
+                    if (i_cupNo - i_cupnum < 8)
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI6._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI6.ReConnect();
+                        }
+                        //主杯
+                        if ((i_cupNo - i_cupnum) % 2 == 0)
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI6.Write(0x108 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI6.Write(0x11 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
+                        //副杯
+                        else
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI6.Write(0x116 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI6.Write(0x12 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
+                    }
+                    else
+                    {
+                        if (!FADM_Object.Communal._tcpDyeHMI6_s._b_Connect)
+                        {
+                            FADM_Object.Communal._tcpDyeHMI6_s.ReConnect();
+                        }
+                        //主杯
+                        if ((i_cupNo - i_cupnum) % 2 == 0)
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI6_s.Write(0x108 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI6_s.Write(0x11 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
+                        //副杯
+                        else
+                        {
+                            ia_zero[0] = 0;
+                            //清空请求杯盖动作请求
+                            FADM_Object.Communal._tcpDyeHMI6_s.Write(0x116 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                            ia_zero[0] = i_states;
+                            //修改盖子状态
+                            FADM_Object.Communal._tcpDyeHMI6_s.Write(0x12 + 64 * (((i_cupNo - i_cupnum + 1 - 1) / 2) % 4), ia_zero);
+                        }
                     }
                 }
 

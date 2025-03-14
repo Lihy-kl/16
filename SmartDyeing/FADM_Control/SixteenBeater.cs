@@ -11,11 +11,11 @@ using System.Windows.Forms;
 
 namespace SmartDyeing.FADM_Control
 {
-    public partial class TenBeater : UserControl
+    public partial class SixteenBeater : UserControl
     {
         private Cup _cup = null;
 
-        public TenBeater()
+        public SixteenBeater()
         {
             InitializeComponent();
 
@@ -218,6 +218,19 @@ namespace SmartDyeing.FADM_Control
             {
                 FADM_Object.Communal._ia_dyeStatus[0] = 0;
 
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus12 = false;
+
                 for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus.Length; pp++)
                 {
                     FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus[pp] = false;
@@ -231,6 +244,19 @@ namespace SmartDyeing.FADM_Control
             else if (this.groupBox1.Text.Contains("二号"))
             {
                 FADM_Object.Communal._ia_dyeStatus[1] = 0;
+
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus12 = false;
 
                 for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus.Length; pp++)
                 {
@@ -246,6 +272,18 @@ namespace SmartDyeing.FADM_Control
             {
                 FADM_Object.Communal._ia_dyeStatus[2] = 0;
 
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus12 = false;
 
                 for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus.Length; pp++)
                 {
@@ -261,6 +299,18 @@ namespace SmartDyeing.FADM_Control
             {
                 FADM_Object.Communal._ia_dyeStatus[3] = 0;
 
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus12 = false;
 
                 for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus.Length; pp++)
                 {
@@ -276,6 +326,19 @@ namespace SmartDyeing.FADM_Control
             {
                 FADM_Object.Communal._ia_dyeStatus[4] = 0;
 
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus12 = false;
+
                 for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus.Length; pp++)
                 {
                     FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus[pp] = false;
@@ -289,6 +352,19 @@ namespace SmartDyeing.FADM_Control
             else
             {
                 FADM_Object.Communal._ia_dyeStatus[5] = 0;
+
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus12 = false;
 
                 for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus.Length; pp++)
                 {
@@ -462,6 +538,19 @@ namespace SmartDyeing.FADM_Control
                 Thread.Sleep(2000);
                 Lib_Card.CardObject.DeleteD(FADM_Object.Communal._sa_dyeConFTime[0]);
 
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus12 = false;
+
                 for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus.Length; pp++)
                 {
                     FADM_Object.Communal._tcpDyeHMI1._b_isSendCoverStatus[pp] = false;
@@ -487,6 +576,19 @@ namespace SmartDyeing.FADM_Control
                 FADM_Object.Communal._ia_dyeStatus[1] = 0;
                 Thread.Sleep(2000);
                 Lib_Card.CardObject.DeleteD(FADM_Object.Communal._sa_dyeConFTime[1]);
+
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus12 = false;
 
                 for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI2._b_isSendCoverStatus.Length; pp++)
                 {
@@ -514,6 +616,19 @@ namespace SmartDyeing.FADM_Control
                 Thread.Sleep(2000);
                 Lib_Card.CardObject.DeleteD(FADM_Object.Communal._sa_dyeConFTime[2]);
 
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus12 = false;
+
                 for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus.Length; pp++)
                 {
                     FADM_Object.Communal._tcpDyeHMI3._b_isSendCoverStatus[pp] = false;
@@ -539,6 +654,19 @@ namespace SmartDyeing.FADM_Control
                 FADM_Object.Communal._ia_dyeStatus[3] = 0;
                 Thread.Sleep(2000);
                 Lib_Card.CardObject.DeleteD(FADM_Object.Communal._sa_dyeConFTime[3]);
+
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus12 = false;
 
                 for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI4._b_isSendCoverStatus.Length; pp++)
                 {
@@ -566,6 +694,19 @@ namespace SmartDyeing.FADM_Control
                 Thread.Sleep(2000);
                 Lib_Card.CardObject.DeleteD(FADM_Object.Communal._sa_dyeConFTime[4]);
 
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus12 = false;
+
                 for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus.Length; pp++)
                 {
                     FADM_Object.Communal._tcpDyeHMI5._b_isSendCoverStatus[pp] = false;
@@ -591,6 +732,19 @@ namespace SmartDyeing.FADM_Control
                 FADM_Object.Communal._ia_dyeStatus[5] = 0;
                 Thread.Sleep(2000);
                 Lib_Card.CardObject.DeleteD(FADM_Object.Communal._sa_dyeConFTime[5]);
+
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus1 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus2 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus3 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus4 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus5 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus6 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus7 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus8 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus9 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus10 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus11 = false;
+                FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus12 = false;
 
                 for (int pp = 0; pp < FADM_Object.Communal._tcpDyeHMI6._b_isSendCoverStatus.Length; pp++)
                 {

@@ -54,9 +54,14 @@ namespace SmartDyeing.FADM_Object
 
                                         }
                                     }
-                                    //把手动选瓶去掉
-                                    DataGridViewCheckBoxCell dc = (DataGridViewCheckBoxCell)this[10, this.CurrentRow.Index];
-                                    dc.Value = 0;
+                                    bool b = this[4, this.CurrentRow.Index] is DataGridViewComboBoxCell;
+                                    if (b) {
+                                        //把手动选瓶去掉
+                                        DataGridViewCheckBoxCell dc = (DataGridViewCheckBoxCell)this[10, this.CurrentRow.Index];
+                                        dc.Value = 0;
+                                    }
+
+                                    
 
                                 }
                             }
@@ -179,39 +184,48 @@ namespace SmartDyeing.FADM_Object
                                         this.CurrentRow.Cells[2].Value = dt_assistant.Rows[0]["AssistantName"].ToString();
                                         string UnitOfAccount = dt_assistant.Rows[0]["UnitOfAccount"].ToString();
 
-                                        DataGridViewComboBoxCell dd = (DataGridViewComboBoxCell)this[4, i_row];
-
-                                        if (FADM_Object.Communal._b_isUnitChange)
+                                        bool b = this[4, i_row] is DataGridViewComboBoxCell;
+                                        if (b)
                                         {
-                                            if (UnitOfAccount.Equals("%"))
+                                            DataGridViewComboBoxCell dd = (DataGridViewComboBoxCell)this[4, i_row];
+                                            if (FADM_Object.Communal._b_isUnitChange)
                                             {
-                                                lis_bottleNum.Add("%");
-                                                dd.Value = null;
-                                                dd.DataSource = lis_bottleNum;
-                                                dd.Value = lis_bottleNum[0].ToString();
-                                            }
-                                            else if (UnitOfAccount.Equals("g/l"))
-                                            {
-                                                if (dd.Value == null)
+                                                if (UnitOfAccount.Equals("%"))
                                                 {
-                                                    lis_bottleNum.Add("g/l");
                                                     lis_bottleNum.Add("%");
+                                                    dd.Value = null;
                                                     dd.DataSource = lis_bottleNum;
                                                     dd.Value = lis_bottleNum[0].ToString();
                                                 }
-                                                else
+                                                else if (UnitOfAccount.Equals("g/l"))
                                                 {
-                                                    if (dd.Value.Equals("%"))
+                                                    if (dd.Value == null)
                                                     {
-                                                        lis_bottleNum.Add("%");
                                                         lis_bottleNum.Add("g/l");
+                                                        lis_bottleNum.Add("%");
                                                         dd.DataSource = lis_bottleNum;
                                                         dd.Value = lis_bottleNum[0].ToString();
                                                     }
+                                                    else
+                                                    {
+                                                        if (dd.Value.Equals("%"))
+                                                        {
+                                                            lis_bottleNum.Add("%");
+                                                            lis_bottleNum.Add("g/l");
+                                                            dd.DataSource = lis_bottleNum;
+                                                            dd.Value = lis_bottleNum[0].ToString();
+                                                        }
 
+
+                                                    }
 
                                                 }
-
+                                                else
+                                                {
+                                                    lis_bottleNum.Add(UnitOfAccount);
+                                                    dd.DataSource = lis_bottleNum;
+                                                    dd.Value = lis_bottleNum[0].ToString();
+                                                }
                                             }
                                             else
                                             {
@@ -221,10 +235,9 @@ namespace SmartDyeing.FADM_Object
                                             }
                                         }
                                         else {
-                                            lis_bottleNum.Add(UnitOfAccount);
-                                            dd.DataSource = lis_bottleNum;
-                                            dd.Value = lis_bottleNum[0].ToString();
+                                            this.CurrentRow.Cells[4].Value = UnitOfAccount;
                                         }
+                                        
                                         
                                         
 
@@ -840,53 +853,65 @@ namespace SmartDyeing.FADM_Object
                                     List<string> lis_bottleNum = new List<string>();
                                     this.CurrentRow.Cells[2].Value = dt_assistant.Rows[0]["AssistantName"].ToString();
                                     string UnitOfAccount = dt_assistant.Rows[0]["UnitOfAccount"].ToString();
-                                    DataGridViewComboBoxCell dd = (DataGridViewComboBoxCell)this[4, i_row];
 
-                                    if (FADM_Object.Communal._b_isUnitChange)
+                                    bool b = this[4, i_row] is DataGridViewComboBoxCell;
+                                    if (b)
                                     {
-                                        if (UnitOfAccount.Equals("%"))
+                                        DataGridViewComboBoxCell dd = (DataGridViewComboBoxCell)this[4, i_row];
+                                        if (FADM_Object.Communal._b_isUnitChange)
                                         {
-                                            lis_bottleNum.Add("%");
-                                            dd.Value = null;
-                                            dd.DataSource = lis_bottleNum;
-                                            dd.Value = lis_bottleNum[0].ToString();
-                                        }
-                                        else if (UnitOfAccount.Equals("g/l"))
-                                        {
-                                            if (dd.Value == null)
+                                            if (UnitOfAccount.Equals("%"))
                                             {
-                                                lis_bottleNum.Add("g/l");
                                                 lis_bottleNum.Add("%");
+                                                dd.Value = null;
                                                 dd.DataSource = lis_bottleNum;
                                                 dd.Value = lis_bottleNum[0].ToString();
                                             }
-                                            else
+                                            else if (UnitOfAccount.Equals("g/l"))
                                             {
-                                                if (dd.Value.Equals("%"))
+                                                if (dd.Value == null)
                                                 {
-                                                    lis_bottleNum.Add("%");
                                                     lis_bottleNum.Add("g/l");
+                                                    lis_bottleNum.Add("%");
                                                     dd.DataSource = lis_bottleNum;
                                                     dd.Value = lis_bottleNum[0].ToString();
                                                 }
+                                                else
+                                                {
+                                                    if (dd.Value.Equals("%"))
+                                                    {
+                                                        lis_bottleNum.Add("%");
+                                                        lis_bottleNum.Add("g/l");
+                                                        dd.DataSource = lis_bottleNum;
+                                                        dd.Value = lis_bottleNum[0].ToString();
+                                                    }
 
+
+                                                }
 
                                             }
-
+                                            else
+                                            {
+                                                lis_bottleNum.Add(UnitOfAccount);
+                                                dd.DataSource = lis_bottleNum;
+                                                dd.Value = lis_bottleNum[0].ToString();
+                                            }
                                         }
                                         else
                                         {
                                             lis_bottleNum.Add(UnitOfAccount);
+                                            dd.Value = null;
                                             dd.DataSource = lis_bottleNum;
                                             dd.Value = lis_bottleNum[0].ToString();
                                         }
+
                                     }
                                     else {
-                                        lis_bottleNum.Add(UnitOfAccount);
-                                        dd.Value = null;
-                                        dd.DataSource = lis_bottleNum;
-                                        dd.Value = lis_bottleNum[0].ToString();
+                                        this.CurrentRow.Cells[4].Value = UnitOfAccount;
                                     }
+
+
+                                    
                                 }
 
                                 this.CurrentCell = this[i_col + 2, i_row];

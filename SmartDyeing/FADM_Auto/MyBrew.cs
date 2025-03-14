@@ -1,5 +1,7 @@
-﻿using Lib_File;
+﻿using Lib_DataBank.MySQL;
+using Lib_File;
 using Newtonsoft.Json.Linq;
+using SmartDyeing.FADM_Control;
 using SmartDyeing.FADM_Object;
 using System;
 using System.Collections.Generic;
@@ -299,6 +301,22 @@ namespace SmartDyeing.FADM_Auto
                                                         ", BrewingData = '" + P_time + "', AdjustSuccess = 0" +
                                                         " WHERE BottleNum = " + i_bottle + ";";
                                             FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                            //查询是否有吸光度机
+                                            if (FADM_Object.Communal._b_isAutoAbs)
+                                            {
+                                                if(Lib_Card.Configure.Parameter.Other_UseAbs == 1)
+                                                {
+                                                    //判断等待列表是否存在这个杯
+                                                    s_sql = "SELECT top 1 * FROM abs_wait_list where BottleNum = "+ i_bottle;
+                                                    DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                                    if (dt_data.Rows.Count == 0)
+                                                    {
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                        "INSERT INTO abs_wait_list(BottleNum, InsertDate,Type) VALUES('" + i_bottle + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "',0);");
+                                                    }
+                                                }
+                                            }
                                         }
                                         else
                                         {
@@ -310,6 +328,22 @@ namespace SmartDyeing.FADM_Auto
                                                         ", BrewingData = '" + P_time + "' " +
                                                         " WHERE BottleNum = " + i_bottle + ";";
                                             FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                            //查询是否有吸光度机
+                                            if (FADM_Object.Communal._b_isAutoAbs)
+                                            {
+                                                if (Lib_Card.Configure.Parameter.Other_UseAbs == 1)
+                                                {
+                                                    //判断等待列表是否存在这个杯
+                                                    s_sql = "SELECT top 1 * FROM abs_wait_list where BottleNum = " + i_bottle;
+                                                    DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                                    if (dt_data.Rows.Count == 0)
+                                                    {
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                        "INSERT INTO abs_wait_list(BottleNum, InsertDate,Type) VALUES('" + i_bottle + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "',0);");
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -1058,6 +1092,22 @@ namespace SmartDyeing.FADM_Auto
                                                         ", BrewingData = '" + P_time + "', AdjustSuccess = 0" +
                                                         " WHERE BottleNum = " + i_bottle + ";";
                                             FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                            //查询是否有吸光度机
+                                            if (FADM_Object.Communal._b_isAutoAbs)
+                                            {
+                                                if (Lib_Card.Configure.Parameter.Other_UseAbs == 1)
+                                                {
+                                                    //判断等待列表是否存在这个杯
+                                                    s_sql = "SELECT top 1 * FROM abs_wait_list where BottleNum = " + i_bottle;
+                                                    DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                                    if (dt_data.Rows.Count == 0)
+                                                    {
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                        "INSERT INTO abs_wait_list(BottleNum, InsertDate,Type) VALUES('" + i_bottle + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "',0);");
+                                                    }
+                                                }
+                                            }
                                         }
                                         else
                                         {
@@ -1069,6 +1119,22 @@ namespace SmartDyeing.FADM_Auto
                                                         ", BrewingData = '" + P_time + "' " +
                                                         " WHERE BottleNum = " + i_bottle + ";";
                                             FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                            //查询是否有吸光度机
+                                            if (FADM_Object.Communal._b_isAutoAbs)
+                                            {
+                                                if (Lib_Card.Configure.Parameter.Other_UseAbs == 1)
+                                                {
+                                                    //判断等待列表是否存在这个杯
+                                                    s_sql = "SELECT top 1 * FROM abs_wait_list where BottleNum = " + i_bottle;
+                                                    DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                                    if (dt_data.Rows.Count == 0)
+                                                    {
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                        "INSERT INTO abs_wait_list(BottleNum, InsertDate,Type) VALUES('" + i_bottle + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "',0);");
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -1780,6 +1846,22 @@ namespace SmartDyeing.FADM_Auto
                                                         ", BrewingData = '" + P_time + "', AdjustSuccess = 0" +
                                                         " WHERE BottleNum = " + P_int_bottle + ";";
                                             FADM_Object.Communal._fadmSqlserver.ReviseData(P_str_sql);
+
+                                            //查询是否有吸光度机
+                                            if (FADM_Object.Communal._b_isAutoAbs)
+                                            {
+                                                if (Lib_Card.Configure.Parameter.Other_UseAbs == 1)
+                                                {
+                                                    //判断等待列表是否存在这个杯
+                                                    P_str_sql = "SELECT top 1 * FROM abs_wait_list where BottleNum = " + P_int_bottle;
+                                                    DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(P_str_sql);
+                                                    if (dt_data.Rows.Count == 0)
+                                                    {
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                        "INSERT INTO abs_wait_list(BottleNum, InsertDate,Type) VALUES('" + P_int_bottle + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "',0);");
+                                                    }
+                                                }
+                                            }
                                         }
                                         else
                                         {
@@ -1791,6 +1873,22 @@ namespace SmartDyeing.FADM_Auto
                                                         ", BrewingData = '" + P_time + "' " +
                                                         " WHERE BottleNum = " + P_int_bottle + ";";
                                             FADM_Object.Communal._fadmSqlserver.ReviseData(P_str_sql);
+
+                                            //查询是否有吸光度机
+                                            if (FADM_Object.Communal._b_isAutoAbs)
+                                            {
+                                                if (Lib_Card.Configure.Parameter.Other_UseAbs == 1)
+                                                {
+                                                    //判断等待列表是否存在这个杯
+                                                    P_str_sql = "SELECT top 1 * FROM abs_wait_list where BottleNum = " + P_int_bottle;
+                                                    DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(P_str_sql);
+                                                    if (dt_data.Rows.Count == 0)
+                                                    {
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                        "INSERT INTO abs_wait_list(BottleNum, InsertDate,Type) VALUES('" + P_int_bottle + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "',0);");
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -2494,6 +2592,22 @@ namespace SmartDyeing.FADM_Auto
                                                         ", BrewingData = '" + P_time + "', AdjustSuccess = 0" +
                                                         " WHERE BottleNum = " + P_int_bottle + ";";
                                             FADM_Object.Communal._fadmSqlserver.ReviseData(P_str_sql);
+
+                                            //查询是否有吸光度机
+                                            if (FADM_Object.Communal._b_isAutoAbs)
+                                            {
+                                                if (Lib_Card.Configure.Parameter.Other_UseAbs == 1)
+                                                {
+                                                    //判断等待列表是否存在这个杯
+                                                    P_str_sql = "SELECT top 1 * FROM abs_wait_list where BottleNum = " + P_int_bottle;
+                                                    DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(P_str_sql);
+                                                    if (dt_data.Rows.Count == 0)
+                                                    {
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                        "INSERT INTO abs_wait_list(BottleNum, InsertDate,Type) VALUES('" + P_int_bottle + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "',0);");
+                                                    }
+                                                }
+                                            }
                                         }
                                         else
                                         {
@@ -2504,6 +2618,22 @@ namespace SmartDyeing.FADM_Auto
                                                         ", BrewingData = '" + P_time + "' " +
                                                         " WHERE BottleNum = " + P_int_bottle + ";";
                                             FADM_Object.Communal._fadmSqlserver.ReviseData(P_str_sql);
+
+                                            //查询是否有吸光度机
+                                            if (FADM_Object.Communal._b_isAutoAbs)
+                                            {
+                                                if (Lib_Card.Configure.Parameter.Other_UseAbs == 1)
+                                                {
+                                                    //判断等待列表是否存在这个杯
+                                                    P_str_sql = "SELECT top 1 * FROM abs_wait_list where BottleNum = " + P_int_bottle;
+                                                    DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(P_str_sql);
+                                                    if (dt_data.Rows.Count == 0)
+                                                    {
+                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                        "INSERT INTO abs_wait_list(BottleNum, InsertDate,Type) VALUES('" + P_int_bottle + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "',0);");
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }

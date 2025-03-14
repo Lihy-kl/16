@@ -448,7 +448,7 @@ namespace SmartDyeing.FADM_Object
                         }
                         else
                         {
-                            if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(i_no) && (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 3))
+                            if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(i_no) && (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 3 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 4 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 5))
                             {
                                 if (i_no == 1)
                                 {
@@ -629,6 +629,66 @@ namespace SmartDyeing.FADM_Object
                                 {
                                     i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup36_IntervalX;
                                     i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup36_IntervalY;
+                                }
+                                else if (i_no == 37)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup37_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup37_IntervalY;
+                                }
+                                else if (i_no == 38)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup38_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup38_IntervalY;
+                                }
+                                else if (i_no == 39)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup39_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup39_IntervalY;
+                                }
+                                else if (i_no == 40)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup40_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup40_IntervalY;
+                                }
+                                else if (i_no == 41)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup41_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup41_IntervalY;
+                                }
+                                else if (i_no == 42)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup42_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup42_IntervalY;
+                                }
+                                else if (i_no == 43)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup43_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup43_IntervalY;
+                                }
+                                else if (i_no == 44)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup44_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup44_IntervalY;
+                                }
+                                else if (i_no == 45)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup45_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup45_IntervalY;
+                                }
+                                else if (i_no == 46)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup46_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup46_IntervalY;
+                                }
+                                else if (i_no == 47)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup47_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup47_IntervalY;
+                                }
+                                else if (i_no == 48)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup48_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup48_IntervalY;
                                 }
                             }
                             else
@@ -959,6 +1019,66 @@ namespace SmartDyeing.FADM_Object
                             i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover36_IntervalX;
                             i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover36_IntervalY;
                         }
+                        else if (i_no == 37)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover37_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover37_IntervalY;
+                        }
+                        else if (i_no == 38)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover38_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover38_IntervalY;
+                        }
+                        else if (i_no == 39)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover39_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover39_IntervalY;
+                        }
+                        else if (i_no == 40)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover40_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover40_IntervalY;
+                        }
+                        else if (i_no == 41)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover41_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover41_IntervalY;
+                        }
+                        else if (i_no == 42)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover42_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover42_IntervalY;
+                        }
+                        else if (i_no == 43)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover43_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover43_IntervalY;
+                        }
+                        else if (i_no == 44)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover44_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover44_IntervalY;
+                        }
+                        else if (i_no == 45)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover45_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover45_IntervalY;
+                        }
+                        else if (i_no == 46)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover46_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover46_IntervalY;
+                        }
+                        else if (i_no == 47)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover47_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover47_IntervalY;
+                        }
+                        else if (i_no == 48)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover48_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover48_IntervalY;
+                        }
                         break;
                     case 5:
                         if (0 >= i_no || i_no > Lib_Card.Configure.Parameter.Machine_Cup_Total)
@@ -976,7 +1096,7 @@ namespace SmartDyeing.FADM_Object
                         }
                         else
                         {
-                            if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(i_no) && (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 3))
+                            if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(i_no) && (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 3 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 4 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 5))
                             {
                                 if (i_no == 1)
                                 {
@@ -1157,6 +1277,66 @@ namespace SmartDyeing.FADM_Object
                                 {
                                     i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup36_IntervalX;
                                     i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup36_IntervalY;
+                                }
+                                else if (i_no == 37)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup37_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup37_IntervalY;
+                                }
+                                else if (i_no == 38)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup38_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup38_IntervalY;
+                                }
+                                else if (i_no == 39)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup39_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup39_IntervalY;
+                                }
+                                else if (i_no == 40)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup40_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup40_IntervalY;
+                                }
+                                else if (i_no == 41)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup41_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup41_IntervalY;
+                                }
+                                else if (i_no == 42)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup42_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup42_IntervalY;
+                                }
+                                else if (i_no == 43)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup43_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup43_IntervalY;
+                                }
+                                else if (i_no == 44)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup44_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup44_IntervalY;
+                                }
+                                else if (i_no == 45)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup45_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup45_IntervalY;
+                                }
+                                else if (i_no == 46)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup46_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup46_IntervalY;
+                                }
+                                else if (i_no == 47)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup47_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup47_IntervalY;
+                                }
+                                else if (i_no == 48)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup48_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup48_IntervalY;
                                 }
                             }
                             else
@@ -1590,7 +1770,7 @@ namespace SmartDyeing.FADM_Object
                         }
                         else
                         {
-                            if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(i_no) && (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 3))
+                            if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(i_no) && (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 3 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 4 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 5))
                             {
                                 if (i_no == 1)
                                 {
@@ -1771,6 +1951,66 @@ namespace SmartDyeing.FADM_Object
                                 {
                                     i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup36_IntervalX;
                                     i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup36_IntervalY;
+                                }
+                                else if (i_no == 37)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup37_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup37_IntervalY;
+                                }
+                                else if (i_no == 38)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup38_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup38_IntervalY;
+                                }
+                                else if (i_no == 39)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup39_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup39_IntervalY;
+                                }
+                                else if (i_no == 40)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup40_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup40_IntervalY;
+                                }
+                                else if (i_no == 41)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup41_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup41_IntervalY;
+                                }
+                                else if (i_no == 42)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup42_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup42_IntervalY;
+                                }
+                                else if (i_no == 43)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup43_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup43_IntervalY;
+                                }
+                                else if (i_no == 44)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup44_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup44_IntervalY;
+                                }
+                                else if (i_no == 45)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup45_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup45_IntervalY;
+                                }
+                                else if (i_no == 46)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup46_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup46_IntervalY;
+                                }
+                                else if (i_no == 47)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup47_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup47_IntervalY;
+                                }
+                                else if (i_no == 48)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup48_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup48_IntervalY;
                                 }
                             }
                             else
@@ -2101,6 +2341,66 @@ namespace SmartDyeing.FADM_Object
                             i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover36_IntervalX;
                             i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover36_IntervalY;
                         }
+                        else if (i_no == 37)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover37_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover37_IntervalY;
+                        }
+                        else if (i_no == 38)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover38_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover38_IntervalY;
+                        }
+                        else if (i_no == 39)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover39_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover39_IntervalY;
+                        }
+                        else if (i_no == 40)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover40_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover40_IntervalY;
+                        }
+                        else if (i_no == 41)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover41_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover41_IntervalY;
+                        }
+                        else if (i_no == 42)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover42_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover42_IntervalY;
+                        }
+                        else if (i_no == 43)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover43_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover43_IntervalY;
+                        }
+                        else if (i_no == 44)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover44_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover44_IntervalY;
+                        }
+                        else if (i_no == 45)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover45_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover45_IntervalY;
+                        }
+                        else if (i_no == 46)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover46_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover46_IntervalY;
+                        }
+                        else if (i_no == 47)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover47_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover47_IntervalY;
+                        }
+                        else if (i_no == 48)
+                        {
+                            i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover48_IntervalX;
+                            i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover48_IntervalY;
+                        }
                         break;
                     case 5:
                         if (0 >= i_no || i_no > Lib_Card.Configure.Parameter.Machine_Cup_Total)
@@ -2118,7 +2418,7 @@ namespace SmartDyeing.FADM_Object
                         }
                         else
                         {
-                            if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(i_no) && (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 3))
+                            if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(i_no) && (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 3 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 4 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 5))
                             {
                                 if (i_no == 1)
                                 {
@@ -2299,6 +2599,66 @@ namespace SmartDyeing.FADM_Object
                                 {
                                     i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup36_IntervalX;
                                     i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup36_IntervalY;
+                                }
+                                else if (i_no == 37)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup37_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup37_IntervalY;
+                                }
+                                else if (i_no == 38)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup38_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup38_IntervalY;
+                                }
+                                else if (i_no == 39)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup39_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup39_IntervalY;
+                                }
+                                else if (i_no == 40)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup40_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup40_IntervalY;
+                                }
+                                else if (i_no == 41)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup41_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup41_IntervalY;
+                                }
+                                else if (i_no == 42)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup42_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup42_IntervalY;
+                                }
+                                else if (i_no == 43)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup43_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup43_IntervalY;
+                                }
+                                else if (i_no == 44)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup44_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup44_IntervalY;
+                                }
+                                else if (i_no == 45)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup45_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup45_IntervalY;
+                                }
+                                else if (i_no == 46)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup46_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup46_IntervalY;
+                                }
+                                else if (i_no == 47)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup47_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup47_IntervalY;
+                                }
+                                else if (i_no == 48)
+                                {
+                                    i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup48_IntervalX;
+                                    i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup48_IntervalY;
                                 }
                             }
                             else
@@ -2712,7 +3072,7 @@ namespace SmartDyeing.FADM_Object
                             }
                             else
                             {
-                                if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(i_no) && (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 3))
+                                if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(i_no) && (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 3 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 4 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 5))
                                 {
                                     if (i_no == 1)
                                     {
@@ -2893,6 +3253,66 @@ namespace SmartDyeing.FADM_Object
                                     {
                                         i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup36_IntervalX;
                                         i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup36_IntervalY;
+                                    }
+                                    else if (i_no == 37)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup37_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup37_IntervalY;
+                                    }
+                                    else if (i_no == 38)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup38_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup38_IntervalY;
+                                    }
+                                    else if (i_no == 39)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup39_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup39_IntervalY;
+                                    }
+                                    else if (i_no == 40)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup40_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup40_IntervalY;
+                                    }
+                                    else if (i_no == 41)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup41_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup41_IntervalY;
+                                    }
+                                    else if (i_no == 42)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup42_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup42_IntervalY;
+                                    }
+                                    else if (i_no == 43)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup43_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup43_IntervalY;
+                                    }
+                                    else if (i_no == 44)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup44_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup44_IntervalY;
+                                    }
+                                    else if (i_no == 45)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup45_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup45_IntervalY;
+                                    }
+                                    else if (i_no == 46)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup46_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup46_IntervalY;
+                                    }
+                                    else if (i_no == 47)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup47_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup47_IntervalY;
+                                    }
+                                    else if (i_no == 48)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup48_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup48_IntervalY;
                                     }
                                 }
                                 else
@@ -3223,6 +3643,66 @@ namespace SmartDyeing.FADM_Object
                                 i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover36_IntervalX;
                                 i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover36_IntervalY;
                             }
+                            else if (i_no == 37)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover37_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover37_IntervalY;
+                            }
+                            else if (i_no == 38)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover38_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover38_IntervalY;
+                            }
+                            else if (i_no == 39)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover39_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover39_IntervalY;
+                            }
+                            else if (i_no == 40)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover40_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover40_IntervalY;
+                            }
+                            else if (i_no == 41)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover41_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover41_IntervalY;
+                            }
+                            else if (i_no == 42)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover42_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover42_IntervalY;
+                            }
+                            else if (i_no == 43)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover43_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover43_IntervalY;
+                            }
+                            else if (i_no == 44)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover44_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover44_IntervalY;
+                            }
+                            else if (i_no == 45)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover45_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover45_IntervalY;
+                            }
+                            else if (i_no == 46)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover46_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover46_IntervalY;
+                            }
+                            else if (i_no == 47)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover47_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover47_IntervalY;
+                            }
+                            else if (i_no == 48)
+                            {
+                                i_xPules = Lib_Card.Configure.Parameter.Coordinate_CupCover48_IntervalX;
+                                i_yPules = Lib_Card.Configure.Parameter.Coordinate_CupCover48_IntervalY;
+                            }
                             break;
                         case 5:
                             if (0 >= i_no || i_no > Lib_Card.Configure.Parameter.Machine_Cup_Total)
@@ -3240,7 +3720,7 @@ namespace SmartDyeing.FADM_Object
                             }
                             else
                             {
-                                if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(i_no) && (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 3))
+                                if (SmartDyeing.FADM_Object.Communal._lis_dyeCupNum.Contains(i_no) && (SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 1 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 2 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 3 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 4 || SmartDyeing.FADM_Object.Communal._dic_dyeType[i_no] == 5))
                                 {
                                     if (i_no == 1)
                                     {
@@ -3421,6 +3901,66 @@ namespace SmartDyeing.FADM_Object
                                     {
                                         i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup36_IntervalX;
                                         i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup36_IntervalY;
+                                    }
+                                    else if (i_no == 37)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup37_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup37_IntervalY;
+                                    }
+                                    else if (i_no == 38)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup38_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup38_IntervalY;
+                                    }
+                                    else if (i_no == 39)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup39_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup39_IntervalY;
+                                    }
+                                    else if (i_no == 40)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup40_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup40_IntervalY;
+                                    }
+                                    else if (i_no == 41)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup41_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup41_IntervalY;
+                                    }
+                                    else if (i_no == 42)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup42_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup42_IntervalY;
+                                    }
+                                    else if (i_no == 43)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup43_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup43_IntervalY;
+                                    }
+                                    else if (i_no == 44)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup44_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup44_IntervalY;
+                                    }
+                                    else if (i_no == 45)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup45_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup45_IntervalY;
+                                    }
+                                    else if (i_no == 46)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup46_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup46_IntervalY;
+                                    }
+                                    else if (i_no == 47)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup47_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup47_IntervalY;
+                                    }
+                                    else if (i_no == 48)
+                                    {
+                                        i_xPules = Lib_Card.Configure.Parameter.Coordinate_Cup48_IntervalX;
+                                        i_yPules = Lib_Card.Configure.Parameter.Coordinate_Cup48_IntervalY;
                                     }
                                 }
                                 else
@@ -4245,10 +4785,10 @@ namespace SmartDyeing.FADM_Object
                 if (6666 == FADM_Object.Communal.dBalanceValue)
                 {
                     //不等于0 说明是绿维电机 并且夹着针 放针
-                    if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1 && FADM_Object.Communal._i_optBottleNum!=0)
-                    {
-                        lvPut();
-                    }
+                    //if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1 && FADM_Object.Communal._i_optBottleNum!=0)
+                    //{
+                    //    lvPut();
+                    //}
 
 
                     Lib_Card.ADT8940A1.OutPut.X_Power.X_Power xpower = new Lib_Card.ADT8940A1.OutPut.X_Power.X_Power_Basic();
@@ -4263,11 +4803,11 @@ namespace SmartDyeing.FADM_Object
                 }
                 else if (7777 == FADM_Object.Communal.dBalanceValue)
                 {
-                    //不等于0 说明是绿维电机 并且夹着针 放针
-                    if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
-                    {
-                        lvPut();
-                    }
+                    ////不等于0 说明是绿维电机 并且夹着针 放针
+                    //if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                    //{
+                    //    lvPut();
+                    //}
 
                     Lib_Card.ADT8940A1.OutPut.X_Power.X_Power xpower = new Lib_Card.ADT8940A1.OutPut.X_Power.X_Power_Basic();
                     xpower.X_Power_Off();
@@ -4280,11 +4820,11 @@ namespace SmartDyeing.FADM_Object
                 }
                 else if (8888 == FADM_Object.Communal.dBalanceValue)
                 {
-                    //不等于0 说明是绿维电机 并且夹着针 放针
-                    if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
-                    {
-                        lvPut();
-                    }
+                    ////不等于0 说明是绿维电机 并且夹着针 放针
+                    //if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                    //{
+                    //    lvPut();
+                    //}
 
                     Lib_Card.ADT8940A1.OutPut.X_Power.X_Power xpower = new Lib_Card.ADT8940A1.OutPut.X_Power.X_Power_Basic();
                     xpower.X_Power_Off();
@@ -4297,11 +4837,11 @@ namespace SmartDyeing.FADM_Object
                 }
                 else if (9999 == FADM_Object.Communal.dBalanceValue)
                 {
-                    //不等于0 说明是绿维电机 并且夹着针 放针
-                    if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
-                    {
-                        lvPut();
-                    }
+                    ////不等于0 说明是绿维电机 并且夹着针 放针
+                    //if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                    //{
+                    //    lvPut();
+                    //}
 
                     Lib_Card.ADT8940A1.OutPut.X_Power.X_Power xpower = new Lib_Card.ADT8940A1.OutPut.X_Power.X_Power_Basic();
                     xpower.X_Power_Off();
@@ -4314,11 +4854,11 @@ namespace SmartDyeing.FADM_Object
                 }
                 else if (FADM_Object.Communal._b_balanceAlarm)
                 {
-                    //不等于0 说明是绿维电机 并且夹着针 放针
-                    if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
-                    {
-                        lvPut();
-                    }
+                    ////不等于0 说明是绿维电机 并且夹着针 放针
+                    //if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                    //{
+                    //    lvPut();
+                    //}
 
                     Lib_Card.ADT8940A1.OutPut.X_Power.X_Power xpower = new Lib_Card.ADT8940A1.OutPut.X_Power.X_Power_Basic();
                     xpower.X_Power_Off();
@@ -4857,7 +5397,7 @@ namespace SmartDyeing.FADM_Object
         /// <param name="i_yStartPules">开始Y坐标</param>
         /// <param name="i_xEndPules">结束X坐标</param>
         /// <param name="i_yEndPules">结束Y坐标</param>
-        /// <param name="i_type">0:开盖 1：关盖</param>
+        /// <param name="i_type">0:开盖 1：关盖 2:测试坐标</param>
         /// <returns></returns>
         public static int OpenOrPutCover(int i_xStartPules, int i_yStartPules, int i_xEndPules, int i_yEndPules, int i_type)
         {
@@ -4875,6 +5415,14 @@ namespace SmartDyeing.FADM_Object
                     throw new Exception("驱动异常");
                 else if (-2 == iMove)
                     throw new Exception("收到退出消息");
+
+                Lib_Card.ADT8940A1.OutPut.X_Power.X_Power x_Power = new Lib_Card.ADT8940A1.OutPut.X_Power.X_Power_Condition();
+                if (-1 == x_Power.X_Power_Off())
+                    return -1;
+
+                Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power y_Power = new Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power_Condition();
+                if (-1 == y_Power.Y_Power_Off())
+                    return -1;
                 try
                 {
                     Lib_Card.ADT8940A1.Module.GetOrPutCover getOrPutCover = new Lib_Card.ADT8940A1.Module.GetOrPutCover();
@@ -4892,12 +5440,23 @@ namespace SmartDyeing.FADM_Object
                         throw ex;
                     }
                 }
+                if (i_type != 2)
+                {
+                    iMove = move.TargetMove(Lib_Card.Configure.Parameter.Machine_CylinderVersion, 0, i_xEndPules, i_yEndPules, 0);
+                    if (-1 == iMove)
+                        throw new Exception("驱动异常");
+                    else if (-2 == iMove)
+                        throw new Exception("收到退出消息");
+                }
 
-                iMove = move.TargetMove(Lib_Card.Configure.Parameter.Machine_CylinderVersion, 0, i_xEndPules, i_yEndPules, 0);
-                if (-1 == iMove)
-                    throw new Exception("驱动异常");
-                else if (-2 == iMove)
-                    throw new Exception("收到退出消息");
+
+                //Lib_Card.ADT8940A1.OutPut.X_Power.X_Power x_Power = new Lib_Card.ADT8940A1.OutPut.X_Power.X_Power_Condition();
+                if (-1 == x_Power.X_Power_Off())
+                    return -1;
+
+                //Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power y_Power = new Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power_Condition();
+                if (-1 == y_Power.Y_Power_Off())
+                    return -1;
 
                 try
                 {
@@ -4925,10 +5484,10 @@ namespace SmartDyeing.FADM_Object
                 try
                 {
                 Label1:
-                    if (!FADM_Object.Communal._b_auto)
-                    {//在手动页面 等待手动页面退出
-                        goto Label1;
-                    }
+                    //if (!FADM_Object.Communal._b_auto)
+                    //{//在手动页面 等待手动页面退出
+                    //    goto Label1;
+                    //}
                     Lib_Log.Log.writeLogException("执行放关盖方法");
 
                     bool b_istrue = false;
@@ -5026,6 +5585,18 @@ namespace SmartDyeing.FADM_Object
                             else if (ia_errArray[i] == 2706)
                             {
                                 throw new Exception("放盖失败");
+                            }
+                            else if (ia_errArray[i] == 2707)
+                            {
+                                throw new Exception("二次关盖复压失败");
+                            }
+                            else if (ia_errArray[i] == 2708)
+                            {
+                                throw new Exception("二次关盖失败");
+                            }
+                            else if (ia_errArray[i] == 2709)
+                            {
+                                throw new Exception("二次关盖未发现杯盖");
                             }
 
                         }
@@ -5175,6 +5746,26 @@ namespace SmartDyeing.FADM_Object
         {
             if (Lib_Card.Configure.Parameter.Machine_Type == 0)
             {
+                if (i_type == 2)
+                {
+                    Lib_Card.ADT8940A1.OutPut.X_Power.X_Power x_Power = new Lib_Card.ADT8940A1.OutPut.X_Power.X_Power_Condition();
+                    if (-1 == x_Power.X_Power_Off())
+                        return -1;
+
+                    Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power y_Power = new Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power_Condition();
+                    if (-1 == y_Power.Y_Power_Off())
+                        return -1;
+                }
+                else if (i_type == 1)
+                {
+                    Lib_Card.ADT8940A1.OutPut.X_Power.X_Power x_Power = new Lib_Card.ADT8940A1.OutPut.X_Power.X_Power_Condition();
+                    if (-1 == x_Power.X_Power_On())
+                        return -1;
+
+                    Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power y_Power = new Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power_Condition();
+                    if (-1 == y_Power.Y_Power_On())
+                        return -1;
+                }
                 return 0;
             }
             else

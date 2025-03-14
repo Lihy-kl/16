@@ -215,7 +215,7 @@ namespace SmartDyeing.FADM_Object
         /// <summary>
         /// 报警
         /// </summary>
-        public static int[] _ia_alarmNum = { 0,0,0,0,0,0 };
+        public static int[] _ia_alarmNum = { 0, 0, 0, 0, 0, 0 };
 
         /// <summary>
         /// 报警(翻转缸)
@@ -236,38 +236,44 @@ namespace SmartDyeing.FADM_Object
         /// 染色机对象tcp通讯
         /// </summary>
         public static HMITCPModBus _tcpDyeHMI1 { get; set; } = null;
+        public static HMITCPModBus _tcpDyeHMI1_s { get; set; } = null;
 
         /// <summary>
         /// 染色机对象tcp通讯
         /// </summary>
         public static HMITCPModBus _tcpDyeHMI2 { get; set; } = null;
+        public static HMITCPModBus _tcpDyeHMI2_s { get; set; } = null;
 
         /// <summary>
         /// 染色机对象tcp通讯
         /// </summary>
         public static HMITCPModBus _tcpDyeHMI3 { get; set; } = null;
+        public static HMITCPModBus _tcpDyeHMI3_s { get; set; } = null;
 
         /// <summary>
         /// 染色机对象tcp通讯
         /// </summary>
         public static HMITCPModBus _tcpDyeHMI4 { get; set; } = null;
+        public static HMITCPModBus _tcpDyeHMI4_s { get; set; } = null;
 
         /// <summary>
         /// 染色机对象tcp通讯
         /// </summary>
         public static HMITCPModBus _tcpDyeHMI5 { get; set; } = null;
+        public static HMITCPModBus _tcpDyeHMI5_s { get; set; } = null;
 
         /// <summary>
         /// 染色机对象tcp通讯
         /// </summary>
         public static HMITCPModBus _tcpDyeHMI6 { get; set; } = null;
+        public static HMITCPModBus _tcpDyeHMI6_s { get; set; } = null;
 
 
         /// <summary>
         /// 称布触摸屏对象
         /// </summary>
         public static HMITCPModBus HMIBaClo { get; set; } = null;
-        
+
 
 
 
@@ -288,7 +294,7 @@ namespace SmartDyeing.FADM_Object
         /// <summary>
         /// 滴液完成的杯号
         /// </summary>
-        public static List<int> _lis_dripSuccessCup = new List<int>() ;
+        public static List<int> _lis_dripSuccessCup = new List<int>();
 
         /// <summary>
         /// 滴液失败的杯号
@@ -517,6 +523,13 @@ namespace SmartDyeing.FADM_Object
         /// </summary>
         public static Dictionary<int, int> _dic_dyeType = new Dictionary<int, int>();
 
+        /// <summary>
+        /// 16杯模式杯号(用于显示参数页面)
+        /// </summary>
+        public static Dictionary<int, int> _dic_SixteenCupNum = new Dictionary<int, int>();
+
+        public static List<int> _lis_SixteenCupNum = new List<int>();
+
         public static bool _b_registerOld = false;//老校验方式
 
         public static bool _b_isDripAll = false;//是否分区域滴液，false:分区域;true:全部一起滴液
@@ -524,6 +537,10 @@ namespace SmartDyeing.FADM_Object
         public static bool _b_isAssitantFirst = false;//是否先滴助剂，false:先滴染料;true:先滴助剂
 
         public static bool _b_isNeedCheck = true;//开料完是否需要针检
+
+        public static bool _b_isAutoAbs = true;//有吸光度机时，是否开料就加入检测
+
+        public static bool _b_isUseWaterTestBase = false;//吸光度机是否使用水来测试基准点
 
         public static bool _b_isFinishSend = true;//是否单杯完成就下发
 
@@ -887,6 +904,16 @@ namespace SmartDyeing.FADM_Object
         public static string _s_brewVersion = "";
 
 
+        /// <summary>
+        /// 是否刷新打板机参数数据
+        /// </summary>
+        public static bool _b_refreshDye = false;
+
+        /// <summary>
+        /// 是否已刷新打板机参数数据
+        /// </summary>
+        public static bool _b_hasrefreshDye = false;
+
 
         public static bool ReadTcpStatus()
         {
@@ -1049,13 +1076,13 @@ namespace SmartDyeing.FADM_Object
                 FADM_Object.Communal._b_stop = true;
             }
 
-            if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
-            {
-                //富士伺服在下面判断 天平状态 原有不动 绿维的放在上面 并且置位 是否回原点 绿维的放移动机械手前面
+            //if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+            //{
+            //    //富士伺服在下面判断 天平状态 原有不动 绿维的放在上面 并且置位 是否回原点 绿维的放移动机械手前面
 
-                //判断是否异常
-                FADM_Object.Communal.BalanceState("滴液");
-            }
+            //    //判断是否异常
+            //    FADM_Object.Communal.BalanceState("滴液");
+            //}
 
             int i_mRes;
             if (i_minBottleNo == 999)
@@ -1307,7 +1334,7 @@ namespace SmartDyeing.FADM_Object
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找天平位");
                 //判断是否异常
 
-                if ((Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 0) || Lib_Card.Configure.Parameter.Machine_Type == 1)
+                //if ((Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 0) || Lib_Card.Configure.Parameter.Machine_Type == 1)
                 {
                     //富士伺服在下面判断 天平状态 原有不动 绿维的放在上面 并且置位 是否回原点
 
@@ -1620,7 +1647,7 @@ namespace SmartDyeing.FADM_Object
                 FADM_Object.Communal._b_stop = true;
             }
             FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找天平位");
-            if ((Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 0) || Lib_Card.Configure.Parameter.Machine_Type == 1)
+            //if ((Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 0) || Lib_Card.Configure.Parameter.Machine_Type == 1)
             {
                 //富士伺服在下面判断 天平状态 原有不动 绿维的放在上面 并且置位 是否回原点
 

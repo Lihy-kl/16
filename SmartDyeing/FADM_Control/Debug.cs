@@ -1,4 +1,5 @@
 ﻿using EasyModbus;
+using HslControls;
 using Lib_Card;
 using Lib_Card.ADT8940A1;
 using SmartDyeing.FADM_Object;
@@ -1701,6 +1702,117 @@ namespace SmartDyeing.FADM_Control
             }
         }
 
+        private void TestCoordinate()
+        {
+            try
+            {
+                if (0 >= Convert.ToInt32(TxtNum.Text) || Convert.ToInt32(TxtNum.Text) > Lib_Card.Configure.Parameter.Machine_Cup_Total)
+                {
+                    MessageBox.Show("杯号输入错误");
+                    FADM_Object.Communal.WriteDripWait(false);
+                    FADM_Object.Communal.WriteMachineStatus(0);
+                    return;
+                }
+
+                try
+                {
+
+                    int i_xStart = 0, i_yStart = 0;
+                    int i_xEnd = 0, i_yEnd = 0;
+                    if (RdoCup.Checked)
+                    {
+                        MyModbusFun.CalTarget(1, Convert.ToInt32(TxtNum.Text), ref i_xStart, ref i_yStart);
+
+                        MyModbusFun.CalTarget(1, Convert.ToInt32(TxtNum.Text), ref i_xEnd, ref i_yEnd);
+                    }
+                    else
+                    {
+                        MyModbusFun.CalTarget(4, Convert.ToInt32(TxtNum.Text), ref i_xStart, ref i_yStart);
+
+                        MyModbusFun.CalTarget(4, Convert.ToInt32(TxtNum.Text), ref i_xEnd, ref i_yEnd);
+                    }
+
+                    int i_mRes = MyModbusFun.OpenOrPutCover(i_xStart, i_yStart, i_xEnd, i_yEnd, 2);
+                    if (-2 == i_mRes)
+                        throw new Exception("收到退出消息");
+                }
+                catch (Exception ex)
+                {
+                }
+                FADM_Object.Communal.WriteMachineStatus(0);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Equals("-2"))
+                {
+                    FADM_Object.Communal.WriteMachineStatus(8);
+                    int[] ia_errArray = new int[100];
+                    MyModbusFun.GetErrMsgNew(ref ia_errArray);
+                    List<string> lis_err = new List<string>();
+                    for (int i = 0; i < ia_errArray.Length; i++)
+                    {
+                        if (ia_errArray[i] != 0)
+                        {
+                            if (SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.ContainsKey(ia_errArray[i]))
+                            {
+                                string s_err = SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew[ia_errArray[i]];
+                                string s_sql = "INSERT INTO alarm_table" +
+                                 "(MyDate,MyTime,AlarmHead,AlarmDetails)" +
+                                 " VALUES( '" +
+                                 String.Format("{0:d}", DateTime.Now) + "','" +
+                                 String.Format("{0:T}", DateTime.Now) + "','" +
+                                 "Debug" + "','" +
+                                 s_err + "(Test)');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                string s_insert = CardObject.InsertD(s_err, " myMachineReset");
+                                if (!lis_err.Contains(s_insert))
+                                    lis_err.Add(s_insert);
+                                //while (true)
+                                //{
+                                //    Thread.Sleep(1);
+                                //    if (Lib_Card.CardObject.keyValuePairs[s_insert].Choose != 0)
+                                //        break;
+
+                                //}
+
+                                //int _i_alarm_Choose = Lib_Card.CardObject.keyValuePairs[s_insert].Choose;
+                                //CardObject.DeleteD(s_insert);
+
+                            }
+
+                        }
+                    }
+
+                    while (true)
+                    {
+                        for (int p = lis_err.Count - 1; p >= 0; p--)
+                        {
+                            if (Lib_Card.CardObject.keyValuePairs[lis_err[p]].Choose != 0)
+                            {
+                                CardObject.DeleteD(lis_err[p]);
+                                lis_err.Remove(lis_err[p]);
+                            }
+                        }
+                        if (lis_err.Count == 0)
+                        {
+                            break;
+                        }
+                        Thread.Sleep(1);
+                    }
+
+                }
+                else
+                {
+                    FADM_Object.Communal.WriteMachineStatus(8);
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                        FADM_Form.CustomMessageBox.Show(ex.Message, "定点移动", MessageBoxButtons.OK, true);
+                    else
+                        FADM_Form.CustomMessageBox.Show(ex.Message, "Fixed-point movement", MessageBoxButtons.OK, true);
+                }
+            }
+        }
+
         private void DryClothMove()
         {
             try
@@ -2955,6 +3067,2443 @@ namespace SmartDyeing.FADM_Control
                 {
                     _b_istrue = false;
                 }
+            }
+        }
+
+        private void button2_Click_2(object sender, EventArgs e)
+        {
+            FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "测试启动");
+            if ((0 == FADM_Object.Communal.ReadMachineStatus() || 8 == FADM_Object.Communal.ReadMachineStatus()) && null == FADM_Object.Communal.ReadDyeThread() && FADM_Object.Communal.ReadTcpStatus())
+            {
+                FADM_Object.Communal.WriteDripWait(true);
+                if (RdoCup.Checked)
+                {
+                    if (string.IsNullOrEmpty(TxtNum.Text))
+                    {
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            FADM_Form.CustomMessageBox.Show("请输入杯号！", "温馨提示", MessageBoxButtons.OK, false);
+                        else
+                            FADM_Form.CustomMessageBox.Show("Please enter the cup number！", "Tips", MessageBoxButtons.OK, false);
+                        FADM_Object.Communal.WriteDripWait(false);
+                        return;
+                    }
+                    else
+                    {
+                        if(SmartDyeing.FADM_Object.Communal._dic_dyeType.Keys.Contains(Convert.ToInt32(TxtNum.Text)))
+                        {
+                            if (SmartDyeing.FADM_Object.Communal._dic_dyeType[Convert.ToInt32(TxtNum.Text)] == 0)
+                                return;
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+                    FADM_Object.Communal.WriteMachineStatus(13);
+                    Thread thread = new Thread(TestCoordinate);
+                    thread.Start();
+                }
+                else if (RdoDecompression.Checked)
+                {
+                    if (string.IsNullOrEmpty(TxtNum.Text))
+                    {
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            FADM_Form.CustomMessageBox.Show("请输入杯号！", "温馨提示", MessageBoxButtons.OK, false);
+                        else
+                            FADM_Form.CustomMessageBox.Show("Please enter the cup number！", "Tips", MessageBoxButtons.OK, false);
+                        FADM_Object.Communal.WriteDripWait(false);
+                        return;
+                    }
+                    FADM_Object.Communal.WriteMachineStatus(13);
+                    Thread thread = new Thread(TestCoordinate);
+                    thread.Start();
+                }
+                else
+                {
+                    return;
+                }
+
+                Thread threadReset = new Thread(Reset);
+                threadReset.Start();
+            }
+            else
+            {
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                    FADM_Form.CustomMessageBox.Show("机台正在运动，不能开始", "定点移动", MessageBoxButtons.OK, true);
+                else
+                    FADM_Form.CustomMessageBox.Show("The machine is in motion and cannot start", "Tips", MessageBoxButtons.OK, true);
+            }
+        }
+        //生成坐标
+        private void button4_Click_1(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(TxtNum.Text))
+            {
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                    FADM_Form.CustomMessageBox.Show("请输入杯号！", "温馨提示", MessageBoxButtons.OK, false);
+                else
+                    FADM_Form.CustomMessageBox.Show("Please enter the cup number！", "Tips", MessageBoxButtons.OK, false);
+                FADM_Object.Communal.WriteDripWait(false);
+                return;
+            }
+            int i_type = 0;
+            int i_min = 0;
+            //确认区域
+            //判断是否翻转缸
+            if(Convert.ToInt32(TxtNum.Text) == Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area1_CupMin.ToString()))
+            {
+                if (Lib_Card.Configure.Parameter.Machine_Area1_Type == 3)
+                {
+                    if(Lib_Card.Configure.Parameter.Machine_Area1_DyeType == 0)
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    return;
+                }
+                i_min = Convert.ToInt32(TxtNum.Text);
+                i_type = Lib_Card.Configure.Parameter.Machine_Area1_DyeType;
+                
+            }
+            else if (Convert.ToInt32(TxtNum.Text) == Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area2_CupMin.ToString()))
+            {
+                if (Lib_Card.Configure.Parameter.Machine_Area2_Type == 3)
+                {
+                    if (Lib_Card.Configure.Parameter.Machine_Area2_DyeType == 0)
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    return;
+                }
+                i_min = Convert.ToInt32(TxtNum.Text);
+                i_type = Lib_Card.Configure.Parameter.Machine_Area2_DyeType;
+
+            }
+            else if (Convert.ToInt32(TxtNum.Text) == Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area3_CupMin.ToString()))
+            {
+                if (Lib_Card.Configure.Parameter.Machine_Area3_Type == 3)
+                {
+                    if (Lib_Card.Configure.Parameter.Machine_Area3_DyeType == 0)
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    return;
+                }
+                i_min = Convert.ToInt32(TxtNum.Text);
+                i_type = Lib_Card.Configure.Parameter.Machine_Area3_DyeType;
+
+            }
+            else if (Convert.ToInt32(TxtNum.Text) == Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area4_CupMin.ToString()))
+            {
+                if (Lib_Card.Configure.Parameter.Machine_Area4_Type == 3)
+                {
+                    if (Lib_Card.Configure.Parameter.Machine_Area4_DyeType == 0)
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    return;
+                }
+                i_min = Convert.ToInt32(TxtNum.Text);
+                i_type = Lib_Card.Configure.Parameter.Machine_Area4_DyeType;
+
+            }
+            else if (Convert.ToInt32(TxtNum.Text) == Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area5_CupMin.ToString()))
+            {
+                if (Lib_Card.Configure.Parameter.Machine_Area5_Type == 3)
+                {
+                    if (Lib_Card.Configure.Parameter.Machine_Area5_DyeType == 0)
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    return;
+                }
+                i_min = Convert.ToInt32(TxtNum.Text);
+                i_type = Lib_Card.Configure.Parameter.Machine_Area5_DyeType;
+
+            }
+            else if (Convert.ToInt32(TxtNum.Text) == Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area6_CupMin.ToString()))
+            {
+                if (Lib_Card.Configure.Parameter.Machine_Area6_Type == 3)
+                {
+                    if (Lib_Card.Configure.Parameter.Machine_Area6_DyeType == 0)
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    return;
+                }
+                i_min = Convert.ToInt32(TxtNum.Text);
+                i_type = Lib_Card.Configure.Parameter.Machine_Area6_DyeType;
+
+            }
+            if (RdoCup.Checked)
+            {
+                DialogResult dialogResult;
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                {
+                    dialogResult = FADM_Form.CustomMessageBox.Show("确定生成该区域对应坐标吗?", "温馨提示", MessageBoxButtons.YesNo, true);
+                }
+                else
+                {
+                    dialogResult = FADM_Form.CustomMessageBox.Show("Determine the corresponding coordinates for generating the region?", "Tips", MessageBoxButtons.YesNo, true);
+                }
+
+                if (dialogResult == DialogResult.No)
+                {
+                    return;
+                }
+                else
+                {
+                    //6杯摇摆
+                    if (i_type == 1)
+                    {
+                        //计算剩余坐标
+                        int x = 0; int y = 0;
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000;
+
+                        WriteCupCoordinate(i_min + 1, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000 + 15650;
+
+                        WriteCupCoordinate(i_min + 2, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000 + 15650 + 8000;
+
+                        WriteCupCoordinate(i_min + 3, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000 + 15650 + 8000 + 15650;
+
+                        WriteCupCoordinate(i_min + 4, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000 + 15650 + 8000 + 15650 + 8000;
+
+                        WriteCupCoordinate(i_min + 5, x.ToString(), y.ToString());
+                    }
+                    //12杯摇摆
+                    else if (i_type == 2)
+                    {
+                        //计算剩余坐标
+                        int x = 0; int y = 0;
+                        x = Convert.ToInt32(TxtRPosX.Text) + 10500;
+                        y = Convert.ToInt32(TxtRPosY.Text);
+
+                        WriteCupCoordinate(i_min + 1, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000;
+
+                        WriteCupCoordinate(i_min + 2, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) + 10500;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000;
+
+                        WriteCupCoordinate(i_min + 3, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000 + 15600;
+
+                        WriteCupCoordinate(i_min + 4, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) + 10500;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000 + 15600;
+
+                        WriteCupCoordinate(i_min + 5, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000 + 15600 + 8000;
+
+                        WriteCupCoordinate(i_min + 6, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) + 10500;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000 + 15600 + 8000;
+
+                        WriteCupCoordinate(i_min + 7, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000 + 15600 + 8000 + 15600;
+
+                        WriteCupCoordinate(i_min + 8, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) + 10500;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000 + 15600 + 8000 + 15600;
+
+                        WriteCupCoordinate(i_min + 9, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000 + 15600 + 8000 + 15600 + 8000;
+
+                        WriteCupCoordinate(i_min + 10, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) + 10500;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000 + 15600 + 8000 + 15600 + 8000;
+
+                        WriteCupCoordinate(i_min + 11, x.ToString(), y.ToString());
+                    }
+
+                    //4杯摇摆
+                    else if (i_type == 3)
+                    {
+                        //计算剩余坐标
+                        int x = 0; int y = 0;
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 12600;
+                        WriteCupCoordinate(i_min + 1, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 12600 + 22900;
+                        WriteCupCoordinate(i_min + 2, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 12600 + 22900 + 12600;
+                        WriteCupCoordinate(i_min + 3, x.ToString(), y.ToString());
+                    }
+                    //10杯摇摆
+                    else if (i_type == 4)
+                    {
+                        //计算剩余坐标
+                        int x = 0; int y = 0;
+                        x = Convert.ToInt32(TxtRPosX.Text) + 11300;
+                        y = Convert.ToInt32(TxtRPosY.Text);
+                        WriteCupCoordinate(i_min + 1, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 11700;
+                        WriteCupCoordinate(i_min + 2, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) + 11300;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 11700;
+                        WriteCupCoordinate(i_min + 3, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 11700 + 9700;
+                        WriteCupCoordinate(i_min + 4, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) + 11300;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 11700 + 9700;
+                        WriteCupCoordinate(i_min + 5, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 11700 + 9700 + 17300;
+                        WriteCupCoordinate(i_min + 6, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) + 11300;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 11700 + 9700 + 17300;
+                        WriteCupCoordinate(i_min + 7, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 11700 + 9700 + 17300 + 9300;
+                        WriteCupCoordinate(i_min + 6, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) + 11300;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 11700 + 9700 + 17300 + 9300;
+                        WriteCupCoordinate(i_min + 7, x.ToString(), y.ToString());
+                    }
+                    //16杯摇摆
+                    else if (i_type == 5)
+                    {
+                        //计算剩余坐标
+                        int x = 0; int y = 0;
+                        x = Convert.ToInt32(TxtRPosX.Text) + 10500;
+                        y = Convert.ToInt32(TxtRPosY.Text);
+                        WriteCupCoordinate(i_min + 1, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) ;
+                        y = Convert.ToInt32(TxtRPosY.Text)+8000;
+                        WriteCupCoordinate(i_min + 2, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text)+10500;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000;
+                        WriteCupCoordinate(i_min + 3, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000+16350;
+                        WriteCupCoordinate(i_min + 4, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) + 10500;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000+16350;
+                        WriteCupCoordinate(i_min + 5, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000 + 16350+8000;
+                        WriteCupCoordinate(i_min + 6, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) + 10500;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000 + 16350+8000;
+                        WriteCupCoordinate(i_min + 7, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000 + 16350 + 8000+16350;
+                        WriteCupCoordinate(i_min + 8, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) + 10500;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000 + 16350 + 8000+16350;
+                        WriteCupCoordinate(i_min + 9, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000 + 16350 + 8000 + 16350+8000;
+                        WriteCupCoordinate(i_min + 10, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) + 10500;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000 + 16350 + 8000 + 16350+8000;
+                        WriteCupCoordinate(i_min + 11, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000 + 16350 + 8000 + 16350 + 8000+16350;
+                        WriteCupCoordinate(i_min + 12, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) + 10500;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000 + 16350 + 8000 + 16350 + 8000+16350;
+                        WriteCupCoordinate(i_min + 13, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000 + 16350 + 8000 + 16350 + 8000 + 16350+8000;
+                        WriteCupCoordinate(i_min + 14, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) + 10500;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 8000 + 16350 + 8000 + 16350 + 8000 + 16350+8000;
+                        WriteCupCoordinate(i_min + 15, x.ToString(), y.ToString());
+                    }
+                }
+            }
+            else if (RdoDecompression.Checked)
+            {
+                DialogResult dialogResult;
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                {
+                    dialogResult = FADM_Form.CustomMessageBox.Show("确定生成该区域对应坐标吗?", "温馨提示", MessageBoxButtons.YesNo, true);
+                }
+                else
+                {
+                    dialogResult = FADM_Form.CustomMessageBox.Show("Determine the corresponding coordinates for generating the region?", "Tips", MessageBoxButtons.YesNo, true);
+                }
+
+                if (dialogResult == DialogResult.No)
+                {
+                    return;
+                }
+                else
+                {
+                    //6杯摇摆
+                    if (i_type == 1)
+                    {
+                        //计算剩余坐标
+                        int x = 0; int y = 0;
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text);
+
+                        WriteCupCoverCoordinate(i_min + 1, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 23975;
+
+                        WriteCupCoordinate(i_min + 2, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 23975;
+
+                        WriteCupCoordinate(i_min + 3, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 23975 + 23650;
+
+                        WriteCupCoordinate(i_min + 4, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 23975 + 23650;
+
+                        WriteCupCoordinate(i_min + 5, x.ToString(), y.ToString());
+                    }
+                    //12杯摇摆
+                    else if (i_type == 2)
+                    {
+                        //计算剩余坐标
+                        int x = 0; int y = 0;
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text);
+
+                        WriteCupCoverCoordinate(i_min + 1, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200 - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text);
+
+                        WriteCupCoverCoordinate(i_min + 2, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 6500;
+
+                        WriteCupCoverCoordinate(i_min + 3, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 6500;
+
+                        WriteCupCoverCoordinate(i_min + 4, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200 - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 6500;
+
+                        WriteCupCoverCoordinate(i_min + 5, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 6500 + 23400;
+
+                        WriteCupCoverCoordinate(i_min + 6, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 6500 + 23400;
+
+                        WriteCupCoverCoordinate(i_min + 7, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200 - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 6500 + 23400;
+
+                        WriteCupCoverCoordinate(i_min + 8, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 6500 + 23400 + 23650;
+
+                        WriteCupCoverCoordinate(i_min + 9, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 6500 + 23400 + 23650;
+
+                        WriteCupCoverCoordinate(i_min + 10, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200 - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 6500 + 23400 + 23650;
+
+                        WriteCupCoverCoordinate(i_min + 11, x.ToString(), y.ToString());
+                    }
+                    //4杯摇摆
+                    else if (i_type == 3)
+                    {
+                        //计算剩余坐标
+                        int x = 0; int y = 0;
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10500;
+                        y = Convert.ToInt32(TxtRPosY.Text);
+
+                        WriteCupCoverCoordinate(i_min + 1, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 35750;
+
+                        WriteCupCoverCoordinate(i_min + 2, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10500;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 35750;
+
+                        WriteCupCoverCoordinate(i_min + 3, x.ToString(), y.ToString());
+                    }
+                    //10杯摇摆
+                    else if (i_type == 4)
+                    {
+                        //计算剩余坐标
+                        int x = 0; int y = 0;
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10500;
+                        y = Convert.ToInt32(TxtRPosY.Text);
+
+                        WriteCupCoverCoordinate(i_min + 1, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text);
+                        y = Convert.ToInt32(TxtRPosY.Text) + 7500;
+
+                        WriteCupCoverCoordinate(i_min + 2, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10500;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 7500;
+
+                        WriteCupCoverCoordinate(i_min + 3, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) + 2900;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 7500 + 17500;
+
+                        WriteCupCoverCoordinate(i_min + 4, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) + 2900 - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 7500 + 17500;
+
+                        WriteCupCoverCoordinate(i_min + 5, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) + 2900 - 10200 - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 7500 + 17500;
+
+                        WriteCupCoverCoordinate(i_min + 6, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) + 2900;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 7500 + 17500 + 27000;
+
+                        WriteCupCoverCoordinate(i_min + 7, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) + 2900 - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 7500 + 17500 + 27000;
+
+                        WriteCupCoverCoordinate(i_min + 8, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) + 2900 - 10200 - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 7500 + 17500 + 27000;
+
+                        WriteCupCoverCoordinate(i_min + 9, x.ToString(), y.ToString());
+                    }
+                    //16杯摇摆
+                    else if (i_type == 5)
+                    {
+                        //计算剩余坐标
+                        int x = 0; int y = 0;
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text);
+
+                        WriteCupCoverCoordinate(i_min + 1, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200 - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text);
+
+                        WriteCupCoverCoordinate(i_min + 2, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200 - 10200 - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text);
+
+                        WriteCupCoverCoordinate(i_min + 3, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 24350;
+
+                        WriteCupCoverCoordinate(i_min + 4, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200 - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 24350;
+
+                        WriteCupCoverCoordinate(i_min + 5, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200 - 10200 - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 24350;
+
+                        WriteCupCoverCoordinate(i_min + 6, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 24350 + 24350;
+
+                        WriteCupCoverCoordinate(i_min + 7, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200 - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 24350 + 24350;
+
+                        WriteCupCoverCoordinate(i_min + 8, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200 - 10200 - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 24350 + 24350;
+
+                        WriteCupCoverCoordinate(i_min + 9, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 24350 + 24350 + 24350;
+
+                        WriteCupCoverCoordinate(i_min + 10, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200 - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 24350 + 24350 + 24350;
+
+                        WriteCupCoverCoordinate(i_min + 11, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200 - 10200 - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 24350 + 24350 + 24350;
+
+                        WriteCupCoverCoordinate(i_min + 12, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 24350 + 24350 + 24350 + 24350;
+
+                        WriteCupCoverCoordinate(i_min + 13, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200 - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 24350 + 24350 + 24350 + 24350;
+
+                        WriteCupCoverCoordinate(i_min + 14, x.ToString(), y.ToString());
+
+                        x = Convert.ToInt32(TxtRPosX.Text) - 10200 - 10200 - 10200;
+                        y = Convert.ToInt32(TxtRPosY.Text) + 24350 + 24350 + 24350 + 24350;
+
+                        WriteCupCoverCoordinate(i_min + 15, x.ToString(), y.ToString());
+                    }
+                }
+            }
+        }
+        //写入坐标
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            if (RdoBottle.Checked)
+            {
+                if (string.IsNullOrEmpty(TxtNum.Text))
+                {
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                        FADM_Form.CustomMessageBox.Show("请输入瓶号！", "温馨提示", MessageBoxButtons.OK, false);
+                    else
+                        FADM_Form.CustomMessageBox.Show("Please enter the bottle number！", "Tips", MessageBoxButtons.OK, false);
+                    FADM_Object.Communal.WriteDripWait(false);
+                    return;
+                }
+                else
+                {
+                    //母液瓶首瓶才能写入
+                    if(Convert.ToInt32(TxtNum.Text) == 1)
+                    {
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                        {
+                            DialogResult dialogResult = FADM_Form.CustomMessageBox.Show("确定写入?", "温馨提示", MessageBoxButtons.YesNo, true);
+
+                            if (dialogResult == DialogResult.No)
+                            {
+                                return;
+                            }
+                            else
+                            {
+                                if (string.IsNullOrEmpty(TxtRPosX.Text) || string.IsNullOrEmpty(TxtRPosY.Text))
+                                {
+                                    return;
+                                }
+
+                                //读取保存上次坐标到历史
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Bottle_X", Lib_Card.Configure.Parameter.Coordinate_Bottle_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Bottle_Y", Lib_Card.Configure.Parameter.Coordinate_Bottle_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                                //读取当前坐标写入
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Bottle_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Bottle_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                                Lib_Card.Configure.Parameter.Coordinate_Bottle_X = Convert.ToInt32(TxtRPosX.Text);
+                                Lib_Card.Configure.Parameter.Coordinate_Bottle_Y = Convert.ToInt32(TxtRPosY.Text);
+                            }
+                        }
+                        else
+                        {
+                            DialogResult dialogResult = FADM_Form.CustomMessageBox.Show("Definite write?", "Tips", MessageBoxButtons.YesNo, true);
+
+                            if (dialogResult == DialogResult.No)
+                            {
+                                return;
+                            }
+                            else
+                            {
+                                if (string.IsNullOrEmpty(TxtRPosX.Text) || string.IsNullOrEmpty(TxtRPosY.Text))
+                                {
+                                    return;
+                                }
+
+                                //读取保存上次坐标到历史
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Bottle_X", Lib_Card.Configure.Parameter.Coordinate_Bottle_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Bottle_Y", Lib_Card.Configure.Parameter.Coordinate_Bottle_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                                //读取当前坐标写入
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Bottle_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Bottle_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                                Lib_Card.Configure.Parameter.Coordinate_Bottle_X = Convert.ToInt32(TxtRPosX.Text);
+                                Lib_Card.Configure.Parameter.Coordinate_Bottle_Y = Convert.ToInt32(TxtRPosY.Text);
+                            }
+                        }
+                    }
+                }
+
+            }
+            else if (RdoCup.Checked)
+            {
+                if (string.IsNullOrEmpty(TxtNum.Text))
+                {
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                        FADM_Form.CustomMessageBox.Show("请输入杯号！", "温馨提示", MessageBoxButtons.OK, false);
+                    else
+                        FADM_Form.CustomMessageBox.Show("Please enter the cup number！", "Tips", MessageBoxButtons.OK, false);
+                    FADM_Object.Communal.WriteDripWait(false);
+                    return;
+                }
+                else
+                {
+                    if(Convert.ToInt32(TxtNum.Text) > Lib_Card.Configure.Parameter.Machine_Cup_Total)
+                    {
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            FADM_Form.CustomMessageBox.Show("杯号输入错误！", "温馨提示", MessageBoxButtons.OK, false);
+                        else
+                            FADM_Form.CustomMessageBox.Show("The cup number is incorrect！", "Tips", MessageBoxButtons.OK, false);
+                        return;
+                    }
+                }
+                DialogResult dialogResult;
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                {
+                    dialogResult = FADM_Form.CustomMessageBox.Show("确定写入?", "温馨提示", MessageBoxButtons.YesNo, true);
+                }
+                else
+                {
+                    dialogResult = FADM_Form.CustomMessageBox.Show("Definite write?", "Tips", MessageBoxButtons.YesNo, true);
+                }
+
+                if (dialogResult == DialogResult.No)
+                {
+                    return;
+                }
+                else
+                {
+                    //判断是否翻转缸
+                    if (string.IsNullOrEmpty(TxtRPosX.Text) || string.IsNullOrEmpty(TxtRPosY.Text))
+                    {
+                        return;
+                    }
+                    if (Convert.ToInt32(TxtNum.Text) >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area1_CupMin.ToString()) && Convert.ToInt32(TxtNum.Text) <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area1_CupMax.ToString()))
+                    {
+                        //如果是滴液区，判断是否首杯，如果是才能保存
+                        if (Lib_Card.Configure.Parameter.Machine_Area1_Type == 2)
+                        {
+                            if (Convert.ToInt32(TxtNum.Text) != Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area1_CupMin.ToString()))
+                            {
+                                return;
+                            }
+
+                            //读取当前坐标写入
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area1_X", Lib_Card.Configure.Parameter.Coordinate_Area1_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area1_Y", Lib_Card.Configure.Parameter.Coordinate_Area1_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                            //读取当前坐标写入
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area1_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area1_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                            Lib_Card.Configure.Parameter.Coordinate_Area1_X = Convert.ToInt32(TxtRPosX.Text);
+                            Lib_Card.Configure.Parameter.Coordinate_Area1_Y = Convert.ToInt32(TxtRPosY.Text);
+                        }
+                        else if (Lib_Card.Configure.Parameter.Machine_Area1_Type == 3)
+                        {
+                            //如果是转子机，判断是否首杯，如果是才能保存
+                            if (Lib_Card.Configure.Parameter.Machine_Area1_DyeType == 0)
+                            {
+                                if (Convert.ToInt32(TxtNum.Text) != Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area1_CupMin.ToString()))
+                                {
+                                    return;
+                                }
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area1_X", Lib_Card.Configure.Parameter.Coordinate_Area1_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area1_Y", Lib_Card.Configure.Parameter.Coordinate_Area1_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                                //读取当前坐标写入
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area1_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area1_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                                Lib_Card.Configure.Parameter.Coordinate_Area1_X = Convert.ToInt32(TxtRPosX.Text);
+                                Lib_Card.Configure.Parameter.Coordinate_Area1_Y = Convert.ToInt32(TxtRPosY.Text);
+                            }
+                            //翻转缸
+                            else
+                            {
+                                WriteCupCoordinate(Convert.ToInt32(TxtNum.Text), TxtRPosX.Text, TxtRPosY.Text);
+                            }
+
+                        }
+                    }
+
+                    else if (Convert.ToInt32(TxtNum.Text) >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area2_CupMin.ToString()) && Convert.ToInt32(TxtNum.Text) <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area2_CupMax.ToString()))
+                    {
+                        //如果是滴液区，判断是否首杯，如果是才能保存
+                        if (Lib_Card.Configure.Parameter.Machine_Area2_Type == 2)
+                        {
+                            if (Convert.ToInt32(TxtNum.Text) != Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area2_CupMin.ToString()))
+                            {
+                                return;
+                            }
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area2_X", Lib_Card.Configure.Parameter.Coordinate_Area2_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area2_Y", Lib_Card.Configure.Parameter.Coordinate_Area2_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                            //读取当前坐标写入
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area2_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area2_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                            Lib_Card.Configure.Parameter.Coordinate_Area2_X = Convert.ToInt32(TxtRPosX.Text);
+                            Lib_Card.Configure.Parameter.Coordinate_Area2_Y = Convert.ToInt32(TxtRPosY.Text);
+                        }
+                        else if (Lib_Card.Configure.Parameter.Machine_Area2_Type == 3)
+                        {
+                            //如果是转子机，判断是否首杯，如果是才能保存
+                            if (Lib_Card.Configure.Parameter.Machine_Area2_DyeType == 0)
+                            {
+                                if (Convert.ToInt32(TxtNum.Text) != Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area2_CupMin.ToString()))
+                                {
+                                    return;
+                                }
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area2_X", Lib_Card.Configure.Parameter.Coordinate_Area2_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area2_Y", Lib_Card.Configure.Parameter.Coordinate_Area2_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                                //读取当前坐标写入
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area2_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area2_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                                Lib_Card.Configure.Parameter.Coordinate_Area2_X = Convert.ToInt32(TxtRPosX.Text);
+                                Lib_Card.Configure.Parameter.Coordinate_Area2_Y = Convert.ToInt32(TxtRPosY.Text);
+                            }
+                            //翻转缸
+                            else
+                            {
+                                WriteCupCoordinate(Convert.ToInt32(TxtNum.Text), TxtRPosX.Text, TxtRPosY.Text);
+                            }
+
+                        }
+                    }
+
+                    else if (Convert.ToInt32(TxtNum.Text) >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area3_CupMin.ToString()) && Convert.ToInt32(TxtNum.Text) <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area3_CupMax.ToString()))
+                    {
+                        //如果是滴液区，判断是否首杯，如果是才能保存
+                        if (Lib_Card.Configure.Parameter.Machine_Area3_Type == 2)
+                        {
+                            if (Convert.ToInt32(TxtNum.Text) != Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area3_CupMin.ToString()))
+                            {
+                                return;
+                            }
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area3_X", Lib_Card.Configure.Parameter.Coordinate_Area3_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area3_Y", Lib_Card.Configure.Parameter.Coordinate_Area3_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                            //读取当前坐标写入
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area3_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area3_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                            Lib_Card.Configure.Parameter.Coordinate_Area3_X = Convert.ToInt32(TxtRPosX.Text);
+                            Lib_Card.Configure.Parameter.Coordinate_Area3_Y = Convert.ToInt32(TxtRPosY.Text);
+                        }
+                        else if (Lib_Card.Configure.Parameter.Machine_Area3_Type == 3)
+                        {
+                            //如果是转子机，判断是否首杯，如果是才能保存
+                            if (Lib_Card.Configure.Parameter.Machine_Area3_DyeType == 0)
+                            {
+                                if (Convert.ToInt32(TxtNum.Text) != Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area3_CupMin.ToString()))
+                                {
+                                    return;
+                                }
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area3_X", Lib_Card.Configure.Parameter.Coordinate_Area3_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area3_Y", Lib_Card.Configure.Parameter.Coordinate_Area3_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                                //读取当前坐标写入
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area3_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area3_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                                Lib_Card.Configure.Parameter.Coordinate_Area3_X = Convert.ToInt32(TxtRPosX.Text);
+                                Lib_Card.Configure.Parameter.Coordinate_Area3_Y = Convert.ToInt32(TxtRPosY.Text);
+                            }
+                            //翻转缸
+                            else
+                            {
+                                WriteCupCoordinate(Convert.ToInt32(TxtNum.Text), TxtRPosX.Text, TxtRPosY.Text);
+                            }
+
+                        }
+                    }
+
+                    else if (Convert.ToInt32(TxtNum.Text) >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area4_CupMin.ToString()) && Convert.ToInt32(TxtNum.Text) <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area4_CupMax.ToString()))
+                    {
+                        //如果是滴液区，判断是否首杯，如果是才能保存
+                        if (Lib_Card.Configure.Parameter.Machine_Area4_Type == 2)
+                        {
+                            if (Convert.ToInt32(TxtNum.Text) != Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area4_CupMin.ToString()))
+                            {
+                                return;
+                            }
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area4_X", Lib_Card.Configure.Parameter.Coordinate_Area4_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area4_Y", Lib_Card.Configure.Parameter.Coordinate_Area4_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                            //读取当前坐标写入
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area4_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area4_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                            Lib_Card.Configure.Parameter.Coordinate_Area4_X = Convert.ToInt32(TxtRPosX.Text);
+                            Lib_Card.Configure.Parameter.Coordinate_Area4_Y = Convert.ToInt32(TxtRPosY.Text);
+                        }
+                        else if (Lib_Card.Configure.Parameter.Machine_Area4_Type == 3)
+                        {
+                            //如果是转子机，判断是否首杯，如果是才能保存
+                            if (Lib_Card.Configure.Parameter.Machine_Area4_DyeType == 0)
+                            {
+                                if (Convert.ToInt32(TxtNum.Text) != Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area4_CupMin.ToString()))
+                                {
+                                    return;
+                                }
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area4_X", Lib_Card.Configure.Parameter.Coordinate_Area4_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area4_Y", Lib_Card.Configure.Parameter.Coordinate_Area4_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                                //读取当前坐标写入
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area4_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area4_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                                Lib_Card.Configure.Parameter.Coordinate_Area4_X = Convert.ToInt32(TxtRPosX.Text);
+                                Lib_Card.Configure.Parameter.Coordinate_Area4_Y = Convert.ToInt32(TxtRPosY.Text);
+                            }
+                            //翻转缸
+                            else
+                            {
+                                WriteCupCoordinate(Convert.ToInt32(TxtNum.Text), TxtRPosX.Text, TxtRPosY.Text);
+                            }
+
+                        }
+                    }
+
+                    else if (Convert.ToInt32(TxtNum.Text) >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area5_CupMin.ToString()) && Convert.ToInt32(TxtNum.Text) <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area5_CupMax.ToString()))
+                    {
+                        //如果是滴液区，判断是否首杯，如果是才能保存
+                        if (Lib_Card.Configure.Parameter.Machine_Area5_Type == 2)
+                        {
+                            if (Convert.ToInt32(TxtNum.Text) != Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area5_CupMin.ToString()))
+                            {
+                                return;
+                            }
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area5_X", Lib_Card.Configure.Parameter.Coordinate_Area5_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area5_Y", Lib_Card.Configure.Parameter.Coordinate_Area5_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                            //读取当前坐标写入
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area5_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area5_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                            Lib_Card.Configure.Parameter.Coordinate_Area5_X = Convert.ToInt32(TxtRPosX.Text);
+                            Lib_Card.Configure.Parameter.Coordinate_Area5_Y = Convert.ToInt32(TxtRPosY.Text);
+                        }
+                        else if (Lib_Card.Configure.Parameter.Machine_Area5_Type == 3)
+                        {
+                            //如果是转子机，判断是否首杯，如果是才能保存
+                            if (Lib_Card.Configure.Parameter.Machine_Area5_DyeType == 0)
+                            {
+                                if (Convert.ToInt32(TxtNum.Text) != Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area5_CupMin.ToString()))
+                                {
+                                    return;
+                                }
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area5_X", Lib_Card.Configure.Parameter.Coordinate_Area5_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area5_Y", Lib_Card.Configure.Parameter.Coordinate_Area5_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                                //读取当前坐标写入
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area5_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area5_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                                Lib_Card.Configure.Parameter.Coordinate_Area5_X = Convert.ToInt32(TxtRPosX.Text);
+                                Lib_Card.Configure.Parameter.Coordinate_Area5_Y = Convert.ToInt32(TxtRPosY.Text);
+                            }
+                            //翻转缸
+                            else
+                            {
+                                WriteCupCoordinate(Convert.ToInt32(TxtNum.Text), TxtRPosX.Text, TxtRPosY.Text);
+                            }
+
+                        }
+                    }
+
+                    else if (Convert.ToInt32(TxtNum.Text) >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area6_CupMin.ToString()) && Convert.ToInt32(TxtNum.Text) <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area6_CupMax.ToString()))
+                    {
+                        //如果是滴液区，判断是否首杯，如果是才能保存
+                        if (Lib_Card.Configure.Parameter.Machine_Area6_Type == 2)
+                        {
+                            if (Convert.ToInt32(TxtNum.Text) != Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area6_CupMin.ToString()))
+                            {
+                                return;
+                            }
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area6_X", Lib_Card.Configure.Parameter.Coordinate_Area6_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area6_Y", Lib_Card.Configure.Parameter.Coordinate_Area6_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                            //读取当前坐标写入
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area6_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area6_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                            Lib_Card.Configure.Parameter.Coordinate_Area6_X = Convert.ToInt32(TxtRPosX.Text);
+                            Lib_Card.Configure.Parameter.Coordinate_Area6_Y = Convert.ToInt32(TxtRPosY.Text);
+                        }
+                        else if (Lib_Card.Configure.Parameter.Machine_Area6_Type == 3)
+                        {
+                            //如果是转子机，判断是否首杯，如果是才能保存
+                            if (Lib_Card.Configure.Parameter.Machine_Area6_DyeType == 0)
+                            {
+                                if (Convert.ToInt32(TxtNum.Text) != Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_Area6_CupMin.ToString()))
+                                {
+                                    return;
+                                }
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area6_X", Lib_Card.Configure.Parameter.Coordinate_Area6_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area6_Y", Lib_Card.Configure.Parameter.Coordinate_Area6_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                                //读取当前坐标写入
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area6_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                                Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Area6_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                                Lib_Card.Configure.Parameter.Coordinate_Area6_X = Convert.ToInt32(TxtRPosX.Text);
+                                Lib_Card.Configure.Parameter.Coordinate_Area6_Y = Convert.ToInt32(TxtRPosY.Text);
+                            }
+                            //翻转缸
+                            else
+                            {
+                                WriteCupCoordinate(Convert.ToInt32(TxtNum.Text), TxtRPosX.Text, TxtRPosY.Text);
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
+
+            }
+            else if (RdoStress.Checked)
+            {
+                return;
+            }
+            else if (RdoBalance.Checked)
+            {
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                {
+                    DialogResult dialogResult = FADM_Form.CustomMessageBox.Show("确定写入?", "温馨提示", MessageBoxButtons.YesNo, true);
+
+                    if (dialogResult == DialogResult.No)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(TxtRPosX.Text) || string.IsNullOrEmpty(TxtRPosY.Text))
+                        {
+                            return;
+                        }
+
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Balance_X", Lib_Card.Configure.Parameter.Coordinate_Balance_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Balance_Y", Lib_Card.Configure.Parameter.Coordinate_Balance_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                        //读取当前坐标写入
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Balance_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Balance_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_Card.Configure.Parameter.Coordinate_Balance_X = Convert.ToInt32(TxtRPosX.Text);
+                        Lib_Card.Configure.Parameter.Coordinate_Balance_Y = Convert.ToInt32(TxtRPosY.Text);
+                    }
+                }
+                else
+                {
+                    DialogResult dialogResult = FADM_Form.CustomMessageBox.Show("Definite write?", "Tips", MessageBoxButtons.YesNo, true);
+
+                    if (dialogResult == DialogResult.No)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(TxtRPosX.Text) || string.IsNullOrEmpty(TxtRPosY.Text))
+                        {
+                            return;
+                        }
+
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Balance_X", Lib_Card.Configure.Parameter.Coordinate_Balance_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Balance_Y", Lib_Card.Configure.Parameter.Coordinate_Balance_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                        //读取当前坐标写入
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Balance_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Balance_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_Card.Configure.Parameter.Coordinate_Balance_X = Convert.ToInt32(TxtRPosX.Text);
+                        Lib_Card.Configure.Parameter.Coordinate_Balance_Y = Convert.ToInt32(TxtRPosY.Text);
+                    }
+                }
+            }
+            else if (RdoDecompression.Checked)
+            {
+                if (string.IsNullOrEmpty(TxtNum.Text))
+                {
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                        FADM_Form.CustomMessageBox.Show("请输入杯号！", "温馨提示", MessageBoxButtons.OK, false);
+                    else
+                        FADM_Form.CustomMessageBox.Show("Please enter the cup number！", "Tips", MessageBoxButtons.OK, false);
+                    FADM_Object.Communal.WriteDripWait(false);
+                    return;
+                }
+                else
+                {
+                    if (Convert.ToInt32(TxtNum.Text) > Lib_Card.Configure.Parameter.Machine_Cup_Total)
+                    {
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            FADM_Form.CustomMessageBox.Show("杯号输入错误！", "温馨提示", MessageBoxButtons.OK, false);
+                        else
+                            FADM_Form.CustomMessageBox.Show("The cup number is incorrect！", "Tips", MessageBoxButtons.OK, false);
+                        return;
+                    }
+                }
+
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                {
+                    DialogResult dialogResult = FADM_Form.CustomMessageBox.Show("确定写入?", "温馨提示", MessageBoxButtons.YesNo, true);
+
+                    if (dialogResult == DialogResult.No)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(TxtRPosX.Text) || string.IsNullOrEmpty(TxtRPosY.Text))
+                        {
+                            return;
+                        }
+
+                        WriteCupCoverCoordinate(Convert.ToInt32(TxtNum.Text), TxtRPosX.Text, TxtRPosY.Text);
+                    }
+                }
+                else
+                {
+                    DialogResult dialogResult = FADM_Form.CustomMessageBox.Show("Definite write?", "Tips", MessageBoxButtons.YesNo, true);
+
+                    if (dialogResult == DialogResult.No)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(TxtRPosX.Text) || string.IsNullOrEmpty(TxtRPosY.Text))
+                        {
+                            return;
+                        }
+
+                        WriteCupCoverCoordinate(Convert.ToInt32(TxtNum.Text), TxtRPosX.Text, TxtRPosY.Text);
+                    }
+                }
+
+            }
+            else if (RdoDryCloth.Checked)
+            {
+                if (string.IsNullOrEmpty(TxtNum.Text))
+                {
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                        FADM_Form.CustomMessageBox.Show("请输入杯号！", "温馨提示", MessageBoxButtons.OK, false);
+                    else
+                        FADM_Form.CustomMessageBox.Show("Please enter the cup number！", "Tips", MessageBoxButtons.OK, false);
+                    FADM_Object.Communal.WriteDripWait(false);
+                    return;
+                }
+
+                DialogResult dialogResult;
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                {
+                    dialogResult = FADM_Form.CustomMessageBox.Show("确定写入?", "温馨提示", MessageBoxButtons.YesNo, true);
+                }
+                else
+                {
+                    dialogResult = FADM_Form.CustomMessageBox.Show("Definite write?", "Tips", MessageBoxButtons.YesNo, true);
+                }
+
+                if (dialogResult == DialogResult.No)
+                {
+                    return;
+                }
+                else
+                {
+                    //判断是否翻转缸
+                    if (string.IsNullOrEmpty(TxtRPosX.Text) || string.IsNullOrEmpty(TxtRPosY.Text))
+                    {
+                        return;
+                    }
+                    if (Convert.ToInt32(TxtNum.Text) >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_AreaDryCloth1_CupMin.ToString()) && Convert.ToInt32(TxtNum.Text) <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_AreaDryCloth1_CupMax.ToString()))
+                    {
+
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaDryCloth1_X", Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth1_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaDryCloth1_Y", Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth1_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                        //读取当前坐标写入
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaDryCloth1_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                            Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaDryCloth1_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                            Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth1_X = Convert.ToInt32(TxtRPosX.Text);
+                            Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth1_Y = Convert.ToInt32(TxtRPosY.Text);
+                    }
+
+                    else if (Convert.ToInt32(TxtNum.Text) >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_AreaDryCloth2_CupMin.ToString()) && Convert.ToInt32(TxtNum.Text) <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_AreaDryCloth2_CupMax.ToString()))
+                    {
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaDryCloth2_X", Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth2_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaDryCloth2_Y", Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth2_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                        //读取当前坐标写入
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaDryCloth2_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaDryCloth2_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth2_X = Convert.ToInt32(TxtRPosX.Text);
+                        Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth2_Y = Convert.ToInt32(TxtRPosY.Text);
+                    }
+                    else if (Convert.ToInt32(TxtNum.Text) >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_AreaDryCloth3_CupMin.ToString()) && Convert.ToInt32(TxtNum.Text) <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_AreaDryCloth3_CupMax.ToString()))
+                    {
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaDryCloth3_X", Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth3_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaDryCloth3_Y", Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth3_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                        //读取当前坐标写入
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaDryCloth3_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaDryCloth3_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth3_X = Convert.ToInt32(TxtRPosX.Text);
+                        Lib_Card.Configure.Parameter.Coordinate_AreaDryCloth3_Y = Convert.ToInt32(TxtRPosY.Text);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
+            }
+            else if (RdoWetCloth.Checked)
+            {
+                if (string.IsNullOrEmpty(TxtNum.Text))
+                {
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                        FADM_Form.CustomMessageBox.Show("请输入杯号！", "温馨提示", MessageBoxButtons.OK, false);
+                    else
+                        FADM_Form.CustomMessageBox.Show("Please enter the cup number！", "Tips", MessageBoxButtons.OK, false);
+                    FADM_Object.Communal.WriteDripWait(false);
+                    return;
+                }
+                DialogResult dialogResult;
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                {
+                    dialogResult = FADM_Form.CustomMessageBox.Show("确定写入?", "温馨提示", MessageBoxButtons.YesNo, true);
+                }
+                else
+                {
+                    dialogResult = FADM_Form.CustomMessageBox.Show("Definite write?", "Tips", MessageBoxButtons.YesNo, true);
+                }
+
+                if (dialogResult == DialogResult.No)
+                {
+                    return;
+                }
+                else
+                {
+                    //判断是否翻转缸
+                    if (string.IsNullOrEmpty(TxtRPosX.Text) || string.IsNullOrEmpty(TxtRPosY.Text))
+                    {
+                        return;
+                    }
+                    if (Convert.ToInt32(TxtNum.Text) >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_AreaWetCloth1_CupMin.ToString()) && Convert.ToInt32(TxtNum.Text) <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_AreaWetCloth1_CupMax.ToString()))
+                    {
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaWetCloth1_X", Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth1_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaWetCloth1_Y", Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth1_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                        //读取当前坐标写入
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaWetCloth1_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaWetCloth1_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth1_X = Convert.ToInt32(TxtRPosX.Text);
+                        Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth1_Y = Convert.ToInt32(TxtRPosY.Text);
+                    }
+
+                    else if (Convert.ToInt32(TxtNum.Text) >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_AreaWetCloth2_CupMin.ToString()) && Convert.ToInt32(TxtNum.Text) <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_AreaWetCloth2_CupMax.ToString()))
+                    {
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaWetCloth2_X", Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth2_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaWetCloth2_Y", Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth2_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                        //读取当前坐标写入
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaWetCloth2_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaWetCloth2_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth2_X = Convert.ToInt32(TxtRPosX.Text);
+                        Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth2_Y = Convert.ToInt32(TxtRPosY.Text);
+                    }
+                    else if (Convert.ToInt32(TxtNum.Text) >= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_AreaWetCloth3_CupMin.ToString()) && Convert.ToInt32(TxtNum.Text) <= Convert.ToInt32(Lib_Card.Configure.Parameter.Machine_AreaWetCloth3_CupMax.ToString()))
+                    {
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaWetCloth3_X", Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth3_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaWetCloth3_Y", Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth3_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                        //读取当前坐标写入
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaWetCloth3_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_AreaWetCloth3_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth3_X = Convert.ToInt32(TxtRPosX.Text);
+                        Lib_Card.Configure.Parameter.Coordinate_AreaWetCloth3_Y = Convert.ToInt32(TxtRPosY.Text);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+            }
+            else if (RdoDryClamp.Checked)
+            {
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                {
+                    DialogResult dialogResult = FADM_Form.CustomMessageBox.Show("确定写入?", "温馨提示", MessageBoxButtons.YesNo, true);
+
+                    if (dialogResult == DialogResult.No)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(TxtRPosX.Text) || string.IsNullOrEmpty(TxtRPosY.Text))
+                        {
+                            return;
+                        }
+
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_DryClamp_X", Lib_Card.Configure.Parameter.Coordinate_DryClamp_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_DryClamp_Y", Lib_Card.Configure.Parameter.Coordinate_DryClamp_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                        //读取当前坐标写入
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_DryClamp_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_DryClamp_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_Card.Configure.Parameter.Coordinate_DryClamp_X = Convert.ToInt32(TxtRPosX.Text);
+                        Lib_Card.Configure.Parameter.Coordinate_DryClamp_Y = Convert.ToInt32(TxtRPosY.Text);
+                    }
+                }
+                else
+                {
+                    DialogResult dialogResult = FADM_Form.CustomMessageBox.Show("Definite write?", "Tips", MessageBoxButtons.YesNo, true);
+
+                    if (dialogResult == DialogResult.No)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(TxtRPosX.Text) || string.IsNullOrEmpty(TxtRPosY.Text))
+                        {
+                            return;
+                        }
+
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_DryClamp_X", Lib_Card.Configure.Parameter.Coordinate_DryClamp_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_DryClamp_Y", Lib_Card.Configure.Parameter.Coordinate_DryClamp_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                        //读取当前坐标写入
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_DryClamp_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_DryClamp_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_Card.Configure.Parameter.Coordinate_DryClamp_X = Convert.ToInt32(TxtRPosX.Text);
+                        Lib_Card.Configure.Parameter.Coordinate_DryClamp_Y = Convert.ToInt32(TxtRPosY.Text);
+                    }
+                }
+            }
+
+            else if (RdoWetClamp.Checked)
+            {
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                {
+                    DialogResult dialogResult = FADM_Form.CustomMessageBox.Show("确定写入?", "温馨提示", MessageBoxButtons.YesNo, true);
+
+                    if (dialogResult == DialogResult.No)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(TxtRPosX.Text) || string.IsNullOrEmpty(TxtRPosY.Text))
+                        {
+                            return;
+                        }
+
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_WetClamp_X", Lib_Card.Configure.Parameter.Coordinate_WetClamp_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_WetClamp_Y", Lib_Card.Configure.Parameter.Coordinate_WetClamp_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                        //读取当前坐标写入
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_WetClamp_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_WetClamp_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_Card.Configure.Parameter.Coordinate_WetClamp_X = Convert.ToInt32(TxtRPosX.Text);
+                        Lib_Card.Configure.Parameter.Coordinate_WetClamp_Y = Convert.ToInt32(TxtRPosY.Text);
+                    }
+                }
+                else
+                {
+                    DialogResult dialogResult = FADM_Form.CustomMessageBox.Show("Definite write?", "Tips", MessageBoxButtons.YesNo, true);
+
+                    if (dialogResult == DialogResult.No)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(TxtRPosX.Text) || string.IsNullOrEmpty(TxtRPosY.Text))
+                        {
+                            return;
+                        }
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_WetClamp_X", Lib_Card.Configure.Parameter.Coordinate_WetClamp_X.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_WetClamp_Y", Lib_Card.Configure.Parameter.Coordinate_WetClamp_Y.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                        //读取当前坐标写入
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_WetClamp_X", TxtRPosX.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_File.Ini.WriteIni("Coordinate", "Coordinate_WetClamp_Y", TxtRPosY.Text, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_Card.Configure.Parameter.Coordinate_WetClamp_X = Convert.ToInt32(TxtRPosX.Text);
+                        Lib_Card.Configure.Parameter.Coordinate_WetClamp_Y = Convert.ToInt32(TxtRPosY.Text);
+                    }
+                }
+            }
+            else
+            {
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                    FADM_Form.CustomMessageBox.Show("请选择目标区域！", "温馨提示", MessageBoxButtons.OK, false);
+                else
+                    FADM_Form.CustomMessageBox.Show("Please select the target area！", "Tips", MessageBoxButtons.OK, false);
+                FADM_Object.Communal.WriteDripWait(false);
+                return;
+
+            }
+        }
+        //写入杯子坐标
+        private void WriteCupCoordinate(int i_No,string s_X,string s_Y)
+        {
+            switch (i_No)
+            {
+
+                case 1:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup1_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup1_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup1_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup1_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup1_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup1_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup1_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup1_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 2:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup2_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup2_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup2_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup2_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup2_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup2_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup2_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup2_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 3:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup3_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup3_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup3_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup3_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup3_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup3_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup3_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup3_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 4:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup4_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup4_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup4_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup4_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup4_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup4_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup4_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup4_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 5:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup5_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup5_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup5_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup5_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup5_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup5_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup5_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup5_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 6:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup6_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup6_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup6_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup6_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup6_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup6_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup6_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup6_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 7:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup7_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup7_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup7_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup7_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup7_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup7_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup7_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup7_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 8:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup8_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup8_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup8_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup8_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup8_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup8_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup8_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup8_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 9:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup9_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup9_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup9_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup9_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup9_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup9_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup9_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup9_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 10:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup10_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup10_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup10_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup10_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup10_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup10_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup10_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup10_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 11:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup11_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup11_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup11_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup11_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup11_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup11_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup11_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup11_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 12:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup12_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup12_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup12_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup12_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup12_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup12_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup12_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup12_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 13:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup13_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup13_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup13_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup13_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup13_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup13_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup13_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup13_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 14:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup14_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup14_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup14_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup14_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup14_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup14_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup14_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup14_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 15:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup15_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup15_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup15_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup15_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup15_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup15_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup15_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup15_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 16:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup16_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup16_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup16_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup16_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup16_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup16_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup16_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup16_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 17:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup17_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup17_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup17_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup17_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup17_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup17_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup17_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup17_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 18:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup18_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup18_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup18_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup18_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup18_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup18_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup18_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup18_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 19:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup19_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup19_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup19_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup19_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup19_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup19_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup19_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup19_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 20:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup20_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup20_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup20_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup20_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup20_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup20_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup20_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup20_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 21:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup21_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup21_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup21_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup21_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup21_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup21_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup21_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup21_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 22:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup22_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup22_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup22_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup22_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup22_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup22_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup22_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup22_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 23:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup23_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup23_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup23_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup23_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup23_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup23_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup23_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup23_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 24:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup24_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup24_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup24_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup24_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup24_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup24_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup24_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup24_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 25:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup25_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup25_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup25_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup25_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup25_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup25_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup25_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup25_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 26:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup26_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup26_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup26_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup26_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup26_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup26_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup26_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup26_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 27:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup27_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup27_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup27_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup27_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup27_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup27_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup27_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup27_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 28:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup28_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup28_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup28_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup28_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup28_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup28_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup28_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup28_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 29:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup29_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup29_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup29_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup29_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup29_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup29_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup29_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup29_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 30:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup30_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup30_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup30_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup30_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup30_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup30_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup30_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup30_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 31:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup31_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup31_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup31_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup31_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup31_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup31_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup31_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup31_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 32:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup32_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup32_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup32_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup32_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup32_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup32_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup32_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup32_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 33:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup33_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup33_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup33_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup33_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup33_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup33_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup33_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup33_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 34:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup34_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup34_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup34_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup34_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup34_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup34_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup34_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup34_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 35:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup35_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup35_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup35_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup35_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup35_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup35_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup35_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup35_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 36:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup36_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup36_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup36_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup36_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup36_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup36_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup36_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup36_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 37:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup37_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup37_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup37_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup37_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup37_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup37_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup37_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup37_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 38:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup38_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup38_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup38_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup38_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup38_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup38_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup38_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup38_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 39:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup39_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup39_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup39_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup39_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup39_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup39_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup39_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup39_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 40:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup40_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup40_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup40_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup40_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup40_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup40_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup40_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup40_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 41:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup41_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup41_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup41_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup41_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup41_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup41_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup41_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup41_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 42:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup42_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup42_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup42_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup42_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup42_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup42_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup42_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup42_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 43:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup43_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup43_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup43_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup43_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup43_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup43_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup43_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup43_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 44:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup44_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup44_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup44_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup44_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup44_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup44_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup44_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup44_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 45:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup45_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup45_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup45_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup45_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup45_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup45_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup45_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup45_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 46:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup46_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup46_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup46_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup46_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup46_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup46_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup46_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup46_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 47:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup47_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup47_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup47_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup47_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup47_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup47_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup47_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup47_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 48:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup48_IntervalX", Lib_Card.Configure.Parameter.Coordinate_Cup48_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup48_IntervalY", Lib_Card.Configure.Parameter.Coordinate_Cup48_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup48_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_Cup48_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_Cup48_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_Cup48_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                default:
+                    break;
+            }
+        }
+        //写入杯盖坐标
+        private void WriteCupCoverCoordinate(int i_No,string s_X,string s_Y)
+        {
+            switch (i_No)
+            {
+
+                case 1:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover1_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover1_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover1_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover1_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover1_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover1_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover1_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover1_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 2:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover2_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover2_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover2_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover2_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover2_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover2_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover2_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover2_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 3:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover3_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover3_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover3_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover3_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover3_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover3_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover3_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover3_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 4:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover4_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover4_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover4_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover4_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover4_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover4_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover4_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover4_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 5:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover5_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover5_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover5_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover5_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover5_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover5_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover5_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover5_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 6:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover6_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover6_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover6_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover6_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover6_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover6_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover6_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover6_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 7:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover7_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover7_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover7_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover7_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover7_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover7_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover7_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover7_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 8:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover8_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover8_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover8_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover8_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover8_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover8_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover8_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover8_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 9:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover9_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover9_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover9_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover9_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover9_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover9_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover9_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover9_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 10:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover10_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover10_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover10_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover10_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover10_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover10_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover10_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover10_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 11:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover11_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover11_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover11_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover11_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover11_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover11_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover11_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover11_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 12:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover12_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover12_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover12_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover12_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover12_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover12_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover12_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover12_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 13:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover13_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover13_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover13_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover13_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover13_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover13_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover13_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover13_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 14:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover14_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover14_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover14_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover14_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover14_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover14_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover14_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover14_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 15:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover15_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover15_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover15_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover15_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover15_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover15_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover15_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover15_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 16:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover16_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover16_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover16_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover16_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover16_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover16_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover16_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover16_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 17:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover17_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover17_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover17_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover17_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover17_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover17_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover17_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover17_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 18:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover18_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover18_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover18_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover18_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover18_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover18_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover18_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover18_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 19:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover19_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover19_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover19_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover19_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover19_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover19_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover19_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover19_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 20:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover20_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover20_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover20_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover20_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover20_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover20_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover20_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover20_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 21:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover21_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover21_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover21_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover21_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover21_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover21_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover21_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover21_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 22:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover22_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover22_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover22_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover22_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover22_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover22_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover22_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover22_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 23:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover23_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover23_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover23_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover23_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover23_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover23_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover23_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover23_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 24:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover24_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover24_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover24_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover24_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover24_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover24_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover24_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover24_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 25:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover25_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover25_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover25_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover25_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover25_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover25_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover25_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover25_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 26:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover26_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover26_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover26_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover26_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover26_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover26_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover26_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover26_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 27:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover27_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover27_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover27_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover27_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover27_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover27_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover27_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover27_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 28:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover28_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover28_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover28_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover28_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover28_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover28_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover28_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover28_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 29:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover29_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover29_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover29_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover29_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover29_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover29_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover29_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover29_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 30:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover30_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover30_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover30_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover30_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover30_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover30_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover30_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover30_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 31:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover31_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover31_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover31_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover31_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover31_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover31_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover31_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover31_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 32:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover32_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover32_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover32_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover32_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover32_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover32_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover32_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover32_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 33:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover33_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover33_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover33_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover33_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover33_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover33_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover33_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover33_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 34:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover34_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover34_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover34_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover34_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover34_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover34_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover34_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover34_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 35:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover35_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover35_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover35_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover35_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover35_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover35_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover35_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover35_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 36:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover36_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover36_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover36_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover36_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover36_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover36_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover36_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover36_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 37:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover37_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover37_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover37_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover37_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover37_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover37_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover37_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover37_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 38:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover38_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover38_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover38_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover38_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover38_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover38_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover38_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover38_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 39:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover39_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover39_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover39_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover39_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover39_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover39_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover39_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover39_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 40:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover40_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover40_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover40_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover40_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover40_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover40_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover40_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover40_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                case 41:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover41_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover41_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover41_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover41_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover41_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover41_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover41_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover41_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 42:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover42_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover42_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover42_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover42_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover42_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover42_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover42_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover42_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 43:
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover43_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover43_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover43_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover43_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover43_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover43_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover43_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover43_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 44:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover44_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover44_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover44_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover44_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover44_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover44_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover44_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover44_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 45:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover45_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover45_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover45_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover45_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover45_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover45_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover45_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover45_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 46:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover46_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover46_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover46_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover46_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover46_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover46_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover46_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover46_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 47:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover47_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover47_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover47_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover47_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover47_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover47_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover47_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover47_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+
+                case 48:
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover48_IntervalX", Lib_Card.Configure.Parameter.Coordinate_CupCover48_IntervalX.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover48_IntervalY", Lib_Card.Configure.Parameter.Coordinate_CupCover48_IntervalY.ToString(), Environment.CurrentDirectory + "\\Config\\Config.ini");
+
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover48_IntervalX", s_X, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_File.Ini.WriteIni("Coordinate", "Coordinate_CupCover48_IntervalY", s_Y, Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover48_IntervalX = Convert.ToInt32(s_X);
+                    Lib_Card.Configure.Parameter.Coordinate_CupCover48_IntervalY = Convert.ToInt32(s_Y);
+                    break;
+                default:
+                    break;
             }
         }
     }

@@ -124,14 +124,17 @@
   <data name="txt_ProportionOrTime.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
   </data>
+  <data name="&gt;&gt;txt_StepNum.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
   <data name="lab_StepNum.Location" type="System.Drawing.Point, System.Drawing">
     <value>8, 9</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;txt_StepNum.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="cbo_TechnologyName.Items1" xml:space="preserve">
+    <value>加大冷水</value>
   </data>
   <data name="cbo_TechnologyName.Items2" xml:space="preserve">
     <value>加小冷水</value>
@@ -163,11 +166,12 @@
   <data name="lab_StepNum.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
   </data>
-  <data name="&gt;&gt;lab_ProportionOrTime.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
   <data name="&gt;&gt;txt_StepNum.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterScreen</value>
   </data>
   <data name="&gt;&gt;lab_TechnologyName.Parent" xml:space="preserve">
     <value>$this</value>
@@ -196,6 +200,9 @@
   </data>
   <data name="cbo_TechnologyName.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
+  </data>
+  <data name="&gt;&gt;btn_Save.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="txt_StepNum.Size" type="System.Drawing.Size, System.Drawing">
     <value>202, 29</value>
@@ -236,14 +243,8 @@
   <data name="cbo_TechnologyName.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
   </data>
-  <data name="btn_Save.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 14.25pt</value>
-  </data>
   <data name="lab_TechnologyName.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="lab_StepNum.Text" xml:space="preserve">
-    <value>步号:</value>
   </data>
   <data name="&gt;&gt;txt_ProportionOrTime.Parent" xml:space="preserve">
     <value>$this</value>
@@ -253,10 +254,6 @@
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>414, 262</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
-    <value>CenterScreen</value>
   </data>
   <data name="&gt;&gt;lab_TechnologyName.ZOrder" xml:space="preserve">
     <value>5</value>
@@ -273,8 +270,11 @@
   <data name="&gt;&gt;txt_ProportionOrTime.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="lab_TechnologyName.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 14.25pt</value>
+  <data name="lab_StepNum.Text" xml:space="preserve">
+    <value>步号:</value>
+  </data>
+  <data name="cbo_TechnologyName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>201, 83</value>
   </data>
   <data name="btn_Save.Text" xml:space="preserve">
     <value>保存</value>
@@ -285,17 +285,14 @@
   <data name="lab_StepNum.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
   </data>
-  <data name="&gt;&gt;btn_Save.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="btn_Save.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_StepNum.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="cbo_TechnologyName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>201, 83</value>
-  </data>
-  <data name="cbo_TechnologyName.Items1" xml:space="preserve">
-    <value>加大冷水</value>
+  <data name="&gt;&gt;lab_ProportionOrTime.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="lab_ProportionOrTime.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -320,6 +317,9 @@
   </data>
   <data name="&gt;&gt;cbo_TechnologyName.Name" xml:space="preserve">
     <value>cbo_TechnologyName</value>
+  </data>
+  <data name="lab_TechnologyName.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
   </data>
   <data name="btn_Save.Location" type="System.Drawing.Point, System.Drawing">
     <value>172, 207</value>
@@ -350,8 +350,5 @@
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
-  </metadata>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>en</value>
   </metadata>
 </root>

@@ -63,7 +63,7 @@ namespace SmartDyeing.FADM_Form
                     _main.BtnUserSwitching.Enabled = true;
                     _main.toolStripSplitButton1.Enabled = true;
                     _main.toolStripSplitButton2.Enabled = true;
-                    _main.toolStripSplitButton6.Enabled = true;
+                    _main.p.Enabled = true;
                     FADM_Object.Communal._s_operator = "工程师";
                     this.Dispose();
                 }

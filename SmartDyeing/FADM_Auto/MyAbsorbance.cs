@@ -112,7 +112,7 @@ namespace SmartDyeing.FADM_Auto
                     for (int j = 0; j < 2; j++)
                     {
                         //读取到异常信息
-                        if (_abs_Temps[j]._s_currentState == "3")
+                        if (_abs_Temps[j]._s_currentState == "4")
                         {
                             string s_w = "";
                             //显示报警信息
@@ -123,6 +123,26 @@ namespace SmartDyeing.FADM_Auto
                             else if (_abs_Temps[j]._s_warm == "2")
                             {
                                 s_w = "数据读取异常";
+                            }
+                            else if (_abs_Temps[j]._s_warm == "3")
+                            {
+                                s_w = "数据转换失败";
+                            }
+                            else if (_abs_Temps[j]._s_warm == "4")
+                            {
+                                s_w = "设置开始波长失败";
+                            }
+                            else if (_abs_Temps[j]._s_warm == "5")
+                            {
+                                s_w = "设置结束波长失败";
+                            }
+                            else if (_abs_Temps[j]._s_warm == "6")
+                            {
+                                s_w = "设置采集间隔失败";
+                            }
+                            else if (_abs_Temps[j]._s_warm == "7")
+                            {
+                                s_w = "采集波长数据失败";
                             }
                             else if (_abs_Temps[j]._s_warm == "10")
                             {
@@ -166,6 +186,7 @@ namespace SmartDyeing.FADM_Auto
                             string s_sql = "UPDATE abs_cup_details SET Statues='异常',Cooperate=0  WHERE CupNum = " + (j + 1) + " ;";
                             FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
                         }
+
                         if (_abs_Temps[j]._s_request == "1")
                         {
                             //加药
@@ -222,10 +243,608 @@ namespace SmartDyeing.FADM_Auto
                             _abs_Temps[j]._i_requesadd = 0;
                         }
 
-                        if(_abs_Temps[j]._s_datarequest == "1")
+                        //当测吸光度工艺时，测量结束后先有申请保存数据，清空好保存数据后再会返回完成
+                        if (_abs_Temps[j]._s_datarequest == "1")
                         {
-                            //查询当前运行是全检还是复检
-                            //接收完成的工序0=无，1=全检，2=复检，3=洗杯
+                            //查询当前杯是检测标准样还是测试样
+                            string s_sql = "SELECT * from abs_cup_details WHERE CupNum = " + (j + 1) + ";";
+
+                            DataTable dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                            //清空请求
+                            int[] values = new int[1];
+                            values[0] = 0;
+                            if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                            {
+                                FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                            }
+                            if (j + 1 == 1)
+                                FADM_Object.Communal._tcpModBusAbs.Write(902, values);
+                            else
+                                FADM_Object.Communal._tcpModBusAbs.Write(912, values);
+
+                            //读取300个寄存器数据
+                            int[] ia_data1 = new int[100];
+                            FADM_Object.Communal._tcpModBusAbs.Read(1100, 100, ref ia_data1);
+                            int[] ia_data2 = new int[100];
+                            FADM_Object.Communal._tcpModBusAbs.Read(1200, 100, ref ia_data2);
+                            int[] ia_data3 = new int[100];
+                            FADM_Object.Communal._tcpModBusAbs.Read(1300, 100, ref ia_data3);
+                            int[] ia_data4 = new int[100];
+                            FADM_Object.Communal._tcpModBusAbs.Read(1400, 100, ref ia_data4);
+                            int[] ia_data5 = new int[100];
+                            FADM_Object.Communal._tcpModBusAbs.Read(1500, 100, ref ia_data5);
+                            int[] ia_data6 = new int[100];
+                            FADM_Object.Communal._tcpModBusAbs.Read(1600, 100, ref ia_data6);
+                            List<int> lis_data = new List<int>();
+                            for (int i = 0; i < ia_data1.Length;)
+                            {
+                                int a11 = ia_data1[i];
+                                int a12 = ia_data1[i + 1];
+                                int d_b;
+                                if (a11 < 0)
+                                {
+                                    d_b = ((a12 + 1) * 65536 + a11);
+                                }
+                                else
+                                {
+                                    d_b = (a12 * 65536 + a11);
+                                }
+                                lis_data.Add(d_b);
+                                i += 2;
+                            }
+                            for (int i = 0; i < ia_data2.Length;)
+                            {
+                                int a11 = ia_data2[i];
+                                int a12 = ia_data2[i + 1];
+                                int d_b;
+                                if (a11 < 0)
+                                {
+                                    d_b = ((a12 + 1) * 65536 + a11);
+                                }
+                                else
+                                {
+                                    d_b = (a12 * 65536 + a11);
+                                }
+                                lis_data.Add(d_b);
+                                i += 2;
+                            }
+                            for (int i = 0; i < ia_data3.Length;)
+                            {
+                                int a11 = ia_data3[i];
+                                int a12 = ia_data3[i + 1];
+                                int d_b;
+                                if (a11 < 0)
+                                {
+                                    d_b = ((a12 + 1) * 65536 + a11);
+                                }
+                                else
+                                {
+                                    d_b = (a12 * 65536 + a11);
+                                }
+                                lis_data.Add(d_b);
+                                i += 2;
+                            }
+                            for (int i = 0; i < ia_data4.Length;)
+                            {
+                                int a11 = ia_data4[i];
+                                int a12 = ia_data4[i + 1];
+                                int d_b;
+                                if (a11 < 0)
+                                {
+                                    d_b = ((a12 + 1) * 65536 + a11);
+                                }
+                                else
+                                {
+                                    d_b = (a12 * 65536 + a11);
+                                }
+                                lis_data.Add(d_b);
+                                i += 2;
+                            }
+
+                            for (int i = 0; i < ia_data5.Length;)
+                            {
+                                int a11 = ia_data5[i];
+                                int a12 = ia_data5[i + 1];
+                                int d_b;
+                                if (a11 < 0)
+                                {
+                                    d_b = ((a12 + 1) * 65536 + a11);
+                                }
+                                else
+                                {
+                                    d_b = (a12 * 65536 + a11);
+                                }
+                                lis_data.Add(d_b);
+                                i += 2;
+                            }
+
+                            for (int i = 0; i < ia_data6.Length;)
+                            {
+                                int a11 = ia_data6[i];
+                                int a12 = ia_data6[i + 1];
+                                int d_b;
+                                if (a11 < 0)
+                                {
+                                    d_b = ((a12 + 1) * 65536 + a11);
+                                }
+                                else
+                                {
+                                    d_b = (a12 * 65536 + a11);
+                                }
+                                lis_data.Add(d_b);
+                                i += 2;
+                            }
+                            List<int> lis_e1 = new List<int>();
+                            List<int> lis_e2 = new List<int>();
+                            List<int> lis_wl = new List<int>();
+                            for (int i = 0; i < lis_data.Count; i++)
+                            {
+                                if ((i + 1) % 3 == 1)
+                                {
+                                    lis_e1.Add(lis_data[i]);
+                                }
+                                else if ((i + 1) % 3 == 2)
+                                {
+                                    lis_e2.Add(lis_data[i]);
+                                }
+                                else if ((i + 1) % 3 == 0)
+                                {
+                                    lis_wl.Add(lis_data[i]);
+                                    //当波长为0就结束取数
+                                    if (lis_data[i] == 0 && i != 2)
+                                    {
+                                        //移除最后一个加入的数值
+                                        lis_wl.RemoveAt(lis_wl.Count - 1);
+                                        lis_e2.RemoveAt(lis_e2.Count - 1);
+                                        lis_e1.RemoveAt(lis_e1.Count - 1);
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (dt_temp.Rows.Count > 0)
+                            {
+                                //纯水基准样
+                                if (dt_temp.Rows[0]["Type"].ToString() == "2" || dt_temp.Rows[0]["Type"].ToString() == "9")
+                                {
+                                    string s_e1 = "", s_e2 = "", s_wl = "";
+                                    for (int i = 0; i < lis_wl.Count; i++)
+                                    {
+                                        s_wl += lis_wl[i].ToString() + "/";
+                                    }
+                                    for (int i = 0; i < lis_e1.Count; i++)
+                                    {
+                                        s_e1 += lis_e1[i].ToString() + "/";
+                                    }
+                                    for (int i = 0; i < lis_e2.Count; i++)
+                                    {
+                                        s_e2 += lis_e2[i].ToString() + "/";
+                                    }
+                                    if (s_wl != "")
+                                    {
+                                        s_wl = s_wl.Remove(s_wl.Length - 1);
+                                    }
+                                    if (s_e1 != "")
+                                    {
+                                        s_e1 = s_e1.Remove(s_e1.Length - 1);
+                                    }
+                                    if (s_e2 != "")
+                                    {
+                                        s_e2 = s_e2.Remove(s_e2.Length - 1);
+                                    }
+
+                                    string s_info = "";
+
+                                    string s_dic = "";
+
+                                    s_sql = "insert into  history_absstandard(E1,E2,WL,FinishTime,Type) Values ('" + s_e1 + "','" + s_e2 + "','" + s_wl + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',0);";
+
+                                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                    //判断这次是否第一次测白点
+                                    DataTable dt_temp_first = FADM_Object.Communal._fadmSqlserver.GetData("SELECT * from standard where Type = 0;");
+                                    if (dt_temp_first.Rows.Count == 0)
+                                    {
+                                        s_sql = "insert into  standard(E1,E2,WL,FinishTime,Type) Values ('" + s_e1 + "','" + s_e2 + "','" + s_wl + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',0);";
+
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                        s_info = "";
+                                    }
+                                    else
+                                    {
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from standard where Type = 0 ");
+
+                                        //把上一次数据替换
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Update standard set Type = 0 where Type = 1 ");
+
+                                        s_sql = "insert into  standard(E1,E2,WL,FinishTime,Type) Values ('" + s_e1 + "','" + s_e2 + "','" + s_wl + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',1);";
+
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                        //查询第一次测的数据
+                                        //计算
+                                        string[] sa_e1 = dt_temp_first.Rows[0]["E1"].ToString().Split('/');
+                                        List<string> lis_sta_e1 = sa_e1.ToList();
+                                        string[] sa_e2 = dt_temp_first.Rows[0]["E2"].ToString().Split('/');
+                                        List<string> lis_sta_e2 = sa_e2.ToList();
+                                        string[] sa_wl = dt_temp_first.Rows[0]["WL"].ToString().Split('/');
+                                        List<string> lis_sta_wl = sa_wl.ToList();
+                                        double d_e1 = -999;
+                                        int i_wl = 0;
+                                        double d_e12 = -999;
+                                        int i_wl2 = 0;
+                                        for (int i = 0; i < lis_sta_wl.Count; i++)
+                                        {
+                                            if (Convert.ToDouble(lis_sta_e2[i]) > d_e1)
+                                            {
+                                                d_e1 = Convert.ToDouble(lis_sta_e2[i]);
+                                                i_wl = Convert.ToInt32(lis_sta_wl[i]);
+                                            }
+                                        }
+                                        s_info += "第一次测量数据最大值：" + d_e1 + "波长：" + i_wl + ";";
+
+                                        for (int i = 0; i < lis_e2.Count; i++)
+                                        {
+                                            if (Convert.ToDouble(lis_e2[i]) > d_e12)
+                                            {
+                                                d_e12 = Convert.ToDouble(lis_e2[i]);
+                                                i_wl2 = Convert.ToInt32(lis_wl[i]);
+                                            }
+                                        }
+                                        s_info += "第二次测量数据最大值：" + d_e12 + "波长：" + i_wl2 + ";";
+
+                                        for (int i = 0; i < lis_sta_wl.Count; i++)
+                                        {
+                                            s_dic += Convert.ToInt32(lis_e2[i]) - Convert.ToInt32(lis_sta_e2[i]) + "/";
+                                        }
+                                    }
+
+                                    //发送启动
+                                    int[] values_Zero = new int[1];
+                                    values_Zero[0] = 0;
+                                    if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                                    {
+                                        FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                                    }
+                                    FADM_Object.Communal._tcpModBusAbs.Write(906, values_Zero);
+
+                                    //拷贝到历史表
+                                    DataTable dt_Temp = FADM_Object.Communal._fadmSqlserver.GetData(
+                                         "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'abs_cup_details';");
+                                    string s_columnDetails = null;
+                                    foreach (DataRow row in dt_Temp.Rows)
+                                    {
+                                        if (Convert.ToString(row[0]) != "Cooperate" && Convert.ToString(row[0]) != "NeedPulse" && Convert.ToString(row[0]) != "Choose"
+                                            && Convert.ToString(row[0]) != "WaterFinish" && Convert.ToString(row[0]) != "TotalWeight")
+                                            s_columnDetails += Convert.ToString(row[0]) + ", ";
+                                    }
+                                    s_columnDetails = s_columnDetails.Remove(s_columnDetails.Length - 2);
+
+                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                         "INSERT INTO history_abs (" + s_columnDetails + ",FinishTime,Result,Abs) (SELECT " + s_columnDetails + ",'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' as FinishTime" + ",'" + s_info + "' as Result" + ",'" + s_dic + "' as Abs" + " FROM abs_cup_details " +
+                                         "WHERE CupNum =" + (j + 1) + ") ;");
+
+                                    FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (j + 1) + "号(吸光度)检测完成");
+
+                                    //new FADM_Object.MyAlarm((j + 1) + "号(吸光度)检测完成", "温馨提示");
+
+                                    string s_insert = Lib_Card.CardObject.InsertD((j + 1) + "号(吸光度)检测完成", "温馨提示");
+                                    Thread.Sleep(2000);
+                                    Lib_Card.CardObject.DeleteD(s_insert);
+                                    
+                                }
+                                //主动测试基准点
+                                else if (dt_temp.Rows[0]["Type"].ToString() == "4")
+                                {
+                                    string s_e1 = "", s_e2 = "", s_wl = "";
+                                    for (int i = 0; i < lis_wl.Count; i++)
+                                    {
+                                        s_wl += lis_wl[i].ToString() + "/";
+                                    }
+                                    for (int i = 0; i < lis_e1.Count; i++)
+                                    {
+                                        s_e1 += lis_e1[i].ToString() + "/";
+                                    }
+                                    for (int i = 0; i < lis_e2.Count; i++)
+                                    {
+                                        s_e2 += lis_e2[i].ToString() + "/";
+                                    }
+                                    if (s_wl != "")
+                                    {
+                                        s_wl = s_wl.Remove(s_wl.Length - 1);
+                                    }
+                                    if (s_e1 != "")
+                                    {
+                                        s_e1 = s_e1.Remove(s_e1.Length - 1);
+                                    }
+                                    if (s_e2 != "")
+                                    {
+                                        s_e2 = s_e2.Remove(s_e2.Length - 1);
+                                    }
+
+                                    s_sql = "insert into  history_absstandard(E1,E2,WL,FinishTime,Type) Values ('" + s_e1 + "','" + s_e2 + "','" + s_wl + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',0);";
+
+                                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                    string s_info = "";
+                                    string s_dic = "";
+                                    //判断这次是否第一次测白点
+                                    DataTable dt_temp_first = FADM_Object.Communal._fadmSqlserver.GetData("SELECT * from standard where Type = 0;");
+                                    if (dt_temp_first.Rows.Count == 0)
+                                    {
+                                        s_sql = "insert into  standard(E1,E2,WL,FinishTime,Type) Values ('" + s_e1 + "','" + s_e2 + "','" + s_wl + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',0);";
+
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                        s_info = "";
+                                    }
+                                    else
+                                    {
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from standard where Type = 0 ");
+
+                                        //把上一次数据替换
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Update standard set Type = 0 where Type = 1 ");
+
+                                        s_sql = "insert into  standard(E1,E2,WL,FinishTime,Type) Values ('" + s_e1 + "','" + s_e2 + "','" + s_wl + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',1);";
+
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                        //查询第一次测的数据
+                                        //计算
+                                        string[] sa_e1 = dt_temp_first.Rows[0]["E1"].ToString().Split('/');
+                                        List<string> lis_sta_e1 = sa_e1.ToList();
+                                        string[] sa_e2 = dt_temp_first.Rows[0]["E2"].ToString().Split('/');
+                                        List<string> lis_sta_e2 = sa_e2.ToList();
+                                        string[] sa_wl = dt_temp_first.Rows[0]["WL"].ToString().Split('/');
+                                        List<string> lis_sta_wl = sa_wl.ToList();
+                                        double d_e1 = -999;
+                                        int i_wl = 0;
+                                        double d_e12 = -999;
+                                        int i_wl2 = 0;
+                                        for (int i = 0; i < lis_sta_wl.Count; i++)
+                                        {
+                                            if (Convert.ToDouble(lis_sta_e2[i]) > d_e1)
+                                            {
+                                                d_e1 = Convert.ToDouble(lis_sta_e2[i]);
+                                                i_wl = Convert.ToInt32(lis_sta_wl[i]);
+                                            }
+                                        }
+                                        s_info += "第一次测量数据最大值：" + d_e1 + "波长：" + i_wl + ";";
+
+                                        for (int i = 0; i < lis_e2.Count; i++)
+                                        {
+                                            if (Convert.ToDouble(lis_e2[i]) > d_e12)
+                                            {
+                                                d_e12 = Convert.ToDouble(lis_e2[i]);
+                                                i_wl2 = Convert.ToInt32(lis_wl[i]);
+                                            }
+                                        }
+                                        s_info += "第二次测量数据最大值：" + d_e12 + "波长：" + i_wl2 + ";";
+
+                                        for (int i = 0; i < lis_sta_wl.Count; i++)
+                                        {
+                                            s_dic += Convert.ToInt32(lis_e2[i]) - Convert.ToInt32(lis_sta_e2[i]) + "/";
+                                        }
+
+                                    }
+
+                                    //发送启动
+                                    int[] values_Zero = new int[1];
+                                    values_Zero[0] = 0;
+                                    if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                                    {
+                                        FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                                    }
+                                    FADM_Object.Communal._tcpModBusAbs.Write(906, values_Zero);
+
+                                    //拷贝到历史表
+                                    DataTable dt_Temp = FADM_Object.Communal._fadmSqlserver.GetData(
+                                         "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'abs_cup_details';");
+                                    string s_columnDetails = null;
+                                    foreach (DataRow row in dt_Temp.Rows)
+                                    {
+                                        if (Convert.ToString(row[0]) != "Cooperate" && Convert.ToString(row[0]) != "NeedPulse" && Convert.ToString(row[0]) != "Choose"
+                                            && Convert.ToString(row[0]) != "WaterFinish" && Convert.ToString(row[0]) != "TotalWeight")
+                                            s_columnDetails += Convert.ToString(row[0]) + ", ";
+                                    }
+                                    s_columnDetails = s_columnDetails.Remove(s_columnDetails.Length - 2);
+
+                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                         "INSERT INTO history_abs (" + s_columnDetails + ",FinishTime,Result,Abs) (SELECT " + s_columnDetails + ",'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' as FinishTime" + ",'" + s_info + "' as Result" + ",'" + s_dic + "' as Abs" + " FROM abs_cup_details " +
+                                         "WHERE CupNum =" + (j + 1) + ") ;");
+
+                                    FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (j + 1) + "号(吸光度)检测完成");
+
+                                    //new FADM_Object.MyAlarm((j + 1) + "号(吸光度)检测完成", "温馨提示");
+
+                                    string s_insert = Lib_Card.CardObject.InsertD((j + 1) + "号(吸光度)检测完成", "温馨提示");
+                                    Thread.Sleep(2000);
+                                    Lib_Card.CardObject.DeleteD(s_insert);
+                                    
+                                }
+                                //测试样
+                                else
+                                {
+
+                                    //查询当前杯是检测纯水基准样还是测试样
+                                    s_sql = "SELECT * from standard where Type = 1 ;";
+
+                                    DataTable dt_standard = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                                    if (dt_standard.Rows.Count > 0)
+                                    {
+                                        //计算
+                                        string[] sa_e1 = dt_standard.Rows[0]["E1"].ToString().Split('/');
+                                        List<string> lis_sta_e1 = sa_e1.ToList();
+                                        string[] sa_e2 = dt_standard.Rows[0]["E2"].ToString().Split('/');
+                                        List<string> lis_sta_e2 = sa_e2.ToList();
+                                        string[] sa_wl = dt_standard.Rows[0]["WL"].ToString().Split('/');
+                                        List<string> lis_sta_wl = sa_wl.ToList();
+
+                                        List<double> XGD = new List<double>();
+                                        List<double> XGD_Cal = new List<double>();
+
+                                        if (sa_e1.Length != lis_e2.Count)
+                                        {
+                                            continue;
+                                        }
+                                        BC.Clear();
+                                        //spectrumData.Clear();
+                                        //解析数据
+                                        for (int i = 0; i < sa_e1.Length; i++)
+                                        {
+                                            //计算
+                                            double d = (lis_e2[i] / Convert.ToDouble(lis_sta_e2[i])) / (lis_e1[i] / Convert.ToDouble(lis_sta_e1[i]));
+                                            double x;
+                                            if (d < 0.0001)
+                                                x = 4;
+                                            else
+                                                x = -Math.Log10(d);
+
+                                            XGD.Add(x);
+                                            if (Convert.ToDouble(lis_sta_wl[i]) >= 400)
+                                            {
+                                                XGD_Cal.Add(x);
+                                            }
+                                            BC.Add(Lib_Card.Configure.Parameter.Other_StartWave + Lib_Card.Configure.Parameter.Other_IntWave * i);
+                                        }
+                                        string s_xgd = "";
+
+                                        double d_max = -999;
+                                        int i_max = 0;
+                                        for (int i = 0; i < XGD.Count; i++)
+                                        {
+                                            s_xgd += XGD[i].ToString("0.000000") + "/";
+
+                                            //查找波峰值
+                                            if (XGD[i] > d_max)
+                                            {
+                                                d_max = XGD[i];
+                                                i_max = i;
+                                            }
+                                        }
+
+                                        if (j == 0)
+                                        {
+                                            _i_max1 = i_max;
+                                            _d_absMax1 = d_max;
+                                        }
+                                        else
+                                        {
+                                            _i_max2 = i_max;
+                                            _d_absMax2 = d_max;
+                                        }
+                                        if (s_xgd != "")
+                                        {
+                                            s_xgd.Remove(s_xgd.Length - 1, 1);
+                                        }
+
+                                        //// 计算XYZ值
+
+
+                                        double[] doubles = XGD_Cal.ToArray();
+                                        (double L, double A, double B) = CalculateLAB(doubles, 400, Lib_Card.Configure.Parameter.Other_EndWave, Lib_Card.Configure.Parameter.Other_IntWave, 10);
+
+                                        //// 转换为LAB值
+                                        //(double L, double A, double B, double X, double Y, double Z) = ConvertToLAB(doubles);
+
+                                        //Console.WriteLine($"L: {L}, A: {A}, B: {B}");
+
+                                        //double L = 0.0; double A = 0.0; double B= 0.0;
+                                        double d_compensate = 0.0;
+                                        //判断当前检测是开料还是开稀
+                                        DataTable dt_bottle_detail = FADM_Object.Communal._fadmSqlserver.GetData("SELECT * from bottle_details where BottleNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "';");
+                                        if (dt_bottle_detail.Rows.Count > 0)
+                                        {
+                                            if (dt_bottle_detail.Rows[0]["OriginalBottleNum"].ToString() == "0")
+                                            {
+                                                //d_compensate = 0.0;
+                                                d_compensate = Convert.ToDouble(dt_bottle_detail.Rows[0]["RealConcentration"].ToString());
+                                            }
+                                            else
+                                            {
+
+                                                //获取标准曲线，然后计算补偿值
+                                                s_sql = "SELECT *  FROM assistant_details WHERE AssistantCode = '" + dt_bottle_detail.Rows[0]["AssistantCode"].ToString() + "';";
+                                                DataTable dt_assistant_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                                double d_max_temp = -999;
+                                                if (dt_assistant_details.Rows.Count > 0)
+                                                {
+                                                    string s_data1 = dt_assistant_details.Rows[0]["Abs"] is DBNull ? "" : dt_assistant_details.Rows[0]["Abs"].ToString();
+                                                    if (s_data1 != "")
+                                                    {
+                                                        s_data1 = s_data1.Substring(0, s_data1.Length - 2);
+                                                        string[] sa_arr1 = s_data1.Split('/');
+                                                        for (int i = 0; i < sa_arr1.Count(); i++)
+                                                        {
+
+                                                            //查找波峰值
+                                                            if (Convert.ToDouble(sa_arr1[i]) > d_max_temp)
+                                                            {
+                                                                d_max_temp = Convert.ToDouble(sa_arr1[i]);
+                                                            }
+                                                        }
+
+                                                        //计算补偿系数
+                                                        //d_compensate=(d_max_temp- d_max) / d_max_temp;
+
+                                                        d_compensate = 1 - (d_max_temp - d_max) / d_max_temp;
+
+                                                        d_compensate = Convert.ToDouble(dt_bottle_detail.Rows[0]["RealConcentration"].ToString()) * d_compensate;
+
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    d_compensate = Convert.ToDouble(dt_bottle_detail.Rows[0]["RealConcentration"].ToString());
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            d_compensate = Convert.ToDouble(dt_bottle_detail.Rows[0]["RealConcentration"].ToString());
+                                        }
+                                        //当正常测量时，不再保存修正系数
+                                        if (dt_temp.Rows[0]["Type"].ToString() == "11")
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData("Update  bottle_details Set Abs = '" + s_xgd + "',L='" + L.ToString() + "',A='" + A.ToString() + "',B='" + B.ToString() + "',RealConcentration='" + d_compensate.ToString("f6") + "' where BottleNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "';");
+                                        }
+                                        else
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData("Update  bottle_details Set Abs = '" + s_xgd + "',L='" + L.ToString() + "',A='" + A.ToString() + "',B='" + B.ToString() + "' where BottleNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "';");
+                                        }
+
+                                        //拷贝到历史表
+                                        DataTable dt_Temp = FADM_Object.Communal._fadmSqlserver.GetData(
+                                             "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'abs_cup_details';");
+                                        string s_columnDetails = null;
+                                        foreach (DataRow row in dt_Temp.Rows)
+                                        {
+                                            if (Convert.ToString(row[0]) != "Cooperate" && Convert.ToString(row[0]) != "NeedPulse" && Convert.ToString(row[0]) != "Choose"
+                                                && Convert.ToString(row[0]) != "WaterFinish" && Convert.ToString(row[0]) != "TotalWeight")
+                                                s_columnDetails += Convert.ToString(row[0]) + ", ";
+                                        }
+                                        s_columnDetails = s_columnDetails.Remove(s_columnDetails.Length - 2);
+
+                                        s_sql = "SELECT *  FROM bottle_details WHERE BottleNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "';";
+                                        DataTable dt_bottle = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                            "INSERT INTO history_abs (" + s_columnDetails + ",A,B,L,FinishTime,Abs,BrewingData,RealConcentration,AssistantCode) (SELECT " + s_columnDetails + ",'" + A.ToString() + "' as A," + "'" + B.ToString() + "' as B," + "'" + L.ToString() + "' as L," + "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' as FinishTime," + "'" + s_xgd.ToString() + "' as Abs,'" + dt_bottle.Rows[0]["BrewingData"].ToString() + "' as BrewingData," + dt_bottle.Rows[0]["RealConcentration"].ToString() + " as RealConcentration,'" + dt_bottle.Rows[0]["AssistantCode"].ToString() + "' as AssistantCode FROM abs_cup_details " +
+                                            "WHERE CupNum =" + (j + 1) + ") ;");
+
+
+                                    }
+                                }
+                            }
+                        }
+
+                        //判断是否接收到完成
+                        if (_abs_Temps[j]._s_currentState == "3")
+                        {
+                            //记录第一个没完成，而且步骤一致的保存数据
                             int i_status = 0;
                             int[] ia_array1 = new int[20];
                             int i_state1 = FADM_Object.Communal._tcpModBusAbs.Read(800, 20, ref ia_array1);
@@ -242,29 +861,74 @@ namespace SmartDyeing.FADM_Auto
                             {
                                 i_status = ia_array1[14];
                             }
+                            //查找数据库，第一个没完成的
+                            string s_sql = "SELECT *  FROM Abs_details where CupNum = " + (j + 1) + " And Finish = 0 order by StepNum;";
 
-                            if(i_status==3)
+                            DataTable dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                            if (dt_temp.Rows.Count > 0)
                             {
-                                //清空请求
-                                int[] values1 = new int[1];
-                                values1[0] = 0;
-                                if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+
+
+                                //更新完成时间，扣减液量
+                                if (i_status == 6 && dt_temp.Rows[0]["TechnologyName"].ToString() == "测吸光度")
                                 {
-                                    FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                      "UPDATE abs_cup_details SET TotalWeight -= " + Convert.ToInt32(dt_temp.Rows[0]["PumpingTime"].ToString()) + " WHERE CupNum = " + (j + 1) + ";");
+
+                                    //置为完成
+                                    s_sql = "update Abs_details set FinishTime = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',Finish = 1 where CupNum = " + (j + 1) + " And StepNum = " + dt_temp.Rows[0]["StepNum"].ToString();
+                                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
                                 }
-                                if (j + 1 == 1)
-                                    FADM_Object.Communal._tcpModBusAbs.Write(902, values1);
-                                else
-                                    FADM_Object.Communal._tcpModBusAbs.Write(912, values1);
+                                else if ((i_status == 4 && dt_temp.Rows[0]["TechnologyName"].ToString() == "搅拌")
+                                    || (i_status == 3 && dt_temp.Rows[0]["TechnologyName"].ToString() == "抽染液")
+                                    || (i_status == 2 && dt_temp.Rows[0]["TechnologyName"].ToString() == "加水")
+                                    || (i_status == 1 && dt_temp.Rows[0]["TechnologyName"].ToString() == "加药"))
+                                {
+                                    //置为完成
+                                    s_sql = "update Abs_details set FinishTime = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',Finish = 1 where CupNum = " + (j + 1) + " And StepNum = " + dt_temp.Rows[0]["StepNum"].ToString();
+                                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                }
+                                else if ((i_status == 5 && dt_temp.Rows[0]["TechnologyName"].ToString() == "排液"))
+                                {
+                                    int i_drainTime = 0;
+                                    if (Convert.ToInt32(dt_temp.Rows[0]["DrainTime"].ToString()) == 0)
+                                    {
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                      "UPDATE abs_cup_details SET TotalWeight = 0 WHERE CupNum = " + (j + 1) + ";");
+                                    }
+                                    else
+                                    {
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                      "UPDATE abs_cup_details SET TotalWeight -= " + Convert.ToInt32(dt_temp.Rows[0]["DrainTime"].ToString()) + " WHERE CupNum = " + (j + 1) + ";");
+                                    }
 
-                                ////保存数据
-                                //FADM_Object.Communal._fadmSqlserver.ReviseData(
-                                //      "UPDATE abs_cup_details SET IsUsing = 0,Statues='待机' WHERE CupNum = " + (j + 1) + ";");
+                                    //置为完成
+                                    s_sql = "update Abs_details set FinishTime = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',Finish = 1 where CupNum = " + (j + 1) + " And StepNum = " + dt_temp.Rows[0]["StepNum"].ToString();
+                                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                                }
+                            }
 
-                                FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (j + 1) + "号(吸光度)洗杯完成");
+                            int[] values11 = new int[1];
+                            values11[0] = 0;
+                            if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                            {
+                                FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                            }
+                            if (j + 1 == 1)
+                                FADM_Object.Communal._tcpModBusAbs.Write(900, values11);
+                            else
+                                FADM_Object.Communal._tcpModBusAbs.Write(910, values11);
 
+
+
+
+
+                            //没有下一步，就变为待机
+                            if (SendData(j + 1) == 0)
+                            {
+                                //
                                 //判断是否主动测白点前洗杯
-                                if(MyAbsorbance._b_wash[Convert.ToInt32(j + 1) - 1])
+                                if (MyAbsorbance._b_wash[Convert.ToInt32(j + 1) - 1])
                                 {
                                     MyAbsorbance._b_wash[Convert.ToInt32(j + 1) - 1] = false;
                                     string s_sql_b;
@@ -297,120 +961,12 @@ namespace SmartDyeing.FADM_Auto
                                     }
                                     else
                                     {
-                                        //查询上一次使用情况，如果不是一样的母液就先预滴
-                                        DataTable dataTable = FADM_Object.Communal._fadmSqlserver.GetData("SELECT * FROM abs_cup_details WHERE CupNum = " + (j+1) + ";");
+                                        SmartDyeing.FADM_Auto.MyAbsorbance.Calculate(0, Convert.ToInt32(dt_temp_b.Rows[0]["BottleNum"].ToString()), (j + 1), 4, FADM_Object.Communal._d_abs_total);
 
-                                        if (dataTable.Rows.Count > 0)
-                                        {
-                                            //判断是否一样的溶解剂或水,或者上一次是测样本
-                                            if (dataTable.Rows[0]["AdditivesNum"].ToString() != dt_temp_b.Rows[0]["BottleNum"].ToString() || dataTable.Rows[0]["BottleNum"].ToString() != "0")
-                                            {
+                                        SmartDyeing.FADM_Auto.MyAbsorbance.Generate(0, (j + 1));
+                                        SmartDyeing.FADM_Auto.MyAbsorbance.SendData((j + 1));
 
-                                                //更新数据库
-                                                s_sql_b = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + 0 + ",SampleDosage='" + string.Format("{0:F3}", 0.0) + "',AdditivesNum = '" + dt_temp_b.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=7,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j+1) + "';";
-                                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql_b);
-
-                                                //发送启动
-                                                int[] values1_b = new int[6];
-                                                values1_b[0] = 1;
-                                                values1_b[1] = 0;
-                                                values1_b[2] = 0;
-                                                values1_b[3] = 0;
-                                                values1_b[4] = 4;
-                                                values1_b[5] = 1;
-                                                if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                                {
-                                                    FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                                }
-
-                                                //写入测量数据
-                                                int d_1_ = 0;
-                                                d_1_ = Lib_Card.Configure.Parameter.Other_StartWave / 65536;
-                                                int i_d_11_ = Lib_Card.Configure.Parameter.Other_StartWave % 65536;
-
-                                                int d_2_ = 0;
-                                                d_2_ = Lib_Card.Configure.Parameter.Other_EndWave / 65536;
-                                                int i_d_22_ = Lib_Card.Configure.Parameter.Other_EndWave % 65536;
-
-                                                int d_3_ = 0;
-                                                d_3_ = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
-                                                int i_d_33_ = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
-
-                                                int d_4_ = 0;
-                                                d_4_ = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                                int i_d_44_ = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                                int d_5_ = 0;
-                                                d_5_ = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                                                int i_d_55_ = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                                                int d_7_ = 0;
-                                                d_7_ = (Convert.ToInt32(FADM_Object.Communal._d_abs_total * 1000)) / 65536;
-                                                int i_d_77_ = (Convert.ToInt32(FADM_Object.Communal._d_abs_total * 1000)) % 65536;
-
-                                                int[] ia_array1_b = new int[] { i_d_11_, d_1_, i_d_22_, d_2_, i_d_33_, d_3_, i_d_44_, d_4_, i_d_55_, d_5_, 0, 0, i_d_77_, d_7_ };
-                                                if (Convert.ToInt32(j+1) == 1)
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array1_b);
-                                                else
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array1_b);
-
-                                                if (Convert.ToInt32(j+1) == 1)
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(800, values1_b);
-                                                else
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(810, values1_b);
-
-                                                continue;
-                                            }
-                                        }
-
-                                        //更新数据库
-                                        s_sql_b = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + 0 + ",SampleDosage='" + string.Format("{0:F3}", 0.0) + "',AdditivesNum = '" + dt_temp_b.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=4,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j+1) + "';";
-                                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql_b);
-
-                                        //发送启动
-                                        int[] values_b = new int[6];
-                                        values_b[0] = 1;
-                                        values_b[1] = 0;
-                                        values_b[2] = 0;
-                                        values_b[3] = 0;
-                                        values_b[4] = 1;
-                                        values_b[5] = 1;
-                                        if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                        {
-                                            FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                        }
-
-                                        //写入测量数据
-                                        int d_1 = 0;
-                                        d_1 = Lib_Card.Configure.Parameter.Other_StartWave / 65536;
-                                        int i_d_11 = Lib_Card.Configure.Parameter.Other_StartWave % 65536;
-
-                                        int d_2 = 0;
-                                        d_2 = Lib_Card.Configure.Parameter.Other_EndWave / 65536;
-                                        int i_d_22 = Lib_Card.Configure.Parameter.Other_EndWave % 65536;
-
-                                        int d_3 = 0;
-                                        d_3 = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
-                                        int i_d_33 = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
-
-                                        int d_4 = 0;
-                                        d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                        int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                        int d_5 = 0;
-                                        d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                                        int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                                        int[] ia_array_b = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3, i_d_44, d_4, i_d_55, d_5 };
-                                        if (Convert.ToInt32(j+1) == 1)
-                                            FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array_b);
-                                        else
-                                            FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array_b);
-
-                                        if (Convert.ToInt32(j+1) == 1)
-                                            FADM_Object.Communal._tcpModBusAbs.Write(800, values_b);
-                                        else
-                                            FADM_Object.Communal._tcpModBusAbs.Write(810, values_b);
+                                       
                                         continue;
                                     }
                                 }
@@ -418,364 +974,148 @@ namespace SmartDyeing.FADM_Auto
                                 //判断一下当前杯是否测试纯水，如果是就进行测试样
                                 string s_sql_1 = "SELECT * from abs_cup_details WHERE CupNum = " + (j + 1) + ";";
                                 DataTable dt_temp_1 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_1);
-                                if (dt_temp_1.Rows.Count >0)
+                                if (dt_temp_1.Rows.Count > 0)
                                 {
                                     //时间到了，测完白点要先润测试点
-                                    if (dt_temp_1.Rows[0]["Type"].ToString()=="2"|| dt_temp_1.Rows[0]["Type"].ToString() == "9")
+                                    if (dt_temp_1.Rows[0]["Type"].ToString() == "2" || dt_temp_1.Rows[0]["Type"].ToString() == "9")
                                     {
                                         DataTable dt_temp_first = FADM_Object.Communal._fadmSqlserver.GetData("SELECT * from standard order by Type;");
                                         if (dt_temp_first.Rows.Count == 2)
                                         {
-                                            //使用完成时间来比较在测第一次白点还是第二次白点
-                                            if (Convert.ToDateTime( dt_temp_first.Rows[0]["FinishTime"].ToString()) > Convert.ToDateTime(dt_temp_first.Rows[1]["FinishTime"].ToString()))
+                                            //比较两次白点差值
+                                            //查询第一次测的数据
+                                            //计算
+                                            string[] sa_e1 = dt_temp_first.Rows[0]["E1"].ToString().Split('/');
+                                            List<string> lis_sta_e1 = sa_e1.ToList();
+                                            string[] sa_e2 = dt_temp_first.Rows[0]["E2"].ToString().Split('/');
+                                            List<string> lis_sta_e2 = sa_e2.ToList();
+                                            string[] sa_wl = dt_temp_first.Rows[0]["WL"].ToString().Split('/');
+                                            List<string> lis_sta_wl = sa_wl.ToList();
+
+                                            string[] sa_e12 = dt_temp_first.Rows[1]["E1"].ToString().Split('/');
+                                            List<string> lis_sta_e12 = sa_e12.ToList();
+                                            string[] sa_e22 = dt_temp_first.Rows[1]["E2"].ToString().Split('/');
+                                            List<string> lis_sta_e22 = sa_e22.ToList();
+                                            string[] sa_wl2 = dt_temp_first.Rows[1]["WL"].ToString().Split('/');
+                                            List<string> lis_sta_wl2 = sa_wl2.ToList();
+
+                                            bool b_flag = false;
+                                            int i_sub = 0;
+                                            string s_wl = "";
+                                            for (int i = 0; i < lis_sta_wl.Count; i++)
                                             {
-                                                //测试第二次白点
-                                                string s_sql1;
-                                                if (dt_temp_1.Rows[0]["Type"].ToString() == "2")
-                                                    s_sql1 = "Update abs_cup_details set Statues='运行中',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=2,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
-                                                else
-                                                    s_sql1 = "Update abs_cup_details set Statues='运行中',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=9,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
-                                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql1);
-                                                //发送启动
-                                                int[] values2 = new int[6];
-                                                values2[0] = 1;
-                                                values2[1] = 0;
-                                                values2[2] = 0;
-                                                values2[3] = 0;
-                                                values2[4] = 1;
-                                                values2[5] = 1;
-                                                if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                                                if (Math.Abs(Convert.ToInt32(lis_sta_e22[i]) - Convert.ToInt32(lis_sta_e2[i])) > Math.Abs(i_sub))
                                                 {
-                                                    FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                                                    s_wl = lis_sta_wl[i];
+                                                    i_sub = Convert.ToInt32(lis_sta_e22[i]) - Convert.ToInt32(lis_sta_e2[i]);
+                                                }
+                                            }
+                                            for (int i = 0; i < lis_sta_wl.Count; i++)
+                                            {
+                                                if (Math.Abs(Convert.ToInt32(lis_sta_e22[i]) - Convert.ToInt32(lis_sta_e2[i])) > FADM_Object.Communal._d_abs_sub)
+                                                {
+                                                    b_flag = true;
+                                                    break;
+                                                }
+                                            }
+                                            if (b_flag)
+                                            {
+                                                FADM_Object.MyAlarm myAlarm;
+                                                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                    myAlarm = new FADM_Object.MyAlarm("测试基准点误差过大，是否继续使用此数据作为基准点数据,最大差值在波长" + s_wl + "，差值为" + i_sub.ToString() + "(重新测量基本点请点是，使用此数据为基准点请点否)?", "吸光度", true, 1);
+                                                else
+                                                    myAlarm = new FADM_Object.MyAlarm("测试基准点误差过大，是否继续使用此数据作为基准点数据,最大差值在波长" + s_wl + "，差值为" + i_sub.ToString() + "(重新测量基本点请点是，使用此数据为基准点请点否)?", "吸光度", true, 1);
+
+                                                while (true)
+                                                {
+                                                    if (0 != myAlarm._i_alarm_Choose)
+                                                        break;
+                                                    Thread.Sleep(1);
                                                 }
 
-                                                //写入测量数据
-                                                int d_1 = 0;
-                                                d_1 = Lib_Card.Configure.Parameter.Other_StartWave / 65536;
-                                                int i_d_11 = Lib_Card.Configure.Parameter.Other_StartWave % 65536;
+                                                if (myAlarm._i_alarm_Choose == 1)
+                                                {
 
-                                                int d_2 = 0;
-                                                d_2 = Lib_Card.Configure.Parameter.Other_EndWave / 65536;
-                                                int i_d_22 = Lib_Card.Configure.Parameter.Other_EndWave % 65536;
+                                                    //测试第二次白点
+                                                    string s_sql1;
+                                                    if (dt_temp_1.Rows[0]["Type"].ToString() == "2")
+                                                        s_sql1 = "Update abs_cup_details set Statues='运行中',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=2,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
+                                                    else
+                                                        s_sql1 = "Update abs_cup_details set Statues='运行中',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=9,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql1);
 
-                                                int d_3 = 0;
-                                                d_3 = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
-                                                int i_d_33 = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
+                                                    SmartDyeing.FADM_Auto.MyAbsorbance.Generate(0, (j + 1));
+                                                    SmartDyeing.FADM_Auto.MyAbsorbance.SendData((j + 1));
 
-                                                int d_4 = 0;
-                                                d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                                int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                                int d_5 = 0;
-                                                d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                                                int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                                                int[] ia_array2 = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3, i_d_44, d_4, i_d_55, d_5 };
-                                                if (Convert.ToInt32(j + 1) == 1)
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array2);
+                                                    continue;
+                                                }
                                                 else
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array2);
-
-
-                                                if (Convert.ToInt32(j + 1) == 1)
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(800, values2);
-                                                else
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(810, values2);
+                                                {
+                                                    //继续运行
+                                                }
                                             }
+
+                                            string s_sql_2 = "SELECT bottle_details.*,assistant_details.AllowMinColoringConcentration,assistant_details.AllowMaxColoringConcentration,assistant_details.AssistantType,assistant_details.UnitOfAccount  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE bottle_details.BottleNum = " + dt_temp_1.Rows[0]["BottleNum"].ToString() + ";";
+                                            DataTable dt_temp_2 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_2);
+
+                                            string s_unitOfAccount = dt_temp_2.Rows[0]["UnitOfAccount"].ToString();
+                                            string s_assistantType = dt_temp_2.Rows[0]["AssistantType"].ToString();
+                                            string s_realConcentration = dt_temp_2.Rows[0]["RealConcentration"].ToString();
+                                            string s_settingConcentration = dt_temp_2.Rows[0]["SettingConcentration"].ToString();
+                                            string s_compensate = dt_temp_2.Rows[0]["Compensate"].ToString() == "" ? "0" : dt_temp_2.Rows[0]["Compensate"].ToString();
+
+                                            //活性用水稀释
+                                            if (s_assistantType.Contains("活性"))
+                                            {
+                                                //找到母液水剂母液瓶号
+                                                string s_sql_3 = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount = 'Water';";
+
+                                                DataTable dt_temp_3 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_3);
+                                                if (dt_temp_3.Rows.Count == 0)
+                                                {
+                                                    FADM_Form.CustomMessageBox.Show("不存在水剂母液瓶号，不能测试", "TestAbs",
+                                            MessageBoxButtons.OK, false);
+                                                    return;
+                                                }
+                                                else
+                                                {
+                                                    if (dt_temp_1.Rows[0]["Type"].ToString() == "2")
+                                                        SmartDyeing.FADM_Auto.MyAbsorbance.Calculate(Convert.ToInt32(dt_temp_1.Rows[0]["BottleNum"].ToString()), Convert.ToInt32(dt_temp_3.Rows[0]["BottleNum"].ToString()), (j + 1), 1, FADM_Object.Communal._d_abs_total);
+                                                    else
+                                                        SmartDyeing.FADM_Auto.MyAbsorbance.Calculate(Convert.ToInt32(dt_temp_1.Rows[0]["BottleNum"].ToString()), Convert.ToInt32(dt_temp_3.Rows[0]["BottleNum"].ToString()), (j + 1), 11, FADM_Object.Communal._d_abs_total);
+                                                    //生成测量工艺
+                                                    SmartDyeing.FADM_Auto.MyAbsorbance.Generate(1, (j + 1));
+                                                    SmartDyeing.FADM_Auto.MyAbsorbance.SendData((j + 1));
+                                                }
+                                            }
+                                            //其他使用溶解剂稀释
                                             else
                                             {
-                                                //比较两次白点差值
-                                                //查询第一次测的数据
-                                                //计算
-                                                string[] sa_e1 = dt_temp_first.Rows[0]["E1"].ToString().Split('/');
-                                                List<string> lis_sta_e1 = sa_e1.ToList();
-                                                string[] sa_e2 = dt_temp_first.Rows[0]["E2"].ToString().Split('/');
-                                                List<string> lis_sta_e2 = sa_e2.ToList();
-                                                string[] sa_wl = dt_temp_first.Rows[0]["WL"].ToString().Split('/');
-                                                List<string> lis_sta_wl = sa_wl.ToList();
+                                                string s_sql_3 = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
 
-                                                string[] sa_e12 = dt_temp_first.Rows[1]["E1"].ToString().Split('/');
-                                                List<string> lis_sta_e12 = sa_e12.ToList();
-                                                string[] sa_e22 = dt_temp_first.Rows[1]["E2"].ToString().Split('/');
-                                                List<string> lis_sta_e22 = sa_e22.ToList();
-                                                string[] sa_wl2 = dt_temp_first.Rows[1]["WL"].ToString().Split('/');
-                                                List<string> lis_sta_wl2 = sa_wl2.ToList();
-
-                                                bool b_flag = false;
-                                                for (int i = 0; i < lis_sta_wl.Count; i++)
+                                                DataTable dt_temp_3 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_3);
+                                                if (dt_temp_3.Rows.Count == 0)
                                                 {
-                                                    if(Math.Abs(Convert.ToInt32(lis_sta_e22[i]) - Convert.ToInt32(lis_sta_e2[i]))> FADM_Object.Communal._d_abs_sub)
-                                                    {
-                                                        b_flag = true;
-                                                        break;
-                                                    }
+                                                    FADM_Form.CustomMessageBox.Show("不存在溶解剂母液瓶号，不能测试", "TestAbs",
+                                            MessageBoxButtons.OK, false);
+                                                    continue;
                                                 }
-                                                if(b_flag)
-                                                {
-                                                    FADM_Object.MyAlarm myAlarm;
-                                                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                                        myAlarm = new FADM_Object.MyAlarm( "测试基准点误差过大，是否继续使用此数据作为基准点数据(重新测量基本点请点是，使用此数据为基准点请点否)?", "吸光度", true, 1);
-                                                    else
-                                                        myAlarm = new FADM_Object.MyAlarm("测试基准点误差过大，是否继续使用此数据作为基准点数据(重新测量基本点请点是，使用此数据为基准点请点否)?", "吸光度", true, 1);
-
-                                                    while (true)
-                                                    {
-                                                        if (0 != myAlarm._i_alarm_Choose)
-                                                            break;
-                                                        Thread.Sleep(1);
-                                                    }
-
-                                                    if(myAlarm._i_alarm_Choose==1)
-                                                    {
-                                                        //把此次数据作为第一次测白点数据，再测试第二次白点
-                                                        //先删除第一次数据
-                                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from standard where Type = 0 ");
-                                                        //把第二次数据改为第一次数据
-                                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Update standard set Type = 0 where Type = 1 ");
-
-                                                        //测试第二次白点
-                                                        string s_sql1;
-                                                        if (dt_temp_1.Rows[0]["Type"].ToString() == "2")
-                                                            s_sql1 = "Update abs_cup_details set Statues='运行中',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=2,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
-                                                        else
-                                                            s_sql1 = "Update abs_cup_details set Statues='运行中',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=9,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
-                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql1);
-                                                        //发送启动
-                                                        int[] values2 = new int[6];
-                                                        values2[0] = 1;
-                                                        values2[1] = 0;
-                                                        values2[2] = 0;
-                                                        values2[3] = 0;
-                                                        values2[4] = 1;
-                                                        values2[5] = 1;
-                                                        if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                                        {
-                                                            FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                                        }
-
-                                                        //写入测量数据
-                                                        int d_1 = 0;
-                                                        d_1 = Lib_Card.Configure.Parameter.Other_StartWave / 65536;
-                                                        int i_d_11 = Lib_Card.Configure.Parameter.Other_StartWave % 65536;
-
-                                                        int d_2 = 0;
-                                                        d_2 = Lib_Card.Configure.Parameter.Other_EndWave / 65536;
-                                                        int i_d_22 = Lib_Card.Configure.Parameter.Other_EndWave % 65536;
-
-                                                        int d_3 = 0;
-                                                        d_3 = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
-                                                        int i_d_33 = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
-
-                                                        int d_4 = 0;
-                                                        d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                                        int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                                        int d_5 = 0;
-                                                        d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                                                        int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                                                        int[] ia_array2 = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3, i_d_44, d_4, i_d_55, d_5 };
-                                                        if (Convert.ToInt32(j + 1) == 1)
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array2);
-                                                        else
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array2);
-
-
-                                                        if (Convert.ToInt32(j + 1) == 1)
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(800, values2);
-                                                        else
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(810, values2);
-
-                                                        continue;
-                                                    }
-                                                    else
-                                                    {
-                                                        //继续运行
-                                                    }
-                                                }
-
-                                                string s_sql_2 = "SELECT bottle_details.*,assistant_details.AllowMinColoringConcentration,assistant_details.AllowMaxColoringConcentration,assistant_details.AssistantType,assistant_details.UnitOfAccount  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE bottle_details.BottleNum = " + dt_temp_1.Rows[0]["BottleNum"].ToString() + ";";
-                                                DataTable dt_temp_2 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_2);
-
-                                                string s_unitOfAccount = dt_temp_2.Rows[0]["UnitOfAccount"].ToString();
-                                                string s_assistantType = dt_temp_2.Rows[0]["AssistantType"].ToString();
-                                                string s_realConcentration = dt_temp_2.Rows[0]["RealConcentration"].ToString();
-                                                string s_settingConcentration = dt_temp_2.Rows[0]["SettingConcentration"].ToString();
-                                                string s_compensate = dt_temp_2.Rows[0]["Compensate"].ToString()==""?"0": dt_temp_2.Rows[0]["Compensate"].ToString();
-
-                                                //活性用水稀释
-                                                if (s_assistantType.Contains("活性"))
-                                                {
-                                                    //找到母液水剂母液瓶号
-                                                    string s_sql_3 = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount = 'Water';";
-
-                                                    DataTable dt_temp_3 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_3);
-                                                    if (dt_temp_3.Rows.Count == 0)
-                                                    {
-                                                        FADM_Form.CustomMessageBox.Show("不存在水剂母液瓶号，不能测试", "TestAbs",
-                                                MessageBoxButtons.OK, false);
-                                                        return;
-                                                    }
-                                                    else
-                                                    {
-                                                        //计算50g液体需要重量
-                                                        double d_stotal = FADM_Object.Communal._d_abs_total * (FADM_Object.Communal._d_ppm / 10000);
-                                                        //母液重量
-                                                        double d_dosage = d_stotal / Convert.ToDouble(s_realConcentration);
-                                                        double d_water = FADM_Object.Communal._d_abs_total - d_dosage;
-
-                                                        if (dt_temp_1.Rows[0]["Type"].ToString() == "2")
-                                                        {
-                                                            double d_t = d_dosage * Convert.ToDouble(s_compensate);
-                                                            d_dosage = d_dosage * (1 + Convert.ToDouble(s_compensate));
-                                                            d_water -= d_t;
-                                                            //更新数据库
-                                                            s_sql_3 = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + dt_temp_1.Rows[0]["BottleNum"].ToString() + ",SampleDosage='" + string.Format("{0:F3}", d_dosage) + "',AdditivesNum = '" + dt_temp_3.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water) + "',Pulse=0,Cooperate=5,Type =5,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
-                                                        }
-                                                        else
-                                                        {
-                                                            //更新数据库
-                                                            s_sql_3 = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + dt_temp_1.Rows[0]["BottleNum"].ToString() + ",SampleDosage='" + string.Format("{0:F3}", d_dosage) + "',AdditivesNum = '" + dt_temp_3.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water) + "',Pulse=0,Cooperate=5,Type =8,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
-                                                        }
-                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql_3);
-
-                                                        //发送启动
-                                                        int[] values2 = new int[5];
-                                                        values2[0] = 1;
-                                                        values2[1] = 0;
-                                                        values2[2] = 0;
-                                                        values2[3] = 0;
-                                                        values2[4] = 4;
-                                                        if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                                        {
-                                                            FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                                        }
-
-                                                        //写入测量数据
-                                                        int d_1 = 0;
-                                                        d_1 = Lib_Card.Configure.Parameter.Other_StartWave / 65536;
-                                                        int i_d_11 = Lib_Card.Configure.Parameter.Other_StartWave % 65536;
-
-                                                        int d_2 = 0;
-                                                        d_2 = Lib_Card.Configure.Parameter.Other_EndWave / 65536;
-                                                        int i_d_22 = Lib_Card.Configure.Parameter.Other_EndWave % 65536;
-
-                                                        int d_3 = 0;
-                                                        d_3 = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
-                                                        int i_d_33 = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
-
-                                                        int d_4 = 0;
-                                                        d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                                        int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                                        int d_5 = 0;
-                                                        d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                                                        int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                                                        int d_7 = 0;
-                                                        d_7 = Convert.ToInt32(FADM_Object.Communal._d_abs_total * 1000) / 65536;
-                                                        int i_d_77 = Convert.ToInt32(FADM_Object.Communal._d_abs_total * 1000) % 65536;
-
-                                                        int[] ia_array2 = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3, i_d_44, d_4, i_d_55, d_5, 0, 0, i_d_77, d_7 };
-                                                        if (Convert.ToInt32(j + 1) == 1)
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array2);
-                                                        else
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array2);
-
-
-                                                        if (Convert.ToInt32(j + 1) == 1)
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(800, values2);
-                                                        else
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(810, values2);
-
-                                                    }
-                                                }
-                                                //其他使用溶解剂稀释
                                                 else
                                                 {
-                                                    string s_sql_3 = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
-
-                                                    DataTable dt_temp_3 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_3);
-                                                    if (dt_temp_3.Rows.Count == 0)
-                                                    {
-                                                        FADM_Form.CustomMessageBox.Show("不存在溶解剂母液瓶号，不能测试", "TestAbs",
-                                                MessageBoxButtons.OK, false);
-                                                        continue;
-                                                    }
+                                                    if (dt_temp_1.Rows[0]["Type"].ToString() == "2")
+                                                        SmartDyeing.FADM_Auto.MyAbsorbance.Calculate(Convert.ToInt32(dt_temp_1.Rows[0]["BottleNum"].ToString()), Convert.ToInt32(dt_temp_3.Rows[0]["BottleNum"].ToString()), (j + 1), 1, FADM_Object.Communal._d_abs_total);
                                                     else
-                                                    {
-                                                        //计算50g液体需要重量
-                                                        double d_stotal = FADM_Object.Communal._d_abs_total * (FADM_Object.Communal._d_ppm / 10000);
-                                                        //母液重量
-                                                        double d_dosage = d_stotal / Convert.ToDouble(s_realConcentration);
-                                                        double d_water = FADM_Object.Communal._d_abs_total - d_dosage;
-                                                        if (dt_temp_1.Rows[0]["Type"].ToString() == "2")
-                                                        {
-                                                            double d_t = d_dosage * Convert.ToDouble(s_compensate);
-                                                            d_dosage = d_dosage * (1 + Convert.ToDouble(s_compensate));
-                                                            d_water -= d_t;
-                                                            //更新数据库
-                                                            s_sql_3 = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + dt_temp_1.Rows[0]["BottleNum"].ToString() + ",SampleDosage='" + string.Format("{0:F3}", d_dosage) + "',AdditivesNum = '" + dt_temp_3.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water) + "',Pulse=0,Cooperate=5,Type =5,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
-                                                        }
-                                                        else
-                                                        {
-                                                            //更新数据库
-                                                            s_sql_3 = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + dt_temp_1.Rows[0]["BottleNum"].ToString() + ",SampleDosage='" + string.Format("{0:F3}", d_dosage) + "',AdditivesNum = '" + dt_temp_3.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water) + "',Pulse=0,Cooperate=5,Type =8,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
-                                                        }
-                                                            FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql_3);
+                                                        SmartDyeing.FADM_Auto.MyAbsorbance.Calculate(Convert.ToInt32(dt_temp_1.Rows[0]["BottleNum"].ToString()), Convert.ToInt32(dt_temp_3.Rows[0]["BottleNum"].ToString()), (j + 1), 11, FADM_Object.Communal._d_abs_total);
+                                                    //生成测量工艺
+                                                    SmartDyeing.FADM_Auto.MyAbsorbance.Generate(1, (j + 1));
+                                                    SmartDyeing.FADM_Auto.MyAbsorbance.SendData((j + 1));
 
-                                                        //发送启动
-                                                        int[] values2 = new int[5];
-                                                        values2[0] = 1;
-                                                        values2[1] = 0;
-                                                        values2[2] = 0;
-                                                        values2[3] = 0;
-                                                        values2[4] = 4;
-                                                        if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                                        {
-                                                            FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                                        }
 
-                                                        //写入测量数据
-                                                        int d_1 = 0;
-                                                        d_1 = Lib_Card.Configure.Parameter.Other_StartWave / 65536;
-                                                        int i_d_11 = Lib_Card.Configure.Parameter.Other_StartWave % 65536;
-
-                                                        int d_2 = 0;
-                                                        d_2 = Lib_Card.Configure.Parameter.Other_EndWave / 65536;
-                                                        int i_d_22 = Lib_Card.Configure.Parameter.Other_EndWave % 65536;
-
-                                                        int d_3 = 0;
-                                                        d_3 = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
-                                                        int i_d_33 = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
-
-                                                        int d_4 = 0;
-                                                        d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                                        int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                                        int d_5 = 0;
-                                                        d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                                                        int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                                                        int d_7 = 0;
-                                                        d_7 = Convert.ToInt32(FADM_Object.Communal._d_abs_total * 1000) / 65536;
-                                                        int i_d_77 = Convert.ToInt32(FADM_Object.Communal._d_abs_total * 1000) % 65536;
-
-                                                        int[] ia_array2 = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3, i_d_44, d_4, i_d_55, d_5, 0, 0, i_d_77, d_7 };
-                                                        if (Convert.ToInt32(j + 1) == 1)
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array2);
-                                                        else
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array2);
-
-                                                        if (Convert.ToInt32(j + 1) == 1)
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(800, values2);
-                                                        else
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(810, values2);
-                                                    }
                                                 }
                                             }
+
                                         }
-                                        else if(dt_temp_first.Rows.Count == 1)
+                                        else if (dt_temp_first.Rows.Count == 1)
                                         {
                                             //如果只有第一次白点记录，就直接测第二次白点
                                             if (dt_temp_first.Rows[0]["Type"].ToString() == "0")
@@ -784,59 +1124,17 @@ namespace SmartDyeing.FADM_Auto
                                                 if (dt_temp_1.Rows[0]["Type"].ToString() == "2")
                                                 {
                                                     //测试第二次白点
-                                                     s_sql1 = "Update abs_cup_details set Statues='运行中',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=2,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
+                                                    s_sql1 = "Update abs_cup_details set Statues='运行中',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=2,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
                                                 }
                                                 else
                                                 {
                                                     //测试第二次白点
-                                                     s_sql1 = "Update abs_cup_details set Statues='运行中',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=9,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
+                                                    s_sql1 = "Update abs_cup_details set Statues='运行中',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=9,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
                                                 }
                                                 FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql1);
-                                                //发送启动
-                                                int[] values2 = new int[6];
-                                                values2[0] = 1;
-                                                values2[1] = 0;
-                                                values2[2] = 0;
-                                                values2[3] = 0;
-                                                values2[4] = 1;
-                                                values2[5] = 1;
-                                                if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                                {
-                                                    FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                                }
-
-                                                //写入测量数据
-                                                int d_1 = 0;
-                                                d_1 = Lib_Card.Configure.Parameter.Other_StartWave / 65536;
-                                                int i_d_11 = Lib_Card.Configure.Parameter.Other_StartWave % 65536;
-
-                                                int d_2 = 0;
-                                                d_2 = Lib_Card.Configure.Parameter.Other_EndWave / 65536;
-                                                int i_d_22 = Lib_Card.Configure.Parameter.Other_EndWave % 65536;
-
-                                                int d_3 = 0;
-                                                d_3 = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
-                                                int i_d_33 = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
-
-                                                int d_4 = 0;
-                                                d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                                int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                                int d_5 = 0;
-                                                d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                                                int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                                                int[] ia_array2 = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3, i_d_44, d_4, i_d_55, d_5 };
-                                                if (Convert.ToInt32(j + 1) == 1)
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array2);
-                                                else
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array2);
-
-
-                                                if (Convert.ToInt32(j + 1) == 1)
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(800, values2);
-                                                else
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(810, values2);
+                                                
+                                                SmartDyeing.FADM_Auto.MyAbsorbance.Generate(1, (j + 1));
+                                                SmartDyeing.FADM_Auto.MyAbsorbance.SendData((j + 1));
                                             }
                                             else
                                             {
@@ -1032,169 +1330,79 @@ namespace SmartDyeing.FADM_Auto
                                         DataTable dt_temp_first = FADM_Object.Communal._fadmSqlserver.GetData("SELECT * from standard order by Type;");
                                         if (dt_temp_first.Rows.Count == 2)
                                         {
-                                            //使用完成时间来比较在测第一次白点还是第二次白点
-                                            if (Convert.ToDateTime(dt_temp_first.Rows[0]["FinishTime"].ToString()) > Convert.ToDateTime(dt_temp_first.Rows[1]["FinishTime"].ToString()))
+                                            //比较两次白点差值
+                                            //查询第一次测的数据
+                                            //计算
+                                            string[] sa_e1 = dt_temp_first.Rows[0]["E1"].ToString().Split('/');
+                                            List<string> lis_sta_e1 = sa_e1.ToList();
+                                            string[] sa_e2 = dt_temp_first.Rows[0]["E2"].ToString().Split('/');
+                                            List<string> lis_sta_e2 = sa_e2.ToList();
+                                            string[] sa_wl = dt_temp_first.Rows[0]["WL"].ToString().Split('/');
+                                            List<string> lis_sta_wl = sa_wl.ToList();
+
+                                            string[] sa_e12 = dt_temp_first.Rows[1]["E1"].ToString().Split('/');
+                                            List<string> lis_sta_e12 = sa_e12.ToList();
+                                            string[] sa_e22 = dt_temp_first.Rows[1]["E2"].ToString().Split('/');
+                                            List<string> lis_sta_e22 = sa_e22.ToList();
+                                            string[] sa_wl2 = dt_temp_first.Rows[1]["WL"].ToString().Split('/');
+                                            List<string> lis_sta_wl2 = sa_wl2.ToList();
+
+                                            bool b_flag = false;
+                                            int i_sub = 0;
+                                            string s_wl = "";
+                                            for (int i = 0; i < lis_sta_wl.Count; i++)
                                             {
-                                                //测试第二次白点
-                                                string s_sql1 = "Update abs_cup_details set Statues='运行中',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=4,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
-                                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql1);
-                                                //发送启动
-                                                int[] values2 = new int[6];
-                                                values2[0] = 1;
-                                                values2[1] = 0;
-                                                values2[2] = 0;
-                                                values2[3] = 0;
-                                                values2[4] = 1;
-                                                values2[5] = 1;
-                                                if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                                                if (Math.Abs(Convert.ToInt32(lis_sta_e22[i]) - Convert.ToInt32(lis_sta_e2[i])) > Math.Abs(i_sub))
                                                 {
-                                                    FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                                                    s_wl = lis_sta_wl[i];
+                                                    i_sub = Convert.ToInt32(lis_sta_e22[i]) - Convert.ToInt32(lis_sta_e2[i]);
                                                 }
-
-                                                //写入测量数据
-                                                int d_1 = 0;
-                                                d_1 = Lib_Card.Configure.Parameter.Other_StartWave / 65536;
-                                                int i_d_11 = Lib_Card.Configure.Parameter.Other_StartWave % 65536;
-
-                                                int d_2 = 0;
-                                                d_2 = Lib_Card.Configure.Parameter.Other_EndWave / 65536;
-                                                int i_d_22 = Lib_Card.Configure.Parameter.Other_EndWave % 65536;
-
-                                                int d_3 = 0;
-                                                d_3 = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
-                                                int i_d_33 = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
-
-                                                int d_4 = 0;
-                                                d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                                int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                                int d_5 = 0;
-                                                d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                                                int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                                                int[] ia_array2 = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3, i_d_44, d_4, i_d_55, d_5 };
-                                                if (Convert.ToInt32(j + 1) == 1)
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array2);
-                                                else
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array2);
-
-
-                                                if (Convert.ToInt32(j + 1) == 1)
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(800, values2);
-                                                else
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(810, values2);
                                             }
-                                            else
+
+                                            for (int i = 0; i < lis_sta_wl.Count; i++)
                                             {
-                                                //比较两次白点差值
-                                                //查询第一次测的数据
-                                                //计算
-                                                string[] sa_e1 = dt_temp_first.Rows[0]["E1"].ToString().Split('/');
-                                                List<string> lis_sta_e1 = sa_e1.ToList();
-                                                string[] sa_e2 = dt_temp_first.Rows[0]["E2"].ToString().Split('/');
-                                                List<string> lis_sta_e2 = sa_e2.ToList();
-                                                string[] sa_wl = dt_temp_first.Rows[0]["WL"].ToString().Split('/');
-                                                List<string> lis_sta_wl = sa_wl.ToList();
-
-                                                string[] sa_e12 = dt_temp_first.Rows[1]["E1"].ToString().Split('/');
-                                                List<string> lis_sta_e12 = sa_e12.ToList();
-                                                string[] sa_e22 = dt_temp_first.Rows[1]["E2"].ToString().Split('/');
-                                                List<string> lis_sta_e22 = sa_e22.ToList();
-                                                string[] sa_wl2 = dt_temp_first.Rows[1]["WL"].ToString().Split('/');
-                                                List<string> lis_sta_wl2 = sa_wl2.ToList();
-
-                                                bool b_flag = false;
-                                                for (int i = 0; i < lis_sta_wl.Count; i++)
+                                                if (Math.Abs(Convert.ToInt32(lis_sta_e22[i]) - Convert.ToInt32(lis_sta_e2[i])) > FADM_Object.Communal._d_abs_sub)
                                                 {
-                                                    if (Math.Abs(Convert.ToInt32(lis_sta_e22[i]) - Convert.ToInt32(lis_sta_e2[i])) > FADM_Object.Communal._d_abs_sub)
-                                                    {
-                                                        b_flag = true;
+                                                    b_flag = true;
+                                                    break;
+                                                }
+                                            }
+                                            if (b_flag)
+                                            {
+                                                FADM_Object.MyAlarm myAlarm;
+                                                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                                    myAlarm = new FADM_Object.MyAlarm("测试基准点误差过大，是否继续使用此数据作为基准点数据,最大差值在波长" + s_wl + "，差值为" + i_sub.ToString() + "(重新测量基本点请点是，使用此数据为基准点请点否)?", "吸光度", true, 1);
+                                                else
+                                                    myAlarm = new FADM_Object.MyAlarm("测试基准点误差过大，是否继续使用此数据作为基准点数据,最大差值在波长" + s_wl + "，差值为" + i_sub.ToString() + "(重新测量基本点请点是，使用此数据为基准点请点否)?", "吸光度", true, 1);
+
+                                                while (true)
+                                                {
+                                                    if (0 != myAlarm._i_alarm_Choose)
                                                         break;
-                                                    }
+                                                    Thread.Sleep(1);
                                                 }
-                                                if (b_flag)
+
+                                                if (myAlarm._i_alarm_Choose == 1)
                                                 {
-                                                    FADM_Object.MyAlarm myAlarm;
-                                                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                                        myAlarm = new FADM_Object.MyAlarm("测试基准点误差过大，是否继续使用此数据作为基准点数据(重新测量基本点请点是，使用此数据为基准点请点否)?", "吸光度", true, 1);
-                                                    else
-                                                        myAlarm = new FADM_Object.MyAlarm("测试基准点误差过大，是否继续使用此数据作为基准点数据(重新测量基本点请点是，使用此数据为基准点请点否)?", "吸光度", true, 1);
+                                                    //测试第二次白点
+                                                    string s_sql1 = "Update abs_cup_details set Statues='运行中',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=4,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
+                                                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql1);
 
-                                                    while (true)
-                                                    {
-                                                        if (0 != myAlarm._i_alarm_Choose)
-                                                            break;
-                                                        Thread.Sleep(1);
-                                                    }
+                                                    SmartDyeing.FADM_Auto.MyAbsorbance.Generate(0, (j + 1));
+                                                    SmartDyeing.FADM_Auto.MyAbsorbance.SendData((j + 1));
 
-                                                    if (myAlarm._i_alarm_Choose == 1)
-                                                    {
-                                                        //把此次数据作为第一次测白点数据，再测试第二次白点
-                                                        //先删除第一次数据
-                                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from standard where Type = 0 ");
-                                                        //把第二次数据改为第一次数据
-                                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Update standard set Type = 0 where Type = 1 ");
-
-                                                        //测试第二次白点
-                                                        string s_sql1 = "Update abs_cup_details set Statues='运行中',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=4,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
-                                                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql1);
-                                                        //发送启动
-                                                        int[] values2 = new int[6];
-                                                        values2[0] = 1;
-                                                        values2[1] = 0;
-                                                        values2[2] = 0;
-                                                        values2[3] = 0;
-                                                        values2[4] = 1;
-                                                        values2[5] = 1;
-                                                        if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                                        {
-                                                            FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                                        }
-
-                                                        //写入测量数据
-                                                        int d_1 = 0;
-                                                        d_1 = Lib_Card.Configure.Parameter.Other_StartWave / 65536;
-                                                        int i_d_11 = Lib_Card.Configure.Parameter.Other_StartWave % 65536;
-
-                                                        int d_2 = 0;
-                                                        d_2 = Lib_Card.Configure.Parameter.Other_EndWave / 65536;
-                                                        int i_d_22 = Lib_Card.Configure.Parameter.Other_EndWave % 65536;
-
-                                                        int d_3 = 0;
-                                                        d_3 = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
-                                                        int i_d_33 = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
-
-                                                        int d_4 = 0;
-                                                        d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                                        int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                                        int d_5 = 0;
-                                                        d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                                                        int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                                                        int[] ia_array2 = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3, i_d_44, d_4, i_d_55, d_5 };
-                                                        if (Convert.ToInt32(j + 1) == 1)
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array2);
-                                                        else
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array2);
-
-
-                                                        if (Convert.ToInt32(j + 1) == 1)
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(800, values2);
-                                                        else
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(810, values2);
-                                                        continue;
-                                                    }
-                                                    else
-                                                    {
-                                                        //继续运行
-                                                    }
+                                                    continue;
                                                 }
-
-                                                //保存数据
-                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
-                                                      "UPDATE abs_cup_details SET IsUsing = 0,Statues='待机' WHERE CupNum = " + (j + 1) + ";");
+                                                else
+                                                {
+                                                    //继续运行
+                                                }
                                             }
+
+                                            //保存数据
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                                  "UPDATE abs_cup_details SET IsUsing = 0,Statues='待机' WHERE CupNum = " + (j + 1) + ";");
+
                                         }
 
                                         else if (dt_temp_first.Rows.Count == 1)
@@ -1205,51 +1413,9 @@ namespace SmartDyeing.FADM_Auto
                                                 //测试第二次白点
                                                 string s_sql1 = "Update abs_cup_details set Statues='运行中',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=4,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
                                                 FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql1);
-                                                //发送启动
-                                                int[] values2 = new int[6];
-                                                values2[0] = 1;
-                                                values2[1] = 0;
-                                                values2[2] = 0;
-                                                values2[3] = 0;
-                                                values2[4] = 1;
-                                                values2[5] = 1;
-                                                if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                                {
-                                                    FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                                }
 
-                                                //写入测量数据
-                                                int d_1 = 0;
-                                                d_1 = Lib_Card.Configure.Parameter.Other_StartWave / 65536;
-                                                int i_d_11 = Lib_Card.Configure.Parameter.Other_StartWave % 65536;
-
-                                                int d_2 = 0;
-                                                d_2 = Lib_Card.Configure.Parameter.Other_EndWave / 65536;
-                                                int i_d_22 = Lib_Card.Configure.Parameter.Other_EndWave % 65536;
-
-                                                int d_3 = 0;
-                                                d_3 = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
-                                                int i_d_33 = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
-
-                                                int d_4 = 0;
-                                                d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                                int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                                int d_5 = 0;
-                                                d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                                                int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                                                int[] ia_array2 = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3, i_d_44, d_4, i_d_55, d_5 };
-                                                if (Convert.ToInt32(j + 1) == 1)
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array2);
-                                                else
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array2);
-
-
-                                                if (Convert.ToInt32(j + 1) == 1)
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(800, values2);
-                                                else
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(810, values2);
+                                                SmartDyeing.FADM_Auto.MyAbsorbance.Generate(0, (j + 1));
+                                                SmartDyeing.FADM_Auto.MyAbsorbance.SendData((j + 1));
                                             }
                                             else
                                             {
@@ -1275,1459 +1441,9 @@ namespace SmartDyeing.FADM_Auto
                                           "UPDATE abs_cup_details SET IsUsing = 0,Statues='待机' WHERE CupNum = " + (j + 1) + ";");
                                 continue;
                             }
-
-                            if (i_status == 4)
-                            {
-                                //清空请求
-                                int[] values1 = new int[1];
-                                values1[0] = 0;
-                                if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                {
-                                    FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                }
-                                if (j + 1 == 1)
-                                    FADM_Object.Communal._tcpModBusAbs.Write(902, values1);
-                                else
-                                    FADM_Object.Communal._tcpModBusAbs.Write(912, values1);
-
-                                //保存数据
-                                FADM_Object.Communal._fadmSqlserver.ReviseData(
-                                      "UPDATE abs_cup_details SET IsUsing = 1,Statues='待机' WHERE CupNum = " + (j + 1) + ";");
-
-                                FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (j + 1) + "号(吸光度)预滴完成");
-
-                                
-                                string s_sql_1 = "SELECT * from abs_cup_details WHERE CupNum = " + (j + 1) + ";";
-                                DataTable dt_temp_1 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_1);
-                                if (dt_temp_1.Rows.Count > 0)
-                                {
-                                    if (dt_temp_1.Rows[0]["Type"].ToString() == "5"|| dt_temp_1.Rows[0]["Type"].ToString() == "10")
-                                    {
-                                        string s_sql_2 = "SELECT bottle_details.*,assistant_details.AllowMinColoringConcentration,assistant_details.AllowMaxColoringConcentration,assistant_details.AssistantType,assistant_details.UnitOfAccount  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE bottle_details.BottleNum = " + dt_temp_1.Rows[0]["BottleNum"].ToString() + ";";
-                                        DataTable dt_temp_2 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_2);
-
-                                        string s_unitOfAccount = dt_temp_2.Rows[0]["UnitOfAccount"].ToString();
-                                        string s_assistantType = dt_temp_2.Rows[0]["AssistantType"].ToString();
-                                        string s_realConcentration = dt_temp_2.Rows[0]["RealConcentration"].ToString();
-                                        string s_settingConcentration = dt_temp_2.Rows[0]["SettingConcentration"].ToString();
-                                        string s_compensate = dt_temp_2.Rows[0]["Compensate"].ToString() == "" ? "0" : dt_temp_2.Rows[0]["Compensate"].ToString();
-
-                                        //活性用水稀释
-                                        if (s_assistantType.Contains("活性"))
-                                        {
-                                            //找到母液水剂母液瓶号
-                                            string s_sql_3 = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount = 'Water';";
-
-                                            DataTable dt_temp_3 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_3);
-                                            if (dt_temp_3.Rows.Count == 0)
-                                            {
-                                                FADM_Form.CustomMessageBox.Show("不存在水剂母液瓶号，不能测试", "TestAbs",
-                                        MessageBoxButtons.OK, false);
-                                                return;
-                                            }
-                                            else
-                                            {
-                                                //计算50g液体需要重量
-                                                double d_stotal = FADM_Object.Communal._d_abs_total * (FADM_Object.Communal._d_ppm / 10000);
-                                                //母液重量
-                                                double d_dosage = d_stotal / Convert.ToDouble(s_realConcentration);
-                                                double d_water = FADM_Object.Communal._d_abs_total - d_dosage;
-                                                if (dt_temp_1.Rows[0]["Type"].ToString() == "5")
-                                                {
-                                                    double d_t = d_dosage * Convert.ToDouble(s_compensate);
-                                                    d_dosage = d_dosage * (1 + Convert.ToDouble(s_compensate));
-                                                    d_water -= d_t;
-                                                    //更新数据库
-                                                    s_sql_3 = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + dt_temp_1.Rows[0]["BottleNum"].ToString() + ",SampleDosage='" + string.Format("{0:F3}", d_dosage) + "',AdditivesNum = '" + dt_temp_3.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water) + "',Pulse=0,Cooperate=5,Type =1,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
-                                                }
-                                                else
-                                                {
-                                                    //更新数据库
-                                                    s_sql_3 = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + dt_temp_1.Rows[0]["BottleNum"].ToString() + ",SampleDosage='" + string.Format("{0:F3}", d_dosage) + "',AdditivesNum = '" + dt_temp_3.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water) + "',Pulse=0,Cooperate=5,Type =11,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
-                                                }
-                                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql_3);
-
-                                                //发送启动
-                                                int[] values2 = new int[6];
-                                                values2[0] = 1;
-                                                values2[1] = 0;
-                                                values2[2] = 0;
-                                                values2[3] = 0;
-                                                values2[4] = 1;
-                                                values2[5] = 0;
-                                                if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                                {
-                                                    FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                                }
-
-                                                //写入测量数据
-                                                int d_1 = 0;
-                                                d_1 = Lib_Card.Configure.Parameter.Other_StartWave / 65536;
-                                                int i_d_11 = Lib_Card.Configure.Parameter.Other_StartWave % 65536;
-
-                                                int d_2 = 0;
-                                                d_2 = Lib_Card.Configure.Parameter.Other_EndWave / 65536;
-                                                int i_d_22 = Lib_Card.Configure.Parameter.Other_EndWave % 65536;
-
-                                                int d_3 = 0;
-                                                d_3 = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
-                                                int i_d_33 = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
-
-                                                int d_4 = 0;
-                                                d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                                int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                                int d_5 = 0;
-                                                d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                                                int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                                                int[] ia_array2 = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3, i_d_44, d_4, i_d_55, d_5 };
-                                                if (Convert.ToInt32(j + 1) == 1)
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array2);
-                                                else
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array2);
-
-
-                                                if (Convert.ToInt32(j + 1) == 1)
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(800, values2);
-                                                else
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(810, values2);
-
-                                            }
-                                        }
-                                        //其他使用溶解剂稀释
-                                        else
-                                        {
-                                            string s_sql_3 = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
-
-                                            DataTable dt_temp_3 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_3);
-                                            if (dt_temp_3.Rows.Count == 0)
-                                            {
-                                                FADM_Form.CustomMessageBox.Show("不存在溶解剂母液瓶号，不能测试", "TestAbs",
-                                        MessageBoxButtons.OK, false);
-                                                return;
-                                            }
-                                            else
-                                            {
-                                                //计算50g液体需要重量
-                                                double d_stotal = FADM_Object.Communal._d_abs_total * (FADM_Object.Communal._d_ppm / 10000);
-                                                //母液重量
-                                                double d_dosage = d_stotal / Convert.ToDouble(s_realConcentration);
-                                                double d_water = FADM_Object.Communal._d_abs_total - d_dosage;
-                                                if (dt_temp_1.Rows[0]["Type"].ToString() == "5")
-                                                {
-                                                    double d_t = d_dosage * Convert.ToDouble(s_compensate);
-                                                    d_dosage = d_dosage * (1 + Convert.ToDouble(s_compensate));
-                                                    d_water -= d_t;
-                                                    //更新数据库
-                                                    s_sql_3 = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + dt_temp_1.Rows[0]["BottleNum"].ToString() + ",SampleDosage='" + string.Format("{0:F3}", d_dosage) + "',AdditivesNum = '" + dt_temp_3.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water) + "',Pulse=0,Cooperate=5,Type =1,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
-                                                }
-                                                else
-                                                {
-                                                    //更新数据库
-                                                    s_sql_3 = "Update abs_cup_details set Statues='运行中',IsUsing=1,BottleNum= " + dt_temp_1.Rows[0]["BottleNum"].ToString() + ",SampleDosage='" + string.Format("{0:F3}", d_dosage) + "',AdditivesNum = '" + dt_temp_3.Rows[0]["BottleNum"].ToString() + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water) + "',Pulse=0,Cooperate=5,Type =11,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
-                                                }
-                                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql_3);
-
-                                                //发送启动
-                                                int[] values2 = new int[6];
-                                                values2[0] = 1;
-                                                values2[1] = 0;
-                                                values2[2] = 0;
-                                                values2[3] = 0;
-                                                values2[4] = 1;
-                                                values2[5] = 0;
-                                                if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                                {
-                                                    FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                                }
-
-                                                //写入测量数据
-                                                int d_1 = 0;
-                                                d_1 = Lib_Card.Configure.Parameter.Other_StartWave / 65536;
-                                                int i_d_11 = Lib_Card.Configure.Parameter.Other_StartWave % 65536;
-
-                                                int d_2 = 0;
-                                                d_2 = Lib_Card.Configure.Parameter.Other_EndWave / 65536;
-                                                int i_d_22 = Lib_Card.Configure.Parameter.Other_EndWave % 65536;
-
-                                                int d_3 = 0;
-                                                d_3 = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
-                                                int i_d_33 = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
-
-                                                int d_4 = 0;
-                                                d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                                int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                                int d_5 = 0;
-                                                d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                                                int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                                                int[] ia_array2 = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3, i_d_44, d_4, i_d_55, d_5 };
-                                                if (Convert.ToInt32(j + 1) == 1)
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array2);
-                                                else
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array2);
-
-                                                if (Convert.ToInt32(j + 1) == 1)
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(800, values2);
-                                                else
-                                                    FADM_Object.Communal._tcpModBusAbs.Write(810, values2);
-                                            }
-                                        }
-                                    }
-                                    else if (dt_temp_1.Rows[0]["Type"].ToString() == "6"||dt_temp_1.Rows[0]["Type"].ToString() == "8")
-                                    {
-                                        string s_sql1;
-                                        if (dt_temp_1.Rows[0]["Type"].ToString() == "6")
-                                        {
-                                            s_sql1 = "Update abs_cup_details set Statues='运行中',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=2,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
-                                        }
-                                        else
-                                        {
-                                            s_sql1 = "Update abs_cup_details set Statues='运行中',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=9,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
-                                        }
-                                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql1);
-                                        //发送启动
-                                        int[] values2 = new int[6];
-                                        values2[0] = 1;
-                                        values2[1] = 0;
-                                        values2[2] = 0;
-                                        values2[3] = 0;
-                                        values2[4] = 1;
-                                        values2[5] = 1;
-                                        if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                        {
-                                            FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                        }
-
-                                        //写入测量数据
-                                        int d_1 = 0;
-                                        d_1 = Lib_Card.Configure.Parameter.Other_StartWave / 65536;
-                                        int i_d_11 = Lib_Card.Configure.Parameter.Other_StartWave % 65536;
-
-                                        int d_2 = 0;
-                                        d_2 = Lib_Card.Configure.Parameter.Other_EndWave / 65536;
-                                        int i_d_22 = Lib_Card.Configure.Parameter.Other_EndWave % 65536;
-
-                                        int d_3 = 0;
-                                        d_3 = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
-                                        int i_d_33 = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
-
-                                        int d_4 = 0;
-                                        d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                        int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                        int d_5 = 0;
-                                        d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                                        int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                                        int[] ia_array2 = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3, i_d_44, d_4, i_d_55, d_5 };
-                                        if (Convert.ToInt32(j + 1) == 1)
-                                            FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array2);
-                                        else
-                                            FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array2);
-
-
-                                        if (Convert.ToInt32(j + 1) == 1)
-                                            FADM_Object.Communal._tcpModBusAbs.Write(800, values2);
-                                        else
-                                            FADM_Object.Communal._tcpModBusAbs.Write(810, values2);
-                                    }
-                                    else if (dt_temp_1.Rows[0]["Type"].ToString() == "7")
-                                    {
-                                        string s_sql1 = "Update abs_cup_details set Statues='运行中',AdditivesDosage='" + string.Format("{0:F3}", FADM_Object.Communal._d_abs_total) + "',Pulse=0,Cooperate=5,Type=4,RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + (j + 1) + "';";
-                                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql1);
-                                        //发送启动
-                                        int[] values2 = new int[6];
-                                        values2[0] = 1;
-                                        values2[1] = 0;
-                                        values2[2] = 0;
-                                        values2[3] = 0;
-                                        values2[4] = 1;
-                                        values2[5] = 1;
-                                        if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                        {
-                                            FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                        }
-
-                                        //写入测量数据
-                                        int d_1 = 0;
-                                        d_1 = Lib_Card.Configure.Parameter.Other_StartWave / 65536;
-                                        int i_d_11 = Lib_Card.Configure.Parameter.Other_StartWave % 65536;
-
-                                        int d_2 = 0;
-                                        d_2 = Lib_Card.Configure.Parameter.Other_EndWave / 65536;
-                                        int i_d_22 = Lib_Card.Configure.Parameter.Other_EndWave % 65536;
-
-                                        int d_3 = 0;
-                                        d_3 = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
-                                        int i_d_33 = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
-
-                                        int d_4 = 0;
-                                        d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                        int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                        int d_5 = 0;
-                                        d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                                        int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                                        int[] ia_array2 = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3, i_d_44, d_4, i_d_55, d_5 };
-                                        if (Convert.ToInt32(j + 1) == 1)
-                                            FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array2);
-                                        else
-                                            FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array2);
-
-
-                                        if (Convert.ToInt32(j + 1) == 1)
-                                            FADM_Object.Communal._tcpModBusAbs.Write(800, values2);
-                                        else
-                                            FADM_Object.Communal._tcpModBusAbs.Write(810, values2);
-                                    }
-                                }
-                                continue;
-                            }
-
-                            //查询当前杯是检测标准样还是测试样
-                            string s_sql = "SELECT * from abs_cup_details WHERE CupNum = " + (j + 1) + ";";
-
-                            DataTable dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-
-                            if (i_status == 2)
-                            {
-                                if (dt_temp.Rows[0]["Type"].ToString() != "4")
-                                {
-                                    FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (j + 1) + "号(吸光度)检测完成");
-                                    string s_insert = Lib_Card.CardObject.InsertD((j + 1) + "号(吸光度)检测完成", "温馨提示");
-                                    Thread.Sleep(2000);
-                                    Lib_Card.CardObject.DeleteD(s_insert);
-                                }
-
-                                FADM_Object.Communal._fadmSqlserver.ReviseData(
-                                  "UPDATE abs_cup_details SET TotalWeight -= " + Lib_Card.Configure.Parameter.Other_ReAspirationTime/1000.0 + " WHERE CupNum = " + (j+1) + ";");
-                            }
-
-
-                            //清空请求
-                            int[] values = new int[1];
-                            values[0] = 0;
-                            if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                            {
-                                FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                            }
-                            if (j + 1 == 1)
-                                FADM_Object.Communal._tcpModBusAbs.Write(902, values);
-                            else
-                                FADM_Object.Communal._tcpModBusAbs.Write(912, values);
-
-                            //读取300个寄存器数据
-                            int[] ia_data1 = new int[100];
-                            FADM_Object.Communal._tcpModBusAbs.Read(1100,100, ref ia_data1);
-                            int[] ia_data2 = new int[100];
-                            FADM_Object.Communal._tcpModBusAbs.Read(1200, 100, ref ia_data2);
-                            int[] ia_data3 = new int[100];
-                            FADM_Object.Communal._tcpModBusAbs.Read(1300, 100, ref ia_data3);
-                            int[] ia_data4 = new int[100];
-                            FADM_Object.Communal._tcpModBusAbs.Read(1400, 100, ref ia_data4);
-                            int[] ia_data5 = new int[100];
-                            FADM_Object.Communal._tcpModBusAbs.Read(1500, 100, ref ia_data5);
-                            int[] ia_data6 = new int[100];
-                            FADM_Object.Communal._tcpModBusAbs.Read(1600, 100, ref ia_data6);
-                            List<int> lis_data = new List<int>();
-                            for (int i = 0; i < ia_data1.Length; )
-                            {
-                                int a11 = ia_data1[i];
-                                int a12 = ia_data1[i+1];
-                                int d_b;
-                                if (a11 < 0)
-                                {
-                                    d_b = ((a12 + 1) * 65536 + a11) ;
-                                }
-                                else
-                                {
-                                    d_b = (a12 * 65536 + a11) ;
-                                }
-                                lis_data.Add(d_b);
-                                i += 2;
-                            }
-                            for (int i = 0; i < ia_data2.Length; )
-                            {
-                                int a11 = ia_data2[i];
-                                int a12 = ia_data2[i + 1];
-                                int d_b;
-                                if (a11 < 0)
-                                {
-                                    d_b = ((a12 + 1) * 65536 + a11) ;
-                                }
-                                else
-                                {
-                                    d_b = (a12 * 65536 + a11) ;
-                                }
-                                lis_data.Add(d_b);
-                                i += 2;
-                            }
-                            for (int i = 0; i < ia_data3.Length; )
-                            {
-                                int a11 = ia_data3[i];
-                                int a12 = ia_data3[i + 1];
-                                int d_b;
-                                if (a11 < 0)
-                                {
-                                    d_b = ((a12 + 1) * 65536 + a11);
-                                }
-                                else
-                                {
-                                    d_b = (a12 * 65536 + a11) ;
-                                }
-                                lis_data.Add(d_b);
-                                i += 2;
-                            }
-                            for (int i = 0; i < ia_data4.Length; )
-                            {
-                                int a11 = ia_data4[i];
-                                int a12 = ia_data4[i + 1];
-                                int d_b;
-                                if (a11 < 0)
-                                {
-                                    d_b = ((a12 + 1) * 65536 + a11) ;
-                                }
-                                else
-                                {
-                                    d_b = (a12 * 65536 + a11) ;
-                                }
-                                lis_data.Add(d_b);
-                                i += 2;
-                            }
-
-                            for (int i = 0; i < ia_data5.Length; )
-                            {
-                                int a11 = ia_data5[i];
-                                int a12 = ia_data5[i + 1];
-                                int d_b;
-                                if (a11 < 0)
-                                {
-                                    d_b = ((a12 + 1) * 65536 + a11) ;
-                                }
-                                else
-                                {
-                                    d_b = (a12 * 65536 + a11) ;
-                                }
-                                lis_data.Add(d_b);
-                                i += 2;
-                            }
-
-                            for (int i = 0; i < ia_data6.Length; )
-                            {
-                                int a11 = ia_data6[i];
-                                int a12 = ia_data6[i + 1];
-                                int d_b;
-                                if (a11 < 0)
-                                {
-                                    d_b = ((a12 + 1) * 65536 + a11) ;
-                                }
-                                else
-                                {
-                                    d_b = (a12 * 65536 + a11) ;
-                                }
-                                lis_data.Add(d_b);
-                                i += 2;
-                            }
-                            List<int>lis_e1 = new List<int>();
-                            List<int> lis_e2 = new List<int>();
-                            List<int> lis_wl = new List<int>();
-                            for (int i = 0; i < lis_data.Count; i++)
-                            {
-                                if((i+1)%3==1)
-                                {
-                                    lis_e1.Add(lis_data[i]);
-                                }
-                                else if ((i + 1) % 3 == 2)
-                                {
-                                    lis_e2.Add(lis_data[i]);
-                                }
-                                else if ((i + 1) % 3 == 0)
-                                {
-                                    lis_wl.Add(lis_data[i]);
-                                    //当波长为0就结束取数
-                                    if(lis_data[i] ==0 && i!=2)
-                                    {
-                                        //移除最后一个加入的数值
-                                        lis_wl.RemoveAt(lis_wl.Count-1);
-                                        lis_e2.RemoveAt(lis_e2.Count - 1);
-                                        lis_e1.RemoveAt(lis_e1.Count - 1);
-                                        break;
-                                    }
-                                }
-                            }
-
-                            if(dt_temp.Rows.Count >0)
-                            {
-                                //纯水基准样
-                                if (dt_temp.Rows[0]["Type"].ToString()=="2"|| dt_temp.Rows[0]["Type"].ToString() == "9")
-                                {
-                                    string s_e1="", s_e2="", s_wl="";
-                                    for (int i = 0;i < lis_wl.Count;i++)
-                                    {
-                                        s_wl += lis_wl[i].ToString() + "/";
-                                    }
-                                    for (int i = 0; i < lis_e1.Count; i++)
-                                    {
-                                        s_e1 += lis_e1[i].ToString() + "/";
-                                    }
-                                    for (int i = 0; i < lis_e2.Count; i++)
-                                    {
-                                        s_e2 += lis_e2[i].ToString() + "/";
-                                    }
-                                    if(s_wl!="")
-                                    {
-                                        s_wl=s_wl.Remove(s_wl.Length - 1);
-                                    }
-                                    if (s_e1 != "")
-                                    {
-                                        s_e1 = s_e1.Remove(s_e1.Length - 1);
-                                    }
-                                    if (s_e2 != "")
-                                    {
-                                        s_e2=s_e2.Remove(s_e2.Length - 1);
-                                    }
-
-                                    string s_info = "";
-
-                                    string s_dic = "";
-
-                                    //判断这次是否第一次测白点
-                                    DataTable dt_temp_first = FADM_Object.Communal._fadmSqlserver.GetData("SELECT * from standard where Type = 0;");
-                                    if (dt_temp_first.Rows.Count == 0)
-                                    {
-                                        s_sql = "insert into  standard(E1,E2,WL,FinishTime,Type) Values ('" + s_e1 + "','" + s_e2 + "','" + s_wl + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',0);";
-
-                                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
-
-                                        s_info = "";
-                                    }
-                                    else
-                                    {
-                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from standard where Type = 1 ");
-
-                                        s_sql = "insert into  standard(E1,E2,WL,FinishTime,Type) Values ('" + s_e1 + "','" + s_e2 + "','" + s_wl + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',1);";
-
-                                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
-
-                                        //查询第一次测的数据
-                                        //计算
-                                        string[] sa_e1 = dt_temp_first.Rows[0]["E1"].ToString().Split('/');
-                                        List<string> lis_sta_e1 = sa_e1.ToList();
-                                        string[] sa_e2 = dt_temp_first.Rows[0]["E2"].ToString().Split('/');
-                                        List<string> lis_sta_e2 = sa_e2.ToList();
-                                        string[] sa_wl = dt_temp_first.Rows[0]["WL"].ToString().Split('/');
-                                        List<string> lis_sta_wl = sa_wl.ToList();
-                                        double d_e1 = -999;
-                                        int i_wl = 0;
-                                        double d_e12 = -999;
-                                        int i_wl2 = 0;
-                                        for (int i = 0; i < lis_sta_wl.Count; i++)
-                                        {
-                                            if(Convert.ToDouble(lis_sta_e2[i]) > d_e1)
-                                            {
-                                                d_e1 = Convert.ToDouble(lis_sta_e2[i]);
-                                                i_wl = Convert.ToInt32(lis_sta_wl[i]);
-                                            }
-                                        }
-                                        s_info+="第一次测量数据最大值：" + d_e1 + "波长：" + i_wl + ";";
-
-                                        for (int i = 0; i < lis_e2.Count; i++)
-                                        {
-                                            if (Convert.ToDouble(lis_e2[i]) > d_e12)
-                                            {
-                                                d_e12 = Convert.ToDouble(lis_e2[i]);
-                                                i_wl2 = Convert.ToInt32(lis_wl[i]);
-                                            }
-                                        }
-                                        s_info += "第二次测量数据最大值：" + d_e12 + "波长：" + i_wl2 + ";";
-
-                                        for (int i = 0; i < lis_sta_wl.Count; i++)
-                                        {
-                                            s_dic += Convert.ToInt32(lis_e2[i]) - Convert.ToInt32(lis_sta_e2[i]) + "/";
-                                        }
-                                    }
-
-                                    //发送启动
-                                    int[] values_Zero = new int[1];
-                                    values_Zero[0] = 0;
-                                    if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                    {
-                                        FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                    }
-                                    FADM_Object.Communal._tcpModBusAbs.Write(906, values_Zero);
-
-                                    //拷贝到历史表
-                                    DataTable dt_Temp = FADM_Object.Communal._fadmSqlserver.GetData(
-                                         "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'abs_cup_details';");
-                                    string s_columnDetails = null;
-                                    foreach (DataRow row in dt_Temp.Rows)
-                                    {
-                                        if (Convert.ToString(row[0]) != "Cooperate" && Convert.ToString(row[0]) != "NeedPulse" && Convert.ToString(row[0]) != "Choose"
-                                            && Convert.ToString(row[0]) != "WaterFinish" && Convert.ToString(row[0]) != "TotalWeight")
-                                            s_columnDetails += Convert.ToString(row[0]) + ", ";
-                                    }
-                                    s_columnDetails = s_columnDetails.Remove(s_columnDetails.Length - 2);
-
-                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
-                                         "INSERT INTO history_abs (" + s_columnDetails + ",FinishTime,Result,Abs) (SELECT " + s_columnDetails + ",'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' as FinishTime" + ",'" + s_info + "' as Result" + ",'" + s_dic + "' as Abs" + " FROM abs_cup_details " +
-                                         "WHERE CupNum =" + (j + 1) + ") ;");
-
-                                    FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (j + 1) + "号(吸光度)检测完成");
-
-                                    //new FADM_Object.MyAlarm((j + 1) + "号(吸光度)检测完成", "温馨提示");
-
-                                    string s_insert = Lib_Card.CardObject.InsertD((j + 1) + "号(吸光度)检测完成", "温馨提示");
-                                    Thread.Sleep(2000);
-                                    Lib_Card.CardObject.DeleteD(s_insert);
-
-                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
-                                  "UPDATE abs_cup_details SET TotalWeight -= " + Lib_Card.Configure.Parameter.Other_AspirationTime / 1000.0 + " WHERE CupNum = " + (j + 1) + ";");
-
-                                    //查询剩余液量
-                                    s_sql = "SELECT * from abs_cup_details where CupNum = " + (j + 1) + " ;";
-
-                                    DataTable dt_abs = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-
-                                    double d_tatal = Convert.ToDouble(dt_abs.Rows[0]["TotalWeight"].ToString());
-                                    if (d_tatal < 10)
-                                        d_tatal = 10.0;
-
-                                    //发送洗杯
-                                    //发送启动
-                                    int[] values3 = new int[5];
-                                    values3[0] = 1;
-                                    values3[1] = 0;
-                                    values3[2] = 0;
-                                    values3[3] = 0;
-                                    values3[4] = 3;
-                                    if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                    {
-                                        FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                    }
-
-                                    //写入测量数据
-                                    int d_1 = 0;
-                                    d_1 = (Convert.ToInt32(d_tatal * 1000)+10000) / 65536;
-                                    int i_d_11 = (Convert.ToInt32(d_tatal * 1000) + 10000) % 65536;
-
-                                    int d_2 = 0;
-                                    d_2 = (Convert.ToInt32(Lib_Card.Configure.Parameter.Other_AbsAddWater * 1000)+10000) / 65536;
-                                    int i_d_22 = (Convert.ToInt32(Lib_Card.Configure.Parameter.Other_AbsAddWater * 1000) + 10000) % 65536;
-
-                                    int d_3 = 0;
-                                    d_3 = Lib_Card.Configure.Parameter.Other_WashStirTime / 65536;
-                                    int i_d_33 = Lib_Card.Configure.Parameter.Other_WashStirTime % 65536;
-
-                                    int d_4 = 0;
-                                    d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                    int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                    int d_5 = 0;
-                                    d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                                    int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                                    int[] ia_array3 = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3 };
-                                    if (Convert.ToInt32(j + 1) == 1)
-                                        FADM_Object.Communal._tcpModBusAbs.Write(1010, ia_array3);
-                                    else
-                                        FADM_Object.Communal._tcpModBusAbs.Write(1060, ia_array3);
-
-                                    if (Convert.ToInt32(j + 1) == 1)
-                                        FADM_Object.Communal._tcpModBusAbs.Write(800, values3);
-                                    else
-                                        FADM_Object.Communal._tcpModBusAbs.Write(810, values3);
-
-                                    s_sql = "UPDATE abs_cup_details SET Statues='洗杯'  WHERE CupNum = " + (j + 1) + " ;";
-                                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
-                                }
-                                //主动测试基准点
-                                else if (dt_temp.Rows[0]["Type"].ToString() == "4")
-                                {
-                                    string s_e1 = "", s_e2 = "", s_wl = "";
-                                    for (int i = 0; i < lis_wl.Count; i++)
-                                    {
-                                        s_wl += lis_wl[i].ToString() + "/";
-                                    }
-                                    for (int i = 0; i < lis_e1.Count; i++)
-                                    {
-                                        s_e1 += lis_e1[i].ToString() + "/";
-                                    }
-                                    for (int i = 0; i < lis_e2.Count; i++)
-                                    {
-                                        s_e2 += lis_e2[i].ToString() + "/";
-                                    }
-                                    if (s_wl != "")
-                                    {
-                                        s_wl = s_wl.Remove(s_wl.Length - 1);
-                                    }
-                                    if (s_e1 != "")
-                                    {
-                                        s_e1 = s_e1.Remove(s_e1.Length - 1);
-                                    }
-                                    if (s_e2 != "")
-                                    {
-                                        s_e2 = s_e2.Remove(s_e2.Length - 1);
-                                    }
-
-                                    string s_info = "";
-                                    string s_dic="";
-                                    //判断这次是否第一次测白点
-                                    DataTable dt_temp_first = FADM_Object.Communal._fadmSqlserver.GetData("SELECT * from standard where Type = 0;");
-                                    if (dt_temp_first.Rows.Count == 0)
-                                    {
-                                        s_sql = "insert into  standard(E1,E2,WL,FinishTime,Type) Values ('" + s_e1 + "','" + s_e2 + "','" + s_wl + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',0);";
-
-                                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
-
-                                        s_info = "";
-                                    }
-                                    else
-                                    {
-                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from standard where Type = 1 ");
-
-                                        s_sql = "insert into  standard(E1,E2,WL,FinishTime,Type) Values ('" + s_e1 + "','" + s_e2 + "','" + s_wl + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',1);";
-
-                                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
-
-                                        //查询第一次测的数据
-                                        //计算
-                                        string[] sa_e1 = dt_temp_first.Rows[0]["E1"].ToString().Split('/');
-                                        List<string> lis_sta_e1 = sa_e1.ToList();
-                                        string[] sa_e2 = dt_temp_first.Rows[0]["E2"].ToString().Split('/');
-                                        List<string> lis_sta_e2 = sa_e2.ToList();
-                                        string[] sa_wl = dt_temp_first.Rows[0]["WL"].ToString().Split('/');
-                                        List<string> lis_sta_wl = sa_wl.ToList();
-                                        double d_e1 = -999;
-                                        int i_wl = 0;
-                                        double d_e12 = -999;
-                                        int i_wl2 = 0;
-                                        for (int i = 0; i < lis_sta_wl.Count; i++)
-                                        {
-                                            if (Convert.ToDouble(lis_sta_e2[i]) > d_e1)
-                                            {
-                                                d_e1 = Convert.ToDouble(lis_sta_e2[i]);
-                                                i_wl = Convert.ToInt32(lis_sta_wl[i]);
-                                            }
-                                        }
-                                        s_info += "第一次测量数据最大值：" + d_e1 + "波长：" + i_wl + ";";
-
-                                        for (int i = 0; i < lis_e2.Count; i++)
-                                        {
-                                            if (Convert.ToDouble(lis_e2[i]) > d_e12)
-                                            {
-                                                d_e12 = Convert.ToDouble(lis_e2[i]);
-                                                i_wl2 = Convert.ToInt32(lis_wl[i]);
-                                            }
-                                        }
-                                        s_info += "第二次测量数据最大值：" + d_e12 + "波长：" + i_wl2 + ";";
-
-                                        for (int i = 0; i < lis_sta_wl.Count; i++)
-                                        {
-                                            s_dic+= Convert.ToInt32(lis_e2[i]) - Convert.ToInt32(lis_sta_e2[i]) + "/";
-                                        }
-
-                                    }
-
-                                    //发送启动
-                                    int[] values_Zero = new int[1];
-                                    values_Zero[0] = 0;
-                                    if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                    {
-                                        FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                    }
-                                    FADM_Object.Communal._tcpModBusAbs.Write(906, values_Zero);
-
-                                    //拷贝到历史表
-                                    DataTable dt_Temp = FADM_Object.Communal._fadmSqlserver.GetData(
-                                         "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'abs_cup_details';");
-                                    string s_columnDetails = null;
-                                    foreach (DataRow row in dt_Temp.Rows)
-                                    {
-                                        if (Convert.ToString(row[0]) != "Cooperate" && Convert.ToString(row[0]) != "NeedPulse" && Convert.ToString(row[0]) != "Choose"
-                                            && Convert.ToString(row[0]) != "WaterFinish" && Convert.ToString(row[0]) != "TotalWeight")
-                                            s_columnDetails += Convert.ToString(row[0]) + ", ";
-                                    }
-                                    s_columnDetails = s_columnDetails.Remove(s_columnDetails.Length - 2);
-
-                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
-                                         "INSERT INTO history_abs (" + s_columnDetails + ",FinishTime,Result,Abs) (SELECT " + s_columnDetails + ",'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' as FinishTime" + ",'" + s_info + "' as Result"+",'"+ s_dic +"' as Abs"+ " FROM abs_cup_details " +
-                                         "WHERE CupNum =" + (j + 1) + ") ;");
-
-                                    FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (j + 1) + "号(吸光度)检测完成");
-
-                                    //new FADM_Object.MyAlarm((j + 1) + "号(吸光度)检测完成", "温馨提示");
-
-                                    string s_insert = Lib_Card.CardObject.InsertD((j + 1) + "号(吸光度)检测完成", "温馨提示");
-                                    Thread.Sleep(2000);
-                                    Lib_Card.CardObject.DeleteD(s_insert);
-
-                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
-                                  "UPDATE abs_cup_details SET TotalWeight -= " + Lib_Card.Configure.Parameter.Other_AspirationTime / 1000.0 + " WHERE CupNum = " + (j + 1) + ";");
-
-                                    //查询剩余液量
-                                    s_sql = "SELECT * from abs_cup_details where CupNum = " + (j + 1) + " ;";
-
-                                    DataTable dt_abs = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-
-                                    double d_tatal = Convert.ToDouble(dt_abs.Rows[0]["TotalWeight"].ToString());
-                                    if (d_tatal < 10)
-                                        d_tatal = 10.0;
-
-                                    //发送洗杯
-                                    //发送启动
-                                    int[] values3 = new int[5];
-                                    values3[0] = 1;
-                                    values3[1] = 0;
-                                    values3[2] = 0;
-                                    values3[3] = 0;
-                                    values3[4] = 3;
-                                    if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                    {
-                                        FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                    }
-
-                                    //写入测量数据
-                                    int d_1 = 0;
-                                    d_1 = (Convert.ToInt32(d_tatal * 1000) + 10000) / 65536;
-                                    int i_d_11 = (Convert.ToInt32(d_tatal * 1000) + 10000) % 65536;
-
-                                    int d_2 = 0;
-                                    d_2 = (Convert.ToInt32(Lib_Card.Configure.Parameter.Other_AbsAddWater * 1000) + 10000) / 65536;
-                                    int i_d_22 = (Convert.ToInt32(Lib_Card.Configure.Parameter.Other_AbsAddWater * 1000) + 10000) % 65536;
-
-                                    int d_3 = 0;
-                                    d_3 = Lib_Card.Configure.Parameter.Other_WashStirTime / 65536;
-                                    int i_d_33 = Lib_Card.Configure.Parameter.Other_WashStirTime % 65536;
-
-                                    int d_4 = 0;
-                                    d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                    int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                    int d_5 = 0;
-                                    d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                                    int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                                    int[] ia_array3 = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3 };
-                                    if (Convert.ToInt32(j + 1) == 1)
-                                        FADM_Object.Communal._tcpModBusAbs.Write(1010, ia_array3);
-                                    else
-                                        FADM_Object.Communal._tcpModBusAbs.Write(1060, ia_array3);
-
-                                    if (Convert.ToInt32(j + 1) == 1)
-                                        FADM_Object.Communal._tcpModBusAbs.Write(800, values3);
-                                    else
-                                        FADM_Object.Communal._tcpModBusAbs.Write(810, values3);
-
-                                    s_sql = "UPDATE abs_cup_details SET Statues='洗杯'  WHERE CupNum = " + (j + 1) + " ;";
-                                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
-                                }
-                                //测试样
-                                else
-                                {
-                                    //全测
-                                    if (i_status == 1)
-                                    {
-                                        //查询当前杯是检测纯水基准样还是测试样
-                                        s_sql = "SELECT * from standard where Type = 1 ;";
-
-                                        DataTable dt_standard = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-
-                                        if (dt_standard.Rows.Count > 0)
-                                        {
-                                            //计算
-                                            string[] sa_e1 = dt_standard.Rows[0]["E1"].ToString().Split('/');
-                                            List<string> lis_sta_e1 = sa_e1.ToList();
-                                            string[] sa_e2 = dt_standard.Rows[0]["E2"].ToString().Split('/');
-                                            List<string> lis_sta_e2 = sa_e2.ToList();
-                                            string[] sa_wl = dt_standard.Rows[0]["WL"].ToString().Split('/');
-                                            List<string> lis_sta_wl = sa_wl.ToList();
-
-                                            List<double> XGD = new List<double>();
-                                            List<double> XGD_Cal = new List<double>();
-
-                                            if (sa_e1.Length != lis_e2.Count)
-                                            {
-                                                continue;
-                                            }
-                                            BC.Clear();
-                                            //spectrumData.Clear();
-                                            //解析数据
-                                            for (int i = 0; i < sa_e1.Length; i++)
-                                            {
-                                                //计算
-                                                double d = (lis_e2[i] / Convert.ToDouble(lis_sta_e2[i])) / (lis_e1[i] / Convert.ToDouble(lis_sta_e1[i]));
-                                                double x;
-                                                if (d < 0.0001)
-                                                    x = 4;
-                                                else
-                                                    x = -Math.Log10(d);
-
-                                                XGD.Add(x);
-                                                if (Convert.ToDouble(lis_sta_wl[i])>=400)
-                                                {
-                                                    XGD_Cal.Add(x);
-                                                }
-                                                BC.Add(Lib_Card.Configure.Parameter.Other_StartWave + Lib_Card.Configure.Parameter.Other_IntWave * i);
-                                                //spectrumData.Add((Lib_Card.Configure.Parameter.Other_StartWave + Lib_Card.Configure.Parameter.Other_IntWave * i, d, x));
-                                            }
-                                            string s_xgd = "";
-
-                                            double d_max = -999;
-                                            int i_max = 0;
-                                            for (int i = 0; i < XGD.Count; i++)
-                                            {
-                                                s_xgd += XGD[i].ToString("0.000000") + "/";
-
-                                                //查找波峰值
-                                                if (XGD[i] > d_max)
-                                                {
-                                                    d_max = XGD[i];
-                                                    i_max = i;
-                                                }
-                                            }
-
-                                            if(j==0)
-                                            {
-                                                _i_max1 = i_max;
-                                                _d_absMax1 = d_max;
-                                            }
-                                            else
-                                            {
-                                                _i_max2 = i_max;
-                                                _d_absMax2 = d_max;
-                                            }
-                                            if (s_xgd != "")
-                                            {
-                                                s_xgd.Remove(s_xgd.Length - 1, 1);
-                                            }
-
-                                            //// 计算XYZ值
-
-
-                                            double[] doubles = XGD_Cal.ToArray();
-                                            (double L, double A, double B) = CalculateLAB(doubles, 400, Lib_Card.Configure.Parameter.Other_EndWave, Lib_Card.Configure.Parameter.Other_IntWave, 10);
-
-                                            //// 转换为LAB值
-                                            //(double L, double A, double B, double X, double Y, double Z) = ConvertToLAB(doubles);
-
-                                            //Console.WriteLine($"L: {L}, A: {A}, B: {B}");
-
-                                            //double L = 0.0; double A = 0.0; double B= 0.0;
-                                            double d_compensate = 0.0;
-                                            //判断当前检测是开料还是开稀
-                                            DataTable dt_bottle_detail = FADM_Object.Communal._fadmSqlserver.GetData("SELECT * from bottle_details where BottleNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "';");
-                                            if (dt_bottle_detail.Rows.Count > 0)
-                                            {
-                                                if (dt_bottle_detail.Rows[0]["OriginalBottleNum"].ToString() == "0")
-                                                {
-                                                    //d_compensate = 0.0;
-                                                    d_compensate = Convert.ToDouble(dt_bottle_detail.Rows[0]["RealConcentration"].ToString());
-                                                }
-                                                else
-                                                {
-                                                    
-                                                        //获取标准曲线，然后计算补偿值
-                                                        s_sql = "SELECT *  FROM assistant_details WHERE AssistantCode = '" + dt_bottle_detail.Rows[0]["AssistantCode"].ToString() + "';";
-                                                    DataTable dt_assistant_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-                                                    double d_max_temp = -999;
-                                                    if (dt_assistant_details.Rows.Count > 0)
-                                                    {
-                                                        string s_data1 = dt_assistant_details.Rows[0]["Abs"] is DBNull ? "" : dt_assistant_details.Rows[0]["Abs"].ToString();
-                                                        if (s_data1 != "")
-                                                        {
-                                                            s_data1 = s_data1.Substring(0, s_data1.Length - 2);
-                                                            string[] sa_arr1 = s_data1.Split('/');
-                                                            for (int i = 0; i < sa_arr1.Count(); i++)
-                                                            {
-                                                                
-                                                                //查找波峰值
-                                                                if (Convert.ToDouble(sa_arr1[i]) > d_max_temp)
-                                                                {
-                                                                    d_max_temp = Convert.ToDouble(sa_arr1[i]);
-                                                                }
-                                                            }
-
-                                                            //计算补偿系数
-                                                            //d_compensate=(d_max_temp- d_max) / d_max_temp;
-
-                                                            d_compensate = 1- (d_max_temp - d_max)/d_max_temp;
-
-                                                            d_compensate = Convert.ToDouble(dt_bottle_detail.Rows[0]["RealConcentration"].ToString()) * d_compensate;
-
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        d_compensate = Convert.ToDouble(dt_bottle_detail.Rows[0]["RealConcentration"].ToString());
-                                                    }
-                                                }
-                                            }
-                                            else
-                                            {
-                                                d_compensate = Convert.ToDouble(dt_bottle_detail.Rows[0]["RealConcentration"].ToString());
-                                            }
-                                            //当正常测量时，不再保存修正系数
-                                            if (dt_temp.Rows[0]["Type"].ToString() == "11")
-                                            {
-                                                FADM_Object.Communal._fadmSqlserver.ReviseData("Update  bottle_details Set Abs = '" + s_xgd + "',L='" + L.ToString() + "',A='" + A.ToString() + "',B='" + B.ToString() + "',RealConcentration='" + d_compensate.ToString("f6") + "' where BottleNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "';");
-                                            }
-                                            else
-                                            {
-                                                FADM_Object.Communal._fadmSqlserver.ReviseData("Update  bottle_details Set Abs = '" + s_xgd + "',L='" + L.ToString() + "',A='" + A.ToString() + "',B='" + B.ToString()  + "' where BottleNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "';");
-                                            }
-
-                                            //拷贝到历史表
-                                            DataTable dt_Temp = FADM_Object.Communal._fadmSqlserver.GetData(
-                                                 "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'abs_cup_details';");
-                                            string s_columnDetails = null;
-                                            foreach (DataRow row in dt_Temp.Rows)
-                                            {
-                                                if (Convert.ToString(row[0]) != "Cooperate" && Convert.ToString(row[0]) != "NeedPulse" && Convert.ToString(row[0]) != "Choose"
-                                                    && Convert.ToString(row[0]) != "WaterFinish" && Convert.ToString(row[0]) != "TotalWeight")
-                                                    s_columnDetails += Convert.ToString(row[0]) + ", ";
-                                            }
-                                            s_columnDetails = s_columnDetails.Remove(s_columnDetails.Length - 2);
-
-                                            s_sql = "SELECT *  FROM bottle_details WHERE BottleNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "';";
-                                            DataTable dt_bottle = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-
-                                            FADM_Object.Communal._fadmSqlserver.ReviseData(
-                                                "INSERT INTO history_abs (" + s_columnDetails + ",A,B,L,FinishTime,Abs,BrewingData,RealConcentration,AssistantCode) (SELECT " + s_columnDetails + ",'" + A.ToString() + "' as A," + "'" + B.ToString() + "' as B," + "'" + L.ToString() + "' as L," + "'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' as FinishTime," + "'" + s_xgd.ToString() + "' as Abs,'"+ dt_bottle.Rows[0]["BrewingData"].ToString()+ "' as BrewingData," + dt_bottle.Rows[0]["RealConcentration"].ToString()+ " as RealConcentration,'" + dt_bottle.Rows[0]["AssistantCode"].ToString() + "' as AssistantCode FROM abs_cup_details " +
-                                                "WHERE CupNum =" + (j + 1) + ") ;");
-
-
-                                            if (dt_temp.Rows[0]["Type"].ToString() != "4")
-                                            {
-                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
-                                  "UPDATE abs_cup_details SET TotalWeight -= " + Lib_Card.Configure.Parameter.Other_AspirationTime / 1000.0 + " WHERE CupNum = " + (j + 1) + ";");
-                                            }
-                                            else
-                                            {
-                                                FADM_Object.Communal._fadmSqlserver.ReviseData(
-                                  "UPDATE abs_cup_details SET TotalWeight -= " + Lib_Card.Configure.Parameter.Other_CalAspirationTime / 1000.0 + " WHERE CupNum = " + (j + 1) + ";");
-
-                                                //重置复测次数
-                                                if(j==0)
-                                                {
-                                                    _i_reCount1 = 0;
-                                                }
-                                                else
-                                                {
-                                                    _i_reCount2 = 0;
-                                                }
-                                            }
-
-
-                                            //发送复测
-                                            //发送启动
-                                            int[] values2 = new int[5];
-                                            values2[0] = 1;
-                                            values2[1] = 0;
-                                            values2[2] = 0;
-                                            values2[3] = 0;
-                                            values2[4] = 2;
-                                            if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                            {
-                                                FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                            }
-
-                                            //写入测量数据
-                                            int d_1 = 0;
-                                            d_1 = (lis_wl[i_max]-2* Lib_Card.Configure.Parameter.Other_IntWave) / 65536;
-                                            int i_d_11 = (lis_wl[i_max] - 2 * Lib_Card.Configure.Parameter.Other_IntWave) % 65536;
-
-                                            int d_2 = 0;
-                                            d_2 = (lis_wl[i_max] + 2 * Lib_Card.Configure.Parameter.Other_IntWave) / 65536;
-                                            int i_d_22 = (lis_wl[i_max] + 2 * Lib_Card.Configure.Parameter.Other_IntWave) % 65536;
-
-                                            int d_3 = 0;
-                                            d_3 = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
-                                            int i_d_33 = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
-
-                                            int d_4 = 0;
-                                            d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                            int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                            int d_5 = 0;
-                                            d_5 = Lib_Card.Configure.Parameter.Other_ReAspirationTime / 65536;
-                                            int i_d_55 = Lib_Card.Configure.Parameter.Other_ReAspirationTime % 65536;
-
-                                            int[] ia_array2 = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3, i_d_44, d_4, i_d_55, d_5 };
-                                            if (j + 1 == 1)
-                                                FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array2);
-                                            else
-                                                FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array2);
-
-                                            if (j+1 == 1)
-                                                FADM_Object.Communal._tcpModBusAbs.Write(800, values2);
-                                            else
-                                                FADM_Object.Communal._tcpModBusAbs.Write(810, values2);
-
-                                            ////如果是标准样
-                                            //if (dt_temp.Rows[0]["Type"].ToString() == "3")
-                                            //{
-                                            //    //保存到助剂表
-                                            //    s_sql = "SELECT *  FROM bottle_details WHERE BottleNum = '" + dt_temp.Rows[0]["BottleNum"].ToString() + "';";
-                                            //    DataTable dt_bottle = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-                                            //    if (dt_bottle.Rows.Count > 0)
-                                            //    {
-                                            //        FADM_Object.Communal._fadmSqlserver.ReviseData("Update assistant_details Set Abs = '" + s_xgd + "' where AssistantCode = '" + dt_bottle.Rows[0]["AssistantCode"].ToString() + "';");
-                                            //    }
-                                            //}
-                                        }
-                                    }
-                                    //复测
-                                    else
-                                    {
-
-                                        //查询当前杯是检测纯水基准样还是测试样
-                                        s_sql = "SELECT * from standard where Type = 1;";
-
-                                        DataTable dt_standard = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-
-                                        if (dt_standard.Rows.Count > 0)
-                                        {
-                                            //计算
-                                            string[] sa_e1 = dt_standard.Rows[0]["E1"].ToString().Split('/');
-                                            List<string> lis_sta_e1 = sa_e1.ToList();
-                                            string[] sa_e2 = dt_standard.Rows[0]["E2"].ToString().Split('/');
-                                            List<string> lis_sta_e2 = sa_e2.ToList();
-                                            string[] sa_wl = dt_standard.Rows[0]["WL"].ToString().Split('/');
-                                            List<string> lis_sta_wl = sa_wl.ToList();
-
-                                            List<double> XGD = new List<double>();
-
-                                            BC.Clear();
-
-                                            //查找对应波长
-                                            int i_start = 0;
-                                            for(int i = 0;i< lis_sta_wl.Count;i++)
-                                            {
-                                                if (lis_sta_wl[i]== lis_wl[0].ToString())
-                                                {
-                                                    i_start = i;
-                                                    break;
-                                                }
-                                            }
-
-                                            //解析数据
-                                            for (int i = 0; i < lis_e2.Count; i++)
-                                            {
-                                                //计算
-                                                double d = (lis_e2[i] / Convert.ToDouble(lis_sta_e2[i+ i_start])) / (lis_e1[i] / Convert.ToDouble(lis_sta_e1[i+ i_start]));
-                                                double x;
-                                                if (d < 0.0001)
-                                                    x = 4;
-                                                else
-                                                    x = -Math.Log10(d);
-
-                                                XGD.Add(x);
-                                            }
-                                            string s_xgd = "";
-
-                                            double d_max = -999;
-                                            int i_max = 0;
-                                            for (int i = 0; i < XGD.Count; i++)
-                                            {
-                                                s_xgd += XGD[i].ToString("0.000000") + "/";
-
-                                                //查找波峰值
-                                                if (XGD[i] > d_max)
-                                                {
-                                                    d_max = XGD[i];
-                                                    i_max = i;
-                                                }
-                                            }
-
-                                            if (s_xgd != "")
-                                            {
-                                                s_xgd.Remove(s_xgd.Length - 1, 1);
-                                            }
-
-                                            if (dt_temp.Rows[0]["Type"].ToString() != "4")
-                                            {
-                                                if (XGD.Count == 5)
-                                                {
-                                                    //先判断中间值是否最大值
-                                                    if (i_max != 2)
-                                                    {
-                                                        FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "峰值波长不一致复测值" + s_xgd);
-
-                                                        s_sql = "SELECT top 1*  from history_abs where CupNum = " + (j + 1) + " order by FinishTime desc;";
-
-                                                        DataTable dt_hisabs = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-
-                                                        if (dt_hisabs.Rows.Count > 0)
-                                                        {
-                                                            FADM_Object.Communal._fadmSqlserver.ReviseData("Update history_abs set Result = '" + "峰值不同:峰值波长不一致复测值" + s_xgd + "' where FinishTime = '" + dt_hisabs.Rows[0]["FinishTime"].ToString() + "';");
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        if (j == 0)
-                                                        {
-                                                            bool b_fail = false;
-                                                            if ((d_max - _d_absMax1) / _d_absMax1 > FADM_Object.Communal._d_absMax)
-                                                            {
-                                                                b_fail = true;
-
-                                                            }
-                                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (b_fail ? "复测失败" : "复测成功") + " 复测值" + s_xgd);
-                                                            s_sql = "SELECT top 1*  from history_abs where CupNum = " + (j + 1) + " order by FinishTime desc;";
-
-                                                            DataTable dt_hisabs = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-
-                                                            if (dt_hisabs.Rows.Count > 0)
-                                                            {
-                                                                FADM_Object.Communal._fadmSqlserver.ReviseData("Update history_abs set Result = '" + (b_fail ? "复测失败" : "复测成功") + " 复测值" + s_xgd + "' where FinishTime = '" + dt_hisabs.Rows[0]["FinishTime"].ToString() + "';");
-                                                            }
-                                                        }
-                                                        else
-                                                        {
-                                                            bool b_fail = false;
-                                                            if ((d_max - _d_absMax2) / _d_absMax2 > FADM_Object.Communal._d_absMax)
-                                                            {
-                                                                b_fail = true;
-                                                            }
-                                                            FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (b_fail ? "复测失败" : "复测成功") + " 复测值" + s_xgd);
-                                                            s_sql = "SELECT top 1*  from history_abs where CupNum = " + (j + 1) + " order by FinishTime desc;";
-
-                                                            DataTable dt_hisabs = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-
-                                                            if (dt_hisabs.Rows.Count > 0)
-                                                            {
-                                                                FADM_Object.Communal._fadmSqlserver.ReviseData("Update history_abs set Result = '" + (b_fail ? "复测失败" : "复测成功") + " 复测值" + s_xgd + "' where FinishTime = '" + dt_hisabs.Rows[0]["FinishTime"].ToString() + "';");
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            else
-                                            {
-
-                                                if (j == 0)
-                                                {
-                                                    _i_reCount1++;
-                                                    _s_abs1 += s_xgd+";";
-
-                                                    if (_i_reCount1 < 6)
-                                                    {
-                                                        //继续复测
-
-                                                        //发送复测
-                                                        //发送启动
-                                                        int[] values2 = new int[5];
-                                                        values2[0] = 1;
-                                                        values2[1] = 0;
-                                                        values2[2] = 0;
-                                                        values2[3] = 0;
-                                                        values2[4] = 2;
-                                                        if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                                        {
-                                                            FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                                        }
-
-                                                        //写入测量数据
-                                                        int d_11 = 0;
-                                                        d_11 = Convert.ToInt32(lis_sta_wl[i_start]) / 65536;
-                                                        int i_d_111 = Convert.ToInt32(lis_sta_wl[i_start]) % 65536;
-
-                                                        int d_21 = 0;
-                                                        d_21 = (Convert.ToInt32(lis_sta_wl[i_start]) + 4 * Lib_Card.Configure.Parameter.Other_IntWave) / 65536;
-                                                        int i_d_221 = (Convert.ToInt32(lis_sta_wl[i_start]) + 4 * Lib_Card.Configure.Parameter.Other_IntWave) % 65536;
-
-                                                        int d_31 = 0;
-                                                        d_31 = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
-                                                        int i_d_331 = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
-
-                                                        int d_41 = 0;
-                                                        d_41 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                                        int i_d_441 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                                        int d_51 = 0;
-                                                        d_51 = Lib_Card.Configure.Parameter.Other_ReAspirationTime / 65536;
-                                                        int i_d_551 = Lib_Card.Configure.Parameter.Other_ReAspirationTime % 65536;
-
-                                                        int[] ia_array2 = new int[] { i_d_111, d_11, i_d_221, d_21, i_d_331, d_31, i_d_441, d_41, i_d_551, d_51 };
-                                                        if (j + 1 == 1)
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array2);
-                                                        else
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array2);
-
-                                                        if (j + 1 == 1)
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(800, values2);
-                                                        else
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(810, values2);
-
-                                                        continue;
-                                                    }
-
-                                                    //FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "校验值" + _s_abs1);
-
-                                                    s_sql = "SELECT top 1*  from history_abs where CupNum = " + (j + 1) + " order by FinishTime desc;";
-
-                                                    DataTable dt_hisabs = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-
-                                                    if (dt_hisabs.Rows.Count > 0)
-                                                    {
-                                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Update history_abs set Result = '" + _s_abs2 + "' where FinishTime = '" + dt_hisabs.Rows[0]["FinishTime"].ToString() + "';");
-                                                    }
-
-                                                    FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (j + 1) + "号(吸光度)检测完成");
-
-                                                    //new FADM_Object.MyAlarm((j + 1) + "号(吸光度)检测完成", "温馨提示");
-
-                                                    string s_insert = Lib_Card.CardObject.InsertD((j + 1) + "号(吸光度)检测完成", "温馨提示");
-                                                    Thread.Sleep(2000);
-                                                    Lib_Card.CardObject.DeleteD(s_insert);
-                                                }
-                                                else
-                                                {
-                                                    _i_reCount2++;
-
-                                                    _s_abs2 += s_xgd + ";";
-                                                    if (_i_reCount2 < 6)
-                                                    {
-                                                        //继续复测
-                                                        //发送复测
-                                                        //发送启动
-                                                        int[] values2 = new int[5];
-                                                        values2[0] = 1;
-                                                        values2[1] = 0;
-                                                        values2[2] = 0;
-                                                        values2[3] = 0;
-                                                        values2[4] = 2;
-                                                        if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                                        {
-                                                            FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                                        }
-
-                                                        //写入测量数据
-                                                        int d_11 = 0;
-                                                        d_11 = Convert.ToInt32(lis_sta_wl[i_start]) / 65536;
-                                                        int i_d_111 = Convert.ToInt32(lis_sta_wl[i_start]) % 65536;
-
-                                                        int d_21 = 0;
-                                                        d_21 = (Convert.ToInt32(lis_sta_wl[i_start]) + 4 * Lib_Card.Configure.Parameter.Other_IntWave) / 65536;
-                                                        int i_d_221 = (Convert.ToInt32(lis_sta_wl[i_start]) + 4 * Lib_Card.Configure.Parameter.Other_IntWave) % 65536;
-
-                                                        int d_31 = 0;
-                                                        d_31 = Lib_Card.Configure.Parameter.Other_IntWave / 65536;
-                                                        int i_d_331 = Lib_Card.Configure.Parameter.Other_IntWave % 65536;
-
-                                                        int d_41 = 0;
-                                                        d_41 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                                        int i_d_441 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                                        int d_51 = 0;
-                                                        d_51 = Lib_Card.Configure.Parameter.Other_ReAspirationTime / 65536;
-                                                        int i_d_551 = Lib_Card.Configure.Parameter.Other_ReAspirationTime % 65536;
-
-                                                        int[] ia_array2 = new int[] { i_d_111, d_11, i_d_221, d_21, i_d_331, d_31, i_d_441, d_41, i_d_551, d_51 };
-                                                        if (j + 1 == 1)
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array2);
-                                                        else
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array2);
-
-                                                        if (j + 1 == 1)
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(800, values2);
-                                                        else
-                                                            FADM_Object.Communal._tcpModBusAbs.Write(810, values2);
-
-                                                        continue;
-                                                    }
-
-                                                    //FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "校验值" + _s_abs2);
-
-                                                    s_sql = "SELECT top 1*  from history_abs where CupNum = " + (j + 1) + " order by FinishTime desc;";
-
-                                                    DataTable dt_hisabs = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-
-                                                    if(dt_hisabs.Rows.Count>0)
-                                                    {
-                                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Update history_abs set Result = '"+ _s_abs2+"' where FinishTime = '"+ dt_hisabs.Rows[0]["FinishTime"].ToString()+"';");
-                                                    }
-
-                                                    FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", (j + 1) + "号(吸光度)检测完成");
-
-                                                    //new FADM_Object.MyAlarm((j + 1) + "号(吸光度)检测完成", "温馨提示");
-
-                                                    string s_insert = Lib_Card.CardObject.InsertD((j + 1) + "号(吸光度)检测完成", "温馨提示");
-                                                    Thread.Sleep(2000);
-                                                    Lib_Card.CardObject.DeleteD(s_insert);
-                                                }
-                                                
-                                            }
-
-
-
-                                            //查询剩余液量
-                                            s_sql = "SELECT * from abs_cup_details where CupNum = "+(j+1)+" ;";
-
-                                            DataTable dt_abs = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-
-                                            double d_tatal = Convert.ToDouble(dt_abs.Rows[0]["TotalWeight"].ToString());
-                                            if (d_tatal < 10)
-                                                d_tatal = 10.0;
-
-                                            //发送洗杯
-                                            //发送启动
-                                            int[] values3 = new int[5];
-                                            values3[0] = 1;
-                                            values3[1] = 0;
-                                            values3[2] = 0;
-                                            values3[3] = 0;
-                                            values3[4] = 3;
-                                            if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
-                                            {
-                                                FADM_Object.Communal._tcpModBusAbs.ReConnect();
-                                            }
-
-                                            //写入测量数据
-                                            int d_1 = 0;
-                                            d_1 = (Convert.ToInt32(d_tatal*1000)+10000) / 65536;
-                                            int i_d_11 = (Convert.ToInt32(d_tatal * 1000) + 10000) % 65536;
-
-                                            int d_2 = 0;
-                                            d_2 = (Convert.ToInt32(Lib_Card.Configure.Parameter.Other_AbsAddWater * 1000)+10000) / 65536;
-                                            int i_d_22 = (Convert.ToInt32(Lib_Card.Configure.Parameter.Other_AbsAddWater * 1000)+10000) % 65536;
-
-                                            int d_3 = 0;
-                                            d_3 = Lib_Card.Configure.Parameter.Other_WashStirTime / 65536;
-                                            int i_d_33 = Lib_Card.Configure.Parameter.Other_WashStirTime % 65536;
-
-                                            int d_4 = 0;
-                                            d_4 = Lib_Card.Configure.Parameter.Other_StirTime / 65536;
-                                            int i_d_44 = Lib_Card.Configure.Parameter.Other_StirTime % 65536;
-
-                                            int d_5 = 0;
-                                            d_5 = Lib_Card.Configure.Parameter.Other_AspirationTime / 65536;
-                                            int i_d_55 = Lib_Card.Configure.Parameter.Other_AspirationTime % 65536;
-
-                                            int[] ia_array3 = new int[] { i_d_11, d_1, i_d_22, d_2, i_d_33, d_3 };
-
-                                            if (Convert.ToInt32(j + 1) == 1)
-                                                FADM_Object.Communal._tcpModBusAbs.Write(1010, ia_array3);
-                                            else
-                                                FADM_Object.Communal._tcpModBusAbs.Write(1060, ia_array3);
-
-
-                                            if (Convert.ToInt32(j+1) == 1)
-                                                FADM_Object.Communal._tcpModBusAbs.Write(800, values3);
-                                            else
-                                                FADM_Object.Communal._tcpModBusAbs.Write(810, values3);
-
-                                            s_sql = "UPDATE abs_cup_details SET Statues='洗杯'  WHERE CupNum = " + (j+1) + " ;";
-                                            FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
-                                        }
-                                    }
-                                }
-                            }
                         }
+
+                        
                     }
                     Thread.Sleep(1000);
                 }
@@ -2742,6 +1458,349 @@ namespace SmartDyeing.FADM_Auto
 
                
             }
+        }
+
+        /// <summary>
+        /// 发送每一步工序
+        /// </summary>
+        public static int SendData(int i_cupNum)
+        {
+            //查找下一步
+            string s_sql = "SELECT *  FROM Abs_details where CupNum = "+ i_cupNum+ " And Finish = 0 order by StepNum;";
+
+            DataTable dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+            if (dt_temp.Rows.Count == 0)
+                return 0;
+            else
+            {
+                double d_dis = 0.8;
+                //记录开始时间
+                s_sql = "update Abs_details set StartTime = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' where CupNum = " + i_cupNum + " And StepNum = " + dt_temp.Rows[0]["StepNum"].ToString();
+                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                              "UPDATE abs_cup_details SET Statues='"+ dt_temp.Rows[0]["TechnologyName"].ToString()+"'  WHERE CupNum = " + i_cupNum + ";");
+
+                if (dt_temp.Rows[0]["TechnologyName"].ToString() == "加药")
+                {
+                    //重新计算加药量
+
+                    //查询剩余液量
+                    s_sql = "SELECT * from abs_cup_details where CupNum = " + i_cupNum + " ;";
+
+                    DataTable dt_abs = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                    SmartDyeing.FADM_Auto.MyAbsorbance.Calculate(Convert.ToInt32(dt_abs.Rows[0]["BottleNum"].ToString()), Convert.ToInt32(dt_abs.Rows[0]["AdditivesNum"].ToString()), i_cupNum, Convert.ToInt32(dt_abs.Rows[0]["Type"].ToString()), Convert.ToDouble(dt_temp.Rows[0]["Dosage"].ToString()));
+
+                    //发送启动
+                    int[] values1 = new int[5];
+                    values1[0] = 1;
+                    values1[1] = 0;
+                    values1[2] = 0;
+                    values1[3] = 0;
+                    values1[4] = 1;
+                    if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                    {
+                        FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                    }
+
+                    //写入参数数据
+                    int d_1_ = 0;
+                    d_1_ = Convert.ToInt32(dt_temp.Rows[0]["StirringRate"].ToString()) / 65536;
+                    int i_d_11_ = Convert.ToInt32(dt_temp.Rows[0]["StirringRate"].ToString()) % 65536;
+
+                    int[] ia_array1 = new int[] { i_d_11_, d_1_ };
+                    if (i_cupNum == 1)
+                        FADM_Object.Communal._tcpModBusAbs.Write(1008, ia_array1);
+                    else
+                        FADM_Object.Communal._tcpModBusAbs.Write(1058, ia_array1);
+
+                    if (i_cupNum == 1)
+                        FADM_Object.Communal._tcpModBusAbs.Write(800, values1);
+                    else
+                        FADM_Object.Communal._tcpModBusAbs.Write(810, values1);
+                }
+                else if (dt_temp.Rows[0]["TechnologyName"].ToString() == "加水")
+                {
+                    //发送启动
+                    int[] values1 = new int[5];
+                    values1[0] = 1;
+                    values1[1] = 0;
+                    values1[2] = 0;
+                    values1[3] = 0;
+                    values1[4] = 2;
+                    if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                    {
+                        FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                    }
+
+                    //写入参数数据
+                    int d_1_ = 0;
+                    d_1_ = Convert.ToInt32(dt_temp.Rows[0]["StirringRate"].ToString()) / 65536;
+                    int i_d_11_ = Convert.ToInt32(dt_temp.Rows[0]["StirringRate"].ToString()) % 65536;
+
+                    int[] ia_array1 = new int[] { i_d_11_, d_1_ };
+                    if (i_cupNum == 1)
+                        FADM_Object.Communal._tcpModBusAbs.Write(1008, ia_array1);
+                    else
+                        FADM_Object.Communal._tcpModBusAbs.Write(1058, ia_array1);
+
+                    if (i_cupNum == 1)
+                        FADM_Object.Communal._tcpModBusAbs.Write(800, values1);
+                    else
+                        FADM_Object.Communal._tcpModBusAbs.Write(810, values1);
+                }
+                else if (dt_temp.Rows[0]["TechnologyName"].ToString() == "抽染液")
+                {
+                    //发送启动
+                    int[] values1 = new int[5];
+                    values1[0] = 1;
+                    values1[1] = 0;
+                    values1[2] = 0;
+                    values1[3] = 0;
+                    values1[4] = 3;
+                    if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                    {
+                        FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                    }
+
+                    if (i_cupNum == 1)
+                        FADM_Object.Communal._tcpModBusAbs.Write(800, values1);
+                    else
+                        FADM_Object.Communal._tcpModBusAbs.Write(810, values1);
+                }
+                else if (dt_temp.Rows[0]["TechnologyName"].ToString() == "搅拌")
+                {
+                    //发送启动
+                    int[] values1 = new int[5];
+                    values1[0] = 1;
+                    values1[1] = 0;
+                    values1[2] = 0;
+                    values1[3] = 0;
+                    values1[4] = 4;
+                    if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                    {
+                        FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                    }
+
+                    //写入参数数据
+                    int d_1_ = 0;
+                    d_1_ = Convert.ToInt32(dt_temp.Rows[0]["StirringRate"].ToString()) / 65536;
+                    int i_d_11_ = Convert.ToInt32(dt_temp.Rows[0]["StirringRate"].ToString()) % 65536;
+
+                    int d_2_ = 0;
+                    d_2_ = Convert.ToInt32(dt_temp.Rows[0]["StirringTime"].ToString()) / 65536;
+                    int i_d_22_ = Convert.ToInt32(dt_temp.Rows[0]["StirringTime"].ToString()) % 65536;
+
+                    int[] ia_array1 = new int[] { i_d_11_, d_1_ , i_d_22_, d_2_ };
+                    if (i_cupNum == 1)
+                        FADM_Object.Communal._tcpModBusAbs.Write(1008, ia_array1);
+                    else
+                        FADM_Object.Communal._tcpModBusAbs.Write(1058, ia_array1);
+
+                    if (i_cupNum == 1)
+                        FADM_Object.Communal._tcpModBusAbs.Write(800, values1);
+                    else
+                        FADM_Object.Communal._tcpModBusAbs.Write(810, values1);
+                }
+                else if (dt_temp.Rows[0]["TechnologyName"].ToString() == "排液")
+                {
+                    //发送启动
+                    int[] values1 = new int[5];
+                    values1[0] = 1;
+                    values1[1] = 0;
+                    values1[2] = 0;
+                    values1[3] = 0;
+                    values1[4] = 5;
+                    if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                    {
+                        FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                    }
+
+                    //写入参数数据
+                    int d_1_ = 0;
+                    d_1_ = Convert.ToInt32(dt_temp.Rows[0]["StirringRate"].ToString()) / 65536;
+                    int i_d_11_ = Convert.ToInt32(dt_temp.Rows[0]["StirringRate"].ToString()) % 65536;
+
+                    int d_2_ = 0;
+                    int i_d_22_ = 0;
+
+                    //当排液时间为0时，用总液量来算排液时间，这个由于测吸光度后洗杯需要使用计算液量
+                    int i_drainTime = 0;
+                    if(Convert.ToInt32(dt_temp.Rows[0]["DrainTime"].ToString()) == 0)
+                    {
+                        //查询剩余液量
+                        s_sql = "SELECT * from abs_cup_details where CupNum = " + i_cupNum + " ;";
+
+                        DataTable dt_abs = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                        double d_tatal = Convert.ToDouble(dt_abs.Rows[0]["TotalWeight"].ToString());
+                        if (d_tatal < 10)
+                            d_tatal = 10;
+                        i_drainTime = (int)(d_tatal);
+                    }
+                    else
+                    {
+                        i_drainTime = Convert.ToInt32(dt_temp.Rows[0]["DrainTime"].ToString());
+                    }
+                    i_drainTime = (int)(i_drainTime / d_dis);
+                    int d_3_ = 0;
+                    d_3_ = i_drainTime / 65536;
+                    int i_d_33_ = i_drainTime % 65536;
+
+                    int d_4_ = 0;
+                    d_4_ = Convert.ToInt32(Convert.ToDouble(dt_temp.Rows[0]["ParallelizingDishTime"].ToString())/d_dis) / 65536;
+                    int i_d_44_ = Convert.ToInt32(Convert.ToDouble(dt_temp.Rows[0]["ParallelizingDishTime"].ToString()) / d_dis) % 65536;
+
+                    int[] ia_array1 = new int[] { i_d_11_, d_1_, i_d_22_, d_2_, i_d_33_, d_3_, i_d_44_, d_4_ };
+                    if (i_cupNum == 1)
+                        FADM_Object.Communal._tcpModBusAbs.Write(1008, ia_array1);
+                    else
+                        FADM_Object.Communal._tcpModBusAbs.Write(1058, ia_array1);
+
+                    if (i_cupNum == 1)
+                        FADM_Object.Communal._tcpModBusAbs.Write(800, values1);
+                    else
+                        FADM_Object.Communal._tcpModBusAbs.Write(810, values1);
+                }
+                else if (dt_temp.Rows[0]["TechnologyName"].ToString() == "测吸光度")
+                {
+                    //发送启动
+                    int[] values1 = new int[5];
+                    values1[0] = 1;
+                    values1[1] = 0;
+                    values1[2] = 0;
+                    values1[3] = 0;
+                    values1[4] = 6;
+                    if (!FADM_Object.Communal._tcpModBusAbs._b_Connect)
+                    {
+                        FADM_Object.Communal._tcpModBusAbs.ReConnect();
+                    }
+
+                    //写入参数数据
+                    int d_1_ = 0;
+                    d_1_ = Convert.ToInt32(dt_temp.Rows[0]["StartingWavelength"].ToString()) / 65536;
+                    int i_d_11_ = Convert.ToInt32(dt_temp.Rows[0]["StartingWavelength"].ToString()) % 65536;
+
+                    int d_2_ = 0;
+                    d_2_ = Convert.ToInt32(dt_temp.Rows[0]["EndWavelength"].ToString()) / 65536;
+                    int i_d_22_ = Convert.ToInt32(dt_temp.Rows[0]["EndWavelength"].ToString()) % 65536;
+
+                    int d_3_ = 0;
+                    d_3_ = Convert.ToInt32(dt_temp.Rows[0]["WavelengthInterval"].ToString()) / 65536;
+                    int i_d_33_ = Convert.ToInt32(dt_temp.Rows[0]["WavelengthInterval"].ToString()) % 65536;
+
+                    int d_4_ = 0;
+                    d_4_ = Convert.ToInt32(Convert.ToDouble(dt_temp.Rows[0]["PumpingTime"].ToString()) / d_dis) / 65536;
+                    int i_d_44_ = Convert.ToInt32(Convert.ToDouble(dt_temp.Rows[0]["PumpingTime"].ToString()) / d_dis) % 65536;
+
+                    int[] ia_array1 = new int[] { i_d_11_, d_1_, i_d_22_, d_2_, i_d_33_, d_3_, i_d_44_, d_4_ };
+                    if (i_cupNum == 1)
+                        FADM_Object.Communal._tcpModBusAbs.Write(1000, ia_array1);
+                    else
+                        FADM_Object.Communal._tcpModBusAbs.Write(1050, ia_array1);
+
+                    if (i_cupNum == 1)
+                        FADM_Object.Communal._tcpModBusAbs.Write(800, values1);
+                    else
+                        FADM_Object.Communal._tcpModBusAbs.Write(810, values1);
+                }
+
+                return 1;
+            }
+        }
+        /// <summary>
+        /// 生成工艺保存到Abs_details表
+        /// </summary>
+        /// /// <param name="i_type">类型：0 测白点  1 母液测量 2 停止</param>
+        /// /// <param name="i_cupNum">杯号</param>
+        /// 
+        public static void Generate(int i_type,int i_cupNum)
+        {
+            //生成测白点工艺
+            string s_sql;
+            if(i_type == 0)
+            s_sql= "select * from Abs_process where Code = '测白点' order by StepNum";
+            else if (i_type == 1)
+                s_sql = "select * from Abs_process where Code = '测试' order by StepNum";
+            else
+                s_sql = "select * from Abs_process where Code = '停止' order by StepNum";
+            DataTable dataTable = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+            //删除详细数据里数据
+            FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from Abs_details where CupNum = " + i_cupNum + "");
+            string s_guid = Guid.NewGuid().ToString("N");
+            foreach (DataRow dr in dataTable.Rows)
+            {
+                if (dr["TechnologyName"].ToString() == "加药")
+                {
+                    s_sql = "Insert into Abs_details(CupNum,Finish,Cooperate,GUID,StepNum,TechnologyName,Code,StirringRate,Dosage) Values("+ i_cupNum+",0,0,'"+ s_guid + "'," + dr["StepNum"].ToString()+",'"+ dr["TechnologyName"].ToString() + "','" + dr["Code"].ToString() + "',"+ dr["StirringRate"].ToString()+ ","+ dr["Dosage"].ToString()+")";
+                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                }
+                else if (dr["TechnologyName"].ToString() == "加水")
+                {
+                    s_sql = "Insert into Abs_details(CupNum,Finish,Cooperate,GUID,StepNum,TechnologyName,Code,StirringRate) Values(" + i_cupNum + ",0,0,'" + s_guid + "'," + dr["StepNum"].ToString() + ",'" + dr["TechnologyName"].ToString() + "','" + dr["Code"].ToString() + "'," + dr["StirringRate"].ToString()  + ")";
+                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                }
+                else if (dr["TechnologyName"].ToString() == "抽染液")
+                {
+                    s_sql = "Insert into Abs_details(CupNum,Finish,Cooperate,GUID,StepNum,TechnologyName,Code) Values(" + i_cupNum + ",0,0,'" + s_guid + "'," + dr["StepNum"].ToString() + ",'" + dr["TechnologyName"].ToString() + "','" + dr["Code"].ToString() + "')";
+                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                }
+                else if (dr["TechnologyName"].ToString() == "搅拌")
+                {
+                    s_sql = "Insert into Abs_details(CupNum,Finish,Cooperate,GUID,StepNum,TechnologyName,Code,StirringRate,StirringTime) Values(" + i_cupNum + ",0,0,'" + s_guid + "'," + dr["StepNum"].ToString() + ",'" + dr["TechnologyName"].ToString() + "','" + dr["Code"].ToString() + "'," + dr["StirringRate"].ToString() + "," + dr["StirringTime"].ToString() + ")";
+                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                }
+                else if (dr["TechnologyName"].ToString() == "排液")
+                {
+                    s_sql = "Insert into Abs_details(CupNum,Finish,Cooperate,GUID,StepNum,TechnologyName,Code,StirringRate,DrainTime,ParallelizingDishTime) Values(" + i_cupNum + ",0,0,'" + s_guid + "'," + dr["StepNum"].ToString() + ",'" + dr["TechnologyName"].ToString() + "','" + dr["Code"].ToString() + "'," + dr["StirringRate"].ToString() + "," + dr["DrainTime"].ToString() + "," + dr["ParallelizingDishTime"].ToString() + ")";
+                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                }
+                else if (dr["TechnologyName"].ToString() == "测吸光度")
+                {
+                    s_sql = "Insert into Abs_details(CupNum,Finish,Cooperate,GUID,StepNum,TechnologyName,Code,PumpingTime,StartingWavelength,EndWavelength,WavelengthInterval) Values(" + i_cupNum + ",0,0,'" + s_guid + "'," + dr["StepNum"].ToString() + ",'" + dr["TechnologyName"].ToString() + "','" + dr["Code"].ToString() + "'," + dr["PumpingTime"].ToString() + "," + dr["StartingWavelength"].ToString() + "," + dr["EndWavelength"].ToString() + "," + dr["WavelengthInterval"].ToString() + ")";
+                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                }
+
+            }
+        }
+
+        /// <summary>
+        /// 计算加药量
+        /// </summary>
+        /// 
+        public static void Calculate(int i_bottleNum,int i_additivesNum ,int i_cupNum,int i_type,double d_total)
+        {
+            //2.计算需要添加的用量并保存到表_i_nBottleNum
+            string s_sql = "SELECT bottle_details.*,assistant_details.AllowMinColoringConcentration,assistant_details.AllowMaxColoringConcentration,assistant_details.AssistantType,assistant_details.UnitOfAccount  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE bottle_details.BottleNum = " + i_bottleNum + ";";
+            DataTable dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+            string s_unitOfAccount = dt_temp.Rows[0]["UnitOfAccount"].ToString();
+            string s_assistantType = dt_temp.Rows[0]["AssistantType"].ToString();
+            string s_realConcentration = dt_temp.Rows[0]["RealConcentration"].ToString();
+            string s_settingConcentration = dt_temp.Rows[0]["SettingConcentration"].ToString();
+            string s_compensate = dt_temp.Rows[0]["Compensate"].ToString() == "" ? "0" : dt_temp.Rows[0]["Compensate"].ToString();
+
+            //
+            double d_stotal = d_total * (FADM_Object.Communal._d_ppm / 10000);
+            //母液重量
+            double d_dosage = d_stotal / Convert.ToDouble(s_realConcentration);
+            double d_water = d_total - d_dosage;
+            double d_t = d_dosage * Convert.ToDouble(s_compensate);
+            d_dosage = d_dosage * (1 + Convert.ToDouble(s_compensate));
+            d_water -= d_t;
+
+            if(i_type == 6 || i_type == 4)
+            {
+                d_dosage = 0;
+                d_water = d_total;
+            }
+
+            //更新数据库
+            s_sql = "Update abs_cup_details set Statues='加药',IsUsing=1,BottleNum= " + i_bottleNum + ",SampleDosage='" + string.Format("{0:F3}", d_dosage) + "',AdditivesNum = '" + i_additivesNum + "',StartWave='" + Lib_Card.Configure.Parameter.Other_StartWave + "',EndWave='" + Lib_Card.Configure.Parameter.Other_EndWave + "',IntWave='" + Lib_Card.Configure.Parameter.Other_IntWave + "',AdditivesDosage='" + string.Format("{0:F3}", d_water) + "',Pulse=0,Cooperate=5,Type ="+ i_type+",RealSampleDosage=0.0,RealAdditivesDosage=0.0 where CupNum = '" + i_cupNum + "';";
+            FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
         }
 
         #region 标准观察者色度匹配函数 

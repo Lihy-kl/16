@@ -1143,6 +1143,7 @@ namespace SmartDyeing.FADM_Control
                             //如果选中行
                             if (dgv_DropRecord.SelectedRows.Count > 0)
                             {
+                                string s_Ass = dgv_DropRecord.CurrentRow.Cells[0].Value.ToString();
                                 string s_cupNum = dgv_DropRecord.CurrentRow.Cells[1].Value.ToString();
                                 string s_bottleNum = dgv_DropRecord.CurrentRow.Cells[2].Value.ToString();
                                 string s_finishTime = dgv_DropRecord.CurrentRow.Cells[3].Value.ToString();
@@ -1161,7 +1162,7 @@ namespace SmartDyeing.FADM_Control
                                         FADM_Object.Communal._fadmSqlserver.ReviseData("Update assistant_details Set Abs = '" + dt_history_abs.Rows[0]["Abs"].ToString() + "',L=" + dt_history_abs.Rows[0]["L"].ToString() + ",A=" + dt_history_abs.Rows[0]["A"].ToString() + ",B=" + dt_history_abs.Rows[0]["B"].ToString() + " where AssistantCode = '" + dt_bottle.Rows[0]["AssistantCode"].ToString() + "';");
 
                                         //删除原来的标样
-                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Update history_abs Set Stand = 0  where AssistantCode = '" + dt_bottle.Rows[0]["AssistantCode"].ToString() + "';");
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Update history_abs Set Stand = 0  where AssistantCode = '" + s_Ass + "';");
 
                                         //标记为标样
                                         FADM_Object.Communal._fadmSqlserver.ReviseData("Update history_abs Set Stand = 1  WHERE FinishTime = '" + s_finishTime + "' And CupNum = " + s_cupNum + " And BottleNum =" + s_bottleNum + ";");

@@ -738,13 +738,13 @@ namespace SmartDyeing.FADM_Auto
                             continue;
                         }
                     }
-                    if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
-                    {
-                        //富士伺服在下面判断 天平状态 原有不动 绿维的放在上面 并且置位 是否回原点 绿维的放移动机械手前面
+                    //if (Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 1)
+                    //{
+                    //    //富士伺服在下面判断 天平状态 原有不动 绿维的放在上面 并且置位 是否回原点 绿维的放移动机械手前面
 
-                        //判断是否异常
-                        FADM_Object.Communal.BalanceState("滴液");
-                    }
+                    //    //判断是否异常
+                    //    FADM_Object.Communal.BalanceState("滴液");
+                    //}
 
                     double d_blObjectW = Convert.ToDouble(row["ObjectAddWaterWeight"]);
                     if (d_blObjectW > 0)
@@ -894,7 +894,7 @@ namespace SmartDyeing.FADM_Auto
 
                     FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找天平位");
 
-                    if ((Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 0)|| Lib_Card.Configure.Parameter.Machine_Type == 1)
+                    //if ((Lib_Card.Configure.Parameter.Machine_Type == 0 && Lib_Card.Configure.Parameter.Machine_Type_Lv == 0)|| Lib_Card.Configure.Parameter.Machine_Type == 1)
                     {
                         //富士伺服在下面判断 天平状态 原有不动 绿维的放在上面 并且置位 是否回原点
 
@@ -2075,6 +2075,11 @@ namespace SmartDyeing.FADM_Auto
                 else
                     myAlarm = new FADM_Object.MyAlarm( " The number of pre-drops in mother liquor bottle "+i_minBottleNo +"  is too small, please check whether the actual amount of liquid is too low" +
                         "( Continue to perform please click Yes)", "Drip", i_minBottleNo, 2, 10);
+
+                //回一次原点再继续，担心失步导致后续母液抽不了
+                int i_state = MyModbusFun.goHome();
+                if (0 != i_state && -2 != i_state)
+                    throw new Exception("驱动异常");
 
             }
             

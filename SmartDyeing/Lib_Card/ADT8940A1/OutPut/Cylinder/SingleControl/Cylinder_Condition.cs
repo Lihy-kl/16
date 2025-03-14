@@ -94,6 +94,10 @@ namespace Lib_Card.ADT8940A1.OutPut.Cylinder.SingleControl
                             {
                                 return -9;
                             }
+                            else if (i_judge == 2)
+                            {
+                                return -8;
+                            }
                             else
                             {
                                 //s = CardObject.InsertD("气缸下超时", " CylinderDown");
@@ -216,6 +220,17 @@ namespace Lib_Card.ADT8940A1.OutPut.Cylinder.SingleControl
                         return -1;
                     else if (1 == iCylinderUp)
                         break;
+                    if (i_judge == 2)
+                    {
+                        //气缸下无信号就退出
+                        int iCylinderDown1 = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Cylinder_Down);
+                        if (-1 == iCylinderDown1)
+                            return -1;
+                        else if (0 == iCylinderDown1)
+                        {
+                            return -8;
+                        }
+                    }
                     if (bDelay)
                     {
                         // 用于开关盖判断
