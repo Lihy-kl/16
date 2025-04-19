@@ -3841,6 +3841,11 @@ namespace SmartDyeing.FADM_Control
 
                 BatchHeadShow("");
 
+                //Thread P_thd_drop_a = new Thread(drop_liquid_a);
+                //P_thd_drop_a.IsBackground = true;
+                //P_thd_drop_a.Start(s_batchNum);
+                //FADM_Object.Communal._b_isDripping = false;
+                //return;
                 Thread P_thd_drop = new Thread(drop_liquid);
                 P_thd_drop.IsBackground = true;
                 P_thd_drop.Start(s_batchNum);
@@ -3859,6 +3864,13 @@ namespace SmartDyeing.FADM_Control
         {
             //滴液
             new FADM_Auto.Drip().DripLiquid(oBatchNum);
+        }
+
+        private void drop_liquid_a(object oBatchNum)
+        {
+            //滴液
+            SmartDyeing.FADM_Auto.MyPowder.powder(oBatchNum.ToString());
+
         }
 
         private void mydrop_liquid(object oBatchNum)

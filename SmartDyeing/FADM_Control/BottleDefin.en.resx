@@ -127,6 +127,15 @@
   <data name="grp_BottleDetails.Text" xml:space="preserve">
     <value>MotherLiquorInformation</value>
   </data>
+  <data name="cbo_Abs.Location" type="System.Drawing.Point, System.Drawing">
+    <value>283, 855</value>
+  </data>
+  <data name="lab_Abs.Text" xml:space="preserve">
+    <value>AbsType:</value>
+  </data>
+  <data name="lab_Abs.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
   <data name="cbo_OriginalBottleNum.Location" type="System.Drawing.Point, System.Drawing">
     <value>290, 634</value>
   </data>
@@ -134,7 +143,7 @@
     <value>303, 27</value>
   </data>
   <data name="dtp_BrewingData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>290, 808</value>
+    <value>290, 795</value>
   </data>
   <data name="dtp_BrewingData.Size" type="System.Drawing.Size, System.Drawing">
     <value>303, 29</value>
@@ -255,7 +264,7 @@
     <value>True</value>
   </data>
   <data name="lab_BrewingData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 813</value>
+    <value>4, 800</value>
   </data>
   <data name="lab_BrewingData.Size" type="System.Drawing.Size, System.Drawing">
     <value>119, 19</value>

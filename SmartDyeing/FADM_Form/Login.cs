@@ -616,6 +616,13 @@ namespace SmartDyeing.FADM_Form
                 {
                     Lib_Card.CardObject.OA1 = new Lib_Card.ADT8940A1.ADT8940A1_Card();
                     Lib_Card.CardObject.OA1.CardInit();
+
+                    if (Lib_Card.Configure.Parameter.Machine_BlenderVersion == 0)
+                    {
+                        Lib_Card.ADT8940A1.OutPut.Blender.Blender blender = new Lib_Card.ADT8940A1.OutPut.Blender.Blender_Basic();
+                        if (-1 == blender.Blender_Off())
+                            throw new Exception("驱动异常");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -1054,15 +1061,20 @@ namespace SmartDyeing.FADM_Form
                     }
                 }
 
+                int i_move_B_MinHSpeed = Convert.ToInt32(Lib_Card.Configure.Parameter.Move_B_MinHSpeed);//大针筒运行慢速驱动速度
+                int i_d122 = 0;
+                int i_d122_122 = 0;
+                this.ComParment(i_move_B_MinHSpeed, ref i_d122, ref i_d122_122);
+
                 int i_move_S_MinHSpeed = Convert.ToInt32(Lib_Card.Configure.Parameter.Move_S_MinHSpeed);//小针筒运行慢速驱动速度
                 int i_d120 = 0;
                 int i_d120_120 = 0;
                 this.ComParment(i_move_S_MinHSpeed, ref i_d120, ref i_d120_120);
 
-                int i_move_B_MinHSpeed = Convert.ToInt32(Lib_Card.Configure.Parameter.Move_B_MinHSpeed);//大针筒运行慢速驱动速度
-                int i_d122 = 0;
-                int i_d122_122 = 0;
-                this.ComParment(i_move_B_MinHSpeed, ref i_d122, ref i_d122_122);
+                int i_other_ClosePulse = Convert.ToInt32(Lib_Card.Configure.Parameter.Other_ClosePulse);//合夹夹布脉冲
+                int i_d148 = 0;
+                int i_d148_148 = 0;
+                this.ComParment(i_other_ClosePulse, ref i_d148, ref i_d148_148);
 
                 if (Convert.ToInt32(Lib_Card.Configure.Parameter.Correcting_B_Pulse) < 0)
                 {
@@ -1633,11 +1645,19 @@ namespace SmartDyeing.FADM_Form
                 string s_port6 = Lib_File.Ini.GetIni("HMI6", "Port", s_path);
                 string HMIBaClo_IP = Lib_File.Ini.GetIni("HMIBaClo", "IP", s_path);
                 string HMIBaClo_s_port6 = Lib_File.Ini.GetIni("HMIBaClo", "Port", s_path);
+                string Power_IP = Lib_File.Ini.GetIni("Power", "IP", s_path);
+                string Power_port = Lib_File.Ini.GetIni("Power", "Port", s_path);
 
                 string s_isUseCloth = Lib_File.Ini.GetIni("Setting", "IsUseCloth", "0", s_path);
                 if (s_isUseCloth == "1")
                 {
                     FADM_Object.Communal._b_isUseCloth = true;
+                }
+
+                string s_isUsePower = Lib_File.Ini.GetIni("Setting", "IsUsePower", "0", s_path);
+                if (s_isUsePower == "1")
+                {
+                    FADM_Object.Communal._b_isUsePower = true;
                 }
 
                 if (Lib_Card.Configure.Parameter.Machine_Area1_Type == 3)
@@ -1732,10 +1752,16 @@ namespace SmartDyeing.FADM_Form
                         FADM_Object.Communal.HMIBaClo._s_ip = HMIBaClo_IP;
                         FADM_Object.Communal.HMIBaClo.Connect();
                     }
-                    
+
                 }
 
-
+                if (Communal._b_isUsePower)
+                {
+                    FADM_Object.Communal.Powder = new HMITCPModBus();
+                    FADM_Object.Communal.Powder._i_port = Convert.ToInt32(Power_port);
+                    FADM_Object.Communal.Powder._s_ip = Power_IP;
+                    FADM_Object.Communal.Powder.Connect();
+                }
             }
             catch (Exception ex)
             {
@@ -2333,6 +2359,42 @@ namespace SmartDyeing.FADM_Form
                     Communal._fadmSqlserver.ReviseData("CREATE TABLE [dbo].[history_abs]([CupNum] [int] NOT NULL,[Enable] [tinyint] NULL,[IsUsing] [tinyint] NULL,[Statues] [nvarchar](50) NULL,[BottleNum] [int] NULL,[SampleDosage] [decimal](18, 3) NULL,[RealSampleDosage] [decimal](18, 3) NULL,[AdditivesNum] [int] NULL,[AdditivesDosage] [decimal](18, 3) NULL,[RealAdditivesDosage] [decimal](18, 3) NULL,[Pulse] [int] NULL,[Cooperate] [int] NULL,[Type] [int] NULL,[Abs] [nvarchar](1000) NULL,[L] [nvarchar](50) NULL,[A] [nvarchar](50) NULL,[B] [nvarchar](50) NULL,[FinishTime] [datetime2](0) NULL,[StartWave] [int] NULL,[EndWave] [int] NULL,[IntWave] [int] NULL,[Result] [nvarchar](500) NULL,[BrewingData] [datetime2](7) NULL,[RealConcentration] [float] NULL,[AssistantCode] [nvarchar](50) NULL,[Stand] [int] NULL) ON [PRIMARY]");
                 }
 
+                dt_head = Communal._fadmSqlserver.GetData("SELECT *FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'history_abs' AND COLUMN_NAME = 'BaseTestTime'");
+                if (dt_head.Rows.Count == 0)
+                {
+                    Communal._fadmSqlserver.ReviseData("ALTER TABLE history_abs ADD BaseTestTime [datetime2](7) null ");
+                }
+
+                dt_head = Communal._fadmSqlserver.GetData("SELECT *FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'history_abs' AND COLUMN_NAME = 'StandardE1'");
+                if (dt_head.Rows.Count == 0)
+                {
+                    Communal._fadmSqlserver.ReviseData("ALTER TABLE history_abs ADD StandardE1 nvarchar(1000) null ");
+                }
+
+                dt_head = Communal._fadmSqlserver.GetData("SELECT *FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'history_abs' AND COLUMN_NAME = 'StandardE2'");
+                if (dt_head.Rows.Count == 0)
+                {
+                    Communal._fadmSqlserver.ReviseData("ALTER TABLE history_abs ADD StandardE2 nvarchar(1000) null ");
+                }
+
+                dt_head = Communal._fadmSqlserver.GetData("SELECT *FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'history_abs' AND COLUMN_NAME = 'E1'");
+                if (dt_head.Rows.Count == 0)
+                {
+                    Communal._fadmSqlserver.ReviseData("ALTER TABLE history_abs ADD E1 nvarchar(1000) null ");
+                }
+
+                dt_head = Communal._fadmSqlserver.GetData("SELECT *FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'history_abs' AND COLUMN_NAME = 'E2'");
+                if (dt_head.Rows.Count == 0)
+                {
+                    Communal._fadmSqlserver.ReviseData("ALTER TABLE history_abs ADD E2 nvarchar(1000) null ");
+                }
+
+                dt_head = Communal._fadmSqlserver.GetData("SELECT *FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'history_abs' AND COLUMN_NAME = 'WL'");
+                if (dt_head.Rows.Count == 0)
+                {
+                    Communal._fadmSqlserver.ReviseData("ALTER TABLE history_abs ADD WL nvarchar(1000) null ");
+                }
+
                 dt_head = Communal._fadmSqlserver.GetData("select COUNT(*) from sysobjects where id = object_id('drop_system.dbo.abs_wait_list')");
                 if (dt_head.Rows[0][0].ToString() == "0")
                 {
@@ -2400,6 +2462,36 @@ namespace SmartDyeing.FADM_Form
                     Communal._fadmSqlserver.ReviseData("ALTER TABLE bottle_details ADD AbsCode nvarchar(50) null ");
                 }
 
+                dt_head = Communal._fadmSqlserver.GetData("SELECT *FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'bottle_details' AND COLUMN_NAME = 'StandardE1'");
+                if (dt_head.Rows.Count == 0)
+                {
+                    Communal._fadmSqlserver.ReviseData("ALTER TABLE bottle_details ADD StandardE1 nvarchar(1000) null ");
+                }
+
+                dt_head = Communal._fadmSqlserver.GetData("SELECT *FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'bottle_details' AND COLUMN_NAME = 'StandardE2'");
+                if (dt_head.Rows.Count == 0)
+                {
+                    Communal._fadmSqlserver.ReviseData("ALTER TABLE bottle_details ADD StandardE2 nvarchar(1000) null ");
+                }
+
+                dt_head = Communal._fadmSqlserver.GetData("SELECT *FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'bottle_details' AND COLUMN_NAME = 'E1'");
+                if (dt_head.Rows.Count == 0)
+                {
+                    Communal._fadmSqlserver.ReviseData("ALTER TABLE bottle_details ADD E1 nvarchar(1000) null ");
+                }
+
+                dt_head = Communal._fadmSqlserver.GetData("SELECT *FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'bottle_details' AND COLUMN_NAME = 'E2'");
+                if (dt_head.Rows.Count == 0)
+                {
+                    Communal._fadmSqlserver.ReviseData("ALTER TABLE bottle_details ADD E2 nvarchar(1000) null ");
+                }
+
+                dt_head = Communal._fadmSqlserver.GetData("SELECT *FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'bottle_details' AND COLUMN_NAME = 'WL'");
+                if (dt_head.Rows.Count == 0)
+                {
+                    Communal._fadmSqlserver.ReviseData("ALTER TABLE bottle_details ADD WL nvarchar(1000) null ");
+                }
+
                 dt_head = Communal._fadmSqlserver.GetData("SELECT *FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'standard' AND COLUMN_NAME = 'Type'");
                 if (dt_head.Rows.Count == 0)
                 {
@@ -2421,6 +2513,12 @@ namespace SmartDyeing.FADM_Form
                     Communal._fadmSqlserver.ReviseData("ALTER TABLE dyeing_details ADD No int null ");
                 }
 
+                dt_head = Communal._fadmSqlserver.GetData("SELECT *FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'brewing_process' AND COLUMN_NAME = 'Ratio'");
+                if (dt_head.Rows.Count == 0)
+                {
+                    Communal._fadmSqlserver.ReviseData("ALTER TABLE brewing_process ADD Ratio int null ");
+                }
+
             }
             catch { }
 
@@ -2434,6 +2532,7 @@ namespace SmartDyeing.FADM_Form
             SmartDyeing.FADM_Object.Communal._dic_cup_index.Clear();
             SmartDyeing.FADM_Object.Communal._dic_SixteenCupNum.Clear();
             SmartDyeing.FADM_Object.Communal._lis_SixteenCupNum.Clear();
+            SmartDyeing.FADM_Object.Communal._lis_PrecisionCupNum.Clear();
             Communal._dic_dyecup_index.Clear();
             int i_cupmin = 0;
             int i_cupmax = 0;
@@ -2541,6 +2640,11 @@ namespace SmartDyeing.FADM_Form
                         else
                         {
                             SmartDyeing.FADM_Object.Communal._dic_first_second.Add(i, 0);
+                        }
+                        //新增精密机杯号
+                        if (Lib_Card.Configure.Parameter.Machine_Area1_DyeType == 6)
+                        {
+                            SmartDyeing.FADM_Object.Communal._lis_PrecisionCupNum.Add(i);
                         }
                     }
                 }
@@ -2674,6 +2778,12 @@ namespace SmartDyeing.FADM_Form
                         {
                             SmartDyeing.FADM_Object.Communal._dic_first_second.Add(i, 0);
                         }
+
+                        //新增精密机杯号
+                        if (Lib_Card.Configure.Parameter.Machine_Area2_DyeType == 6)
+                        {
+                            SmartDyeing.FADM_Object.Communal._lis_PrecisionCupNum.Add(i);
+                        }
                     }
                 }
             }
@@ -2804,6 +2914,12 @@ namespace SmartDyeing.FADM_Form
                         else
                         {
                             SmartDyeing.FADM_Object.Communal._dic_first_second.Add(i, 0);
+                        }
+
+                        //新增精密机杯号
+                        if (Lib_Card.Configure.Parameter.Machine_Area3_DyeType == 6)
+                        {
+                            SmartDyeing.FADM_Object.Communal._lis_PrecisionCupNum.Add(i);
                         }
                     }
                 }
@@ -2940,6 +3056,12 @@ namespace SmartDyeing.FADM_Form
                         {
                             SmartDyeing.FADM_Object.Communal._dic_first_second.Add(i, 0);
                         }
+
+                        //新增精密机杯号
+                        if (Lib_Card.Configure.Parameter.Machine_Area4_DyeType == 6)
+                        {
+                            SmartDyeing.FADM_Object.Communal._lis_PrecisionCupNum.Add(i);
+                        }
                     }
                 }
             }
@@ -3071,6 +3193,12 @@ namespace SmartDyeing.FADM_Form
                         {
                             SmartDyeing.FADM_Object.Communal._dic_first_second.Add(i, 0);
                         }
+
+                        //新增精密机杯号
+                        if (Lib_Card.Configure.Parameter.Machine_Area5_DyeType == 6)
+                        {
+                            SmartDyeing.FADM_Object.Communal._lis_PrecisionCupNum.Add(i);
+                        }
                     }
                 }
             }
@@ -3201,6 +3329,12 @@ namespace SmartDyeing.FADM_Form
                         else
                         {
                             SmartDyeing.FADM_Object.Communal._dic_first_second.Add(i, 0);
+                        }
+
+                        //新增精密机杯号
+                        if (Lib_Card.Configure.Parameter.Machine_Area6_DyeType == 6)
+                        {
+                            SmartDyeing.FADM_Object.Communal._lis_PrecisionCupNum.Add(i);
                         }
                     }
                 }
@@ -3406,7 +3540,7 @@ namespace SmartDyeing.FADM_Form
                 //ia_values2[0] 滴料区区域数量
                 int cc = 1;
                 int cc2 = 11;
-
+                Communal.my_lis_dripCupNum.Clear();
                 if (Lib_Card.Configure.Parameter.Machine_Area1_Type == 2)
                 {
 

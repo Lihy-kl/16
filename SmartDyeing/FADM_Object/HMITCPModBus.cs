@@ -363,6 +363,39 @@ namespace SmartDyeing.FADM_Object
 
                         }
                     }
+                    //12杯单杯单控
+                    else if (i_type == 6)
+                    {
+                        for (int i = 0; i < 12; i++)
+                        {
+                            int[] ia_values = new int[16];
+                            int i_ret = -1;
+                            //if (i_type == 0)
+                            {
+                                i_ret = Read(4100 + 100 * i, 16, ref ia_values);
+                                if (i_ret == 0)
+                                {
+                                    //解析数据
+                                    Data d = new Data();
+                                    d._s_currentState = (ia_values[0]).ToString();
+                                    d._s_Warm = (ia_values[1]).ToString();
+                                    d._s_realTem = (ia_values[6]).ToString();
+                                    d._s_currentStepNum = (ia_values[7]).ToString();
+                                    d._s_waitData = (ia_values[8]).ToString();
+                                    d._s_reqSave = (ia_values[9]).ToString();
+                                    d._s_isTotalFinish = (ia_values[10]).ToString();
+                                    d._s_currentCraft = (ia_values[13]).ToString();
+                                    lis_l.Add(d);
+                                    _b_Connect = true;
+                                }
+                                else
+                                {
+                                    _b_Connect = false;
+                                }
+                            }
+
+                        }
+                    }
                     else
                     {
                         for (int i = 0; i < 10; i++)
@@ -646,7 +679,20 @@ namespace SmartDyeing.FADM_Object
         /// </summary>
         public string _s_putcloth;
 
+        /// <summary>
+        /// A助剂实际加药量
+        /// </summary>
+        public string _s_actA;
 
+        /// <summary>
+        /// B助剂实际加药量
+        /// </summary>
+        public string _s_actB;
+
+        /// <summary>
+        /// 请求保存数据
+        /// </summary>
+        public string _s_reqSave;
     }
 
     /// <summary>

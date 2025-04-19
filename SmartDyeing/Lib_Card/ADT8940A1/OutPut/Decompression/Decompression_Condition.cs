@@ -96,7 +96,10 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
                         if (bDelay)
                         {
                             //s = CardObject.InsertD("泄压气缸下超时", "Decompression_Down");
-                            s = CardObject.InsertD("泄压气缸下超时，请检查，排除异常请点是，退出运行请点否", " Decompression_Down");
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                s = CardObject.InsertD("泄压气缸下超时，请检查，排除异常请点是，退出运行请点否", " Decompression_Down");
+                            else
+                                s = CardObject.InsertD("The pressure relief cylinder times out, please check, troubleshoot the exception please click Yes, exit the operation please click no", " Decompression_Down");
                             while (true)
                             {
                                 Thread.Sleep(1);
@@ -127,7 +130,11 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
                         return -1;
                     else if (1 == iDecompressionUp)
                     {
-                        s = CardObject.InsertD("泄压上信号已接通，请检查，确定无接通请点是，退出运行请点否", " Decompression_Down");
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            s = CardObject.InsertD("泄压上信号已接通，请检查，确定无接通请点是，退出运行请点否", " Decompression_Down");
+                        else
+                            s = CardObject.InsertD("The pressure relief signal is connected, please check, confirm that it is not connected, please click Yes, please click No to exit the operation", " Decompression_Down");
+
                         while (true)
                         {
                             Thread.Sleep(1);
@@ -173,7 +180,12 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
                         }
                         else
                         {
-                            string s = CardObject.InsertD("接液盘未伸出，请检查，确定伸出请点是，退出运行请点否", " Decompression_Down");
+                            string s;
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                s = CardObject.InsertD("接液盘未伸出，请检查，确定伸出请点是，退出运行请点否", " Decompression_Down");
+                            else
+                                s = CardObject.InsertD("The liquid plate is not extended, please check to make sure that the extension point is yes, and the exit point is no", " Decompression_Down");
+
                             while (true)
                             {
                                 Thread.Sleep(1);
@@ -275,7 +287,11 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
                         if (bDelay)
                         {
                             //s = CardObject.InsertD("泄压气缸上超时", "Decompression_Up");
-                            s = CardObject.InsertD("泄压气缸上超时，请检查，排除异常请点是，退出运行请点否", " Decompression_Up");
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                s = CardObject.InsertD("泄压气缸上超时，请检查，排除异常请点是，退出运行请点否", " Decompression_Up");
+                            else
+                                s = CardObject.InsertD("The pressure relief cylinder times out, please check, troubleshooting please click Yes, exit please click no", " Decompression_Up");
+
                             while (true)
                             {
                                 Thread.Sleep(1);
@@ -456,7 +472,10 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
                             break;
                         if (bDelay)
                         {
-                            s = CardObject.InsertD("泄压气缸下超时，请检查，排除异常请点是，退出运行请点否", " Decompression_Down_Right");
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                s = CardObject.InsertD("泄压气缸下超时，请检查，排除异常请点是，退出运行请点否", " Decompression_Down_Right");
+                            else
+                                s = CardObject.InsertD("The pressure relief cylinder times out, please check, troubleshoot the exception please click Yes, exit the operation please click no", " Decompression_Down_Right");
                             while (true)
                             {
                                 Thread.Sleep(1);
@@ -507,7 +526,11 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
                         }
                         else
                         {
-                            string s = CardObject.InsertD("接液盘未伸出，请检查，确定伸出请点是，退出运行请点否", " Decompression_Down_Right");
+                            string s;
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                s = CardObject.InsertD("接液盘未伸出，请检查，确定伸出请点是，退出运行请点否", " Decompression_Down_Right");
+                            else
+                                s = CardObject.InsertD("The liquid plate is not extended, please check to make sure that the extension point is yes, and the exit point is no", " Decompression_Down_Right");
                             while (true)
                             {
                                 Thread.Sleep(1);
@@ -609,7 +632,10 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
                         if (bDelay)
                         {
                             //s = CardObject.InsertD("泄压气缸上超时", "Decompression_Up_Right");
-                            s = CardObject.InsertD("泄压气缸上超时，请检查，排除异常请点是，退出运行请点否", " Decompression_Up_Right");
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                s = CardObject.InsertD("泄压气缸上超时，请检查，排除异常请点是，退出运行请点否", " Decompression_Up_Right");
+                            else
+                                s = CardObject.InsertD("The pressure relief cylinder times out, please check, troubleshooting please click Yes, exit please click no", " Decompression_Up_Right");
                             while (true)
                             {
                                 Thread.Sleep(1);
@@ -660,7 +686,12 @@ namespace Lib_Card.ADT8940A1.OutPut.Decompression
                         }
                         else
                         {
-                            string s = CardObject.InsertD("接液盘未伸出，请检查，确定伸出请点是，退出运行请点否", " Decompression_Up_Right");
+                            string s;
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                s = CardObject.InsertD("接液盘未伸出，请检查，确定伸出请点是，退出运行请点否", " Decompression_Up_Right");
+                            else
+                                s = CardObject.InsertD("The liquid plate is not extended, please check to make sure that the extension point is yes, and the exit point is no", " Decompression_Up_Right");
+
                             while (true)
                             {
                                 Thread.Sleep(1);

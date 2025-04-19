@@ -156,7 +156,8 @@ namespace SmartDyeing.FADM_Control
                     dgv_Combination.Rows.Add();
                     DataGridViewComboBoxCell dd = (DataGridViewComboBoxCell)dgv_Combination[0, i];
                     dd.DataSource = _lis_code;
-                    dd.Value = dt_dyeingcode.Rows[i][0].ToString();
+                    if (_lis_code.Contains(dt_dyeingcode.Rows[i][0].ToString()))
+                        dd.Value = dt_dyeingcode.Rows[i][0].ToString();
                 }
                 //新增行下拉选项
                 {

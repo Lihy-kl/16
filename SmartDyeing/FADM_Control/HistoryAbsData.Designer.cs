@@ -53,6 +53,8 @@ namespace SmartDyeing.FADM_Control
             this.dgv_Details = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.grp_FormulaData = new System.Windows.Forms.GroupBox();
+            this.txt_BaseData = new System.Windows.Forms.TextBox();
+            this.label26 = new System.Windows.Forms.Label();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.label23 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
@@ -67,6 +69,10 @@ namespace SmartDyeing.FADM_Control
             this.label18 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.label24 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.txt_dL = new System.Windows.Forms.TextBox();
@@ -93,10 +99,8 @@ namespace SmartDyeing.FADM_Control
             this.label8 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.label24 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.label25 = new System.Windows.Forms.Label();
+            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.label27 = new System.Windows.Forms.Label();
             this.grp_DropRecord.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_DropRecord)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Details)).BeginInit();
@@ -245,6 +249,8 @@ namespace SmartDyeing.FADM_Control
             // 
             // grp_FormulaData
             // 
+            this.grp_FormulaData.Controls.Add(this.txt_BaseData);
+            this.grp_FormulaData.Controls.Add(this.label26);
             this.grp_FormulaData.Controls.Add(this.textBox4);
             this.grp_FormulaData.Controls.Add(this.label23);
             this.grp_FormulaData.Controls.Add(this.textBox2);
@@ -268,6 +274,16 @@ namespace SmartDyeing.FADM_Control
             resources.ApplyResources(this.grp_FormulaData, "grp_FormulaData");
             this.grp_FormulaData.Name = "grp_FormulaData";
             this.grp_FormulaData.TabStop = false;
+            // 
+            // txt_BaseData
+            // 
+            resources.ApplyResources(this.txt_BaseData, "txt_BaseData");
+            this.txt_BaseData.Name = "txt_BaseData";
+            // 
+            // label26
+            // 
+            resources.ApplyResources(this.label26, "label26");
+            this.label26.Name = "label26";
             // 
             // textBox4
             // 
@@ -336,6 +352,8 @@ namespace SmartDyeing.FADM_Control
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.textBox7);
+            this.groupBox3.Controls.Add(this.label27);
             this.groupBox3.Controls.Add(this.textBox6);
             this.groupBox3.Controls.Add(this.label25);
             this.groupBox3.Controls.Add(this.textBox5);
@@ -353,6 +371,26 @@ namespace SmartDyeing.FADM_Control
             resources.ApplyResources(this.groupBox3, "groupBox3");
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.TabStop = false;
+            // 
+            // textBox6
+            // 
+            resources.ApplyResources(this.textBox6, "textBox6");
+            this.textBox6.Name = "textBox6";
+            // 
+            // label25
+            // 
+            resources.ApplyResources(this.label25, "label25");
+            this.label25.Name = "label25";
+            // 
+            // textBox5
+            // 
+            resources.ApplyResources(this.textBox5, "textBox5");
+            this.textBox5.Name = "textBox5";
+            // 
+            // label24
+            // 
+            resources.ApplyResources(this.label24, "label24");
+            this.label24.Name = "label24";
             // 
             // label16
             // 
@@ -498,25 +536,15 @@ namespace SmartDyeing.FADM_Control
             resources.ApplyResources(this.textBox1, "textBox1");
             this.textBox1.Name = "textBox1";
             // 
-            // textBox5
+            // textBox7
             // 
-            resources.ApplyResources(this.textBox5, "textBox5");
-            this.textBox5.Name = "textBox5";
+            resources.ApplyResources(this.textBox7, "textBox7");
+            this.textBox7.Name = "textBox7";
             // 
-            // label24
+            // label27
             // 
-            resources.ApplyResources(this.label24, "label24");
-            this.label24.Name = "label24";
-            // 
-            // textBox6
-            // 
-            resources.ApplyResources(this.textBox6, "textBox6");
-            this.textBox6.Name = "textBox6";
-            // 
-            // label25
-            // 
-            resources.ApplyResources(this.label25, "label25");
-            this.label25.Name = "label25";
+            resources.ApplyResources(this.label27, "label27");
+            this.label27.Name = "label27";
             // 
             // HistoryAbsData
             // 
@@ -605,5 +633,9 @@ namespace SmartDyeing.FADM_Control
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.TextBox txt_BaseData;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.Label label27;
     }
 }

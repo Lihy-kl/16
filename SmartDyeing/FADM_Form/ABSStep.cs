@@ -92,14 +92,17 @@ namespace SmartDyeing.FADM_Form
             {
                 if (txt_StepNum.Text != "" && txt_StepNum.Text != null && cbo_TechnologyName.Text != "" &&
                     cbo_TechnologyName.Text != null && txt_StirringRate.Text != "" && txt_StirringRate.Text != null &&
-                    txt_Dosage.Text != "" && txt_Dosage.Text != null )
+                    txt_Dosage.Text != "" && txt_Dosage.Text != null &&
+                    txt_StartingWavelength.Text != "" && txt_StartingWavelength.Text != null &&
+                    txt_EndWavelength.Text != "" && txt_EndWavelength.Text != null &&
+                    txt_WavelengthInterval.Text != "" && txt_WavelengthInterval.Text != null)
                 {
                     if (_b_insertOrUpdate)
                     {
                         string s_sql = null;
                         s_sql = "INSERT INTO Abs_process (StepNum, TechnologyName," +
-                                           " Code,StirringRate,Dosage) VALUES('" + txt_StepNum.Text + "'," +
-                                           "'" + cbo_TechnologyName.Text + "','"  + _s_code + "','" + txt_StirringRate.Text + "','" + txt_Dosage.Text + "');";
+                                           " Code,StirringRate,Dosage,StartingWavelength,EndWavelength,WavelengthInterval) VALUES('" + txt_StepNum.Text + "'," +
+                                           "'" + cbo_TechnologyName.Text + "','"  + _s_code + "','" + txt_StirringRate.Text + "','" + txt_Dosage.Text + "','" + txt_StartingWavelength.Text + "','" + txt_EndWavelength.Text + "','" + txt_WavelengthInterval.Text + "');";
                         FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
 
                         //删除新增为空的数据
@@ -109,7 +112,7 @@ namespace SmartDyeing.FADM_Form
                     else
                     {
                         string s_sql = "UPDATE Abs_process SET TechnologyName = '" + cbo_TechnologyName.Text + "'," +
-                                           " StirringRate = '" + txt_StirringRate.Text + "', Dosage = '" + txt_Dosage.Text  + "' WHERE StepNum = '" + txt_StepNum.Text + "'" +
+                                           " StirringRate = '" + txt_StirringRate.Text + "', Dosage = '" + txt_Dosage.Text + "', StartingWavelength = '" + txt_StartingWavelength.Text + "', EndWavelength = '" + txt_EndWavelength.Text + "', WavelengthInterval = '" + txt_WavelengthInterval.Text + "' WHERE StepNum = '" + txt_StepNum.Text + "'" +
                                            " AND Code = '" + _s_code + "';";
                         FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
                     }
@@ -417,9 +420,9 @@ namespace SmartDyeing.FADM_Form
                 txt_DrainTime.Enabled = false;
                 txt_ParallelizingDishTime.Enabled = false;
                 txt_PumpingTime.Enabled = false;
-                txt_StartingWavelength.Enabled = false;
-                txt_EndWavelength.Enabled = false;
-                txt_WavelengthInterval.Enabled = false;
+                txt_StartingWavelength.Enabled = true;
+                txt_EndWavelength.Enabled = true;
+                txt_WavelengthInterval.Enabled = true;
                 txt_Dosage.Enabled = true;
             }
             else if(cbo_TechnologyName.Text == "加水")

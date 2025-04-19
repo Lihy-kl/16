@@ -41,12 +41,6 @@ namespace SmartDyeing.FADM_Control
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.dgv_Details = new System.Windows.Forms.DataGridView();
-            this.dgv_Dyeing = new System.Windows.Forms.DataGridView();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.txt_CupNum = new System.Windows.Forms.TextBox();
             this.txt_ClothType = new System.Windows.Forms.TextBox();
             this.txt_CreateTime = new System.Windows.Forms.TextBox();
@@ -79,18 +73,6 @@ namespace SmartDyeing.FADM_Control
             this.txt_DyeingCode = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.txt_Operator = new System.Windows.Forms.ComboBox();
-            this.dgv_FormulaData = new SmartDyeing.FADM_Object.MyDataGridView();
-            this.dataGridViewTextBoxColumn55 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn56 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn57 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn58 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewComboBoxColumn7 = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dataGridViewTextBoxColumn59 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn60 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn61 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn62 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn63 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewCheckBoxColumn7 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.txt_AnhydrationWR = new System.Windows.Forms.TextBox();
             this.lab_AnhydrationWR = new System.Windows.Forms.Label();
             this.txt_Non_AnhydrationWR = new System.Windows.Forms.TextBox();
@@ -185,77 +167,32 @@ namespace SmartDyeing.FADM_Control
             this.dataGridViewCheckBoxColumn1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.tmr = new System.Windows.Forms.Timer(this.components);
             this.panel2 = new System.Windows.Forms.FlowLayoutPanel();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_Details)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_Dyeing)).BeginInit();
-            this.groupBox3.SuspendLayout();
+            this.dgv_Dyeing = new System.Windows.Forms.DataGridView();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgv_Details = new System.Windows.Forms.DataGridView();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.dgv_FormulaData = new SmartDyeing.FADM_Object.MyDataGridView();
+            this.dataGridViewTextBoxColumn55 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn56 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn57 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn58 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewComboBoxColumn7 = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dataGridViewTextBoxColumn59 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn60 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn61 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn62 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn63 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewCheckBoxColumn7 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.grp_BatchData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_BatchData)).BeginInit();
             this.grp_FormulaData.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_Dyeing)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_Details)).BeginInit();
+            this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_FormulaData)).BeginInit();
             this.SuspendLayout();
-            // 
-            // dgv_Details
-            // 
-            this.dgv_Details.AllowUserToAddRows = false;
-            this.dgv_Details.AllowUserToDeleteRows = false;
-            this.dgv_Details.AllowUserToResizeColumns = false;
-            this.dgv_Details.AllowUserToResizeRows = false;
-            this.dgv_Details.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.dgv_Details.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            resources.ApplyResources(this.dgv_Details, "dgv_Details");
-            this.dgv_Details.MultiSelect = false;
-            this.dgv_Details.Name = "dgv_Details";
-            this.dgv_Details.ReadOnly = true;
-            this.dgv_Details.RowHeadersVisible = false;
-            this.dgv_Details.RowTemplate.Height = 23;
-            this.dgv_Details.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            // 
-            // dgv_Dyeing
-            // 
-            this.dgv_Dyeing.AllowUserToAddRows = false;
-            this.dgv_Dyeing.AllowUserToDeleteRows = false;
-            this.dgv_Dyeing.AllowUserToResizeColumns = false;
-            this.dgv_Dyeing.AllowUserToResizeRows = false;
-            this.dgv_Dyeing.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.dgv_Dyeing.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_Dyeing.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column2,
-            this.Column3,
-            this.Column4});
-            resources.ApplyResources(this.dgv_Dyeing, "dgv_Dyeing");
-            this.dgv_Dyeing.MultiSelect = false;
-            this.dgv_Dyeing.Name = "dgv_Dyeing";
-            this.dgv_Dyeing.ReadOnly = true;
-            this.dgv_Dyeing.RowHeadersVisible = false;
-            this.dgv_Dyeing.RowTemplate.Height = 23;
-            this.dgv_Dyeing.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_Dyeing.CurrentCellChanged += new System.EventHandler(this.dgv_Dyeing_CurrentCellChanged);
-            // 
-            // Column2
-            // 
-            resources.ApplyResources(this.Column2, "Column2");
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            // 
-            // Column3
-            // 
-            resources.ApplyResources(this.Column3, "Column3");
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
-            // 
-            // Column4
-            // 
-            resources.ApplyResources(this.Column4, "Column4");
-            this.Column4.Name = "Column4";
-            this.Column4.ReadOnly = true;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.dgv_Details);
-            this.groupBox3.Controls.Add(this.dgv_Dyeing);
-            resources.ApplyResources(this.groupBox3, "groupBox3");
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.TabStop = false;
             // 
             // txt_CupNum
             // 
@@ -317,6 +254,7 @@ namespace SmartDyeing.FADM_Control
             // 
             // grp_BatchData
             // 
+            resources.ApplyResources(this.grp_BatchData, "grp_BatchData");
             this.grp_BatchData.Controls.Add(this.txt_Record_Operator);
             this.grp_BatchData.Controls.Add(this.dgv_BatchData);
             this.grp_BatchData.Controls.Add(this.dt_Record_End);
@@ -330,7 +268,6 @@ namespace SmartDyeing.FADM_Control
             this.grp_BatchData.Controls.Add(this.label4);
             this.grp_BatchData.Controls.Add(this.label3);
             this.grp_BatchData.Controls.Add(this.label2);
-            resources.ApplyResources(this.grp_BatchData, "grp_BatchData");
             this.grp_BatchData.Name = "grp_BatchData";
             this.grp_BatchData.TabStop = false;
             // 
@@ -342,6 +279,7 @@ namespace SmartDyeing.FADM_Control
             // 
             // dgv_BatchData
             // 
+            resources.ApplyResources(this.dgv_BatchData, "dgv_BatchData");
             this.dgv_BatchData.AllowUserToAddRows = false;
             this.dgv_BatchData.AllowUserToOrderColumns = true;
             this.dgv_BatchData.AllowUserToResizeColumns = false;
@@ -369,7 +307,6 @@ namespace SmartDyeing.FADM_Control
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgv_BatchData.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgv_BatchData.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            resources.ApplyResources(this.dgv_BatchData, "dgv_BatchData");
             this.dgv_BatchData.MultiSelect = false;
             this.dgv_BatchData.Name = "dgv_BatchData";
             this.dgv_BatchData.ReadOnly = true;
@@ -482,6 +419,7 @@ namespace SmartDyeing.FADM_Control
             // 
             // grp_FormulaData
             // 
+            resources.ApplyResources(this.grp_FormulaData, "grp_FormulaData");
             this.grp_FormulaData.Controls.Add(this.txt_DyeingCode);
             this.grp_FormulaData.Controls.Add(this.label6);
             this.grp_FormulaData.Controls.Add(this.txt_Operator);
@@ -512,7 +450,6 @@ namespace SmartDyeing.FADM_Control
             this.grp_FormulaData.Controls.Add(this.lab_ClothType);
             this.grp_FormulaData.Controls.Add(this.lab_FormulaName);
             this.grp_FormulaData.Controls.Add(this.lab_FormulaCode);
-            resources.ApplyResources(this.grp_FormulaData, "grp_FormulaData");
             this.grp_FormulaData.Name = "grp_FormulaData";
             this.grp_FormulaData.TabStop = false;
             // 
@@ -528,143 +465,10 @@ namespace SmartDyeing.FADM_Control
             // 
             // txt_Operator
             // 
-            this.txt_Operator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             resources.ApplyResources(this.txt_Operator, "txt_Operator");
+            this.txt_Operator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.txt_Operator.FormattingEnabled = true;
             this.txt_Operator.Name = "txt_Operator";
-            // 
-            // dgv_FormulaData
-            // 
-            this.dgv_FormulaData.AllowUserToDeleteRows = false;
-            this.dgv_FormulaData.AllowUserToResizeColumns = false;
-            this.dgv_FormulaData.AllowUserToResizeRows = false;
-            this.dgv_FormulaData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgv_FormulaData.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
-            this.dgv_FormulaData.BackgroundColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("宋体", 10.5F);
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_FormulaData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
-            this.dgv_FormulaData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_FormulaData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn55,
-            this.dataGridViewTextBoxColumn56,
-            this.dataGridViewTextBoxColumn57,
-            this.dataGridViewTextBoxColumn58,
-            this.dataGridViewComboBoxColumn7,
-            this.dataGridViewTextBoxColumn59,
-            this.dataGridViewTextBoxColumn60,
-            this.dataGridViewTextBoxColumn61,
-            this.dataGridViewTextBoxColumn62,
-            this.dataGridViewTextBoxColumn63,
-            this.dataGridViewCheckBoxColumn7});
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("宋体", 10.5F);
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv_FormulaData.DefaultCellStyle = dataGridViewCellStyle6;
-            this.dgv_FormulaData.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            resources.ApplyResources(this.dgv_FormulaData, "dgv_FormulaData");
-            this.dgv_FormulaData.MultiSelect = false;
-            this.dgv_FormulaData.Name = "dgv_FormulaData";
-            this.dgv_FormulaData.RowHeadersVisible = false;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("宋体", 14.25F);
-            this.dgv_FormulaData.RowsDefaultCellStyle = dataGridViewCellStyle7;
-            this.dgv_FormulaData.RowTemplate.Height = 30;
-            this.dgv_FormulaData.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // dataGridViewTextBoxColumn55
-            // 
-            this.dataGridViewTextBoxColumn55.FillWeight = 77.02372F;
-            resources.ApplyResources(this.dataGridViewTextBoxColumn55, "dataGridViewTextBoxColumn55");
-            this.dataGridViewTextBoxColumn55.Name = "dataGridViewTextBoxColumn55";
-            this.dataGridViewTextBoxColumn55.ReadOnly = true;
-            this.dataGridViewTextBoxColumn55.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // dataGridViewTextBoxColumn56
-            // 
-            this.dataGridViewTextBoxColumn56.FillWeight = 104.9278F;
-            resources.ApplyResources(this.dataGridViewTextBoxColumn56, "dataGridViewTextBoxColumn56");
-            this.dataGridViewTextBoxColumn56.Name = "dataGridViewTextBoxColumn56";
-            this.dataGridViewTextBoxColumn56.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // dataGridViewTextBoxColumn57
-            // 
-            this.dataGridViewTextBoxColumn57.FillWeight = 75.44542F;
-            resources.ApplyResources(this.dataGridViewTextBoxColumn57, "dataGridViewTextBoxColumn57");
-            this.dataGridViewTextBoxColumn57.Name = "dataGridViewTextBoxColumn57";
-            this.dataGridViewTextBoxColumn57.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // dataGridViewTextBoxColumn58
-            // 
-            this.dataGridViewTextBoxColumn58.FillWeight = 79.8297F;
-            resources.ApplyResources(this.dataGridViewTextBoxColumn58, "dataGridViewTextBoxColumn58");
-            this.dataGridViewTextBoxColumn58.Name = "dataGridViewTextBoxColumn58";
-            this.dataGridViewTextBoxColumn58.ReadOnly = true;
-            this.dataGridViewTextBoxColumn58.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // dataGridViewComboBoxColumn7
-            // 
-            this.dataGridViewComboBoxColumn7.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.Nothing;
-            this.dataGridViewComboBoxColumn7.FillWeight = 60.30895F;
-            this.dataGridViewComboBoxColumn7.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            resources.ApplyResources(this.dataGridViewComboBoxColumn7, "dataGridViewComboBoxColumn7");
-            this.dataGridViewComboBoxColumn7.Name = "dataGridViewComboBoxColumn7";
-            // 
-            // dataGridViewTextBoxColumn59
-            // 
-            this.dataGridViewTextBoxColumn59.FillWeight = 116.9112F;
-            resources.ApplyResources(this.dataGridViewTextBoxColumn59, "dataGridViewTextBoxColumn59");
-            this.dataGridViewTextBoxColumn59.Name = "dataGridViewTextBoxColumn59";
-            this.dataGridViewTextBoxColumn59.ReadOnly = true;
-            this.dataGridViewTextBoxColumn59.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // dataGridViewTextBoxColumn60
-            // 
-            this.dataGridViewTextBoxColumn60.FillWeight = 122.0618F;
-            resources.ApplyResources(this.dataGridViewTextBoxColumn60, "dataGridViewTextBoxColumn60");
-            this.dataGridViewTextBoxColumn60.Name = "dataGridViewTextBoxColumn60";
-            this.dataGridViewTextBoxColumn60.ReadOnly = true;
-            this.dataGridViewTextBoxColumn60.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // dataGridViewTextBoxColumn61
-            // 
-            this.dataGridViewTextBoxColumn61.FillWeight = 152.5202F;
-            resources.ApplyResources(this.dataGridViewTextBoxColumn61, "dataGridViewTextBoxColumn61");
-            this.dataGridViewTextBoxColumn61.Name = "dataGridViewTextBoxColumn61";
-            this.dataGridViewTextBoxColumn61.ReadOnly = true;
-            this.dataGridViewTextBoxColumn61.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // dataGridViewTextBoxColumn62
-            // 
-            this.dataGridViewTextBoxColumn62.FillWeight = 138.4942F;
-            resources.ApplyResources(this.dataGridViewTextBoxColumn62, "dataGridViewTextBoxColumn62");
-            this.dataGridViewTextBoxColumn62.Name = "dataGridViewTextBoxColumn62";
-            this.dataGridViewTextBoxColumn62.ReadOnly = true;
-            this.dataGridViewTextBoxColumn62.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // dataGridViewTextBoxColumn63
-            // 
-            this.dataGridViewTextBoxColumn63.FillWeight = 147.1373F;
-            resources.ApplyResources(this.dataGridViewTextBoxColumn63, "dataGridViewTextBoxColumn63");
-            this.dataGridViewTextBoxColumn63.Name = "dataGridViewTextBoxColumn63";
-            this.dataGridViewTextBoxColumn63.ReadOnly = true;
-            this.dataGridViewTextBoxColumn63.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // dataGridViewCheckBoxColumn7
-            // 
-            this.dataGridViewCheckBoxColumn7.FillWeight = 69.70769F;
-            resources.ApplyResources(this.dataGridViewCheckBoxColumn7, "dataGridViewCheckBoxColumn7");
-            this.dataGridViewCheckBoxColumn7.Name = "dataGridViewCheckBoxColumn7";
-            this.dataGridViewCheckBoxColumn7.ReadOnly = true;
             // 
             // txt_AnhydrationWR
             // 
@@ -1336,6 +1140,202 @@ namespace SmartDyeing.FADM_Control
             resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Name = "panel2";
             // 
+            // dgv_Dyeing
+            // 
+            resources.ApplyResources(this.dgv_Dyeing, "dgv_Dyeing");
+            this.dgv_Dyeing.AllowUserToAddRows = false;
+            this.dgv_Dyeing.AllowUserToDeleteRows = false;
+            this.dgv_Dyeing.AllowUserToResizeColumns = false;
+            this.dgv_Dyeing.AllowUserToResizeRows = false;
+            this.dgv_Dyeing.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.dgv_Dyeing.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_Dyeing.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column2,
+            this.Column3,
+            this.Column4});
+            this.dgv_Dyeing.MultiSelect = false;
+            this.dgv_Dyeing.Name = "dgv_Dyeing";
+            this.dgv_Dyeing.ReadOnly = true;
+            this.dgv_Dyeing.RowHeadersVisible = false;
+            this.dgv_Dyeing.RowTemplate.Height = 23;
+            this.dgv_Dyeing.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgv_Dyeing.CurrentCellChanged += new System.EventHandler(this.dgv_Dyeing_CurrentCellChanged);
+            // 
+            // Column2
+            // 
+            resources.ApplyResources(this.Column2, "Column2");
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            // 
+            // Column3
+            // 
+            resources.ApplyResources(this.Column3, "Column3");
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            // 
+            // Column4
+            // 
+            resources.ApplyResources(this.Column4, "Column4");
+            this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
+            // 
+            // dgv_Details
+            // 
+            resources.ApplyResources(this.dgv_Details, "dgv_Details");
+            this.dgv_Details.AllowUserToAddRows = false;
+            this.dgv_Details.AllowUserToDeleteRows = false;
+            this.dgv_Details.AllowUserToResizeColumns = false;
+            this.dgv_Details.AllowUserToResizeRows = false;
+            this.dgv_Details.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.dgv_Details.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_Details.MultiSelect = false;
+            this.dgv_Details.Name = "dgv_Details";
+            this.dgv_Details.ReadOnly = true;
+            this.dgv_Details.RowHeadersVisible = false;
+            this.dgv_Details.RowTemplate.Height = 23;
+            this.dgv_Details.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            // 
+            // groupBox3
+            // 
+            resources.ApplyResources(this.groupBox3, "groupBox3");
+            this.groupBox3.Controls.Add(this.dgv_Details);
+            this.groupBox3.Controls.Add(this.dgv_Dyeing);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.TabStop = false;
+            // 
+            // dgv_FormulaData
+            // 
+            resources.ApplyResources(this.dgv_FormulaData, "dgv_FormulaData");
+            this.dgv_FormulaData.AllowUserToDeleteRows = false;
+            this.dgv_FormulaData.AllowUserToResizeColumns = false;
+            this.dgv_FormulaData.AllowUserToResizeRows = false;
+            this.dgv_FormulaData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgv_FormulaData.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
+            this.dgv_FormulaData.BackgroundColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("宋体", 10.5F);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_FormulaData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            this.dgv_FormulaData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_FormulaData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn55,
+            this.dataGridViewTextBoxColumn56,
+            this.dataGridViewTextBoxColumn57,
+            this.dataGridViewTextBoxColumn58,
+            this.dataGridViewComboBoxColumn7,
+            this.dataGridViewTextBoxColumn59,
+            this.dataGridViewTextBoxColumn60,
+            this.dataGridViewTextBoxColumn61,
+            this.dataGridViewTextBoxColumn62,
+            this.dataGridViewTextBoxColumn63,
+            this.dataGridViewCheckBoxColumn7});
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("宋体", 10.5F);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv_FormulaData.DefaultCellStyle = dataGridViewCellStyle6;
+            this.dgv_FormulaData.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.dgv_FormulaData.MultiSelect = false;
+            this.dgv_FormulaData.Name = "dgv_FormulaData";
+            this.dgv_FormulaData.RowHeadersVisible = false;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("宋体", 14.25F);
+            this.dgv_FormulaData.RowsDefaultCellStyle = dataGridViewCellStyle7;
+            this.dgv_FormulaData.RowTemplate.Height = 30;
+            this.dgv_FormulaData.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // dataGridViewTextBoxColumn55
+            // 
+            this.dataGridViewTextBoxColumn55.FillWeight = 77.02372F;
+            resources.ApplyResources(this.dataGridViewTextBoxColumn55, "dataGridViewTextBoxColumn55");
+            this.dataGridViewTextBoxColumn55.Name = "dataGridViewTextBoxColumn55";
+            this.dataGridViewTextBoxColumn55.ReadOnly = true;
+            this.dataGridViewTextBoxColumn55.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn56
+            // 
+            this.dataGridViewTextBoxColumn56.FillWeight = 104.9278F;
+            resources.ApplyResources(this.dataGridViewTextBoxColumn56, "dataGridViewTextBoxColumn56");
+            this.dataGridViewTextBoxColumn56.Name = "dataGridViewTextBoxColumn56";
+            this.dataGridViewTextBoxColumn56.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn57
+            // 
+            this.dataGridViewTextBoxColumn57.FillWeight = 75.44542F;
+            resources.ApplyResources(this.dataGridViewTextBoxColumn57, "dataGridViewTextBoxColumn57");
+            this.dataGridViewTextBoxColumn57.Name = "dataGridViewTextBoxColumn57";
+            this.dataGridViewTextBoxColumn57.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn58
+            // 
+            this.dataGridViewTextBoxColumn58.FillWeight = 79.8297F;
+            resources.ApplyResources(this.dataGridViewTextBoxColumn58, "dataGridViewTextBoxColumn58");
+            this.dataGridViewTextBoxColumn58.Name = "dataGridViewTextBoxColumn58";
+            this.dataGridViewTextBoxColumn58.ReadOnly = true;
+            this.dataGridViewTextBoxColumn58.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewComboBoxColumn7
+            // 
+            this.dataGridViewComboBoxColumn7.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.Nothing;
+            this.dataGridViewComboBoxColumn7.FillWeight = 60.30895F;
+            this.dataGridViewComboBoxColumn7.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            resources.ApplyResources(this.dataGridViewComboBoxColumn7, "dataGridViewComboBoxColumn7");
+            this.dataGridViewComboBoxColumn7.Name = "dataGridViewComboBoxColumn7";
+            // 
+            // dataGridViewTextBoxColumn59
+            // 
+            this.dataGridViewTextBoxColumn59.FillWeight = 116.9112F;
+            resources.ApplyResources(this.dataGridViewTextBoxColumn59, "dataGridViewTextBoxColumn59");
+            this.dataGridViewTextBoxColumn59.Name = "dataGridViewTextBoxColumn59";
+            this.dataGridViewTextBoxColumn59.ReadOnly = true;
+            this.dataGridViewTextBoxColumn59.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn60
+            // 
+            this.dataGridViewTextBoxColumn60.FillWeight = 122.0618F;
+            resources.ApplyResources(this.dataGridViewTextBoxColumn60, "dataGridViewTextBoxColumn60");
+            this.dataGridViewTextBoxColumn60.Name = "dataGridViewTextBoxColumn60";
+            this.dataGridViewTextBoxColumn60.ReadOnly = true;
+            this.dataGridViewTextBoxColumn60.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn61
+            // 
+            this.dataGridViewTextBoxColumn61.FillWeight = 152.5202F;
+            resources.ApplyResources(this.dataGridViewTextBoxColumn61, "dataGridViewTextBoxColumn61");
+            this.dataGridViewTextBoxColumn61.Name = "dataGridViewTextBoxColumn61";
+            this.dataGridViewTextBoxColumn61.ReadOnly = true;
+            this.dataGridViewTextBoxColumn61.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn62
+            // 
+            this.dataGridViewTextBoxColumn62.FillWeight = 138.4942F;
+            resources.ApplyResources(this.dataGridViewTextBoxColumn62, "dataGridViewTextBoxColumn62");
+            this.dataGridViewTextBoxColumn62.Name = "dataGridViewTextBoxColumn62";
+            this.dataGridViewTextBoxColumn62.ReadOnly = true;
+            this.dataGridViewTextBoxColumn62.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn63
+            // 
+            this.dataGridViewTextBoxColumn63.FillWeight = 147.1373F;
+            resources.ApplyResources(this.dataGridViewTextBoxColumn63, "dataGridViewTextBoxColumn63");
+            this.dataGridViewTextBoxColumn63.Name = "dataGridViewTextBoxColumn63";
+            this.dataGridViewTextBoxColumn63.ReadOnly = true;
+            this.dataGridViewTextBoxColumn63.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewCheckBoxColumn7
+            // 
+            this.dataGridViewCheckBoxColumn7.FillWeight = 69.70769F;
+            resources.ApplyResources(this.dataGridViewCheckBoxColumn7, "dataGridViewCheckBoxColumn7");
+            this.dataGridViewCheckBoxColumn7.Name = "dataGridViewCheckBoxColumn7";
+            this.dataGridViewCheckBoxColumn7.ReadOnly = true;
+            // 
             // AllFormulas
             // 
             resources.ApplyResources(this, "$this");
@@ -1345,14 +1345,14 @@ namespace SmartDyeing.FADM_Control
             this.Controls.Add(this.grp_BatchData);
             this.Controls.Add(this.grp_FormulaData);
             this.Name = "AllFormulas";
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_Details)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_Dyeing)).EndInit();
-            this.groupBox3.ResumeLayout(false);
             this.grp_BatchData.ResumeLayout(false);
             this.grp_BatchData.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_BatchData)).EndInit();
             this.grp_FormulaData.ResumeLayout(false);
             this.grp_FormulaData.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_Dyeing)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_Details)).EndInit();
+            this.groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_FormulaData)).EndInit();
             this.ResumeLayout(false);
 
@@ -1386,9 +1386,6 @@ namespace SmartDyeing.FADM_Control
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn46;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn54;
         private DataGridViewComboBoxColumn dataGridViewComboBoxColumn4;
-        private DataGridView dgv_Details;
-        private DataGridView dgv_Dyeing;
-        private GroupBox groupBox3;
         private DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn2;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn18;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn17;
@@ -1473,9 +1470,6 @@ namespace SmartDyeing.FADM_Control
         private Label label4;
         private Label label3;
         private Label label2;
-        private DataGridViewTextBoxColumn Column2;
-        private DataGridViewTextBoxColumn Column3;
-        private DataGridViewTextBoxColumn Column4;
         private DataGridViewTextBoxColumn Index;
         private DataGridViewTextBoxColumn AssistantCode;
         private DataGridViewTextBoxColumn FormulaDosage;
@@ -1506,5 +1500,11 @@ namespace SmartDyeing.FADM_Control
         private FlowLayoutPanel panel2;
         private TextBox txt_DyeingCode;
         private Label label6;
+        private DataGridView dgv_Dyeing;
+        private DataGridViewTextBoxColumn Column2;
+        private DataGridViewTextBoxColumn Column3;
+        private DataGridViewTextBoxColumn Column4;
+        private DataGridView dgv_Details;
+        private GroupBox groupBox3;
     }
 }

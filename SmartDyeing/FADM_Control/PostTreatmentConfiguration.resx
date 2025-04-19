@@ -178,7 +178,7 @@
     <value>grp_BrewingProcess</value>
   </data>
   <data name="&gt;&gt;btn_DyeingCodeDelete.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>10</value>
   </data>
   <data name="btn_DyeingCodeAdd.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -208,7 +208,7 @@
     <value>grp_BrewingProcess</value>
   </data>
   <data name="&gt;&gt;btn_DyeingCodeAdd.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>11</value>
   </data>
   <data name="txt_Dye_Code.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -235,7 +235,7 @@
     <value>grp_BrewingProcess</value>
   </data>
   <data name="&gt;&gt;txt_Dye_Code.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>12</value>
   </data>
   <data name="lab_BrewProcessCode.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -271,7 +271,7 @@
     <value>grp_BrewingProcess</value>
   </data>
   <data name="&gt;&gt;lab_BrewProcessCode.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>13</value>
   </data>
   <data name="grp_Dyeing.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 10.5pt</value>
@@ -310,7 +310,7 @@
     <value>670, 67</value>
   </data>
   <data name="txt_Notes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>623, 29</value>
+    <value>180, 29</value>
   </data>
   <data name="txt_Notes.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -325,7 +325,7 @@
     <value>grp_BrewingProcess</value>
   </data>
   <data name="&gt;&gt;txt_Notes.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>4</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -361,7 +361,7 @@
     <value>grp_BrewingProcess</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>5</value>
   </data>
   <data name="btn_DyeingProcessDelete.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -394,7 +394,7 @@
     <value>grp_BrewingProcess</value>
   </data>
   <data name="&gt;&gt;btn_DyeingProcessDelete.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>6</value>
   </data>
   <data name="btn_DyeingProcessUpdate.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -427,7 +427,7 @@
     <value>grp_BrewingProcess</value>
   </data>
   <data name="&gt;&gt;btn_DyeingProcessUpdate.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>7</value>
   </data>
   <data name="btn_DyeingProcessAdd.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -460,7 +460,118 @@
     <value>grp_BrewingProcess</value>
   </data>
   <data name="&gt;&gt;btn_DyeingProcessAdd.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>8</value>
+  </data>
+  <data name="btn_Insert.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="btn_Insert.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btn_Insert.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1414, 464</value>
+  </data>
+  <data name="btn_Insert.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 42</value>
+  </data>
+  <data name="btn_Insert.TabIndex" type="System.Int32, mscorlib">
+    <value>52</value>
+  </data>
+  <data name="btn_Insert.Text" xml:space="preserve">
+    <value>插入</value>
+  </data>
+  <data name="&gt;&gt;btn_Insert.Name" xml:space="preserve">
+    <value>btn_Insert</value>
+  </data>
+  <data name="&gt;&gt;btn_Insert.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btn_Insert.Parent" xml:space="preserve">
+    <value>grp_BrewingProcess</value>
+  </data>
+  <data name="&gt;&gt;btn_Insert.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="txt_Template.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="txt_Template.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="txt_Template.Items" xml:space="preserve">
+    <value />
+  </data>
+  <data name="txt_Template.Items1" xml:space="preserve">
+    <value>活性模版</value>
+  </data>
+  <data name="txt_Template.Items2" xml:space="preserve">
+    <value>分散模版</value>
+  </data>
+  <data name="txt_Template.Items3" xml:space="preserve">
+    <value>酸性模版</value>
+  </data>
+  <data name="txt_Template.Location" type="System.Drawing.Point, System.Drawing">
+    <value>965, 69</value>
+  </data>
+  <data name="txt_Template.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="txt_Template.Size" type="System.Drawing.Size, System.Drawing">
+    <value>327, 27</value>
+  </data>
+  <data name="txt_Template.TabIndex" type="System.Int32, mscorlib">
+    <value>50</value>
+  </data>
+  <data name="&gt;&gt;txt_Template.Name" xml:space="preserve">
+    <value>txt_Template</value>
+  </data>
+  <data name="&gt;&gt;txt_Template.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txt_Template.Parent" xml:space="preserve">
+    <value>grp_BrewingProcess</value>
+  </data>
+  <data name="&gt;&gt;txt_Template.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="lab_DyeingCode.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lab_DyeingCode.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <data name="lab_DyeingCode.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lab_DyeingCode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>862, 72</value>
+  </data>
+  <data name="lab_DyeingCode.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="lab_DyeingCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 19</value>
+  </data>
+  <data name="lab_DyeingCode.TabIndex" type="System.Int32, mscorlib">
+    <value>51</value>
+  </data>
+  <data name="lab_DyeingCode.Text" xml:space="preserve">
+    <value>工艺模版:</value>
+  </data>
+  <data name="lab_DyeingCode.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;lab_DyeingCode.Name" xml:space="preserve">
+    <value>lab_DyeingCode</value>
+  </data>
+  <data name="&gt;&gt;lab_DyeingCode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lab_DyeingCode.Parent" xml:space="preserve">
+    <value>grp_BrewingProcess</value>
+  </data>
+  <data name="&gt;&gt;lab_DyeingCode.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="btn_Copy.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -490,7 +601,7 @@
     <value>grp_BrewingProcess</value>
   </data>
   <data name="&gt;&gt;btn_Copy.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>3</value>
   </data>
   <data name="dgv_Child_DyeData.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 192</value>
@@ -517,7 +628,7 @@
     <value>grp_BrewingProcess</value>
   </data>
   <data name="&gt;&gt;dgv_Child_DyeData.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>9</value>
   </data>
   <data name="grp_BrewingProcess.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 10.5pt</value>

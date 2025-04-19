@@ -18,6 +18,7 @@ using System.Windows.Forms;
 using HslControls;
 using HslControls.Charts;
 using System.Windows.Forms.DataVisualization.Charting;
+using static SmartDyeing.FADM_Control.CurveControl;
 //using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace SmartDyeing.FADM_Control
@@ -25,6 +26,7 @@ namespace SmartDyeing.FADM_Control
     public partial class HistoryData : UserControl
     {
         DateTime[] times;
+        bool _b_show=true;
         public static string SoftwareName { get { return "DeviceMeasure"; } }
         public static string ApplyMyDocuments { get => $"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\{SoftwareName}\\"; }
         public static string SettingFileName { get => Path.Combine(ApplyMyDocuments, "setting.txt"); }
@@ -55,7 +57,7 @@ namespace SmartDyeing.FADM_Control
         string _s_cupNum = null;
         //测量次数
         int _i_nCount = 0;
-
+        DateTime[] _times;
 
         /// <summary>
         /// true表示正在查找蓝牙设备，false表示已停止查找
@@ -754,9 +756,23 @@ namespace SmartDyeing.FADM_Control
 
                 if (chart.Series.Count > 0)
                 {
+                    chart.Legends.Clear();
+                    // 添加图例
+                    System.Windows.Forms.DataVisualization.Charting.Legend legend = new System.Windows.Forms.DataVisualization.Charting.Legend
+                    {
+                        Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top,
+                        Alignment = StringAlignment.Far,
+                        LegendStyle = System.Windows.Forms.DataVisualization.Charting.LegendStyle.Row,
+                        BorderColor = Color.Black,
+                        BorderWidth = 1,
+                        BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid
+                    };
+                    chart.Legends.Add(legend);
+
                     chart.Series.Clear();
                     chart.MouseMove -= new MouseEventHandler(chart1_MouseMove);
                     chart.MouseWheel -= new MouseEventHandler(chart1_MouseMove);
+                    chart.MouseClick -= Chart1_MouseClick;
                 }
                 toolTip1.RemoveAll();
 
@@ -1125,6 +1141,132 @@ namespace SmartDyeing.FADM_Control
                             }
                         }
                     }
+
+                    ////获取批次资料表头
+                    //string s_sql = "SELECT CupNum, FormulaCode, VersionNum" +
+                    //                   " FROM drop_head where CupNum = " + CupNo + " ;";
+                    //DataTable dt_formula = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                    List<ProcessStep> list = new List<ProcessStep>();
+
+                    if (dt_dye_details.Rows.Count > 0)
+                    {
+                        string FormulaCode = dt_dye_details.Rows[0]["FormulaCode"].ToString();
+                        string VersionNum = dt_dye_details.Rows[0]["VersionNum"].ToString();
+                        s_sql = "SELECT FormulaCode,VersionNum,StepNum,TechnologyName,Temp,TempSpeed,Time,RotorSpeed,Code, DyeType,AssistantCode,FormulaDosage,UnitOfAccount,BottleNum,SettingConcentration,RealConcentration,AssistantName,ObjectDropWeight,RealDropWeight,BottleSelection FROM dyeing_details where FormulaCode = '" + FormulaCode + "' and VersionNum = '" + VersionNum + "' order by StepNum asc ;";
+                        DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                        foreach (DataRow dr in dt_data.Rows)
+                        {
+                            string DyeType = dr["DyeType"].ToString();
+                            string Code = dr["Code"].ToString();
+
+                            ProcessStep processSte = new ProcessStep();
+                            processSte.StepName = dr["TechnologyName"].ToString();
+
+                            if (dr["TechnologyName"].ToString().Trim().Equals("加A") || dr["TechnologyName"].ToString().Trim().Equals("加B") || dr["TechnologyName"].ToString().Trim().Equals("加C") || dr["TechnologyName"].ToString().Trim().Equals("加D") || dr["TechnologyName"].ToString().Trim().Equals("加E") || dr["TechnologyName"].ToString().Trim().Equals("加F") || dr["TechnologyName"].ToString().Trim().Equals("加G") || dr["TechnologyName"].ToString().Trim().Equals("加H") || dr["TechnologyName"].ToString().Trim().Equals("加I") || dr["TechnologyName"].ToString().Trim().Equals("加J") || dr["TechnologyName"].ToString().Trim().Equals("加K") || dr["TechnologyName"].ToString().Trim().Equals("加L") || dr["TechnologyName"].ToString().Trim().Equals("加M") || dr["TechnologyName"].ToString().Trim().Equals("加N"))
+                            {
+
+
+                                //processSte.Duration = 5;
+                                list.Add(processSte);
+                                continue;
+                            }
+                            if (dr["TechnologyName"].ToString().Trim().Equals("加水"))
+                            {
+                                list.Add(processSte);
+                                continue;
+                            }
+
+                            if (dr["Temp"].ToString() != null && dr["Temp"].ToString().Length > 0)
+                            {
+                                processSte.TargetTemperature = Convert.ToDouble(dr["Temp"].ToString());
+                            }
+                            if (dr["TempSpeed"].ToString() != null && dr["TempSpeed"].ToString().Length > 0)
+                            {
+                                processSte.HeatingRate = Convert.ToDouble(dr["TempSpeed"].ToString());
+                            }
+                            if (dr["Time"].ToString() != null && dr["Time"].ToString().Length > 0)
+                            {
+                                processSte.Duration = Convert.ToDouble(dr["Time"].ToString());
+                            }
+                            list.Add(processSte);
+                        }
+
+                        ProcessStep[] processSteps = list.ToArray();
+                        // 生成chartData
+                        CurveControl.chartData chartData = GenerateChartData(processSteps);
+                        string temperature = chartData.temperature;
+                        string craft = chartData.craft;
+
+                        string[] sa_arr = temperature.Split('@');
+                        _times = new DateTime[sa_arr.Count()];
+                        for (int i = 0; i < sa_arr.Count(); i++)
+                        {
+                            _times[i] = DateTime.Now.AddSeconds((i - sa_arr.Count()) * 30);
+                        }
+
+
+                        AddSeries("理论", Color.Blue);
+
+                        Series series = chart.Series[1];
+
+                        for (int i = 0; i < sa_arr.Count(); i++)
+                        {
+                            series.Points.AddXY(Convert.ToDouble(i + 1), Convert.ToDouble(sa_arr[i]));
+                        }
+
+                        double totalTimeInSeconds = 0; // 每条曲线的总计用时（秒）
+                        totalTimeInSeconds = sa_arr.Length * 30; // 每个点代表30秒
+                                                                 // 将总计用时转换为时分秒
+                        //double time = totalTimeInSeconds - newtotalTimeInSeconds;
+                        // 获取当前时间
+                        //DateTime now = DateTime.Now;
+                        //TimeSpan duration = TimeSpan.FromSeconds(time);
+                        //DateTime futureTime = now + duration;
+                        //string cc = futureTime.ToString("HH:mm:ss");
+
+                        TimeSpan totalTime = TimeSpan.FromSeconds(totalTimeInSeconds);
+                        string totalTimeFormatted = $"{totalTime.Hours:D2}小时 {totalTime.Minutes:D2}分钟 {totalTime.Seconds:D2}秒";
+                        // 在图例中显示每条曲线的总计用时
+                        LegendItem legendItem = new LegendItem
+                        {
+                            Name = series.Name,
+                            Color = series.Color,
+                            BorderColor = series.BorderColor,
+                            BorderWidth = series.BorderWidth,
+                            MarkerStyle = series.MarkerStyle,
+                            MarkerSize = series.MarkerSize,
+                            MarkerColor = series.MarkerColor,
+                            MarkerBorderColor = series.MarkerBorderColor,
+                            MarkerBorderWidth = series.MarkerBorderWidth,
+                            ShadowColor = series.ShadowColor,
+                            ShadowOffset = series.ShadowOffset,
+                            Tag = series.Tag,
+                            ToolTip = series.ToolTip
+                        };
+                        // 使用 LegendItem.Cells 设置文本
+                        legendItem.Cells.Add(LegendCellType.Text, $"{series.Name} - 总计: {totalTimeFormatted} ", ContentAlignment.MiddleLeft);
+                        chart.Legends[0].CustomItems.Add(legendItem);
+
+                        //chart.MouseClick += Chart1_MouseClick;
+
+                        sa_arr = craft.Split('@');
+                        for (int i = 0; i < sa_arr.Count(); i++)
+                        {
+                            string s_name = sa_arr[i].Substring(0, sa_arr[i].IndexOf(","));
+                            string s_num = sa_arr[i].Substring(sa_arr[i].IndexOf(",") + 1, sa_arr[i].Count() - sa_arr[i].IndexOf(",") - 1);
+
+                            if (Convert.ToInt32(s_num) <= chart.Series[1].Points.Count)
+                            {
+                                chart.Series[1].Points[Convert.ToInt32(s_num) - 1].MarkerColor = Color.Blue;
+                                chart.Series[1].Points[Convert.ToInt32(s_num) - 1].MarkerSize = 10;
+                                chart.Series[1].Points[Convert.ToInt32(s_num) - 1].MarkerStyle = MarkerStyle.Triangle;
+                                chart.Series[1].Points[Convert.ToInt32(s_num) - 1].Label = s_name;
+                                chart.Series[1].Points[Convert.ToInt32(s_num) - 1].Font = new Font("Consolas", 12f);
+                                chart.Series[1].Points[Convert.ToInt32(s_num) - 1].LabelForeColor = Color.Blue;
+                            }
+                        }
+
+                    }
                 }
 
                 dgv_Details.ClearSelection();
@@ -1133,6 +1275,144 @@ namespace SmartDyeing.FADM_Control
             {
                 FADM_Form.CustomMessageBox.Show(ex.Message, "DetailsShow", MessageBoxButtons.OK, true);
             }
+        }
+
+        public chartData GenerateChartData(ProcessStep[] processSteps)
+        {
+            StringBuilder temperatureBuilder = new StringBuilder();
+            StringBuilder craftBuilder = new StringBuilder();
+            double currentTemperature = 25.0; // 常温起步
+            int timePoint = 0; // 从第0个点开始
+            double ambientTemperature = 25.0; // 常温
+            double coolingConstant = 0.1; // 冷却常数
+
+            foreach (var step in processSteps)
+            {
+                double fixedDuration = 0;
+                double duration = 0;
+                // 在每个步骤开始时记录工艺步骤和当前时间点
+                if (timePoint == 0)
+                    craftBuilder.Append($"{step.StepName},{1}@");
+                else
+                    craftBuilder.Append($"{step.StepName},{timePoint}@");
+
+                switch (step.StepName)
+                {
+                    case "放布":
+                    case "出布":
+                    case "取小样":
+                    case "测PH":
+                        // 固定时间设定为3分钟
+                        fixedDuration = step.Duration ?? 3;
+                        for (int i = 0; i < fixedDuration * 2; i++) // 每分钟记录两个温度值
+                        {
+                            currentTemperature -= coolingConstant * (currentTemperature - ambientTemperature) / 2; // 根据牛顿冷却定律降温
+                            temperatureBuilder.Append($"{currentTemperature}@");
+                            timePoint++;
+                        }
+                        break;
+                    case "加A":
+                    case "加B":
+                    case "加C":
+                    case "加D":
+                    case "加E":
+                        // 固定时间设定为0.5分钟
+                        fixedDuration = step.Duration ?? 0.5;
+                        for (int i = 0; i < fixedDuration * 2; i++) // 每分钟记录两个温度值
+                        {
+                            currentTemperature -= coolingConstant * (currentTemperature - ambientTemperature) / 2; // 根据牛顿冷却定律降温
+                            temperatureBuilder.Append($"{currentTemperature}@");
+                            timePoint++;
+                        }
+                        break;
+
+                    case "洗杯":
+                        // 固定时间设定为10分钟
+                        fixedDuration = step.Duration ?? 10;
+                        for (int i = 0; i < fixedDuration * 2; i++) // 每分钟记录两个温度值
+                        {
+                            currentTemperature -= coolingConstant * (currentTemperature - ambientTemperature) / 2; // 根据牛顿冷却定律降温
+                            temperatureBuilder.Append($"{currentTemperature}@");
+                            timePoint++;
+                        }
+                        break;
+
+                    case "排液":
+                        // 使用结构体中的时间参数，默认0.25分钟
+                        duration = step.Duration ?? 0.25;
+                        for (int i = 0; i < duration * 2; i++) // 每分钟记录两个温度值
+                        {
+                            currentTemperature -= coolingConstant * (currentTemperature - ambientTemperature) / 2; // 根据牛顿冷却定律降温
+                            temperatureBuilder.Append($"{currentTemperature}@");
+                            timePoint++;
+                        }
+                        break;
+                    case "加水":
+                        // 使用结构体中的时间参数，默认1分钟
+                        duration = step.Duration ?? 1;
+                        for (int i = 0; i < duration * 2; i++) // 每分钟记录两个温度值
+                        {
+                            currentTemperature -= coolingConstant * (currentTemperature - ambientTemperature) / 2; // 根据牛顿冷却定律降温
+                            temperatureBuilder.Append($"{currentTemperature}@");
+                            timePoint++;
+                        }
+                        break;
+                    case "冷行":
+                        // 使用结构体中的时间参数，默认5分钟
+                        duration = step.Duration ?? 5;
+                        for (int i = 0; i < duration * 2; i++) // 每分钟记录两个温度值
+                        {
+                            currentTemperature -= coolingConstant * (currentTemperature - ambientTemperature) / 2; // 根据牛顿冷却定律降温
+                            temperatureBuilder.Append($"{currentTemperature}@");
+                            timePoint++;
+                        }
+                        break;
+                    case "搅拌":
+                        // 使用结构体中的时间参数，默认5分钟
+                        duration = step.Duration ?? 5;
+                        for (int i = 0; i < duration * 2; i++) // 每分钟记录两个温度值
+                        {
+                            currentTemperature -= coolingConstant * (currentTemperature - ambientTemperature) / 2; // 根据牛顿冷却定律降温
+                            temperatureBuilder.Append($"{currentTemperature}@");
+                            timePoint++;
+                        }
+                        break;
+                    case "温控":
+                        // 使用结构体中的目标温度，保温时间，升温速率
+                        double targetTemperature = step.TargetTemperature ?? 100;
+                        double holdTime = step.Duration ?? 120;
+                        double heatingRate = step.HeatingRate ?? 1;
+
+                        // 升温或降温阶段
+                        double temperatureDifference = targetTemperature - currentTemperature;
+                        double heatingTime = Math.Abs(temperatureDifference) / heatingRate; // 转换为分钟
+                        int heatingPoints = (int)(heatingTime * 2); // 每分钟记录两个温度值
+                        for (int i = 0; i < heatingPoints; i++)
+                        {
+                            currentTemperature += (temperatureDifference > 0 ? heatingRate : -heatingRate) / 2; // 每分钟升温或降温
+                            temperatureBuilder.Append($"{currentTemperature}@");
+                            timePoint++;
+                        }
+
+                        // 保温阶段
+                        int holdPoints = (int)(holdTime * 2); // 每分钟记录两个温度值
+                        for (int i = 0; i < holdPoints; i++)
+                        {
+                            temperatureBuilder.Append($"{currentTemperature}@");
+                            timePoint++;
+                        }
+                        break;
+
+                    default:
+                        throw new ArgumentException($"未知的工艺步骤: {step.StepName}");
+                }
+            }
+
+            return new chartData
+            {
+                temperature = temperatureBuilder.ToString().TrimEnd('@'),
+                craft = craftBuilder.ToString().TrimEnd('@')
+            };
         }
 
         private void dgv_DropRecord_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -1188,7 +1468,47 @@ namespace SmartDyeing.FADM_Control
 
             chart.MouseWheel += new System.Windows.Forms.MouseEventHandler(chart1_Mouselheel);
 
+            chart.MouseClick += Chart1_MouseClick;
 
+
+
+        }
+
+        private void Chart1_MouseClick(object sender, MouseEventArgs e)
+        {
+            //MessageBox.Show("点击了图例！");
+            var legend = chart.Legends[0];
+            var legendPosition = legend.Position;
+            var legendRect = new RectangleF(
+                legendPosition.X,
+                legendPosition.Y,
+                50,
+                50);
+            //e.Location.X+190
+
+            //MessageBox.Show(e.Location.X.ToString()+"--"+ e.Location.Y.ToString());
+            if (_b_show)
+            {
+                if (chart.Series.Count > 1)
+                {
+                    if (e.Location.X > 351 && e.Location.Y < 40)
+                    {
+                        //MessageBox.Show("隐藏！");
+                        chart.Series[1].Points.Clear();
+                    }
+                }
+                _b_show = !_b_show;
+            }
+            else
+            {
+                _b_show = !_b_show;
+                DetailsShow();
+            }
+            /*if (legendRect.Contains(e.Location))
+            {
+                // 用户点击了图例
+                MessageBox.Show("点击了图例！");
+            }*/
         }
 
         private void chart1_Mouselheel(object sender, MouseEventArgs e)
@@ -1266,6 +1586,7 @@ namespace SmartDyeing.FADM_Control
 
 
             chart.Series.Add(series);
+            series.Legend = chart.Legends[0].Name;
         }
 
 
@@ -1366,6 +1687,18 @@ namespace SmartDyeing.FADM_Control
 
             chart.ChartAreas[0].AxisX.ScaleView.Zoomable = true;
             chart.ChartAreas[0].AxisY.ScaleView.Zoomable = true;
+
+            // 添加图例
+            Legend legend = new Legend
+            {
+                Docking = Docking.Top,
+                Alignment = StringAlignment.Far,
+                LegendStyle = LegendStyle.Row,
+                BorderColor = Color.Black,
+                BorderWidth = 1,
+                BorderDashStyle = ChartDashStyle.Solid
+            };
+            chart.Legends.Add(legend);
         }
 
         private void InitChart()

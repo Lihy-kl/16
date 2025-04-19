@@ -43,6 +43,9 @@
             this.btn_DyeingProcessUpdate = new System.Windows.Forms.Button();
             this.btn_DyeingProcessAdd = new System.Windows.Forms.Button();
             this.grp_BrewingProcess = new System.Windows.Forms.GroupBox();
+            this.btn_Insert = new System.Windows.Forms.Button();
+            this.txt_Template = new System.Windows.Forms.ComboBox();
+            this.lab_DyeingCode = new System.Windows.Forms.Label();
             this.btn_Copy = new System.Windows.Forms.Button();
             this.dgv_Child_DyeData = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Dye_Code)).BeginInit();
@@ -142,6 +145,9 @@
             // 
             // grp_BrewingProcess
             // 
+            this.grp_BrewingProcess.Controls.Add(this.btn_Insert);
+            this.grp_BrewingProcess.Controls.Add(this.txt_Template);
+            this.grp_BrewingProcess.Controls.Add(this.lab_DyeingCode);
             this.grp_BrewingProcess.Controls.Add(this.btn_Copy);
             this.grp_BrewingProcess.Controls.Add(this.txt_Notes);
             this.grp_BrewingProcess.Controls.Add(this.label1);
@@ -156,6 +162,31 @@
             resources.ApplyResources(this.grp_BrewingProcess, "grp_BrewingProcess");
             this.grp_BrewingProcess.Name = "grp_BrewingProcess";
             this.grp_BrewingProcess.TabStop = false;
+            // 
+            // btn_Insert
+            // 
+            resources.ApplyResources(this.btn_Insert, "btn_Insert");
+            this.btn_Insert.Name = "btn_Insert";
+            this.btn_Insert.UseVisualStyleBackColor = true;
+            this.btn_Insert.Click += new System.EventHandler(this.btn_Insert_Click);
+            // 
+            // txt_Template
+            // 
+            resources.ApplyResources(this.txt_Template, "txt_Template");
+            this.txt_Template.FormattingEnabled = true;
+            this.txt_Template.Items.AddRange(new object[] {
+            resources.GetString("txt_Template.Items"),
+            resources.GetString("txt_Template.Items1"),
+            resources.GetString("txt_Template.Items2"),
+            resources.GetString("txt_Template.Items3")});
+            this.txt_Template.Name = "txt_Template";
+            this.txt_Template.SelectedIndexChanged += new System.EventHandler(this.txt_Template_SelectedIndexChanged);
+            this.txt_Template.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_Template_KeyDown);
+            // 
+            // lab_DyeingCode
+            // 
+            resources.ApplyResources(this.lab_DyeingCode, "lab_DyeingCode");
+            this.lab_DyeingCode.Name = "lab_DyeingCode";
             // 
             // btn_Copy
             // 
@@ -187,6 +218,8 @@
             this.dgv_Child_DyeData.RowHeadersVisible = false;
             this.dgv_Child_DyeData.RowTemplate.Height = 23;
             this.dgv_Child_DyeData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgv_Child_DyeData.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_Child_DyeData_CellClick);
+            this.dgv_Child_DyeData.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgv_Child_DyeData_MouseClick);
             // 
             // PostTreatmentConfiguration
             // 
@@ -220,5 +253,8 @@
         private System.Windows.Forms.GroupBox grp_BrewingProcess;
         private System.Windows.Forms.DataGridView dgv_Child_DyeData;
         private System.Windows.Forms.Button btn_Copy;
+        private System.Windows.Forms.ComboBox txt_Template;
+        private System.Windows.Forms.Label lab_DyeingCode;
+        private System.Windows.Forms.Button btn_Insert;
     }
 }

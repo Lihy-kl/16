@@ -493,23 +493,24 @@ namespace SmartDyeing.FADM_Object
                                 //开盖完成
                                 else if (i_type == 2 || i_type == 5 || i_type == 4 || i_type == 6 || i_type == 8 || i_type == 9 || i_type == 10)
                                 {
-                                    //复位加药启动信号
-                                    int[] ia_zero = new int[1];
-                                    //
-                                    int iCupNo = i_cupNum;
-                                    ia_zero[0] = 0;
-                                   
+                                    //没发现杯盖，开盖完成
+                                    if (i_type == 2)
+                                    {
+                                        //
+                                        int iCupNo = i_cupNum;
 
-                                    FADM_Auto.Dye.DyeOpenOrCloseCover(iCupNo, 2);
 
-                                    FADM_Auto.Dye._cup_Temps[iCupNo - 1]._i_cover = 2;
-                                    //Thread.Sleep(2000);
-                                    Communal._fadmSqlserver.ReviseData("Update  cup_details set CoverStatus = 2,Cooperate=0 where CupNum = " + iCupNo);
+                                        FADM_Auto.Dye.DyeOpenOrCloseCover(iCupNo, 2);
 
-                                    FADM_Auto.Dye._cup_Temps[iCupNo - 1]._i_cupCover = 2;
+                                        FADM_Auto.Dye._cup_Temps[iCupNo - 1]._i_cover = 2;
+                                        //Thread.Sleep(2000);
+                                        Communal._fadmSqlserver.ReviseData("Update  cup_details set CoverStatus = 2,Cooperate=0 where CupNum = " + iCupNo);
+
+                                        FADM_Auto.Dye._cup_Temps[iCupNo - 1]._i_cupCover = 2;
+                                    }
 
                                     //加药
-                                    if (i_type == 4)
+                                    else if (i_type == 4)
                                     {
                                    //     FADM_Object.Communal._fadmSqlserver.ReviseData(
                                    //"UPDATE dye_details SET  Cooperate = 1 WHERE  Cooperate = " + 9 + " AND CupNum = " + i_cupNum + " ;");
@@ -886,7 +887,7 @@ namespace SmartDyeing.FADM_Object
                         {
                             foreach (KeyValuePair<int, List<int>> kv in Communal._dic_cup_bottle)
                             {
-                                if(kv.Value.Contains(i_bottleNo))
+                                while(kv.Value.Contains(i_bottleNo))
                                 {
                                     kv.Value.Remove(i_bottleNo);
                                 }
@@ -956,10 +957,10 @@ namespace SmartDyeing.FADM_Object
                         }
                         else if (s_insert == "重复1")
                         {
-                            if (i_oldSign == 7 || i_oldSign == 9 || i_oldSign == 13)
+                            if (i_oldSign == 7 || i_oldSign == 9 || i_oldSign == 13 || i_oldSign == 14)
                                 FADM_Object.Communal._fadmSqlserver.ReviseData(
                                    "UPDATE abs_cup_details SET  Cooperate = 33 WHERE  Cooperate = " + i_oldSign + " AND CupNum = " + i_cupNo + " ;");
-                            else if (i_oldSign == 8 || i_oldSign == 10 || i_oldSign == 11)
+                            else if (i_oldSign == 8 || i_oldSign == 10 || i_oldSign == 11 || i_oldSign == 12)
                                 FADM_Object.Communal._fadmSqlserver.ReviseData(
                                    "UPDATE abs_cup_details SET  Cooperate = 32 WHERE  Cooperate = " + i_oldSign + " AND CupNum = " + i_cupNo + " ;");
                             return;

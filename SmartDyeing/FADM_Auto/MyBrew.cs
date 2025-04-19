@@ -1298,9 +1298,10 @@ namespace SmartDyeing.FADM_Auto
 
                                 //根据原瓶号找到原浓度
                                 int i_oricon = 0;
+                                int i_oriWeight = 0;
                                 if (i_oribottle != 0)
                                 {
-                                    s_sql = "SELECT RealConcentration FROM bottle_details WHERE BottleNum = " + i_oribottle + ";";
+                                    s_sql = "SELECT RealConcentration,CurrentWeight FROM bottle_details WHERE BottleNum = " + i_oribottle + ";";
                                     dt_bottle_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
                                     if (dt_bottle_details.Rows.Count == 0)
                                     {
@@ -1318,6 +1319,7 @@ namespace SmartDyeing.FADM_Auto
                                         break;
                                     }
                                     i_oricon = Convert.ToInt32(Convert.ToDouble(dt_bottle_details.Rows[0][dt_bottle_details.Columns["RealConcentration"]]) * 1000000.00);
+                                    i_oriWeight = Convert.ToInt32(Convert.ToDouble(dt_bottle_details.Rows[0][dt_bottle_details.Columns["CurrentWeight"]]));
 
                                     s_inPut += "原瓶号浓度：" + Convert.ToString(dt_bottle_details.Rows[0][dt_bottle_details.Columns["RealConcentration"]]) + ",";
 
@@ -1429,51 +1431,84 @@ namespace SmartDyeing.FADM_Auto
 
                                 int[] ia_no_1 = { 0, 0, 0, 0, 0, 0 };
                                 int[] ia_data_1 = { 0, 0, 0, 0, 0, 0 };
+                                int[] ia_ratio = { 0, 0, 0, 0, 0, 0 };
                                 for (int j = 0; j < dt_bottle_details.Rows.Count; j++)
                                 {
                                     string s_technologyName = Convert.ToString(dt_bottle_details.Rows[j][dt_bottle_details.Columns["TechnologyName"]]);
                                     int i_data = Convert.ToInt32(dt_bottle_details.Rows[j][dt_bottle_details.Columns["ProportionOrTime"]]);
+                                    int i_ratio = 0;
+                                    if(s_technologyName == "加温水" || s_technologyName == "Add warm water")
+                                    {
+                                        if(dt_bottle_details.Rows[j][dt_bottle_details.Columns["Ratio"]] is DBNull)
+                                        {
+                                            i_ratio = 50;
+                                        }
+                                        else
+                                        {
+                                            i_ratio = Convert.ToInt32(dt_bottle_details.Rows[j][dt_bottle_details.Columns["Ratio"]]);
+                                        }
+                                    }
                                     switch (s_technologyName)
                                     {
 
                                         case "加大冷水":
+                                        case "Add cold water":
                                             //1
 
                                             ia_no_1[j] = 1;
                                             ia_data_1[j] = i_data;
+                                            ia_ratio[j] = i_ratio;
 
                                             break;
 
                                         case "加小冷水":
+                                        case "Add a little cold water":
                                             //2
                                             ia_no_1[j] = 2;
                                             ia_data_1[j] = i_data;
+                                            ia_ratio[j] = i_ratio;
 
                                             break;
 
                                         case "加热水":
+                                        case "Add hot water":
                                             //3
                                             ia_no_1[j] = 3;
                                             ia_data_1[j] = i_data;
+                                            ia_ratio[j] = i_ratio;
 
                                             break;
 
                                         case "手动加染助剂":
+                                        case "Add dyeing auxiliaries manually":
                                             //4
                                             ia_no_1[j] = 4;
                                             ia_data_1[j] = i_data;
+                                            ia_ratio[j] = i_ratio;
 
                                             break;
                                         case "搅拌":
+                                        case "Stir":
                                             //5
                                             ia_no_1[j] = 5;
                                             ia_data_1[j] = i_data;
+                                            ia_ratio[j] = i_ratio;
 
                                             break;
                                         case "加补充剂":
+                                        case "Add supplements":
                                             //6
                                             ia_no_1[j] = 6;
                                             ia_data_1[j] = i_data;
+                                            ia_ratio[j] = i_ratio;
+
+                                            break;
+                                        case "加温水":
+                                        case "Add warm water":
+                                            //7
+                                            ia_no_1[j] = 7;
+                                            ia_data_1[j] = i_data;
+                                            ia_ratio[j] = i_ratio;
 
                                             break;
 
@@ -1593,14 +1628,17 @@ namespace SmartDyeing.FADM_Auto
 
 
                                 ia_array[20] = ia_data_1[5];
-                                ia_array[21] = 0;
-                                ia_array[22] = 0;
-                                ia_array[23] = 0;
-                                ia_array[24] = 0;
-                                ia_array[25] = 0;
-                                ia_array[26] = 0;
-                                ia_array[27] = 0;
-                                ia_array[28] = 0;
+                                d_2 = i_weight;
+                                d_1 = d_2 / 65536;
+                                d_2 = d_2 % 65536;
+                                ia_array[21] = d_2;
+                                ia_array[22] = d_1;
+                                ia_array[23] = ia_ratio[0];
+                                ia_array[24] = ia_ratio[1];
+                                ia_array[25] = ia_ratio[2];
+                                ia_array[26] = ia_ratio[3];
+                                ia_array[27] = ia_ratio[4];
+                                ia_array[28] = ia_ratio[5];
                                 ia_array[29] = 0;
 
                                 ia_array[30] = 0;

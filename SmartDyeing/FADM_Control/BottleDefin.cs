@@ -41,6 +41,24 @@ namespace SmartDyeing.FADM_Control
             {
                 cbo_BrewingCode.Items.Add(mDr[dt_brewCode.Columns[0]].ToString());
             }
+            if (Lib_Card.Configure.Parameter.Other_UseAbs == 1)
+            {
+                cbo_Abs.Items.Add("");
+                //获取调液流程代码
+                s_sql = "SELECT Code FROM Abs_process group by Code;";
+                DataTable dt_Abs_process = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                //调液流程代码可选项添加全部调液流程
+                foreach (DataRow mDr in dt_Abs_process.Rows)
+                {
+                    cbo_Abs.Items.Add(mDr["Code"].ToString());
+                }
+            }
+            else
+            {
+                lab_Abs.Visible = false;
+                cbo_Abs.Visible= false;
+            }
 
             //显示母液瓶表
             BottleHeadShow("");
@@ -213,6 +231,16 @@ namespace SmartDyeing.FADM_Control
                         case "txt_BrewingData":
                             dtp_BrewingData.Text = dt_bottledetails.Rows[0][mDc].ToString();
                             break;
+                        case "txt_AbsCode":
+                            if (dt_bottledetails.Rows[0][mDc] is DBNull)
+                            {
+                                cbo_Abs.Text = "";
+                            }
+                            else
+                            {
+                                cbo_Abs.Text = dt_bottledetails.Rows[0][mDc].ToString();
+                            }
+                            break;
                         default:
                             break;
 
@@ -270,11 +298,31 @@ namespace SmartDyeing.FADM_Control
                 if ((c is TextBox || (c is ComboBox && c.Name != "cbo_OriginalBottleNum")) &&
                     (c.Text == "" || c.Text == null))
                 {
-                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                        FADM_Form.CustomMessageBox.Show("请完善所有资料后再点存档", "温馨提示", MessageBoxButtons.OK, false);
+                    if (Lib_Card.Configure.Parameter.Other_UseAbs == 1)
+                    {
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            FADM_Form.CustomMessageBox.Show("请完善所有资料后再点存档", "温馨提示", MessageBoxButtons.OK, false);
+                        else
+                            FADM_Form.CustomMessageBox.Show("Please complete all the information before clicking on the archive", "Tips", MessageBoxButtons.OK, false);
+                        return;
+                    }
                     else
-                        FADM_Form.CustomMessageBox.Show("Please complete all the information before clicking on the archive", "Tips", MessageBoxButtons.OK, false);
-                    return;
+                    {
+                        //没有Abs就可以不报警
+                        if (c.Name == "cbo_Abs")
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                FADM_Form.CustomMessageBox.Show("请完善所有资料后再点存档", "温馨提示", MessageBoxButtons.OK, false);
+                            else
+                                FADM_Form.CustomMessageBox.Show("Please complete all the information before clicking on the archive", "Tips", MessageBoxButtons.OK, false);
+                            return;
+                        }
+                    }
+                    
                 }
             }
 
@@ -389,6 +437,7 @@ namespace SmartDyeing.FADM_Control
                     lis_data.Add(s_real);
                 }
             }
+            lis_data.Add(cbo_Abs.Text);
             if (_b_insert)
             {
                 //如果是新增
@@ -396,12 +445,12 @@ namespace SmartDyeing.FADM_Control
                             " BottleNum, AssistantCode, SettingConcentration," +
                             " CurrentWeight, SyringeType, DropMinWeight," +
                             " BrewingCode, OriginalBottleNum, AllowMaxWeight," +
-                            " BrewingData, RealConcentration) VALUES( '" + lis_data[0] + "'," +
+                            " BrewingData, RealConcentration,AbsCode) VALUES( '" + lis_data[0] + "'," +
                             " '" + lis_data[1] + "','" + lis_data[2] + "'," +
                             " '" + lis_data[3] + "','" + lis_data[4] + "'," +
                             " '" + lis_data[5] + "','" + lis_data[6] + "'," +
                             " '" + lis_data[7] + "','" + lis_data[8] + "'," +
-                            "'" + lis_data[9] + "','" + lis_data[10] + "');";
+                            "'" + lis_data[9] + "','" + lis_data[10] + "','" + lis_data[11] + "');";
                 FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
 
 
@@ -443,6 +492,7 @@ namespace SmartDyeing.FADM_Control
                                 " OriginalBottleNum = '" + lis_data[7] + "'," +
                                 " AllowMaxWeight ='" + lis_data[8] + "'," +
                                 " BrewingData = '" + lis_data[9] + "'," +
+                                " AbsCode = '" + lis_data[11] + "'," +
                                 " AdjustSuccess = 0" +
                                 " WHERE BottleNum ='" + lis_data[0] + "' ;";
                 }
@@ -459,6 +509,7 @@ namespace SmartDyeing.FADM_Control
                                 " AllowMaxWeight ='" + lis_data[8] + "'," +
                                 " BrewingData = '" + lis_data[9] + "'," +
                                 " RealConcentration = '" + lis_data[10] + "'," +
+                                " AbsCode = '" + lis_data[11] + "'," +
                                 " AdjustSuccess = 0" +
                                 " WHERE BottleNum ='" + lis_data[0] + "' ;";
                 }
@@ -466,12 +517,13 @@ namespace SmartDyeing.FADM_Control
 
                 BottleHeadShow(txt_BottleNum.Text);
             }
+            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "保存" + txt_BottleNum.Text + "母液资料");
             if (Lib_Card.Configure.Parameter.Other_Language == 0)
                 FADM_Form.CustomMessageBox.Show("保存成功!", "温馨提示", MessageBoxButtons.OK,  false);
             else
                 FADM_Form.CustomMessageBox.Show("Successfully saved!", "Tips", MessageBoxButtons.OK, false);
 
-
+            //SmartDyeing.FADM_Auto.MyAbsorbance.Generate(1, 2);
         }
 
         private void btn_Delete_Click(object sender, EventArgs e)
@@ -479,6 +531,7 @@ namespace SmartDyeing.FADM_Control
             string s_sql = "DELETE FROM bottle_details" +
                                " WHERE BottleNum = '" + txt_BottleNum.Text + "' ;";
             FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "删除" + txt_BottleNum.Text + "母液资料");
             try
             {
                 BottleHeadShow(dgv_Bottle.Rows[dgv_Bottle.CurrentCell.RowIndex - 1].Cells[0].Value.ToString());

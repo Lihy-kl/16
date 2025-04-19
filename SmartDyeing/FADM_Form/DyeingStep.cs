@@ -26,6 +26,12 @@ namespace SmartDyeing.FADM_Form
             InitializeComponent();
             txt_StepNum.Text = s_stepNum;
             cbo_TechnologyName.Text = s_technologyName;
+            //这个证明是插入
+            if(b_insertOrUpdate && s_proportionOrTime=="1")
+            {
+                txt_ProportionOrTime.Text = "";
+            }
+            else
             txt_ProportionOrTime.Text = s_proportionOrTime;
             txt_Temp.Text = s_temp;
             txt_Rate.Text = s_rate;
@@ -65,28 +71,34 @@ namespace SmartDyeing.FADM_Form
 
             if (_b_insertOrUpdate)
             {
-                //检查步号
-                string s_sql = "SELECT StepNum FROM dyeing_process WHERE Code = '" + _s_code + "'  ORDER BY StepNum";
-                DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-
-                int i_step = 1;
-                foreach (DataRow dr in dt_data.Rows)
+                //这个证明是插入,用回原来的步号
+                if (b_insertOrUpdate && s_proportionOrTime == "1")
+                { }
+                else
                 {
-                    if (dr[0] != System.DBNull.Value)
+                    //检查步号
+                    string s_sql = "SELECT StepNum FROM dyeing_process WHERE Code = '" + _s_code + "'  ORDER BY StepNum";
+                    DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+
+                    int i_step = 1;
+                    foreach (DataRow dr in dt_data.Rows)
                     {
-                        int i_stepnow = Convert.ToInt16(dr[0]);
-                        if (i_step != i_stepnow)
+                        if (dr[0] != System.DBNull.Value)
                         {
-                            break;
+                            int i_stepnow = Convert.ToInt16(dr[0]);
+                            if (i_step != i_stepnow)
+                            {
+                                break;
+                            }
+                            i_step++;
                         }
-                        i_step++;
+                        else
+                        { break; }
+
                     }
-                    else
-                    { break; }
 
+                    txt_StepNum.Text = i_step.ToString();
                 }
-
-                txt_StepNum.Text = i_step.ToString();
             }
 
             cbo_TechnologyName.Focus();

@@ -32,6 +32,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.grp_BrewingProcess = new System.Windows.Forms.GroupBox();
+            this.btn_Insert = new System.Windows.Forms.Button();
             this.btn_Copy = new System.Windows.Forms.Button();
             this.txt_Notes = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -53,6 +54,7 @@
             // 
             // grp_BrewingProcess
             // 
+            this.grp_BrewingProcess.Controls.Add(this.btn_Insert);
             this.grp_BrewingProcess.Controls.Add(this.btn_Copy);
             this.grp_BrewingProcess.Controls.Add(this.txt_Notes);
             this.grp_BrewingProcess.Controls.Add(this.label1);
@@ -67,6 +69,13 @@
             resources.ApplyResources(this.grp_BrewingProcess, "grp_BrewingProcess");
             this.grp_BrewingProcess.Name = "grp_BrewingProcess";
             this.grp_BrewingProcess.TabStop = false;
+            // 
+            // btn_Insert
+            // 
+            resources.ApplyResources(this.btn_Insert, "btn_Insert");
+            this.btn_Insert.Name = "btn_Insert";
+            this.btn_Insert.UseVisualStyleBackColor = true;
+            this.btn_Insert.Click += new System.EventHandler(this.btn_Insert_Click);
             // 
             // btn_Copy
             // 
@@ -220,5 +229,6 @@
         private System.Windows.Forms.TextBox txt_Notes;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btn_Copy;
+        private System.Windows.Forms.Button btn_Insert;
     }
 }

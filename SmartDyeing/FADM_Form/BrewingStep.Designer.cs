@@ -39,6 +39,8 @@ namespace SmartDyeing.FADM_Form
             this.txt_ProportionOrTime = new System.Windows.Forms.TextBox();
             this.btn_Save = new System.Windows.Forms.Button();
             this.cbo_TechnologyName = new System.Windows.Forms.ComboBox();
+            this.txt_Ratio = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lab_StepNum
@@ -84,13 +86,27 @@ namespace SmartDyeing.FADM_Form
             resources.GetString("cbo_TechnologyName.Items2"),
             resources.GetString("cbo_TechnologyName.Items3"),
             resources.GetString("cbo_TechnologyName.Items4"),
-            resources.GetString("cbo_TechnologyName.Items5")});
+            resources.GetString("cbo_TechnologyName.Items5"),
+            resources.GetString("cbo_TechnologyName.Items6")});
             this.cbo_TechnologyName.Name = "cbo_TechnologyName";
+            this.cbo_TechnologyName.SelectedIndexChanged += new System.EventHandler(this.cbo_TechnologyName_SelectedIndexChanged);
+            // 
+            // txt_Ratio
+            // 
+            resources.ApplyResources(this.txt_Ratio, "txt_Ratio");
+            this.txt_Ratio.Name = "txt_Ratio";
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
             // 
             // BrewingStep
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.txt_Ratio);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.cbo_TechnologyName);
             this.Controls.Add(this.btn_Save);
             this.Controls.Add(this.txt_ProportionOrTime);
@@ -118,5 +134,7 @@ namespace SmartDyeing.FADM_Form
         private System.Windows.Forms.TextBox txt_ProportionOrTime;
         private System.Windows.Forms.Button btn_Save;
         private System.Windows.Forms.ComboBox cbo_TechnologyName;
+        private TextBox txt_Ratio;
+        private Label label1;
     }
 }

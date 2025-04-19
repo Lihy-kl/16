@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lib_DataBank.MySQL;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -820,6 +821,60 @@ namespace SmartDyeing.FADM_Control
 
         private void tsm_IsFix_Click(object sender, EventArgs e)
         {
+            if (SmartDyeing.FADM_Object.Communal._lis_PrecisionCupNum.Contains(Convert.ToInt32(_cup.NO)))
+            {
+                if(!FADM_Object.Communal._lis_dripSuccessCup.Contains(Convert.ToInt32(_cup.NO)))
+                FADM_Object.Communal._lis_dripSuccessCup.Add(Convert.ToInt32(_cup.NO));
+
+
+                string s_sql = "UPDATE drop_head SET CupFinish = 1,FinishTime='"+ DateTime.Now + "' WHERE CupNum = '" + _cup.NO + "'  ;";
+                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                //添加历史表
+                DataTable dt_drop_head = FADM_Object.Communal._fadmSqlserver.GetData(
+                 "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'drop_head';");
+                string s_columnHead = null;
+                foreach (DataRow row in dt_drop_head.Rows)
+                {
+                    string s_curName = Convert.ToString(row[0]);
+                    if ("TestTubeFinish" != s_curName && "TestTubeWaterLower" != s_curName && "AddWaterFinish" != s_curName &&
+                        "CupFinish" != s_curName && "TestTubeWaterLower" != s_curName)
+                        s_columnHead += s_curName + ", ";
+                }
+                s_columnHead = s_columnHead.Remove(s_columnHead.Length - 2);
+
+                dt_drop_head = FADM_Object.Communal._fadmSqlserver.GetData(
+                   "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'drop_details';");
+                string s_columnDetails = null;
+                foreach (DataRow row in dt_drop_head.Rows)
+                {
+                    string s_curName = Convert.ToString(row[0]);
+                    if ("MinWeight" != s_curName && "Finish" != s_curName && "IsShow" != s_curName && "NeedPulse" != s_curName)
+                        s_columnDetails += Convert.ToString(row[0]) + ", ";
+                }
+                s_columnDetails = s_columnDetails.Remove(s_columnDetails.Length - 2);
+
+
+                //foreach (DataRow row in dt_drop_head.Rows)
+                {
+                    //if (lis_cupSuc.Contains(Convert.ToInt32(row["CupNum"].ToString())))
+                    {
+
+                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                        "INSERT INTO history_head (" + s_columnHead + ") (SELECT " + s_columnHead + " FROM drop_head " +
+                        "WHERE  CupNum = " + _cup.NO + ") ;");
+
+                        //FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "INSERT INTO history_head (" + s_columnHead + ") (SELECT " + s_columnHead + " FROM drop_head " +
+                        //    "WHERE BatchName = '" + o_BatchName + "' AND CupNum >= " + _i_cupMin + " AND CupNum <= " + _i_cupMax + s_te + ");");
+
+
+                        FADM_Object.Communal._fadmSqlserver.ReviseData(
+                           "INSERT INTO history_details (" + s_columnDetails + ") (SELECT " + s_columnDetails + " FROM drop_details " +
+                           "WHERE  CupNum = " + _cup.NO + ") ;");
+                    }
+                }
+            }
+            return;
             if (tsm_IsFix.Checked)
             {
                 string s_sql = "update cup_details set IsFixed=0 where CupNum = " + _cup.NO + " and Statues = '待机'; ";
@@ -849,6 +904,17 @@ namespace SmartDyeing.FADM_Control
                         tsm_IsFix.Checked = false;
                     }
                 }
+
+                //判断是否有高温洗杯功能
+                if(!FADM_Object.Communal._b_isHighWash)
+                {
+                    tsm_HighWash.Visible = false;
+                }
+
+                if(SmartDyeing.FADM_Object.Communal._lis_PrecisionCupNum.Contains(Convert.ToInt32(_cup.NO)))
+                {
+                    tsm_HighWash.Visible = false;
+                }
             }
             catch { }
         }
@@ -872,6 +938,18 @@ namespace SmartDyeing.FADM_Control
                 }
             }
             catch { }
+        }
+
+        private void tsm_HighWash_Click(object sender, EventArgs e)
+        {
+            DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(
+                    "SELECT * FROM cup_details WHERE CupNum = " + _cup.NO + ";");
+            string s_status = Convert.ToString(dt_data.Rows[0]["Statues"]);
+            if ("待机" == s_status )
+            {
+                FADM_Object.Communal._lis_HighWashCup.Add(Convert.ToInt16(_cup.NO));
+
+            }
         }
     }
 }

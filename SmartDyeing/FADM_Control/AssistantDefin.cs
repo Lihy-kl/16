@@ -317,6 +317,7 @@ namespace SmartDyeing.FADM_Control
 
                 AssistantHeadShow(txt_AssistantCode.Text);
             }
+            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "保存" + txt_AssistantCode.Text + "助剂代码资料");
             if (Lib_Card.Configure.Parameter.Other_Language == 0)
                 FADM_Form.CustomMessageBox.Show("保存成功!", "温馨提示", MessageBoxButtons.OK, false);
             else
@@ -333,7 +334,7 @@ namespace SmartDyeing.FADM_Control
                         " WHERE AssistantCode = '" + txt_AssistantCode.Text + "';";
             FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
 
-
+            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "删除" + txt_AssistantCode.Text + "助剂代码资料");
             try
             {
                 AssistantHeadShow(dgv_Assistant.Rows[dgv_Assistant.CurrentCell.RowIndex - 1].Cells[0].Value.ToString());

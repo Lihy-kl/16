@@ -281,8 +281,8 @@ namespace SmartDyeing.FADM_Control
                                 }
                             }
                         }
-                        //12杯翻转缸
-                        else if (Lib_Card.Configure.Parameter.Machine_Area1_DyeType == 2)
+                        //12杯翻转缸/12杯精密机
+                        else if (Lib_Card.Configure.Parameter.Machine_Area1_DyeType == 2|| Lib_Card.Configure.Parameter.Machine_Area1_DyeType == 6)
                         {
                             FADM_Control.TwelveBeater s = new TwelveBeater();
                             this.panel1.Controls.Add(s);
@@ -569,8 +569,8 @@ namespace SmartDyeing.FADM_Control
                                 }
                             }
                         }
-                        //12杯翻转缸
-                        else if (Lib_Card.Configure.Parameter.Machine_Area2_DyeType == 2)
+                        //12杯翻转缸/12杯精密机
+                        else if (Lib_Card.Configure.Parameter.Machine_Area2_DyeType == 2|| Lib_Card.Configure.Parameter.Machine_Area2_DyeType == 6)
                         {
                             FADM_Control.TwelveBeater s = new TwelveBeater();
                             this.panel2.Controls.Add(s);
@@ -857,8 +857,8 @@ namespace SmartDyeing.FADM_Control
                                 }
                             }
                         }
-                        //12杯翻转缸
-                        else if (Lib_Card.Configure.Parameter.Machine_Area3_DyeType == 2)
+                        //12杯翻转缸/12杯精密机
+                        else if (Lib_Card.Configure.Parameter.Machine_Area3_DyeType == 2 || Lib_Card.Configure.Parameter.Machine_Area3_DyeType == 6)
                         {
                             FADM_Control.TwelveBeater s = new TwelveBeater();
                             this.panel3.Controls.Add(s);
@@ -1142,8 +1142,8 @@ namespace SmartDyeing.FADM_Control
                                 }
                             }
                         }
-                        //12杯翻转缸
-                        else if (Lib_Card.Configure.Parameter.Machine_Area4_DyeType == 2)
+                        //12杯翻转缸/12杯精密机
+                        else if (Lib_Card.Configure.Parameter.Machine_Area4_DyeType == 2 || Lib_Card.Configure.Parameter.Machine_Area4_DyeType == 6)
                         {
                             FADM_Control.TwelveBeater s = new TwelveBeater();
                             this.panel4.Controls.Add(s);
@@ -1428,8 +1428,8 @@ namespace SmartDyeing.FADM_Control
                             }
                         }
 
-                        //12杯翻转缸
-                        else if (Lib_Card.Configure.Parameter.Machine_Area5_DyeType == 2)
+                        //12杯翻转缸/12杯精密机
+                        else if (Lib_Card.Configure.Parameter.Machine_Area5_DyeType == 2 || Lib_Card.Configure.Parameter.Machine_Area5_DyeType == 6)
                         {
                             FADM_Control.TwelveBeater s = new TwelveBeater();
                             this.panel5.Controls.Add(s);
@@ -1713,8 +1713,8 @@ namespace SmartDyeing.FADM_Control
                                 }
                             }
                         }
-                        //12杯翻转缸
-                        else if (Lib_Card.Configure.Parameter.Machine_Area6_DyeType == 2)
+                        //12杯翻转缸/12杯精密机
+                        else if (Lib_Card.Configure.Parameter.Machine_Area6_DyeType == 2 || Lib_Card.Configure.Parameter.Machine_Area6_DyeType == 6)
                         {
                             FADM_Control.TwelveBeater s = new TwelveBeater();
                             this.panel6.Controls.Add(s);
@@ -3562,146 +3562,148 @@ namespace SmartDyeing.FADM_Control
                         "INSERT INTO abs_wait_list(BottleNum, InsertDate,Type) VALUES('" + _i_nBottleNum + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "',0);");
                             return;
                         }
-                        //查看纯净水检测是否超过30分钟
-                        s_sql = "SELECT *  FROM standard where Type = 1;";
+                        ////查看纯净水检测是否超过30分钟
+                        //s_sql = "SELECT *  FROM standard where Type = 1;";
 
-                        dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-                        if (dt_temp.Rows.Count == 0 || MyAbsorbance._i_block == 1)
-                        {
-                            //    FADM_Form.CustomMessageBox.Show("不存在标准记录，先测试标准样", "TestAbs",
-                            //MessageBoxButtons.OK, false);
+                        //dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                        //if (dt_temp.Rows.Count == 0 || MyAbsorbance._i_block == 1)
+                        //{
+                        //    //    FADM_Form.CustomMessageBox.Show("不存在标准记录，先测试标准样", "TestAbs",
+                        //    //MessageBoxButtons.OK, false);
 
-                            //DialogResult dialogResult;
-                            //if (MyAbsorbance._i_block == 1)
-                            //{
-                            //    dialogResult = FADM_Form.CustomMessageBox.Show("断电重启，先测试基准样，请选择测试基准点母液(选择溶解剂请点是，选择水请点否)", "温馨提示", MessageBoxButtons.YesNo, true);
-                            //}
-                            //else
-                            //{
-                            //    dialogResult = FADM_Form.CustomMessageBox.Show("不存在标准记录，先测试基准样，请选择测试基准点母液(选择溶解剂请点是，选择水请点否)", "温馨提示", MessageBoxButtons.YesNo, true);
-                            //}
-                            //if (dialogResult == DialogResult.Yes)
-                            //{
-                            //    //找到DNF溶解剂
-                            //    s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
-                            //}
-                            //else if (dialogResult == DialogResult.No)
-                            //{
-                            //    //找到水
-                            //    s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount = 'Water';";
-                            //}
-                            //else
-                            //{
-                            //    return;
-                            //}
+                        //    //DialogResult dialogResult;
+                        //    //if (MyAbsorbance._i_block == 1)
+                        //    //{
+                        //    //    dialogResult = FADM_Form.CustomMessageBox.Show("断电重启，先测试基准样，请选择测试基准点母液(选择溶解剂请点是，选择水请点否)", "温馨提示", MessageBoxButtons.YesNo, true);
+                        //    //}
+                        //    //else
+                        //    //{
+                        //    //    dialogResult = FADM_Form.CustomMessageBox.Show("不存在标准记录，先测试基准样，请选择测试基准点母液(选择溶解剂请点是，选择水请点否)", "温馨提示", MessageBoxButtons.YesNo, true);
+                        //    //}
+                        //    //if (dialogResult == DialogResult.Yes)
+                        //    //{
+                        //    //    //找到DNF溶解剂
+                        //    //    s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
+                        //    //}
+                        //    //else if (dialogResult == DialogResult.No)
+                        //    //{
+                        //    //    //找到水
+                        //    //    s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount = 'Water';";
+                        //    //}
+                        //    //else
+                        //    //{
+                        //    //    return;
+                        //    //}
 
-                            if (FADM_Object.Communal._b_isUseWaterTestBase)
-                            {
-                                //找到水
-                                s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount = 'Water';";
-                            }
-                            else
-                            {
-                                //找到DNF溶解剂
-                                s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
-                            }
+                        //    if (FADM_Object.Communal._b_isUseWaterTestBase)
+                        //    {
+                        //        //找到水
+                        //        s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount = 'Water';";
+                        //    }
+                        //    else
+                        //    {
+                        //        //找到DNF溶解剂
+                        //        s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
+                        //    }
 
-                            dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-                            if (dt_temp.Rows.Count == 0)
-                            {
-                                FADM_Form.CustomMessageBox.Show("不存在母液瓶号，不能测试", "TestAbs",
-                        MessageBoxButtons.OK, false);
-                                return;
-                            }
-                            else
-                            {
-                                FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from standard where Type = 0");
-                                FADM_Object.Communal._fadmSqlserver.ReviseData("Update standard set Type = 0 where Type = 1");
+                        //    dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                        //    if (dt_temp.Rows.Count == 0)
+                        //    {
+                        //        FADM_Form.CustomMessageBox.Show("不存在母液瓶号，不能测试", "TestAbs",
+                        //MessageBoxButtons.OK, false);
+                        //        return;
+                        //    }
+                        //    else
+                        //    {
+                        //        if (FADM_Object.Communal._fadmSqlserver.GetData("select * from standard where Type = 1").Rows.Count > 0)
+                        //            FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from standard where Type = 0");
+                        //        FADM_Object.Communal._fadmSqlserver.ReviseData("Update standard set Type = 0 where Type = 1");
 
-                                //判断是否一样的溶解剂或水
-                                //if (dataTable.Rows[0]["AdditivesNum"].ToString() != dt_temp.Rows[0]["BottleNum"].ToString())
-                                {
+                        //        //判断是否一样的溶解剂或水
+                        //        //if (dataTable.Rows[0]["AdditivesNum"].ToString() != dt_temp.Rows[0]["BottleNum"].ToString())
+                        //        {
 
-                                    SmartDyeing.FADM_Auto.MyAbsorbance.Calculate(_i_nBottleNum, Convert.ToInt32(dt_temp.Rows[0]["BottleNum"].ToString()), Convert
-                                        .ToInt32(s_cupNum), 2, FADM_Object.Communal._d_abs_total);
+                        //            SmartDyeing.FADM_Auto.MyAbsorbance.Calculate(_i_nBottleNum, Convert.ToInt32(dt_temp.Rows[0]["BottleNum"].ToString()), Convert
+                        //                .ToInt32(s_cupNum), 2, FADM_Object.Communal._d_abs_total);
 
-                                    SmartDyeing.FADM_Auto.MyAbsorbance.Generate(0, Convert.ToInt32(s_cupNum));
-                                    SmartDyeing.FADM_Auto.MyAbsorbance.SendData(Convert.ToInt32(s_cupNum));
-                                    return;
-                                }
-                            }
+                        //            SmartDyeing.FADM_Auto.MyAbsorbance.Generate(0, Convert.ToInt32(s_cupNum));
+                        //            SmartDyeing.FADM_Auto.MyAbsorbance.SendData(Convert.ToInt32(s_cupNum));
+                        //            return;
+                        //        }
+                        //    }
 
-                        }
-                        else
-                        {
-                            DateTime timeA = Convert.ToDateTime(dt_temp.Rows[0]["FinishTime"].ToString());
-                            DateTime timeB = DateTime.Now; //获取当前时间
-                            TimeSpan ts = timeB - timeA; //计算时间差
-                            string s_time = ts.TotalMinutes.ToString(); //将时间差转换为小时
+                        //}
+                        //else
+                        //{
+                        //    DateTime timeA = Convert.ToDateTime(dt_temp.Rows[0]["FinishTime"].ToString());
+                        //    DateTime timeB = DateTime.Now; //获取当前时间
+                        //    TimeSpan ts = timeB - timeA; //计算时间差
+                        //    string s_time = ts.TotalMinutes.ToString(); //将时间差转换为小时
 
-                            if (Convert.ToDouble(s_time) > FADM_Object.Communal._d_TestSpan)
-                            {
-                                //        FADM_Form.CustomMessageBox.Show("标准记录已超期，先测试标准样", "TestAbs",
-                                //MessageBoxButtons.OK, false);
-                                //        //找到母液溶解剂母液瓶号
-                                //        s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
+                        //    if (Convert.ToDouble(s_time) > FADM_Object.Communal._d_TestSpan)
+                        //    {
+                        //        //        FADM_Form.CustomMessageBox.Show("标准记录已超期，先测试标准样", "TestAbs",
+                        //        //MessageBoxButtons.OK, false);
+                        //        //        //找到母液溶解剂母液瓶号
+                        //        //        s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
 
-                                //DialogResult dialogResult = FADM_Form.CustomMessageBox.Show("基准记录已超期，先测试基准样，请选择测试基准点母液(选择溶解剂请点是，选择水请点否)", "温馨提示", MessageBoxButtons.YesNo, true);
-                                //if (dialogResult == DialogResult.Yes)
-                                //{
-                                //    //找到DNF溶解剂
-                                //    s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
-                                //}
-                                //else if (dialogResult == DialogResult.No)
-                                //{
-                                //    //找到水
-                                //    s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount = 'Water';";
-                                //}
-                                //else
-                                //{
-                                //    return;
-                                //}
+                        //        //DialogResult dialogResult = FADM_Form.CustomMessageBox.Show("基准记录已超期，先测试基准样，请选择测试基准点母液(选择溶解剂请点是，选择水请点否)", "温馨提示", MessageBoxButtons.YesNo, true);
+                        //        //if (dialogResult == DialogResult.Yes)
+                        //        //{
+                        //        //    //找到DNF溶解剂
+                        //        //    s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
+                        //        //}
+                        //        //else if (dialogResult == DialogResult.No)
+                        //        //{
+                        //        //    //找到水
+                        //        //    s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount = 'Water';";
+                        //        //}
+                        //        //else
+                        //        //{
+                        //        //    return;
+                        //        //}
 
-                                if (FADM_Object.Communal._b_isUseWaterTestBase)
-                                {
-                                    //找到水
-                                    s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount = 'Water';";
-                                }
-                                else
-                                {
-                                    //找到DNF溶解剂
-                                    s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
-                                }
+                        //        if (FADM_Object.Communal._b_isUseWaterTestBase)
+                        //        {
+                        //            //找到水
+                        //            s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount = 'Water';";
+                        //        }
+                        //        else
+                        //        {
+                        //            //找到DNF溶解剂
+                        //            s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
+                        //        }
 
-                                dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-                                if (dt_temp.Rows.Count == 0)
-                                {
-                                    FADM_Form.CustomMessageBox.Show("不存在母液瓶号，不能测试", "TestAbs",
-                            MessageBoxButtons.OK, false);
-                                    return;
-                                }
-                                else
-                                {
-                                    //
-                                    FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from standard where Type = 0");
-                                    FADM_Object.Communal._fadmSqlserver.ReviseData("Update standard set Type = 0 where Type = 1");
-                                    //判断是否一样的溶解剂或水
-                                    //if (dataTable.Rows[0]["AdditivesNum"].ToString() != dt_temp.Rows[0]["BottleNum"].ToString())
-                                    {
+                        //        dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                        //        if (dt_temp.Rows.Count == 0)
+                        //        {
+                        //            FADM_Form.CustomMessageBox.Show("不存在母液瓶号，不能测试", "TestAbs",
+                        //    MessageBoxButtons.OK, false);
+                        //            return;
+                        //        }
+                        //        else
+                        //        {
+                        //            //
+                        //            if (FADM_Object.Communal._fadmSqlserver.GetData("select * from standard where Type = 1").Rows.Count > 0)
+                        //                FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from standard where Type = 0");
+                        //            FADM_Object.Communal._fadmSqlserver.ReviseData("Update standard set Type = 0 where Type = 1");
+                        //            //判断是否一样的溶解剂或水
+                        //            //if (dataTable.Rows[0]["AdditivesNum"].ToString() != dt_temp.Rows[0]["BottleNum"].ToString())
+                        //            {
 
 
-                                        SmartDyeing.FADM_Auto.MyAbsorbance.Calculate(_i_nBottleNum, Convert.ToInt32(dt_temp.Rows[0]["BottleNum"].ToString()), Convert
-                                        .ToInt32(s_cupNum), 2, FADM_Object.Communal._d_abs_total);
+                        //                SmartDyeing.FADM_Auto.MyAbsorbance.Calculate(_i_nBottleNum, Convert.ToInt32(dt_temp.Rows[0]["BottleNum"].ToString()), Convert
+                        //                .ToInt32(s_cupNum), 2, FADM_Object.Communal._d_abs_total);
 
-                                        //生成测白点工艺
-                                        SmartDyeing.FADM_Auto.MyAbsorbance.Generate(0, Convert.ToInt32(s_cupNum));
-                                        SmartDyeing.FADM_Auto.MyAbsorbance.SendData(Convert.ToInt32(s_cupNum));
+                        //                //生成测白点工艺
+                        //                SmartDyeing.FADM_Auto.MyAbsorbance.Generate(0, Convert.ToInt32(s_cupNum));
+                        //                SmartDyeing.FADM_Auto.MyAbsorbance.SendData(Convert.ToInt32(s_cupNum));
 
-                                        return;
-                                    }
-                                }
-                            }
-                        }
+                        //                return;
+                        //            }
+                        //        }
+                        //    }
+                        //}
                         //活性用水稀释
                         if (s_assistantType.Contains("活性"))
                         {
@@ -4414,7 +4416,8 @@ namespace SmartDyeing.FADM_Control
                             }
                             else
                             {
-                                FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from standard where Type = 0");
+                                if (FADM_Object.Communal._fadmSqlserver.GetData("select * from standard where Type = 1").Rows.Count > 0)
+                                    FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from standard where Type = 0");
                                 FADM_Object.Communal._fadmSqlserver.ReviseData("Update standard set Type = 0 where Type = 1");
 
                                 //判断是否一样的溶解剂或水
@@ -4485,7 +4488,8 @@ namespace SmartDyeing.FADM_Control
                                 }
                                 else
                                 {
-                                    FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from standard where Type = 0");
+                                    if (FADM_Object.Communal._fadmSqlserver.GetData("select * from standard where Type = 1").Rows.Count > 0)
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from standard where Type = 0");
                                     FADM_Object.Communal._fadmSqlserver.ReviseData("Update standard set Type = 0 where Type = 1");
                                     //判断是否一样的溶解剂或水
                                     //if (dataTable.Rows[0]["AdditivesNum"].ToString() != dt_temp.Rows[0]["BottleNum"].ToString())
@@ -4573,6 +4577,11 @@ namespace SmartDyeing.FADM_Control
                 tsm_TestBaseAbs.Visible = false;
                 tsm_TestAbsCompensate.Visible = false;
             }
+
+            //tsm_TestAbs.Visible = false;
+            tsm_TestStanAbs.Visible = false;
+            tsm_TestBaseAbs.Visible = false;
+            tsm_TestAbsCompensate.Visible = false;
 
         }
 

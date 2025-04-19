@@ -1,4 +1,5 @@
 ﻿using Demo;
+using Lib_Card.ADT8940A1;
 using System;
 
 namespace Lib_Card.ADT8940D1
@@ -40,6 +41,13 @@ namespace Lib_Card.ADT8940D1
                     }
                     break;
             }
+
+        }
+
+        public override int GetVersion()
+        {
+            int iRes = Adt8940a1m.adt8940a1_get_lib_version(0);
+            return iRes;
 
         }
 

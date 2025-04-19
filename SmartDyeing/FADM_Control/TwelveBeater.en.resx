@@ -117,111 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="lab_StepNum.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="lab_StepNum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 21</value>
+  <data name="tsm_Online.Size" type="System.Drawing.Size, System.Drawing">
+    <value>124, 22</value>
   </data>
-  <data name="lab_StepNum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>119, 19</value>
+  <data name="tsm_Offline.Size" type="System.Drawing.Size, System.Drawing">
+    <value>124, 22</value>
   </data>
-  <data name="lab_StepNum.Text" xml:space="preserve">
-    <value>StepNumber:</value>
+  <data name="tsm_Stop.Size" type="System.Drawing.Size, System.Drawing">
+    <value>124, 22</value>
   </data>
-  <data name="lab_TechnologyName.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="tsm_IsFix.Size" type="System.Drawing.Size, System.Drawing">
+    <value>124, 22</value>
   </data>
-  <data name="lab_TechnologyName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 87</value>
-  </data>
-  <data name="lab_TechnologyName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 19</value>
-  </data>
-  <data name="lab_TechnologyName.Text" xml:space="preserve">
-    <value>OperationType:</value>
-  </data>
-  <data name="lab_ProportionOrTime.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lab_ProportionOrTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 153</value>
-  </data>
-  <data name="lab_ProportionOrTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>229, 19</value>
-  </data>
-  <data name="lab_ProportionOrTime.Text" xml:space="preserve">
-    <value>Percentage(%)/Time(s):</value>
-  </data>
-  <data name="txt_StepNum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>156, 16</value>
-  </data>
-  <data name="txt_StepNum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>337, 29</value>
-  </data>
-  <data name="txt_ProportionOrTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>233, 148</value>
-  </data>
-  <data name="txt_ProportionOrTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>260, 29</value>
-  </data>
-  <data name="btn_Save.Location" type="System.Drawing.Point, System.Drawing">
-    <value>203, 253</value>
-  </data>
-  <data name="btn_Save.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 42</value>
-  </data>
-  <data name="btn_Save.Text" xml:space="preserve">
-    <value>Archive</value>
-  </data>
-  <data name="cbo_TechnologyName.Items" xml:space="preserve">
-    <value>Add dyeing auxiliaries manually</value>
-  </data>
-  <data name="cbo_TechnologyName.Items1" xml:space="preserve">
-    <value>Add cold water</value>
-  </data>
-  <data name="cbo_TechnologyName.Items2" xml:space="preserve">
-    <value>Add a little cold water</value>
-  </data>
-  <data name="cbo_TechnologyName.Items3" xml:space="preserve">
-    <value>Add hot water</value>
-  </data>
-  <data name="cbo_TechnologyName.Items4" xml:space="preserve">
-    <value>Stir</value>
-  </data>
-  <data name="cbo_TechnologyName.Items5" xml:space="preserve">
-    <value>Add supplements</value>
-  </data>
-  <data name="cbo_TechnologyName.Items6" xml:space="preserve">
-    <value>Add warm water</value>
-  </data>
-  <data name="cbo_TechnologyName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>156, 83</value>
-  </data>
-  <data name="cbo_TechnologyName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>337, 27</value>
-  </data>
-  <data name="txt_Ratio.Location" type="System.Drawing.Point, System.Drawing">
-    <value>237, 208</value>
-  </data>
-  <data name="txt_Ratio.Size" type="System.Drawing.Size, System.Drawing">
-    <value>256, 29</value>
-  </data>
-  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 201</value>
-  </data>
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>219, 42</value>
-  </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>Hot Water Ratio(%):</value>
-  </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>505, 300</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>LiquidFlowSet</value>
+  <data name="tsm_HighWash.Size" type="System.Drawing.Size, System.Drawing">
+    <value>124, 22</value>
   </data>
 </root>

@@ -3742,7 +3742,15 @@ namespace SmartDyeing.FADM_Control
                         }
                         else
                         {
-                            if (Convert.ToDouble(txt_ClothWeight.Text) * Convert.ToDouble(_lis_handleBathRatio[p].Text) > Lib_Card.Configure.Parameter.Other_HandleMaxWeight)
+                            double d_maxWei = Lib_Card.Configure.Parameter.Other_HandleMaxWeight;
+                            if (txt_CupNum.Text != "" && txt_CupNum.Text != "0")
+                            {
+                                if (Communal._dic_big_small_cup[Convert.ToInt32(txt_CupNum.Text)] == 1)
+                                {
+                                    d_maxWei = Lib_Card.Configure.Parameter.Other_HandleMaxWeight_Big;
+                                }
+                            }
+                            if (Convert.ToDouble(txt_ClothWeight.Text) * Convert.ToDouble(_lis_handleBathRatio[p].Text) > d_maxWei)
                             {
                                 if (Lib_Card.Configure.Parameter.Other_Language == 0)
                                     FADM_Form.CustomMessageBox.Show("输入后处理浴比异常，请重新输入！", "温馨提示", MessageBoxButtons.OK, false);
@@ -5546,6 +5554,12 @@ namespace SmartDyeing.FADM_Control
                                                             }
                                                         }
                                                     }
+                                                    else
+                                                    {
+                                                        s_cN = dataRow[0].ToString();
+                                                        b_have = true;
+                                                        break;
+                                                    }
 
                                                 }
                                                 if (b_have)
@@ -5643,7 +5657,12 @@ namespace SmartDyeing.FADM_Control
                                                         }
                                                     }
                                                 }
-
+                                                else
+                                                {
+                                                    s_cN = dataRow[0].ToString();
+                                                    b_have = true;
+                                                    break;
+                                                }
                                             }
                                             if (b_have)
                                             {
@@ -11992,7 +12011,7 @@ namespace SmartDyeing.FADM_Control
                                 "尚未滴液" + "' ";
                     if (txt_Browse_Operator.Text != null && txt_Browse_Operator.Text != "") // 有操作员的情况下
                     {
-                        s_sql = s_sql + "AND Operator ='" + txt_Browse_Operator.Text + "' ";
+                        s_sql = s_sql + "AND (Operator ='" + txt_Browse_Operator.Text + "' Or Operator ='无')";
                     }
                     if (FADM_Object.Communal._b_isDesc)
                         s_sql = s_sql + " ORDER BY CreateTime ;";
@@ -14147,7 +14166,15 @@ namespace SmartDyeing.FADM_Control
                         }
                         else
                         {
-                            if (Convert.ToDouble(txt_ClothWeight.Text) * Convert.ToDouble(_lis_handleBathRatio[p].Text) > Lib_Card.Configure.Parameter.Other_HandleMaxWeight)
+                            double d_maxWei = Lib_Card.Configure.Parameter.Other_HandleMaxWeight;
+                            if (txt_CupNum.Text != "" && txt_CupNum.Text != "0")
+                            {
+                                if (Communal._dic_big_small_cup[Convert.ToInt32(txt_CupNum.Text)] == 1)
+                                {
+                                    d_maxWei = Lib_Card.Configure.Parameter.Other_HandleMaxWeight_Big;
+                                }
+                            }
+                            if (Convert.ToDouble(txt_ClothWeight.Text) * Convert.ToDouble(_lis_handleBathRatio[p].Text) > d_maxWei)
                             {
                                 if (Lib_Card.Configure.Parameter.Other_Language == 0)
                                     FADM_Form.CustomMessageBox.Show("输入后处理浴比异常，请重新输入！", "温馨提示", MessageBoxButtons.OK, false);

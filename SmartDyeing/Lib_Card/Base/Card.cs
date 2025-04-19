@@ -65,6 +65,13 @@
         }
         #endregion
 
+        #region 读取版本号
+        /// <summary>
+        /// 读取版本号
+        /// </summary>
+        public abstract int GetVersion();
+        #endregion
+
         #region 板卡初始化
         /// <summary>
         /// 板卡初始化

@@ -34,6 +34,10 @@ namespace SmartDyeing.FADM_Control
     {
         DateTime[] times;
 
+        int i_start;
+        int i_end;
+        int i_int;
+
 
 
         Main _main;
@@ -609,6 +613,7 @@ namespace SmartDyeing.FADM_Control
                 label15.Text = "";
                 label16.Text = "";
                 textBox4.Text = "";
+                txt_BaseData.Text = "";
 
                 if (chart.Series.Count > 0)
                 {
@@ -629,6 +634,10 @@ namespace SmartDyeing.FADM_Control
                 //查询标样数据
                 if (dt_history_abs.Rows.Count > 0)
                 {
+                    i_start = Convert.ToInt32(dt_history_abs.Rows[0]["StartWave"]);
+                    i_end = Convert.ToInt32(dt_history_abs.Rows[0]["EndWave"]);
+                    i_int = Convert.ToInt32(dt_history_abs.Rows[0]["IntWave"]);
+
                     string s_result = dt_history_abs.Rows[0]["Result"] is DBNull ? "" : dt_history_abs.Rows[0]["Result"].ToString();
                     if (s_result.Length > 4)
                         textBox1.Text = s_result.Substring(0, 4);
@@ -654,6 +663,7 @@ namespace SmartDyeing.FADM_Control
                     }
                     else
                     {
+                        txt_BaseData.Text = dt_history_abs.Rows[0]["BaseTestTime"] is DBNull ? "" : dt_history_abs.Rows[0]["BaseTestTime"].ToString();
                         s_test = dt_history_abs.Rows[0]["Abs"] is DBNull ? "" : dt_history_abs.Rows[0]["Abs"].ToString();
                         //先查询标准吸光度
                         s_sql = "SELECT *  FROM bottle_details WHERE BottleNum = '" + dt_history_abs.Rows[0]["BottleNum"].ToString() + "';";
@@ -787,8 +797,9 @@ namespace SmartDyeing.FADM_Control
                             {
                                 doublesT[i] = Convert.ToDouble(sa_arr1[i + i_index]);
                             }
-                            textBox5.Text = MyAbsorbance.CalculateColorStrength(doublesS, doublesT).ToString("F2")+"%";
-                            textBox6.Text = MyAbsorbance.KS(doublesS, doublesT).ToString("F2") + "%";
+                            textBox5.Text = MyAbsorbance.SWL(doublesS, doublesT).ToString("F2")+"%";
+                            textBox6.Text = MyAbsorbance.SUM(doublesS, doublesT,400,700, Convert.ToInt32(dt_history_abs.Rows[0]["IntWave"])).ToString("F2") + "%";
+                            textBox7.Text = MyAbsorbance.WSUM(doublesS, doublesT, 400, 700, Convert.ToInt32(dt_history_abs.Rows[0]["IntWave"]),10).ToString("F2") + "%";
                         }
                     }
 
@@ -869,7 +880,7 @@ namespace SmartDyeing.FADM_Control
 
             for (int i = 0; i < sa_arr.Count(); i++)
             {
-                series.Points.AddXY(Convert.ToDouble(Lib_Card.Configure.Parameter.Other_StartWave + i * Lib_Card.Configure.Parameter.Other_IntWave), Convert.ToDouble(sa_arr[i]));
+                series.Points.AddXY(Convert.ToDouble(i_start + i * i_int), Convert.ToDouble(sa_arr[i]));
             }
             chart.MouseMove += new MouseEventHandler(chart1_MouseMove);
 
@@ -896,7 +907,7 @@ namespace SmartDyeing.FADM_Control
 
             for (int i = 0; i < sa_arr.Count(); i++)
             {
-                series.Points.AddXY(Convert.ToDouble(Lib_Card.Configure.Parameter.Other_StartWave + i * Lib_Card.Configure.Parameter.Other_IntWave), Convert.ToDouble(sa_arr[i]));
+                series.Points.AddXY(Convert.ToDouble(i_start + i * i_int), Convert.ToDouble(sa_arr[i]));
             }
             chart.MouseMove += new MouseEventHandler(chart1_MouseMove);
 
@@ -945,18 +956,18 @@ namespace SmartDyeing.FADM_Control
                 {
                     chart.ChartAreas[0].CursorX.SetCursorPixelPosition(new PointF(e.X, e.Y), true);
                     chart.ChartAreas[0].CursorY.SetCursorPixelPosition(new PointF(e.X, e.Y), true);
-                    if (Convert.ToInt32(chart.ChartAreas[0].CursorX.Position.ToString()) < (Lib_Card.Configure.Parameter.Other_StartWave + chart.Series[0].Points.Count * Lib_Card.Configure.Parameter.Other_IntWave) && Convert.ToInt32(chart.ChartAreas[0].CursorX.Position.ToString()) > 0)
+                    if (Convert.ToInt32(chart.ChartAreas[0].CursorX.Position.ToString()) < (i_start + chart.Series[0].Points.Count * i_int) && Convert.ToInt32(chart.ChartAreas[0].CursorX.Position.ToString()) > 0)
                     {
                         int i_index = 0;
                         for (int i = 0; i < chart.Series[0].Points.Count; i++)
                         {
-                            if (Convert.ToInt32(chart.ChartAreas[0].CursorX.Position.ToString()) < Lib_Card.Configure.Parameter.Other_StartWave + Lib_Card.Configure.Parameter.Other_IntWave * i)
+                            if (Convert.ToInt32(chart.ChartAreas[0].CursorX.Position.ToString()) < i_start + i_int * i)
                             {
                                 i_index = i - 1; break;
                             }
                         }
 
-                        if (Convert.ToInt32(chart.ChartAreas[0].CursorX.Position.ToString()) > Lib_Card.Configure.Parameter.Other_StartWave + Lib_Card.Configure.Parameter.Other_IntWave * (chart.Series[0].Points.Count - 1))
+                        if (Convert.ToInt32(chart.ChartAreas[0].CursorX.Position.ToString()) > i_start + i_int * (chart.Series[0].Points.Count - 1))
                         {
                             i_index = chart.Series[0].Points.Count - 1;
                         }

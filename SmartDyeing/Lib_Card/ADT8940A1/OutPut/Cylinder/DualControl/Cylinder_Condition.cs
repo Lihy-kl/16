@@ -127,7 +127,11 @@ namespace Lib_Card.ADT8940A1.OutPut.Cylinder.DualControl
                             else
                             {
                                 //s = CardObject.InsertD("气缸下超时", " CylinderDown");
-                                s = CardObject.InsertD("气缸下超时，请检查，排除异常请点是，退出运行请点否", " CylinderUp");
+                                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                    s = CardObject.InsertD("气缸下超时，请检查，排除异常请点是，退出运行请点否", " CylinderUp");
+                                else
+                                    s = CardObject.InsertD("Under the cylinder timeout, please check, troubleshooting please click Yes, exit please click no", " CylinderUp");
+
                                 while (true)
                                 {
                                     Thread.Sleep(1);
@@ -160,7 +164,11 @@ namespace Lib_Card.ADT8940A1.OutPut.Cylinder.DualControl
                         return -1;
                     else if (1 == iCylinderUp)
                     {
-                        s = CardObject.InsertD("气缸上信号已接通，请检查，确定无接通请点是，退出运行请点否", " CylinderDown");
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            s = CardObject.InsertD("气缸上信号已接通，请检查，确定无接通请点是，退出运行请点否", " CylinderDown");
+                        else
+                            s = CardObject.InsertD("The signal on the cylinder is connected, please check, confirm that it is not connected, please click Yes, please click No to exit the operation", " CylinderDown");
+
                         while (true)
                         {
                             Thread.Sleep(1);
@@ -176,7 +184,10 @@ namespace Lib_Card.ADT8940A1.OutPut.Cylinder.DualControl
                         }
                         else
                         {
-                            throw new Exception("气缸上信号已接通");
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                throw new Exception("气缸上信号已接通");
+                            else
+                                throw new Exception("The signal on the cylinder is connected");
                         }
                     }
 
@@ -207,7 +218,12 @@ namespace Lib_Card.ADT8940A1.OutPut.Cylinder.DualControl
                         }
                         else
                         {
-                            string s = CardObject.InsertD("接液盘未收回，请检查，确定收回请点是，退出运行请点否", " CylinderDown");
+                            string s;
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                s = CardObject.InsertD("接液盘未收回，请检查，确定收回请点是，退出运行请点否", " CylinderDown");
+                            else
+                                s = CardObject.InsertD("The liquid tray is not recovered, please check to determine the recovery please click yes, exit please click no", " CylinderDown");
+
                             while (true)
                             {
                                 Thread.Sleep(1);
@@ -312,8 +328,11 @@ namespace Lib_Card.ADT8940A1.OutPut.Cylinder.DualControl
                         else
                         {
                             //s = CardObject.InsertD("气缸上超时", " CylinderUp");
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                s = CardObject.InsertD("气缸上超时，请检查，排除异常请点是，退出运行请点否", " CylinderUp");
+                            else
+                                s = CardObject.InsertD("Time out on the cylinder, please check, troubleshoot the exception, please click Yes, exit the operation, please click No", " CylinderUp");
 
-                            s = CardObject.InsertD("气缸上超时，请检查，排除异常请点是，退出运行请点否", " CylinderUp");
                             while (true)
                             {
                                 Thread.Sleep(1);
@@ -329,7 +348,10 @@ namespace Lib_Card.ADT8940A1.OutPut.Cylinder.DualControl
                             }
                             else
                             {
-                                throw new Exception("气缸上超时");
+                                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                    throw new Exception("气缸上超时");
+                                else
+                                    throw new Exception("Cylinder time-out");
                             }
                         }
                     }
@@ -461,7 +483,12 @@ namespace Lib_Card.ADT8940A1.OutPut.Cylinder.DualControl
                         else if (1 == iCylinderMid)
                             break;
                         if (bDelay)
-                            s = CardObject.InsertD("气缸中超时", " CylinderMid");
+                        {
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                s = CardObject.InsertD("气缸中超时", " CylinderMid");
+                            else
+                                s = CardObject.InsertD("Time-out in cylinder", " CylinderMid");
+                        }
 
                     }
                     if (bDelay)
@@ -503,7 +530,12 @@ namespace Lib_Card.ADT8940A1.OutPut.Cylinder.DualControl
                         }
                         else
                         {
-                            string s = CardObject.InsertD("接液盘未收回，请检查，确定收回请点是，退出运行请点否", " CylinderMid");
+                            string s;
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                s = CardObject.InsertD("接液盘未收回，请检查，确定收回请点是，退出运行请点否", " CylinderMid");
+                            else
+                                s = CardObject.InsertD("The liquid tray is not recovered, please check to determine the recovery please click yes, exit please click no", " CylinderMid");
+
                             while (true)
                             {
                                 Thread.Sleep(1);

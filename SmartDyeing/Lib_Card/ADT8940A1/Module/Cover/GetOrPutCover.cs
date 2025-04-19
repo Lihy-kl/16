@@ -348,7 +348,12 @@ namespace Lib_Card.ADT8940A1.Module
                     }
 
                 }
-
+                //到位后重新气缸上
+                else if (res == 0)
+                {
+                    if (-1 == cylinder.CylinderUp(0))
+                        return -1;
+                }
             }
 
             return 0;

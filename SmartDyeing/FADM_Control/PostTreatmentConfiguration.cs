@@ -1,4 +1,5 @@
 ﻿using com.google.zxing.qrcode.decoder;
+using Lib_DataBank.MySQL;
 using SmartDyeing.FADM_Form;
 using System;
 using System.Collections.Generic;
@@ -325,14 +326,14 @@ namespace SmartDyeing.FADM_Control
                         FADM_Control.Formula.updateloadCraft(); //配方界面更新下
 
                         //打开按钮
-                        btn_DyeingProcessAdd.Enabled = true;
-                        btn_DyeingProcessDelete.Enabled = true;
-                        btn_DyeingProcessUpdate.Enabled = true;
+                        //btn_DyeingProcessAdd.Enabled = true;
+                        //btn_DyeingProcessDelete.Enabled = true;
+                        //btn_DyeingProcessUpdate.Enabled = true;
                         txt_Dye_Code.Enabled = false;
                         txt_Notes.Enabled = false;
-
+                        txt_Template.Enabled = true;
                         //设置添加按钮焦点
-                        btn_DyeingProcessAdd.Focus();
+                        txt_Template.Focus();
                     }
                     break;
                 default:
@@ -345,6 +346,7 @@ namespace SmartDyeing.FADM_Control
             txt_Dye_Code.Text = null;
             txt_Dye_Code.Enabled = true;
             txt_Dye_Code.Focus();
+            txt_Template.Text = "";
 
             //btn_DyeingProcessAdd.Enabled = false;
             //btn_DyeingProcessDelete.Enabled = false;
@@ -638,6 +640,7 @@ namespace SmartDyeing.FADM_Control
                     btn_DyeingProcessUpdate.Enabled = true;
                     btn_DyeingProcessDelete.Enabled = true;
                     dgv_Child_DyeData.ClearSelection();
+                    txt_Template.Text = "";
                 }
             }
             catch
@@ -649,6 +652,7 @@ namespace SmartDyeing.FADM_Control
                 btn_DyeingProcessUpdate.Enabled = false;
                 btn_DyeingProcessDelete.Enabled = false;
                 dgv_Child_DyeData.ClearSelection();
+                txt_Template.Text = "";
             }
         }
 
@@ -672,6 +676,982 @@ namespace SmartDyeing.FADM_Control
                 dgv_Child_DyeData.CurrentCell = dgv_Child_DyeData[0, i_index];
             }
             catch { }
+        }
+
+        private void txt_Template_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Enter:
+                    if (txt_Template.Enabled && txt_Template.Text != null && txt_Template.Text != "")
+                    {
+                        //打开按钮
+                        btn_DyeingProcessAdd.Enabled = true;
+                        btn_DyeingProcessDelete.Enabled = true;
+                        btn_DyeingProcessUpdate.Enabled = true;
+                        txt_Template.Enabled = false;
+
+                        //删除新增为空的数据
+                        string s_sql = "delete from dyeing_process where  StepNum is null and Code = '" + txt_Dye_Code.Text + "'; ";
+                        FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                        if (Lib_Card.Configure.Parameter.Other_Language == 1)
+                        {
+                            //根据选中模版插入数据
+                            if (txt_Template.Text == "Active template")
+                            {
+                                int i_step = 1;
+                                //1.加药
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'Add A','100'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //2.温控
+
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                       " ProportionOrTime, Code,Temp,Rate,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                       "'Temperature control','10','" + txt_Dye_Code.Text + "','60','2',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //3.排液
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                   " Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                   "'Drainage'," +
+                                                   "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //4.加水
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'Add Water','100'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //5.搅拌
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'Stir','3'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //6.排液
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                   " Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                   "'Drainage'," +
+                                                   "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //7.加药
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'Add B','100'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //8.温控
+
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                       " ProportionOrTime, Code,Temp,Rate,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                       "'Temperature control','30','" + txt_Dye_Code.Text + "','95','2',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //9.排液
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                   " Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                   "'Drainage'," +
+                                                   "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //10.加水
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'Add Water','100'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //11.搅拌
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'Stir','3'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //12.排液
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                   " Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                   "'Drainage'," +
+                                                   "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                            }
+                            else if (txt_Template.Text == "Distributed template")
+                            {
+                                int i_step = 1;
+                                //1.加药
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'Add A','100'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //2.温控
+
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                       " ProportionOrTime, Code,Temp,Rate,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                       "'Temperature control','10','" + txt_Dye_Code.Text + "','80','2',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //3.加药
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'Add B','100'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //4.温控
+
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                       " ProportionOrTime, Code,Temp,Rate,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                       "'Temperature control','20','" + txt_Dye_Code.Text + "','80','2',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //5.排液
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                   " Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                   "'Drainage'," +
+                                                   "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //6.加水
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'Add Water','100'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //7.搅拌
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'Stir','3'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //8.排液
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                   " Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                   "'Drainage'," +
+                                                   "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //9.加药
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'Add C','100'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //10.温控
+
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                       " ProportionOrTime, Code,Temp,Rate,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                       "'Temperature control','30','" + txt_Dye_Code.Text + "','95','2',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //11.排液
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                   " Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                   "'Drainage'," +
+                                                   "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //12.加水
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'Add Water','100'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //13.搅拌
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'Stir','3'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //14.排液
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                   " Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                   "'Drainage'," +
+                                                   "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                            }
+                            else if (txt_Template.Text == "Acidic template")
+                            {
+                                int i_step = 1;
+                                //1.加药
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'Add A','100'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //2.温控
+
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                       " ProportionOrTime, Code,Temp,Rate,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                       "'Temperature control','10','" + txt_Dye_Code.Text + "','60','2',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //3.排液
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                   " Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                   "'Drainage'," +
+                                                   "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //4.加水
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'Add Water','100'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //5.搅拌
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'Stir','3'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //6.排液
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                   " Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                   "'Drainage'," +
+                                                   "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                            }
+                        }
+                        else
+                        {
+                            //根据选中模版插入数据
+                            if (txt_Template.Text == "活性模版")
+                            {
+                                int i_step = 1;
+                                //1.加药
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'加A','100'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //2.温控
+
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                       " ProportionOrTime, Code,Temp,Rate,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                       "'温控','10','" + txt_Dye_Code.Text + "','60','2',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //3.排液
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                   " Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                   "'排液'," +
+                                                   "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //4.加水
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'加水','100'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //5.搅拌
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'搅拌','3'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //6.排液
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                   " Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                   "'排液'," +
+                                                   "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //7.加药
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'加B','100'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //8.温控
+
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                       " ProportionOrTime, Code,Temp,Rate,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                       "'温控','30','" + txt_Dye_Code.Text + "','95','2',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //9.排液
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                   " Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                   "'排液'," +
+                                                   "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //10.加水
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'加水','100'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //11.搅拌
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'搅拌','3'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //12.排液
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                   " Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                   "'排液'," +
+                                                   "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                            }
+                            else if (txt_Template.Text == "分散模版")
+                            {
+                                int i_step = 1;
+                                //1.加药
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'加A','100'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //2.温控
+
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                       " ProportionOrTime, Code,Temp,Rate,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                       "'温控','10','" + txt_Dye_Code.Text + "','80','2',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //3.加药
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'加B','100'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //4.温控
+
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                       " ProportionOrTime, Code,Temp,Rate,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                       "'温控','20','" + txt_Dye_Code.Text + "','80','2',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //5.排液
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                   " Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                   "'排液'," +
+                                                   "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //6.加水
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'加水','100'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //7.搅拌
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'搅拌','3'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //8.排液
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                   " Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                   "'排液'," +
+                                                   "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //9.加药
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'加C','100'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //10.温控
+
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                       " ProportionOrTime, Code,Temp,Rate,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                       "'温控','30','" + txt_Dye_Code.Text + "','95','2',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //11.排液
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                   " Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                   "'排液'," +
+                                                   "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //12.加水
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'加水','100'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //13.搅拌
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'搅拌','3'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //14.排液
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                   " Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                   "'排液'," +
+                                                   "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                            }
+                            else if (txt_Template.Text == "酸性模版")
+                            {
+                                int i_step = 1;
+                                //1.加药
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'加A','100'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //2.温控
+
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                       " ProportionOrTime, Code,Temp,Rate,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                       "'温控','10','" + txt_Dye_Code.Text + "','60','2',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //3.排液
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                   " Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                   "'排液'," +
+                                                   "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //4.加水
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'加水','100'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //5.搅拌
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                  " ProportionOrTime, Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                  "'搅拌','3'," +
+                                                  "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                i_step += 1;
+                                //6.排液
+                                s_sql = "INSERT INTO dyeing_process (StepNum, TechnologyName," +
+                                                   " Code,Type,Rev,Remark) VALUES('" + i_step + "'," +
+                                                   "'排液'," +
+                                                   "'" + txt_Dye_Code.Text + "',2,0,'" + txt_Notes.Text + "');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                            }
+                        }
+
+                        //设置添加按钮焦点
+                        btn_DyeingProcessAdd.Focus();
+                    }
+                    //不使用模版
+                    else
+                    {
+                        //打开按钮
+                        btn_DyeingProcessAdd.Enabled = true;
+                        btn_DyeingProcessDelete.Enabled = true;
+                        btn_DyeingProcessUpdate.Enabled = true;
+                        txt_Template.Enabled = false;
+
+                        //设置添加按钮焦点
+                        btn_DyeingProcessAdd.Focus();
+                    }
+
+                    ////更新调液流程代码表
+                    UpdateListAndDyeCode();
+                    DyeCodeShow(txt_Dye_Code.Text);
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void txt_Template_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //获取当前调液代码的调液流程
+            string s_sql = "SELECT StepNum,TechnologyName,Temp,Rate,ProportionOrTime,Rev  FROM dyeing_process WHERE" +
+                               " Code = '" + txt_Dye_Code.Text + "' Order By StepNum ; ";
+            DataTable dt_dyeingprocess = new DataTable();
+            dt_dyeingprocess.Columns.Add("StepNum", typeof(String));
+            dt_dyeingprocess.Columns.Add("TechnologyName", typeof(String));
+            dt_dyeingprocess.Columns.Add("Temp", typeof(String));
+            dt_dyeingprocess.Columns.Add("Rate", typeof(String));
+            dt_dyeingprocess.Columns.Add("ProportionOrTime", typeof(String));
+            dt_dyeingprocess.Columns.Add("Rev", typeof(String));
+            dt_dyeingprocess.Rows.Clear();
+            if (Lib_Card.Configure.Parameter.Other_Language == 1)
+            {
+                if (txt_Template.Text == "Active template")
+                {
+                    int i_step = 1;
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Add A", "", "", "100", "0");
+
+                    i_step += 1;
+                    //2.温控
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Temperature control", "60", "2", "10", "0");
+
+                    i_step += 1;
+                    //3.排液
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Drainage", "", "", "", "0");
+
+                    i_step += 1;
+                    //4.加水
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Add Water", "", "", "100", "0");
+
+                    i_step += 1;
+                    //5.搅拌
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Stir", "", "", "3", "0");
+
+                    i_step += 1;
+                    //6.排液
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Drainage", "", "", "", "0");
+
+                    i_step += 1;
+                    //7.加药
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "加B", "", "", "100", "0");
+
+                    i_step += 1;
+                    //8.温控
+
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Temperature control", "95", "2", "30", "0");
+
+                    i_step += 1;
+                    //9.排液
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Drainage", "", "", "", "0");
+
+                    i_step += 1;
+                    //10.加水
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Add Water", "", "", "100", "0");
+
+                    i_step += 1;
+                    //11.搅拌
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Stir", "", "", "3", "0");
+
+                    i_step += 1;
+                    //12.排液
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Drainage", "", "", "", "0");
+                }
+                else if (txt_Template.Text == "Distributed template")
+                {
+                    int i_step = 1;
+                    //1.加药
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Add A", "", "", "100", "0");
+
+                    i_step += 1;
+                    //2.温控
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Temperature control", "80", "2", "10", "0");
+
+                    i_step += 1;
+                    //3.加药
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Add B", "", "", "100", "0");
+
+                    i_step += 1;
+                    //4.温控
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Temperature control", "80", "2", "20", "0");
+
+                    i_step += 1;
+                    //5.排液
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Drainage", "", "", "", "0");
+
+                    i_step += 1;
+                    //6.加水
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Add Water", "", "", "100", "0");
+
+                    i_step += 1;
+                    //7.搅拌
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Stir", "", "", "3", "0");
+
+                    i_step += 1;
+                    //8.排液
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Drainage", "", "", "", "0");
+
+                    i_step += 1;
+                    //9.加药
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Add C", "", "", "100", "0");
+
+                    i_step += 1;
+                    //10.温控
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Temperature control", "95", "2", "30", "0");
+
+                    i_step += 1;
+                    //11.排液
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Drainage", "", "", "", "0");
+
+                    i_step += 1;
+                    //12.加水
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Add Water", "", "", "100", "0");
+
+                    i_step += 1;
+                    //13.搅拌
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Stir", "", "", "3", "0");
+
+                    i_step += 1;
+                    //14.排液
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Drainage", "", "", "", "0");
+                }
+                else if (txt_Template.Text == "Acidic template")
+                {
+                    int i_step = 1;
+                    //1.加药
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Add A", "", "", "100", "0");
+
+                    i_step += 1;
+                    //2.温控
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Temperature control", "80", "2", "10", "0");
+
+                    i_step += 1;
+                    //3.排液
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Drainage", "", "", "", "0");
+
+                    i_step += 1;
+                    //4.加水
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Add Water", "", "", "100", "0");
+
+                    i_step += 1;
+                    //5.搅拌
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Stir", "", "", "3", "0");
+
+                    i_step += 1;
+                    //6.排液
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "Drainage", "", "", "", "0");
+                }
+            }
+            else
+            {
+                if (txt_Template.Text == "活性模版")
+                {
+                    int i_step = 1;
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "加A", "", "", "100", "0");
+
+                    i_step += 1;
+                    //2.温控
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "温控", "60", "2", "10", "0");
+
+                    i_step += 1;
+                    //3.排液
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "排液", "", "", "", "0");
+
+                    i_step += 1;
+                    //4.加水
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "加水", "", "", "100", "0");
+
+                    i_step += 1;
+                    //5.搅拌
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "搅拌", "", "", "3", "0");
+
+                    i_step += 1;
+                    //6.排液
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "排液", "", "", "", "0");
+
+                    i_step += 1;
+                    //7.加药
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "加B", "", "", "100", "0");
+
+                    i_step += 1;
+                    //8.温控
+
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "温控", "95", "2", "30", "0");
+
+                    i_step += 1;
+                    //9.排液
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "排液", "", "", "", "0");
+
+                    i_step += 1;
+                    //10.加水
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "加水", "", "", "100", "0");
+
+                    i_step += 1;
+                    //11.搅拌
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "搅拌", "", "", "3", "0");
+
+                    i_step += 1;
+                    //12.排液
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "排液", "", "", "", "0");
+                }
+                else if (txt_Template.Text == "分散模版")
+                {
+                    int i_step = 1;
+                    //1.加药
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "加A", "", "", "100", "0");
+
+                    i_step += 1;
+                    //2.温控
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "温控", "80", "2", "10", "0");
+
+                    i_step += 1;
+                    //3.加药
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "加B", "", "", "100", "0");
+
+                    i_step += 1;
+                    //4.温控
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "温控", "80", "2", "20", "0");
+
+                    i_step += 1;
+                    //5.排液
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "排液", "", "", "", "0");
+
+                    i_step += 1;
+                    //6.加水
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "加水", "", "", "100", "0");
+
+                    i_step += 1;
+                    //7.搅拌
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "搅拌", "", "", "3", "0");
+
+                    i_step += 1;
+                    //8.排液
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "排液", "", "", "", "0");
+
+                    i_step += 1;
+                    //9.加药
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "加C", "", "", "100", "0");
+
+                    i_step += 1;
+                    //10.温控
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "温控", "95", "2", "30", "0");
+
+                    i_step += 1;
+                    //11.排液
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "排液", "", "", "", "0");
+
+                    i_step += 1;
+                    //12.加水
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "加水", "", "", "100", "0");
+
+                    i_step += 1;
+                    //13.搅拌
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "搅拌", "", "", "3", "0");
+
+                    i_step += 1;
+                    //14.排液
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "排液", "", "", "", "0");
+                }
+                else if (txt_Template.Text == "酸性模版")
+                {
+                    int i_step = 1;
+                    //1.加药
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "加A", "", "", "100", "0");
+
+                    i_step += 1;
+                    //2.温控
+
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "温控", "80", "2", "10", "0");
+
+                    i_step += 1;
+                    //3.排液
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "排液", "", "", "", "0");
+
+                    i_step += 1;
+                    //4.加水
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "加水", "", "", "100", "0");
+
+                    i_step += 1;
+                    //5.搅拌
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "搅拌", "", "", "3", "0");
+
+                    i_step += 1;
+                    //6.排液
+                    dt_dyeingprocess.Rows.Add(i_step.ToString(), "排液", "", "", "", "0");
+                }
+            }
+
+            //捆绑
+            dgv_Child_DyeData.DataSource = new DataView(dt_dyeingprocess);
+        }
+
+        private void dgv_Child_DyeData_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            //if (dgv_Child_DyeData.CurrentRow.Index == -1)
+            //{
+            //    dgv_Child_DyeData.ClearSelection();
+            //}
+        }
+
+        private void dgv_Child_DyeData_MouseClick(object sender, MouseEventArgs e)
+        {
+            DataGridView.HitTestInfo hitTest = dgv_Child_DyeData.HitTest(e.X, e.Y);
+            if (hitTest.Type == DataGridViewHitTestType.None)
+            {
+                // 清空选择行
+                dgv_Child_DyeData.ClearSelection();
+            }
+        }
+
+        private void btn_Insert_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dgv_Child_DyeData.SelectedRows.Count == 0)
+                {
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                        FADM_Form.CustomMessageBox.Show("请先选择操作行", "操作异常", MessageBoxButtons.OK, false);
+                    else
+                        FADM_Form.CustomMessageBox.Show("Please select the operation line first", "Abnormal operation", MessageBoxButtons.OK, false);
+                    return;
+                }
+
+                string s_sql = "select COUNT(*) from formula_head where DyeingCode in( select DyeingCode from dyeing_code where Code = '" + txt_Dye_Code.Text + "') and State = '已滴定配方'";
+                DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                if (dt_data.Rows[0][0].ToString() != "0")
+                {
+                    //if (DialogResult.OK ==  FADM_Form.CustomMessageBox.Show("此工艺已有完成滴液记录，不能修改",
+                    //                    "温馨提示", MessageBoxButtons.OK, false))
+                    //{
+                    //    return;
+                    //}
+
+                    ReName rename = new ReName(2, txt_Dye_Code.Text);
+                    rename.ShowDialog();
+                    if (rename.DialogResult != DialogResult.OK)
+                    {
+                        return;
+                    }
+
+                    UpdateListAndDyeCode();
+
+                    int i_index = dgv_Child_DyeData.CurrentRow.Index;
+
+                    DyeCodeShow(FADM_Object.Communal._s_reName);
+                    dgv_Child_DyeData.CurrentCell = dgv_Child_DyeData[0, i_index];
+                }
+
+                string s_stepNum = dgv_Child_DyeData.CurrentRow.Cells[0].Value.ToString();
+                //把步号加1
+                FADM_Object.Communal._fadmSqlserver.ReviseData("Update dyeing_process Set StepNum = StepNum + 1 where StepNum >= "+ s_stepNum +" AND Code = '" + txt_Dye_Code.Text + "';");
+
+                string s_technologyName = "";
+                string s_proportionOrTime = "1";
+                string s_temp = "";
+                string s_rate = "";
+                string s_rev = "";
+                DyeingStep form_DyeingStep = new DyeingStep(2, s_stepNum, s_technologyName, s_proportionOrTime, s_temp, s_rate, txt_Dye_Code.Text, s_rev, txt_Notes.Text, true, null, null, this);
+                form_DyeingStep.Show();
+            }
+            catch
+            {
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                    FADM_Form.CustomMessageBox.Show("未发现可修改的行,请先添加！", "操作异常", MessageBoxButtons.OK, false);
+                else
+                    FADM_Form.CustomMessageBox.Show("No modifiable rows found, please add first！", "Abnormal operation", MessageBoxButtons.OK, false);
+            }
         }
     }
 }

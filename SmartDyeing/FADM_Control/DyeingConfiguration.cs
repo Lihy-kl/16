@@ -681,5 +681,64 @@ namespace SmartDyeing.FADM_Control
             }
             catch { }
         }
+
+        private void btn_Insert_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dgv_Child_DyeData.SelectedRows.Count == 0)
+                {
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                        FADM_Form.CustomMessageBox.Show("请先选择操作行", "操作异常", MessageBoxButtons.OK, false);
+                    else
+                        FADM_Form.CustomMessageBox.Show("Please select the operation line first", "Abnormal operation", MessageBoxButtons.OK, false);
+                    return;
+                }
+
+                string s_sql = "select COUNT(*) from formula_head where DyeingCode in( select DyeingCode from dyeing_code where Code = '" + txt_Dye_Code.Text + "') and State = '已滴定配方'";
+                DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                if (dt_data.Rows[0][0].ToString() != "0")
+                {
+                    //if (DialogResult.OK ==  FADM_Form.CustomMessageBox.Show("此工艺已有完成滴液记录，不能修改",
+                    //                    "温馨提示", MessageBoxButtons.OK, false))
+                    //{
+                    //    return;
+                    //}
+
+                    ReName rename = new ReName(2, txt_Dye_Code.Text);
+                    rename.ShowDialog();
+                    if (rename.DialogResult != DialogResult.OK)
+                    {
+                        return;
+                    }
+
+                    UpdateListAndDyeCode();
+
+                    int i_index = dgv_Child_DyeData.CurrentRow.Index;
+
+                    DyeCodeShow(FADM_Object.Communal._s_reName);
+                    dgv_Child_DyeData.CurrentCell = dgv_Child_DyeData[0, i_index];
+                }
+
+                string s_stepNum = dgv_Child_DyeData.CurrentRow.Cells[0].Value.ToString();
+                //把步号加1
+                FADM_Object.Communal._fadmSqlserver.ReviseData("Update dyeing_process Set StepNum = StepNum + 1 where StepNum >= " + s_stepNum + " AND Code = '" + txt_Dye_Code.Text + "';");
+
+                string s_technologyName = "";
+                string s_proportionOrTime = "1";
+                string s_temp = "";
+                string s_rate = "";
+                string s_rev = "";
+                DyeingStep form_DyeingStep = new DyeingStep(1, s_stepNum, s_technologyName, s_proportionOrTime, s_temp, s_rate, txt_Dye_Code.Text, s_rev, txt_Notes.Text, true, null,  this, null);
+                form_DyeingStep.Show();
+            }
+            catch
+            {
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                    FADM_Form.CustomMessageBox.Show("未发现可修改的行,请先添加！", "操作异常", MessageBoxButtons.OK, false);
+                else
+                    FADM_Form.CustomMessageBox.Show("No modifiable rows found, please add first！", "Abnormal operation", MessageBoxButtons.OK, false);
+            }
+        }
     }
 }

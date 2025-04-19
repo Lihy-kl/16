@@ -798,26 +798,54 @@ namespace SmartDyeing.FADM_Control
         {
             if (Lib_Card.Configure.Parameter.Machine_Type == 0)
             {
-                Lib_Card.ADT8940A1.OutPut.Blender.Blender blender = new Lib_Card.ADT8940A1.OutPut.Blender.Blender_Basic();
-                int iRes = Lib_Card.CardObject.OA1.ReadOutPut(Lib_Card.ADT8940A1.ADT8940A1_IO.OutPut_Blender);
-                if (-1 == iRes)
+                if (Lib_Card.Configure.Parameter.Machine_BlenderVersion == 0)
                 {
-                    FADM_Form.CustomMessageBox.Show("驱动异常", "ReadOutPut", MessageBoxButtons.OK, false);
-                }
-                else if (0 == iRes)
-                {
-                    FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "停止搅拌打开");
-                    if (-1 == blender.Blender_On())
+                    Lib_Card.ADT8940A1.OutPut.Blender.Blender blender = new Lib_Card.ADT8940A1.OutPut.Blender.Blender_Basic();
+                    int iRes = Lib_Card.CardObject.OA1.ReadOutPut(Lib_Card.ADT8940A1.ADT8940A1_IO.OutPut_Blender);
+                    if (-1 == iRes)
                     {
-                        FADM_Form.CustomMessageBox.Show("驱动异常", "Blender_On", MessageBoxButtons.OK, false);
+                        FADM_Form.CustomMessageBox.Show("驱动异常", "ReadOutPut", MessageBoxButtons.OK, false);
+                    }
+                    else if (1 == iRes)
+                    {
+                        FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "停止搅拌打开");
+                        if (-1 == blender.Blender_On())
+                        {
+                            FADM_Form.CustomMessageBox.Show("驱动异常", "Blender_On", MessageBoxButtons.OK, false);
+                        }
+                    }
+                    else
+                    {
+                        FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "停止搅拌关闭");
+                        if (-1 == blender.Blender_Off())
+                        {
+                            FADM_Form.CustomMessageBox.Show("驱动异常", "Blender_Off", MessageBoxButtons.OK, false);
+                        }
                     }
                 }
                 else
                 {
-                    FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "停止搅拌关闭");
-                    if (-1 == blender.Blender_Off())
+                    Lib_Card.ADT8940A1.OutPut.Blender.Blender blender = new Lib_Card.ADT8940A1.OutPut.Blender.Blender_Basic();
+                    int iRes = Lib_Card.CardObject.OA1.ReadOutPut(Lib_Card.ADT8940A1.ADT8940A1_IO.OutPut_Blender);
+                    if (-1 == iRes)
                     {
-                        FADM_Form.CustomMessageBox.Show("驱动异常", "Blender_Off", MessageBoxButtons.OK, false);
+                        FADM_Form.CustomMessageBox.Show("驱动异常", "ReadOutPut", MessageBoxButtons.OK, false);
+                    }
+                    else if (0 == iRes)
+                    {
+                        FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "停止搅拌打开");
+                        if (-1 == blender.Blender_On())
+                        {
+                            FADM_Form.CustomMessageBox.Show("驱动异常", "Blender_On", MessageBoxButtons.OK, false);
+                        }
+                    }
+                    else
+                    {
+                        FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "停止搅拌关闭");
+                        if (-1 == blender.Blender_Off())
+                        {
+                            FADM_Form.CustomMessageBox.Show("驱动异常", "Blender_Off", MessageBoxButtons.OK, false);
+                        }
                     }
                 }
             }
@@ -2896,7 +2924,9 @@ namespace SmartDyeing.FADM_Control
 
             //Console.WriteLine($"L: {L}, A: {A}, B: {B}");
             //return;
-            FADM_Object.Communal._b_stop = true;
+            //FADM_Object.Communal._b_stop = true;
+
+            //SmartDyeing.FADM_Auto.MyAbsorbance.Abs();
         }
 
         // CIE 1931 2° Standard Observer

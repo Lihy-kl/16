@@ -260,8 +260,16 @@ namespace SmartDyeing.FADM_Auto
                                  "自检" + "','" +
                                   ex.ToString() + "(Test)');";
                         FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
-
-                        new FADM_Object.MyAlarm(ex.ToString(), "Self", false, 0);
+                        string str = ex.Message;
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                        {
+                            if (SmartDyeing.FADM_Object.Communal._dic_warning.ContainsKey(ex.Message))
+                            {
+                                //如果存在就替换英文
+                                str = SmartDyeing.FADM_Object.Communal._dic_warning[ex.Message];
+                            }
+                        }
+                        new FADM_Object.MyAlarm(str, "Self", false, 0);
                     }
                 }
 

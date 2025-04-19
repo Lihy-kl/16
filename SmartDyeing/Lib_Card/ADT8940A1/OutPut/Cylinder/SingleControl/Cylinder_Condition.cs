@@ -101,7 +101,11 @@ namespace Lib_Card.ADT8940A1.OutPut.Cylinder.SingleControl
                             else
                             {
                                 //s = CardObject.InsertD("气缸下超时", " CylinderDown");
-                                s = CardObject.InsertD("气缸下超时，请检查，排除异常请点是，退出运行请点否", " CylinderUp");
+                                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                    s = CardObject.InsertD("气缸下超时，请检查，排除异常请点是，退出运行请点否", " CylinderUp");
+                                else
+                                    s = CardObject.InsertD("Under the cylinder timeout, please check, troubleshooting please click Yes, exit please click no", " CylinderUp");
+
                                 while (true)
                                 {
                                     Thread.Sleep(1);
@@ -155,7 +159,12 @@ namespace Lib_Card.ADT8940A1.OutPut.Cylinder.SingleControl
                         }
                         else
                         {
-                            string s = CardObject.InsertD("接液盘未收回，请检查，确定收回请点是，退出运行请点否", " CylinderDown");
+                            string s;
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                s = CardObject.InsertD("接液盘未收回，请检查，确定收回请点是，退出运行请点否", " CylinderDown");
+                            else
+                                s = CardObject.InsertD("The liquid tray is not recovered, please check to determine the recovery please click yes, exit please click no", " CylinderDown");
+
                             while (true)
                             {
                                 Thread.Sleep(1);
@@ -241,8 +250,11 @@ namespace Lib_Card.ADT8940A1.OutPut.Cylinder.SingleControl
                         else
                         {
                             //s = CardObject.InsertD("气缸上超时", " CylinderUp");
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                s = CardObject.InsertD("气缸上超时，请检查，排除异常请点是，退出运行请点否", " CylinderUp");
+                            else
+                                s = CardObject.InsertD("Time out on the cylinder, please check, troubleshoot the exception, please click Yes, exit the operation, please click No", " CylinderUp");
 
-                            s = CardObject.InsertD("气缸上超时，请检查，排除异常请点是，退出运行请点否", " CylinderUp");
                             while (true)
                             {
                                 Thread.Sleep(1);

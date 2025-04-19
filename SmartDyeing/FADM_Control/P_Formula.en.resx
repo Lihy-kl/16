@@ -606,20 +606,35 @@
   <data name="dataGridViewTextBoxColumn10.HeaderText" xml:space="preserve">
     <value>ID</value>
   </data>
+  <data name="dataGridViewTextBoxColumn10.Width" type="System.Int32, mscorlib">
+    <value>27</value>
+  </data>
   <data name="dataGridViewTextBoxColumn11.HeaderText" xml:space="preserve">
     <value>DyeingAuxiliariesCode</value>
   </data>
   <data name="dataGridViewTextBoxColumn12.HeaderText" xml:space="preserve">
     <value>DyeingAuxiliariesName</value>
   </data>
+  <data name="dataGridViewTextBoxColumn12.Width" type="System.Int32, mscorlib">
+    <value>160</value>
+  </data>
   <data name="dataGridViewTextBoxColumn13.HeaderText" xml:space="preserve">
     <value>DosageOfFormula</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn13.Width" type="System.Int32, mscorlib">
+    <value>118</value>
   </data>
   <data name="dataGridViewTextBoxColumn14.HeaderText" xml:space="preserve">
     <value>Units</value>
   </data>
+  <data name="dataGridViewTextBoxColumn14.Width" type="System.Int32, mscorlib">
+    <value>48</value>
+  </data>
   <data name="dataGridViewComboBoxColumn2.HeaderText" xml:space="preserve">
     <value>BottleNumber</value>
+  </data>
+  <data name="dataGridViewComboBoxColumn2.Width" type="System.Int32, mscorlib">
+    <value>97</value>
   </data>
   <data name="dataGridViewTextBoxColumn15.HeaderText" xml:space="preserve">
     <value>SetConcentration</value>
@@ -630,8 +645,14 @@
   <data name="dataGridViewTextBoxColumn17.HeaderText" xml:space="preserve">
     <value>TargetVolume</value>
   </data>
+  <data name="dataGridViewTextBoxColumn17.Width" type="System.Int32, mscorlib">
+    <value>97</value>
+  </data>
   <data name="dataGridViewTextBoxColumn18.HeaderText" xml:space="preserve">
     <value>ActualVolume</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn18.Width" type="System.Int32, mscorlib">
+    <value>97</value>
   </data>
   <data name="Column6.HeaderText" xml:space="preserve">
     <value>Error(%)</value>
@@ -639,8 +660,14 @@
   <data name="dataGridViewCheckBoxColumn2.HeaderText" xml:space="preserve">
     <value>Selecting</value>
   </data>
+  <data name="dataGridViewCheckBoxColumn2.Width" type="System.Int32, mscorlib">
+    <value>76</value>
+  </data>
   <data name="Column7.HeaderText" xml:space="preserve">
     <value>MixingDate</value>
+  </data>
+  <data name="Column7.Width" type="System.Int32, mscorlib">
+    <value>102</value>
   </data>
   <data name="lab_FormulaName.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>

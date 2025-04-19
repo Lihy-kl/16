@@ -117,89 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="lab_Handle_Rev5.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="lab_Handle_Rev5.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 12pt</value>
-  </data>
-  <data name="lab_Handle_Rev5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1121, 27</value>
-  </data>
-  <data name="lab_Handle_Rev5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>63, 16</value>
-  </data>
-  <data name="lab_Handle_Rev5.Text" xml:space="preserve">
-    <value>PT5RPM:</value>
-  </data>
-  <data name="txt_Handle_Rev5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1182, 21</value>
-  </data>
-  <data name="txt_Handle_Rev5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 29</value>
-  </data>
-  <data name="lab_Handle_Rev4.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lab_Handle_Rev4.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 12pt</value>
-  </data>
-  <data name="lab_Handle_Rev4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>906, 27</value>
-  </data>
-  <data name="lab_Handle_Rev4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>63, 16</value>
-  </data>
-  <data name="lab_Handle_Rev4.Text" xml:space="preserve">
-    <value>PT4RPM:</value>
-  </data>
-  <data name="txt_Handle_Rev3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>752, 21</value>
-  </data>
-  <data name="txt_Handle_Rev3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 29</value>
-  </data>
-  <data name="lab_Handle_Rev3.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lab_Handle_Rev3.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 12pt</value>
-  </data>
-  <data name="lab_Handle_Rev3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>691, 27</value>
-  </data>
-  <data name="lab_Handle_Rev3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>63, 16</value>
-  </data>
-  <data name="lab_Handle_Rev3.Text" xml:space="preserve">
-    <value>PT3RPM:</value>
-  </data>
-  <data name="txt_Handle_Rev4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>967, 21</value>
-  </data>
-  <data name="txt_Handle_Rev4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 29</value>
-  </data>
-  <data name="Column2.HeaderText" xml:space="preserve">
-    <value>Type</value>
-  </data>
-  <data name="Column3.HeaderText" xml:space="preserve">
-    <value>StepNumber</value>
-  </data>
-  <data name="Column4.HeaderText" xml:space="preserve">
-    <value>ProcessName</value>
-  </data>
-  <data name="groupBox3.Text" xml:space="preserve">
-    <value>DyeingProcess</value>
-  </data>
-  <data name="txt_Handle_Rev2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>537, 21</value>
-  </data>
-  <data name="txt_Handle_Rev2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 29</value>
-  </data>
   <data name="txt_CupNum.Location" type="System.Drawing.Point, System.Drawing">
     <value>96, 91</value>
   </data>
@@ -320,6 +238,7 @@
   <data name="rdo_Record_All.Text" xml:space="preserve">
     <value>ShowAll</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -390,7 +309,16 @@
     <value>228, 93</value>
   </data>
   <data name="txt_DyeingCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>188, 27</value>
+    <value>188, 29</value>
+  </data>
+  <data name="label6.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 12pt</value>
+  </data>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 16</value>
+  </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>Code:</value>
   </data>
   <data name="txt_Operator.Location" type="System.Drawing.Point, System.Drawing">
     <value>580, 92</value>
@@ -469,21 +397,6 @@
   </data>
   <data name="lab_txt_Non_AnhydrationWR.Text" xml:space="preserve">
     <value>Non-dehydratedWaterRatio:</value>
-  </data>
-  <data name="lab_DyeingCode.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lab_DyeingCode.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 12pt</value>
-  </data>
-  <data name="lab_DyeingCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>160, 97</value>
-  </data>
-  <data name="lab_DyeingCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 16</value>
-  </data>
-  <data name="lab_DyeingCode.Text" xml:space="preserve">
-    <value>DyeCode:</value>
   </data>
   <data name="txt_VersionNum.Location" type="System.Drawing.Point, System.Drawing">
     <value>250, 17</value>
@@ -674,64 +587,16 @@
   <data name="BottleSelection.HeaderText" xml:space="preserve">
     <value>Selecting</value>
   </data>
-  <data name="lab_Handle_Rev2.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="Column2.HeaderText" xml:space="preserve">
+    <value>Type</value>
   </data>
-  <data name="lab_Handle_Rev2.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 12pt</value>
+  <data name="Column3.HeaderText" xml:space="preserve">
+    <value>StepNumber</value>
   </data>
-  <data name="lab_Handle_Rev2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>476, 27</value>
+  <data name="Column4.HeaderText" xml:space="preserve">
+    <value>ProcessName</value>
   </data>
-  <data name="lab_Handle_Rev2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>63, 16</value>
-  </data>
-  <data name="lab_Handle_Rev2.Text" xml:space="preserve">
-    <value>PT2RPM:</value>
-  </data>
-  <data name="txt_Handle_Rev1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>322, 21</value>
-  </data>
-  <data name="txt_Handle_Rev1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 29</value>
-  </data>
-  <data name="lab_Handle_Rev1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lab_Handle_Rev1.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 12pt</value>
-  </data>
-  <data name="lab_Handle_Rev1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>261, 27</value>
-  </data>
-  <data name="lab_Handle_Rev1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>63, 16</value>
-  </data>
-  <data name="lab_Handle_Rev1.Text" xml:space="preserve">
-    <value>PT1RPM:</value>
-  </data>
-  <data name="txt_HandleBathRatio.Location" type="System.Drawing.Point, System.Drawing">
-    <value>107, 21</value>
-  </data>
-  <data name="lab_HandleBathRatio.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lab_HandleBathRatio.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 12pt</value>
-  </data>
-  <data name="lab_HandleBathRatio.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 27</value>
-  </data>
-  <data name="lab_HandleBathRatio.Size" type="System.Drawing.Size, System.Drawing">
-    <value>103, 16</value>
-  </data>
-  <data name="lab_HandleBathRatio.Text" xml:space="preserve">
-    <value>PTBathRatio:</value>
-  </data>
-  <data name="grp_Handle.Text" xml:space="preserve">
-    <value>Post-treatment</value>
-  </data>
-  <data name="grp_Dye.Text" xml:space="preserve">
-    <value>Dyeing</value>
+  <data name="groupBox3.Text" xml:space="preserve">
+    <value>DyeingProcess</value>
   </data>
 </root>

@@ -957,7 +957,17 @@ namespace SmartDyeing.FADM_Auto
                                   ex.ToString() + "(Test)');";
                         FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
 
-                        new FADM_Object.MyAlarm(ex.ToString(), "水验证", false, 0);
+                        string str = ex.Message;
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                        {
+                            if (SmartDyeing.FADM_Object.Communal._dic_warning.ContainsKey(ex.Message))
+                            {
+                                //如果存在就替换英文
+                                str = SmartDyeing.FADM_Object.Communal._dic_warning[ex.Message];
+                            }
+                        }
+
+                        new FADM_Object.MyAlarm(str, "水验证", false, 0);
                     }
                 }
                 //Lib_SerialPort.Balance.METTLER.bReSetSign = true;

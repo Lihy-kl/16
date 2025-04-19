@@ -4202,19 +4202,52 @@ namespace SmartDyeing.FADM_Object
                             throw new Exception("5");
                     }
                     Lib_Log.Log.writeLogException("脉冲是iXPules=" + i_xPules.ToString() + "iYPules=" + i_yPules.ToString());
-                    int d1 = 0;
-                    if (i_xPules > 65536)
+                    int i_d0=0, i_d1=0, i_d2=0;
+                    i_d0 = i_xPules;
+                    i_d2 = i_d0 / 65536;
+                    if (i_d0 < 0) //负数脉冲
                     {
-                        d1 = i_xPules / 65536;
-                        i_xPules = i_xPules % 65536;
+                        if (i_d2 == 0)
+                        {
+                            i_d2 = -1;
+                        }
+                        else
+                        {
+                            if (Math.Abs(i_d0) > 65536)
+                            {
+                                i_d2 = i_d2 + -1;
+                            }
+                        }
                     }
-                    int d2 = 0;
-                    if (i_yPules > 65536)
+                    else
+                    {  //正数脉冲
+                        i_d2 = i_d0 / 65536;
+                    }
+                    i_d1 = i_d0 % 65536;
+
+                    int i_yd0 = 0, i_yd1 = 0, i_yd2 = 0;
+                    i_yd0 = i_yPules;
+                    i_yd2 = i_yd0 / 65536;
+                    if (i_yd0 < 0) //负数脉冲
                     {
-                        d2 = i_yPules / 65536;
-                        i_yPules = i_yPules % 65536;
+                        if (i_yd2 == 0)
+                        {
+                            i_yd2 = -1;
+                        }
+                        else
+                        {
+                            if (Math.Abs(i_yd0) > 65536)
+                            {
+                                i_yd2 = i_yd2 + -1;
+                            }
+                        }
                     }
-                    int[] ia_array = { 2, i_xPules, d1, i_yPules, d2, 0, 0, 0, 0, i_type, 1 };
+                    else
+                    {  //正数脉冲
+                        i_yd2 = i_yd0 / 65536;
+                    }
+                    i_yd1 = i_yd0 % 65536;
+                    int[] ia_array = { 2, i_d1, i_d2, i_yd1, i_yd2, 0, 0, 0, 0, i_type, 1 };
                     Lib_Log.Log.writeLogException("发送坐标");
                     Console.WriteLine("发送坐标");
                     int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
@@ -5451,12 +5484,12 @@ namespace SmartDyeing.FADM_Object
 
 
                 //Lib_Card.ADT8940A1.OutPut.X_Power.X_Power x_Power = new Lib_Card.ADT8940A1.OutPut.X_Power.X_Power_Condition();
-                if (-1 == x_Power.X_Power_Off())
-                    return -1;
+                //if (-1 == x_Power.X_Power_Off())
+                //    return -1;
 
                 //Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power y_Power = new Lib_Card.ADT8940A1.OutPut.Y_Power.Y_Power_Condition();
-                if (-1 == y_Power.Y_Power_Off())
-                    return -1;
+                //if (-1 == y_Power.Y_Power_Off())
+                //    return -1;
 
                 try
                 {
@@ -5484,10 +5517,12 @@ namespace SmartDyeing.FADM_Object
                 try
                 {
                 Label1:
-                    //if (!FADM_Object.Communal._b_auto)
-                    //{//在手动页面 等待手动页面退出
-                    //    goto Label1;
-                    //}
+                    if (!FADM_Object.Communal._b_auto)
+                    {
+                        if (i_type != 2)
+                            //在手动页面 等待手动页面退出
+                            goto Label1;
+                    }
                     Lib_Log.Log.writeLogException("执行放关盖方法");
 
                     bool b_istrue = false;
@@ -6795,19 +6830,52 @@ namespace SmartDyeing.FADM_Object
                         FADM_Object.Communal.WriteTcpStatus(true); //天平先不要轮询
                         return 0;
                     }
-                    int d_1 = 0;
-                    if (i_xPules > 65536)
+                    int i_d0 = 0, i_d1 = 0, i_d2 = 0;
+                    i_d0 = i_xPules;
+                    i_d2 = i_d0 / 65536;
+                    if (i_d0 < 0) //负数脉冲
                     {
-                        d_1 = i_xPules / 65536;
-                        i_xPules = i_xPules % 65536;
+                        if (i_d2 == 0)
+                        {
+                            i_d2 = -1;
+                        }
+                        else
+                        {
+                            if (Math.Abs(i_d0) > 65536)
+                            {
+                                i_d2 = i_d2 + -1;
+                            }
+                        }
                     }
-                    int d_2 = 0;
-                    if (i_yPules > 65536)
+                    else
+                    {  //正数脉冲
+                        i_d2 = i_d0 / 65536;
+                    }
+                    i_d1 = i_d0 % 65536;
+
+                    int i_yd0 = 0, i_yd1 = 0, i_yd2 = 0;
+                    i_yd0 = i_yPules;
+                    i_yd2 = i_yd0 / 65536;
+                    if (i_yd0 < 0) //负数脉冲
                     {
-                        d_2 = i_yPules / 65536;
-                        i_yPules = i_yPules % 65536;
+                        if (i_yd2 == 0)
+                        {
+                            i_yd2 = -1;
+                        }
+                        else
+                        {
+                            if (Math.Abs(i_yd0) > 65536)
+                            {
+                                i_yd2 = i_yd2 + -1;
+                            }
+                        }
                     }
-                    int[] ia_array = { 9, i_xPules, d_1, i_yPules, d_2, 0, 0, 0, 0, 0, 1 };
+                    else
+                    {  //正数脉冲
+                        i_yd2 = i_yd0 / 65536;
+                    }
+                    i_yd1 = i_yd0 % 65536;
+                    int[] ia_array = { 9, i_d1, i_d2, i_yd1, i_yd2, 0, 0, 0, 0, 0, 1 };
                     int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
                     if (i_state != -1)
                     {
@@ -6953,19 +7021,52 @@ namespace SmartDyeing.FADM_Object
                         FADM_Object.Communal.WriteTcpStatus(true); //天平先不要轮询
                         return 0;
                     }
-                    int d_1 = 0;
-                    if (i_xPules > 65536)
+                    int i_d0 = 0, i_d1 = 0, i_d2 = 0;
+                    i_d0 = i_xPules;
+                    i_d2 = i_d0 / 65536;
+                    if (i_d0 < 0) //负数脉冲
                     {
-                        d_1 = i_xPules / 65536;
-                        i_xPules = i_xPules % 65536;
+                        if (i_d2 == 0)
+                        {
+                            i_d2 = -1;
+                        }
+                        else
+                        {
+                            if (Math.Abs(i_d0) > 65536)
+                            {
+                                i_d2 = i_d2 + -1;
+                            }
+                        }
                     }
-                    int d_2 = 0;
-                    if (i_yPules > 65536)
+                    else
+                    {  //正数脉冲
+                        i_d2 = i_d0 / 65536;
+                    }
+                    i_d1 = i_d0 % 65536;
+
+                    int i_yd0 = 0, i_yd1 = 0, i_yd2 = 0;
+                    i_yd0 = i_yPules;
+                    i_yd2 = i_yd0 / 65536;
+                    if (i_yd0 < 0) //负数脉冲
                     {
-                        d_2 = i_yPules / 65536;
-                        i_yPules = i_yPules % 65536;
+                        if (i_yd2 == 0)
+                        {
+                            i_yd2 = -1;
+                        }
+                        else
+                        {
+                            if (Math.Abs(i_yd0) > 65536)
+                            {
+                                i_yd2 = i_yd2 + -1;
+                            }
+                        }
                     }
-                    int[] ia_array = { 9, i_xPules, d_1, i_yPules, d_2, 0, 0, 0, 0, 0, 1 };
+                    else
+                    {  //正数脉冲
+                        i_yd2 = i_yd0 / 65536;
+                    }
+                    i_yd1 = i_yd0 % 65536;
+                    int[] ia_array = { 9, i_d1, i_d2, i_yd1, i_yd2, 0, 0, 0, 0, 0, 1 };
                     int i_state = FADM_Object.Communal._tcpModBus.Write(800, ia_array);
                     if (i_state != -1)
                     {

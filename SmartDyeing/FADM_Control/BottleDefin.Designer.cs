@@ -35,6 +35,8 @@ namespace SmartDyeing.FADM_Control
             this.grp_Browse = new System.Windows.Forms.GroupBox();
             this.dgv_Bottle = new System.Windows.Forms.DataGridView();
             this.grp_BottleDetails = new System.Windows.Forms.GroupBox();
+            this.cbo_Abs = new System.Windows.Forms.ComboBox();
+            this.lab_Abs = new System.Windows.Forms.Label();
             this.cbo_OriginalBottleNum = new System.Windows.Forms.ComboBox();
             this.dtp_BrewingData = new System.Windows.Forms.DateTimePicker();
             this.cbo_BrewingCode = new System.Windows.Forms.ComboBox();
@@ -111,6 +113,8 @@ namespace SmartDyeing.FADM_Control
             // grp_BottleDetails
             // 
             resources.ApplyResources(this.grp_BottleDetails, "grp_BottleDetails");
+            this.grp_BottleDetails.Controls.Add(this.cbo_Abs);
+            this.grp_BottleDetails.Controls.Add(this.lab_Abs);
             this.grp_BottleDetails.Controls.Add(this.cbo_OriginalBottleNum);
             this.grp_BottleDetails.Controls.Add(this.dtp_BrewingData);
             this.grp_BottleDetails.Controls.Add(this.cbo_BrewingCode);
@@ -136,6 +140,18 @@ namespace SmartDyeing.FADM_Control
             this.grp_BottleDetails.Controls.Add(this.lab_BottleNum);
             this.grp_BottleDetails.Name = "grp_BottleDetails";
             this.grp_BottleDetails.TabStop = false;
+            // 
+            // cbo_Abs
+            // 
+            resources.ApplyResources(this.cbo_Abs, "cbo_Abs");
+            this.cbo_Abs.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbo_Abs.FormattingEnabled = true;
+            this.cbo_Abs.Name = "cbo_Abs";
+            // 
+            // lab_Abs
+            // 
+            resources.ApplyResources(this.lab_Abs, "lab_Abs");
+            this.lab_Abs.Name = "lab_Abs";
             // 
             // cbo_OriginalBottleNum
             // 
@@ -483,6 +499,7 @@ namespace SmartDyeing.FADM_Control
         private System.Windows.Forms.ComboBox cbo_OriginalBottleNum;
         private System.Windows.Forms.RadioButton rdo_3;
         private System.Windows.Forms.RadioButton rdo_4;
-
+        private ComboBox cbo_Abs;
+        private Label lab_Abs;
     }
 }

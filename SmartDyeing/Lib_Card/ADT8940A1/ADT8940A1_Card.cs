@@ -60,6 +60,13 @@ namespace Lib_Card.ADT8940A1
 
         }
 
+        public override int GetVersion()
+        {
+            int iRes = Adt8940a1m.adt8940a1_get_lib_version(0);
+            return iRes;
+
+        }
+
         public override int ReadInPut(int iInPutNo)
         {
 

@@ -92,7 +92,11 @@ namespace Lib_Card.ADT8940A1.OutPut.Tray
                         if (bDelay)
                         {
                             //s = CardObject.InsertD("接液盘收回超时", "Tray_Off");
-                            s = CardObject.InsertD("接液盘收回超时，请检查，排除异常请点是，退出运行请点否", " Tray_On");
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                s = CardObject.InsertD("接液盘收回超时，请检查，排除异常请点是，退出运行请点否", " Tray_On");
+                            else
+                                s = CardObject.InsertD("Liquid disk recovery timeout, please check, troubleshoot the exception, please click Yes, exit the operation, please click No", " Tray_On");
+
                             while (true)
                             {
                                 Thread.Sleep(1);
@@ -122,7 +126,11 @@ namespace Lib_Card.ADT8940A1.OutPut.Tray
                         return -1;
                     else if (1 == iTrayOut)
                     {
-                        s = CardObject.InsertD("接液盘出信号已接通，请检查，确定无接通请点是，退出运行请点否", " Tray_Off");
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            s = CardObject.InsertD("接液盘出信号已接通，请检查，确定无接通请点是，退出运行请点否", " Tray_Off");
+                        else
+                            s = CardObject.InsertD("The outgoing signal of the liquid plate is connected, please check, confirm that it is not connected, please click Yes, please click No to exit the operation", " Tray_Off");
+
                         while (true)
                         {
                             Thread.Sleep(1);
@@ -160,7 +168,12 @@ namespace Lib_Card.ADT8940A1.OutPut.Tray
                         }
                         else
                         {
-                            string s = CardObject.InsertD("气缸未在上限位，请检查，确定到位请点是，退出运行请点否", " Tray_On");
+                            string s;
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                s = CardObject.InsertD("气缸未在上限位，请检查，确定到位请点是，退出运行请点否", " Tray_On");
+                            else
+                                s = CardObject.InsertD("The cylinder is not in the upper limit, please check, confirm in place, please click Yes, exit operation, please click No", " Tray_On");
+
                             while (true)
                             {
                                 Thread.Sleep(1);
@@ -270,7 +283,11 @@ namespace Lib_Card.ADT8940A1.OutPut.Tray
                         if (bDelay)
                         {
                             //s = CardObject.InsertD("接液盘伸出超时", "Tray_On");
-                            s = CardObject.InsertD("接液盘伸出超时，请检查，排除异常请点是，退出运行请点否", " Tray_On");
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                s = CardObject.InsertD("接液盘伸出超时，请检查，排除异常请点是，退出运行请点否", " Tray_On");
+                            else
+                                s = CardObject.InsertD("Liquid plate extension time out, please check, troubleshooting please click Yes, exit please click no", " Tray_On");
+
                             while (true)
                             {
                                 Thread.Sleep(1);
@@ -300,7 +317,11 @@ namespace Lib_Card.ADT8940A1.OutPut.Tray
                         return -1;
                     else if (1 == iTrayIn)
                     {
-                        s = CardObject.InsertD("接液盘回信号已接通，请检查，确定无接通请点是，退出运行请点否", " Tray_On");
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            s = CardObject.InsertD("接液盘回信号已接通，请检查，确定无接通请点是，退出运行请点否", " Tray_On");
+                        else
+                            s = CardObject.InsertD("The return signal of the liquid tray is connected, please check, confirm that it is not connected, please click Yes, please click No to exit the operation", " Tray_On");
+
                         while (true)
                         {
                             Thread.Sleep(1);
@@ -337,7 +358,12 @@ namespace Lib_Card.ADT8940A1.OutPut.Tray
                         }
                         else
                         {
-                            string s = CardObject.InsertD("气缸未在上限位，请检查，确定到位请点是，退出运行请点否", " Tray_On");
+                            string s;
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                s = CardObject.InsertD("气缸未在上限位，请检查，确定到位请点是，退出运行请点否", " Tray_On");
+                            else
+                                s = CardObject.InsertD("The cylinder is not in the upper limit, please check, confirm in place, please click Yes, exit operation, please click No", " Tray_On");
+
                             while (true)
                             {
                                 Thread.Sleep(1);

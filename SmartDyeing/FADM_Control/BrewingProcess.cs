@@ -98,7 +98,7 @@ namespace SmartDyeing.FADM_Control
             try
             {
                 //获取当前调液代码的调液流程
-                string s_sql = "SELECT *  FROM brewing_process WHERE" +
+                string s_sql = "SELECT StepNum,TechnologyName,ProportionOrTime,Ratio  FROM brewing_process WHERE" +
                                    " BrewingCode = '" + txt_BrewCode.Text + "' Order BY StepNum ; ";
                 DataTable dt_brewprocess = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
 
@@ -108,12 +108,12 @@ namespace SmartDyeing.FADM_Control
                 if (Lib_Card.Configure.Parameter.Other_Language == 0)
                 {
                     //设置标题栏名称
-                    string[] sa_lineName = { "步号", "操作类型", "百分比(%)/时间(s)" };
-                    for (int i = 0; i < 3; i++)
+                    string[] sa_lineName = { "步号", "操作类型", "百分比(%)/时间(s)", "热水占比(%)" };
+                    for (int i = 0; i < 4; i++)
                     {
                         dgv_BrewProcess.Columns[i].HeaderCell.Value = sa_lineName[i];
                         //设置标题宽度
-                        dgv_BrewProcess.Columns[i].Width = (dgv_BrewProcess.Width - 2) / 3;
+                        dgv_BrewProcess.Columns[i].Width = (dgv_BrewProcess.Width - 2) / 4;
                         //关闭点击标题自动排序功能
                         dgv_BrewProcess.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
                     }
@@ -121,12 +121,12 @@ namespace SmartDyeing.FADM_Control
                 else
                 {
                     //设置标题栏名称
-                    string[] sa_lineName = { "StepNumber", "OperationType", "Percentage(%)/time(s) " };
-                    for (int i = 0; i < 3; i++)
+                    string[] sa_lineName = { "StepNumber", "OperationType", "Percentage(%)/time(s) ", "Hot Water Ratio(%)/ " };
+                    for (int i = 0; i < 4; i++)
                     {
                         dgv_BrewProcess.Columns[i].HeaderCell.Value = sa_lineName[i];
                         //设置标题宽度
-                        dgv_BrewProcess.Columns[i].Width = (dgv_BrewProcess.Width - 2) / 3;
+                        dgv_BrewProcess.Columns[i].Width = (dgv_BrewProcess.Width - 2) / 4;
                         //关闭点击标题自动排序功能
                         dgv_BrewProcess.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
                     }
@@ -199,7 +199,7 @@ namespace SmartDyeing.FADM_Control
         private void btn_BrewingProcessAdd_Click(object sender, EventArgs e)
         {
             string s_stepNum = (dgv_BrewProcess.Rows.Count + 1).ToString();
-            BrewingStep form_BrewingStep = new BrewingStep(s_stepNum, "", "", txt_BrewCode.Text, true, this);
+            BrewingStep form_BrewingStep = new BrewingStep(s_stepNum, "", "", "", txt_BrewCode.Text, true, this);
             form_BrewingStep.Show();
         }
 
@@ -210,7 +210,8 @@ namespace SmartDyeing.FADM_Control
                 string s_stepNum = dgv_BrewProcess.CurrentRow.Cells[0].Value.ToString();
                 string s_technologyName = dgv_BrewProcess.CurrentRow.Cells[1].Value.ToString().Trim();
                 string s_proportionOrTime = dgv_BrewProcess.CurrentRow.Cells[2].Value.ToString();
-                BrewingStep form_BrewingStep = new BrewingStep(s_stepNum, s_technologyName, s_proportionOrTime, txt_BrewCode.Text, false, this);
+                string s_ratio = dgv_BrewProcess.CurrentRow.Cells[3].Value.ToString();
+                BrewingStep form_BrewingStep = new BrewingStep(s_stepNum, s_technologyName, s_proportionOrTime, s_ratio, txt_BrewCode.Text, false, this);
                 form_BrewingStep.Show();
             }
             catch

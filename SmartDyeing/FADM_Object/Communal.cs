@@ -208,6 +208,11 @@ namespace SmartDyeing.FADM_Object
         public static string[] _sa_dyeConFTime = { "", "", "", "", "", "" };
 
         /// <summary>
+        /// 染色机通讯失败次数
+        /// </summary>
+        public static int[] _ai_iArray = { 0, 0, 0, 0, 0, 0 };
+
+        /// <summary>
         /// 报警
         /// </summary>
         public static string[] _sa_dyeAlarm = { "", "", "", "", "", "" };
@@ -274,6 +279,11 @@ namespace SmartDyeing.FADM_Object
         /// </summary>
         public static HMITCPModBus HMIBaClo { get; set; } = null;
 
+        /// <summary>
+        /// 称粉机对象
+        /// </summary>
+        public static HMITCPModBus Powder { get; set; } = null;
+
 
 
 
@@ -310,6 +320,11 @@ namespace SmartDyeing.FADM_Object
         /// 染色停止的杯号
         /// </summary>
         public static List<int> _lis_dripStopCup = new List<int>();
+
+        /// <summary>
+        /// 高温洗杯的杯号
+        /// </summary>
+        public static List<int> _lis_HighWashCup = new List<int>();
 
         /// <summary>
         /// 需要洗杯的杯号
@@ -497,6 +512,11 @@ namespace SmartDyeing.FADM_Object
         /// 主杯杯号
         /// </summary>
         public static List<int> _lis_firstCupNum = new List<int>();
+
+        /// <summary>
+        /// 精密机杯号
+        /// </summary>
+        public static List<int> _lis_PrecisionCupNum = new List<int>();
 
         /// <summary>
         /// 主副杯对应
@@ -712,6 +732,16 @@ namespace SmartDyeing.FADM_Object
         public static bool _b_isUseCloth = false;
 
         /// <summary>
+        /// 是否使用称粉机
+        /// </summary>
+        public static bool _b_isUsePower = false;
+
+        /// <summary>
+        /// 称粉机是否使用AB粉
+        /// </summary>
+        public static bool _b_PowerAB = false;
+
+        /// <summary>
         /// 是否在放布确认前可添加副杯滴液
         /// </summary>
         public static bool _b_isNeedConfirm = false;
@@ -725,6 +755,16 @@ namespace SmartDyeing.FADM_Object
         /// 是否单独使用开料机(只有开料机)
         /// </summary>
         public static bool _b_isUseBrewOnly = false;
+
+        /// <summary>
+        /// 天平复称时是否先稳定再读数
+        /// </summary>
+        public static bool _b_isStableRead = false;
+
+        /// <summary>
+        /// 是否高温洗杯
+        /// </summary>
+        public static bool _b_isHighWash = false;
 
 
         /// <summary>
@@ -1681,7 +1721,20 @@ namespace SmartDyeing.FADM_Object
             //}
 
             //记录初始天平读数
-            double d_blBalanceValue3 = SteBalance();
+            double d_blBalanceValue3 = 0;
+            if (FADM_Object.Communal._b_isStableRead)
+                d_blBalanceValue3 = SteBalance();
+            else
+            {
+                if (Lib_Card.Configure.Parameter.Machine_Type == 0)
+                {
+                    d_blBalanceValue3 = Lib_Card.Configure.Parameter.Machine_BalanceType == 0 ? Convert.ToDouble(string.Format("{0:F2}", FADM_Object.Communal.dBalanceValue)) : Convert.ToDouble(string.Format("{0:F3}", FADM_Object.Communal.dBalanceValue));
+                }
+                else
+                {
+                    d_blBalanceValue3 = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", FADM_Object.Communal._s_balanceValue)) : Convert.ToDouble(string.Format("{0:F3}", FADM_Object.Communal._s_balanceValue));
+                }
+            }
             FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平读数：" + d_blBalanceValue3);
 
             //验证

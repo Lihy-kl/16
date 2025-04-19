@@ -1,4 +1,5 @@
-﻿using Lib_File;
+﻿using Lib_Card.ADT8940A1;
+using Lib_File;
 using SmartDyeing.FADM_Object;
 using System;
 using System.Collections.Generic;
@@ -189,7 +190,7 @@ namespace SmartDyeing.FADM_Auto
         {
             try
             {
-                FADM_Object.Communal.WriteMachineStatus(10);
+                //FADM_Object.Communal.WriteMachineStatus(10);
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "复位启动");
                 Lib_Card.ADT8940A1.Axis.Axis.Axis_Exit = false;
                 Lib_SerialPort.Balance.METTLER.bReSetSign = true;
@@ -792,6 +793,13 @@ namespace SmartDyeing.FADM_Auto
 
             for (int i = 0; i < 16; i++)
             {
+                if (Lib_Card.Configure.Parameter.Machine_BlenderVersion == 0)
+                {
+                    if (i == ADT8940A1_IO.OutPut_Blender)
+                    {
+                        continue;
+                    }
+                }
                 Lib_Card.CardObject.OA1.WriteOutPut(i, 0);
             }
         }

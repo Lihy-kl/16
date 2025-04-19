@@ -60,7 +60,10 @@ namespace Lib_Card.ADT8940A1.OutPut.Block
                 if (bDelay)
                 {
                     //s = CardObject.InsertD("阻挡气缸收回超时", "Block_In");
-                    s = CardObject.InsertD("阻挡气缸收回超时，请检查，排除异常请点是，退出运行请点否", " Block_In");
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                        s = CardObject.InsertD("阻挡气缸收回超时，请检查，排除异常请点是，退出运行请点否", " Block_In");
+                    else
+                        s = CardObject.InsertD("Block cylinder recovery timeout, please check, troubleshooting please click Yes, exit please click no", " Block_In");
                     while (true)
                     {
                         Thread.Sleep(1);
@@ -147,7 +150,10 @@ namespace Lib_Card.ADT8940A1.OutPut.Block
                     if (bDelay)
                     {
                         //s = CardObject.InsertD("阻挡气缸伸出超时", "Block_Out");
-                        s = CardObject.InsertD("阻挡气缸伸出超时，请检查，排除异常请点是，退出运行请点否", " Block_Out");
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            s = CardObject.InsertD("阻挡气缸伸出超时，请检查，排除异常请点是，退出运行请点否", " Block_Out");
+                        else
+                            s = CardObject.InsertD("Block cylinder extension time out, please check, troubleshooting please click Yes, exit operation please click no", " Block_Out");
                         while (true)
                         {
                             Thread.Sleep(1);
@@ -163,7 +169,10 @@ namespace Lib_Card.ADT8940A1.OutPut.Block
                         }
                         else
                         {
-                            throw new Exception("阻挡气缸伸出超时");
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                throw new Exception("阻挡气缸伸出超时");
+                            else
+                                throw new Exception("Block cylinder extension time out");
                         }
                     }
 
@@ -185,7 +194,12 @@ namespace Lib_Card.ADT8940A1.OutPut.Block
                 }
                 else
                 {
-                    string s = CardObject.InsertD("气缸未在上限位，请检查，确定到位请点是，退出运行请点否", " Block_Out");
+                    string s;
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                        s = CardObject.InsertD("气缸未在上限位，请检查，确定到位请点是，退出运行请点否", " Block_Out");
+                    else
+                        s = CardObject.InsertD("The cylinder is not in the upper limit, please check, confirm in place, please click Yes, exit operation, please click No", " Block_Out");
+
                     while (true)
                     {
                         Thread.Sleep(1);
@@ -202,7 +216,10 @@ namespace Lib_Card.ADT8940A1.OutPut.Block
                     }
                     else
                     {
-                        throw new Exception("气缸未在上限位");
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            throw new Exception("气缸未在上限位");
+                        else
+                            throw new Exception("Cylinder is not in upper limit position");
                     }
                 }
             }

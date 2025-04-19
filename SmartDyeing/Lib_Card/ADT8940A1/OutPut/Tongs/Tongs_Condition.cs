@@ -77,7 +77,10 @@ namespace Lib_Card.ADT8940A1.OutPut.Tongs
                         if (1 == iTongsA)
                         {
                             //s1 = CardObject.InsertD("抓手A打开超时", "Tongs_Off");
-                            s1 = CardObject.InsertD("抓手A打开超时，请检查，排除异常请点是，退出运行请点否", " Tongs_Off");
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                s1 = CardObject.InsertD("抓手A打开超时，请检查，排除异常请点是，退出运行请点否", " Tongs_Off");
+                            else
+                                s1 = CardObject.InsertD("Gripper A opens the timeout, please check, troubleshoot the exception, please click Yes, exit the run, please click No", " Tongs_Off");
                             while (true)
                             {
                                 Thread.Sleep(1);
@@ -99,7 +102,11 @@ namespace Lib_Card.ADT8940A1.OutPut.Tongs
                         else if (1 == iTongsB)
                         {
                             //s2 = CardObject.InsertD("抓手B打开超时", "Tongs_Off");
-                            s2 = CardObject.InsertD("抓手B打开超时，请检查，排除异常请点是，退出运行请点否", " Tongs_Off");
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                s2 = CardObject.InsertD("抓手B打开超时，请检查，排除异常请点是，退出运行请点否", " Tongs_Off");
+                            else
+                                s2 = CardObject.InsertD("Gripper B opens the timeout, please check, troubleshoot the exception, please click Yes, exit the run, please click No", " Tongs_Off");
+
                             while (true)
                             {
                                 Thread.Sleep(1);
@@ -200,7 +207,11 @@ namespace Lib_Card.ADT8940A1.OutPut.Tongs
                     {
                         if (1 == iTongsA)
                         {
-                            s1 = CardObject.InsertD("抓手A关闭超时，请检查，排除异常请点是，退出运行请点否", " Tongs_On");
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                s1 = CardObject.InsertD("抓手A关闭超时，请检查，排除异常请点是，退出运行请点否", " Tongs_On");
+                            else
+                                s1 = CardObject.InsertD("Gripper A closes the timeout. Please check. For troubleshooting exceptions, click Yes. For exiting the operation, click No", " Tongs_On");
+
                             while (true)
                             {
                                 Thread.Sleep(1);
@@ -221,7 +232,11 @@ namespace Lib_Card.ADT8940A1.OutPut.Tongs
                         }
                         else if (1 == iTongsB)
                         {
-                            s2 = CardObject.InsertD("抓手B关闭超时，请检查，排除异常请点是，退出运行请点否", " Tongs_On");
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                s2 = CardObject.InsertD("抓手B关闭超时，请检查，排除异常请点是，退出运行请点否", " Tongs_On");
+                            else
+                                s2 = CardObject.InsertD("Gripper B closes the timeout. Please check. For troubleshooting exceptions, click Yes. For exiting the operation, click No", " Tongs_On");
+
                             while (true)
                             {
                                 Thread.Sleep(1);

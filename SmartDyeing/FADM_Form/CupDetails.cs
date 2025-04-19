@@ -346,6 +346,8 @@ namespace SmartDyeing.FADM_Form
                 {
                     case "放布":
                     case "出布":
+                    case "取小样":
+                    case "测PH":
                         // 固定时间设定为3分钟
                         fixedDuration = step.Duration ?? 3;
                         for (int i = 0; i < fixedDuration * 2; i++) // 每分钟记录两个温度值
@@ -359,6 +361,7 @@ namespace SmartDyeing.FADM_Form
                     case "加B":
                     case "加C":
                     case "加D":
+                    case "加E":
                         // 固定时间设定为0.5分钟
                         fixedDuration = step.Duration ?? 0.5;
                         for (int i = 0; i < fixedDuration * 2; i++) // 每分钟记录两个温度值
@@ -525,8 +528,8 @@ namespace SmartDyeing.FADM_Form
                 //获取当前批次当前杯号信息
                 string s_sql = "SELECT * FROM drop_details WHERE" +
                             " CupNum = '" + this._i_cupNo +
-                            "' AND BottleNum > 0 AND ( BottleNum <= " + i_maxbottle + "" +
-                            " ) ORDER BY BottleNum;";
+                            "' AND (BottleNum > 0 AND ( BottleNum <= " + i_maxbottle + "" +
+                            " ) Or BottleNum = 200 Or BottleNum =201) ORDER BY BottleNum;";
 
                 DataTable dt_data1 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
 

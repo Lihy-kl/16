@@ -20,6 +20,7 @@ using EasyModbus;
 using static System.Windows.Forms.AxHost;
 using System.Collections;
 using SmartDyeing.FADM_Auto;
+using System.Net;
 
 namespace SmartDyeing.FADM_Form
 {
@@ -566,7 +567,25 @@ namespace SmartDyeing.FADM_Form
                 FADM_Object.Communal._b_isUseBrewOnly = true;
             }
 
-            
+            string s_isStableRead = Lib_File.Ini.GetIni("Setting", "IsStableRead", "0", s_path);
+            if (s_isStableRead == "1")
+            {
+                FADM_Object.Communal._b_isStableRead = true;
+            }
+
+            string s_isHighWash = Lib_File.Ini.GetIni("Setting", "IsHighWash", "0", s_path);
+            if (s_isHighWash == "1")
+            {
+                FADM_Object.Communal._b_isHighWash = true;
+            }
+
+            string s_isUsePowerAB = Lib_File.Ini.GetIni("Setting", "PowerAB", "0", s_path);
+            if (s_isUsePowerAB == "1")
+            {
+                FADM_Object.Communal._b_PowerAB = true;
+            }
+
+
         }
 
         public void countDown()
@@ -1467,172 +1486,172 @@ namespace SmartDyeing.FADM_Form
                                     goto lab_end;
                                 }
 
-                                //查看纯净水检测是否超过30分钟
-                                s_sql = "SELECT *  FROM standard where Type = 1;";
+                                ////查看纯净水检测是否超过30分钟
+                                //s_sql = "SELECT *  FROM standard where Type = 1;";
 
-                                dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-                                if (dt_temp.Rows.Count == 0 || MyAbsorbance._i_block == 1)
-                                {
-                                    //    FADM_Form.CustomMessageBox.Show("不存在标准记录，先测试标准样", "TestAbs",
-                                    //MessageBoxButtons.OK, false);
+                                //dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                //if (dt_temp.Rows.Count == 0 || MyAbsorbance._i_block == 1)
+                                //{
+                                //    //    FADM_Form.CustomMessageBox.Show("不存在标准记录，先测试标准样", "TestAbs",
+                                //    //MessageBoxButtons.OK, false);
 
-                                    //DialogResult dialogResult;
-                                    //if (MyAbsorbance._i_block == 1)
-                                    //{
-                                    //    dialogResult = FADM_Form.CustomMessageBox.Show("断电重启，先测试基准样，请选择测试基准点母液(选择溶解剂请点是，选择水请点否)", "温馨提示", MessageBoxButtons.YesNo, true);
-                                    //}
-                                    //else
-                                    //{
-                                    //    dialogResult = FADM_Form.CustomMessageBox.Show("不存在标准记录，先测试基准样，请选择测试基准点母液(选择溶解剂请点是，选择水请点否)", "温馨提示", MessageBoxButtons.YesNo, true);
-                                    //}
-                                    //if (dialogResult == DialogResult.Yes)
-                                    //{
-                                    //    //找到DNF溶解剂
-                                    //    s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
-                                    //}
-                                    //else if (dialogResult == DialogResult.No)
-                                    //{
-                                    //    //找到水
-                                    //    s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount = 'Water';";
-                                    //}
-                                    //else
-                                    //{
-                                    //    goto lab_end;
-                                    //}
+                                //    //DialogResult dialogResult;
+                                //    //if (MyAbsorbance._i_block == 1)
+                                //    //{
+                                //    //    dialogResult = FADM_Form.CustomMessageBox.Show("断电重启，先测试基准样，请选择测试基准点母液(选择溶解剂请点是，选择水请点否)", "温馨提示", MessageBoxButtons.YesNo, true);
+                                //    //}
+                                //    //else
+                                //    //{
+                                //    //    dialogResult = FADM_Form.CustomMessageBox.Show("不存在标准记录，先测试基准样，请选择测试基准点母液(选择溶解剂请点是，选择水请点否)", "温馨提示", MessageBoxButtons.YesNo, true);
+                                //    //}
+                                //    //if (dialogResult == DialogResult.Yes)
+                                //    //{
+                                //    //    //找到DNF溶解剂
+                                //    //    s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
+                                //    //}
+                                //    //else if (dialogResult == DialogResult.No)
+                                //    //{
+                                //    //    //找到水
+                                //    //    s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount = 'Water';";
+                                //    //}
+                                //    //else
+                                //    //{
+                                //    //    goto lab_end;
+                                //    //}
 
-                                    if (FADM_Object.Communal._b_isUseWaterTestBase)
-                                    {
-                                        //找到水
-                                        s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount = 'Water';";
-                                    }
-                                    else
-                                    {
-                                        //找到DNF溶解剂
-                                        s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
-                                    }
+                                //    if (FADM_Object.Communal._b_isUseWaterTestBase)
+                                //    {
+                                //        //找到水
+                                //        s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount = 'Water';";
+                                //    }
+                                //    else
+                                //    {
+                                //        //找到DNF溶解剂
+                                //        s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
+                                //    }
 
-                                    dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-                                    if (dt_temp.Rows.Count == 0)
-                                    {
-                                        FADM_Form.CustomMessageBox.Show("不存在母液瓶号，不能测试", "TestAbs",
-                                MessageBoxButtons.OK, false);
-                                        return;
-                                    }
-                                    else
-                                    {
+                                //    dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                //    if (dt_temp.Rows.Count == 0)
+                                //    {
+                                //        FADM_Form.CustomMessageBox.Show("不存在母液瓶号，不能测试", "TestAbs",
+                                //MessageBoxButtons.OK, false);
+                                //        return;
+                                //    }
+                                //    else
+                                //    {
+                                //        if (FADM_Object.Communal._fadmSqlserver.GetData("select * from standard where Type = 1").Rows.Count > 0)
+                                //            FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from standard where Type = 0");
+                                //        FADM_Object.Communal._fadmSqlserver.ReviseData("Update standard set Type = 0 where Type = 1");
 
-                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from standard where Type = 0");
-                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Update standard set Type = 0 where Type = 1");
+                                //        //判断是否一样的溶解剂或水
+                                //        //if (dataTable.Rows[0]["AdditivesNum"].ToString() != dt_temp.Rows[0]["BottleNum"].ToString())
+                                //        {
+                                //            //测试样
+                                //            if (Convert.ToInt32(dt_data.Rows[0]["Type"]) == 0)
+                                //            {
 
-                                        //判断是否一样的溶解剂或水
-                                        //if (dataTable.Rows[0]["AdditivesNum"].ToString() != dt_temp.Rows[0]["BottleNum"].ToString())
-                                        {
-                                            //测试样
-                                            if (Convert.ToInt32(dt_data.Rows[0]["Type"]) == 0)
-                                            {
+                                //                SmartDyeing.FADM_Auto.MyAbsorbance.Calculate(_i_nBottleNum, Convert.ToInt32(dt_temp.Rows[0]["BottleNum"].ToString()), Convert
+                                //        .ToInt32(s_cupNum), 2, FADM_Object.Communal._d_abs_total);
+                                //            }
+                                //            //测试补偿
+                                //            else
+                                //            {
 
-                                                SmartDyeing.FADM_Auto.MyAbsorbance.Calculate(_i_nBottleNum, Convert.ToInt32(dt_temp.Rows[0]["BottleNum"].ToString()), Convert
-                                        .ToInt32(s_cupNum), 2, FADM_Object.Communal._d_abs_total);
-                                            }
-                                            //测试补偿
-                                            else
-                                            {
+                                //                SmartDyeing.FADM_Auto.MyAbsorbance.Calculate(_i_nBottleNum, Convert.ToInt32(dt_temp.Rows[0]["BottleNum"].ToString()), Convert
+                                //        .ToInt32(s_cupNum), 9, FADM_Object.Communal._d_abs_total);
+                                //            }
 
-                                                SmartDyeing.FADM_Auto.MyAbsorbance.Calculate(_i_nBottleNum, Convert.ToInt32(dt_temp.Rows[0]["BottleNum"].ToString()), Convert
-                                        .ToInt32(s_cupNum), 9, FADM_Object.Communal._d_abs_total);
-                                            }
+                                //            //生成测量
+                                //            SmartDyeing.FADM_Auto.MyAbsorbance.Generate(0, Convert.ToInt32(s_cupNum));
+                                //            SmartDyeing.FADM_Auto.MyAbsorbance.SendData(Convert.ToInt32(s_cupNum));
 
-                                            //生成洗杯工艺
-                                            SmartDyeing.FADM_Auto.MyAbsorbance.Generate(2, Convert.ToInt32(s_cupNum));
-                                            SmartDyeing.FADM_Auto.MyAbsorbance.SendData(Convert.ToInt32(s_cupNum));
+                                //            FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from abs_wait_list where BottleNum = " + _i_nBottleNum + " And InsertDate = '" + Convert.ToDateTime(dt_data.Rows[0]["InsertDate"]).ToString("yyyy-MM-dd HH:mm:ss.fff") + "';");
 
-                                            FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from abs_wait_list where BottleNum = " + _i_nBottleNum + " And InsertDate = '" + Convert.ToDateTime(dt_data.Rows[0]["InsertDate"]).ToString("yyyy-MM-dd HH:mm:ss.fff") + "';");
-
-                                            //删除上一次标准记录
-                                            FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from standard where Type = 0");
-
-                                            goto lab_end;
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    DateTime timeA = Convert.ToDateTime(dt_temp.Rows[0]["FinishTime"].ToString());
-                                    DateTime timeB = DateTime.Now; //获取当前时间
-                                    TimeSpan ts = timeB - timeA; //计算时间差
-                                    string s_time = ts.TotalMinutes.ToString(); //将时间差转换为小时
-
-                                    if (Convert.ToDouble(s_time) > FADM_Object.Communal._d_TestSpan)
-                                    {
-                                        //        FADM_Form.CustomMessageBox.Show("标准记录已超期，先测试标准样", "TestAbs",
-                                        //MessageBoxButtons.OK, false);
-                                        //        //找到母液溶解剂母液瓶号
-                                        //        s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
-
-                                        //DialogResult dialogResult = FADM_Form.CustomMessageBox.Show("基准记录已超期，先测试基准样，请选择测试基准点母液(选择溶解剂请点是，选择水请点否)", "温馨提示", MessageBoxButtons.YesNo, true);
-                                        //if (dialogResult == DialogResult.Yes)
-                                        //{
-                                        //    //找到DNF溶解剂
-                                        //    s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
-                                        //}
-                                        //else if (dialogResult == DialogResult.No)
-                                        //{
-                                        //    //找到水
-                                        //    s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount = 'Water';";
-                                        //}
-                                        //else
-                                        //{
-                                        //    goto lab_end;
-                                        //}
-
-                                        if (FADM_Object.Communal._b_isUseWaterTestBase)
-                                        {
-                                            //找到水
-                                            s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount = 'Water';";
-                                        }
-                                        else
-                                        {
-                                            //找到DNF溶解剂
-                                            s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
-                                        }
-
-                                        dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-                                        if (dt_temp.Rows.Count == 0)
-                                        {
-                                            FADM_Form.CustomMessageBox.Show("不存在母液瓶号，不能测试", "TestAbs",
-                                    MessageBoxButtons.OK, false);
-                                            return;
-                                        }
-                                        else
-                                        {
-                                            FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from standard where Type = 0");
-                                            FADM_Object.Communal._fadmSqlserver.ReviseData("Update standard set Type = 0 where Type = 1");
-                                            //判断是否一样的溶解剂或水
-                                            //if (dataTable.Rows[0]["AdditivesNum"].ToString() != dt_temp.Rows[0]["BottleNum"].ToString())
-                                            {
-                                                if (Convert.ToInt32(dt_data.Rows[0]["Type"]) == 0)
-                                                {
-
-                                                    SmartDyeing.FADM_Auto.MyAbsorbance.Calculate(_i_nBottleNum, Convert.ToInt32(dt_temp.Rows[0]["BottleNum"].ToString()), Convert
-                                        .ToInt32(s_cupNum), 2, FADM_Object.Communal._d_abs_total);
-                                                }
-                                                else
-                                                {
-                                                    SmartDyeing.FADM_Auto.MyAbsorbance.Calculate(_i_nBottleNum, Convert.ToInt32(dt_temp.Rows[0]["BottleNum"].ToString()), Convert
-                                        .ToInt32(s_cupNum), 9, FADM_Object.Communal._d_abs_total);
-                                                }
-
-                                                SmartDyeing.FADM_Auto.MyAbsorbance.Generate(0, Convert.ToInt32(s_cupNum));
-                                                SmartDyeing.FADM_Auto.MyAbsorbance.SendData(Convert.ToInt32(s_cupNum));
-
-                                                FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from abs_wait_list where BottleNum = " + _i_nBottleNum + " And InsertDate = '" + Convert.ToDateTime(dt_data.Rows[0]["InsertDate"]).ToString("yyyy-MM-dd HH:mm:ss.fff") + "';");
-                                                goto lab_end;
-                                            }
                                             
-                                        }
 
-                                    }
-                                }
+                                //            goto lab_end;
+                                //        }
+                                //    }
+                                //}
+                                //else
+                                //{
+                                //    DateTime timeA = Convert.ToDateTime(dt_temp.Rows[0]["FinishTime"].ToString());
+                                //    DateTime timeB = DateTime.Now; //获取当前时间
+                                //    TimeSpan ts = timeB - timeA; //计算时间差
+                                //    string s_time = ts.TotalMinutes.ToString(); //将时间差转换为小时
+
+                                //    if (Convert.ToDouble(s_time) > FADM_Object.Communal._d_TestSpan)
+                                //    {
+                                //        //        FADM_Form.CustomMessageBox.Show("标准记录已超期，先测试标准样", "TestAbs",
+                                //        //MessageBoxButtons.OK, false);
+                                //        //        //找到母液溶解剂母液瓶号
+                                //        //        s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
+
+                                //        //DialogResult dialogResult = FADM_Form.CustomMessageBox.Show("基准记录已超期，先测试基准样，请选择测试基准点母液(选择溶解剂请点是，选择水请点否)", "温馨提示", MessageBoxButtons.YesNo, true);
+                                //        //if (dialogResult == DialogResult.Yes)
+                                //        //{
+                                //        //    //找到DNF溶解剂
+                                //        //    s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
+                                //        //}
+                                //        //else if (dialogResult == DialogResult.No)
+                                //        //{
+                                //        //    //找到水
+                                //        //    s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount = 'Water';";
+                                //        //}
+                                //        //else
+                                //        //{
+                                //        //    goto lab_end;
+                                //        //}
+
+                                //        if (FADM_Object.Communal._b_isUseWaterTestBase)
+                                //        {
+                                //            //找到水
+                                //            s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount = 'Water';";
+                                //        }
+                                //        else
+                                //        {
+                                //            //找到DNF溶解剂
+                                //            s_sql = "SELECT bottle_details.*  FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE assistant_details.UnitOfAccount collate Chinese_PRC_CS_AS = 'G/L';";
+                                //        }
+
+                                //        dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                //        if (dt_temp.Rows.Count == 0)
+                                //        {
+                                //            FADM_Form.CustomMessageBox.Show("不存在母液瓶号，不能测试", "TestAbs",
+                                //    MessageBoxButtons.OK, false);
+                                //            return;
+                                //        }
+                                //        else
+                                //        {
+                                //            if (FADM_Object.Communal._fadmSqlserver.GetData("select * from standard where Type = 1").Rows.Count > 0)
+                                //                FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from standard where Type = 0");
+                                //            FADM_Object.Communal._fadmSqlserver.ReviseData("Update standard set Type = 0 where Type = 1");
+                                //            //判断是否一样的溶解剂或水
+                                //            //if (dataTable.Rows[0]["AdditivesNum"].ToString() != dt_temp.Rows[0]["BottleNum"].ToString())
+                                //            {
+                                //                if (Convert.ToInt32(dt_data.Rows[0]["Type"]) == 0)
+                                //                {
+
+                                //                    SmartDyeing.FADM_Auto.MyAbsorbance.Calculate(_i_nBottleNum, Convert.ToInt32(dt_temp.Rows[0]["BottleNum"].ToString()), Convert
+                                //        .ToInt32(s_cupNum), 2, FADM_Object.Communal._d_abs_total);
+                                //                }
+                                //                else
+                                //                {
+                                //                    SmartDyeing.FADM_Auto.MyAbsorbance.Calculate(_i_nBottleNum, Convert.ToInt32(dt_temp.Rows[0]["BottleNum"].ToString()), Convert
+                                //        .ToInt32(s_cupNum), 9, FADM_Object.Communal._d_abs_total);
+                                //                }
+
+                                //                SmartDyeing.FADM_Auto.MyAbsorbance.Generate(0, Convert.ToInt32(s_cupNum));
+                                //                SmartDyeing.FADM_Auto.MyAbsorbance.SendData(Convert.ToInt32(s_cupNum));
+
+                                //                FADM_Object.Communal._fadmSqlserver.ReviseData("Delete from abs_wait_list where BottleNum = " + _i_nBottleNum + " And InsertDate = '" + Convert.ToDateTime(dt_data.Rows[0]["InsertDate"]).ToString("yyyy-MM-dd HH:mm:ss.fff") + "';");
+                                //                goto lab_end;
+                                //            }
+                                            
+                                //        }
+
+                                //    }
+                                //}
                                 //活性用水稀释
                                 if (s_assistantType.Contains("活性"))
                                 {
@@ -2897,6 +2916,12 @@ namespace SmartDyeing.FADM_Form
         //选择类型 默认是0(昱泰) 1是原来其他的
         private string _s_m_mode = null;
         static ReaderWriterLockSlim _logWriteLock = new ReaderWriterLockSlim();
+
+        public static async Task<bool> CheckFileExistsAsync(string filePath)
+        {
+            return await Task.Run(() => File.Exists(filePath));
+        }
+
         private void TmrFGY_Tick(object sender, EventArgs e)
         {
             if (Communal._b_getFile)
@@ -2975,6 +3000,7 @@ namespace SmartDyeing.FADM_Form
                     //CptImport各欄位說明.docx
                     else if (_s_m_mode == "4")
                     {
+
                         if (File.Exists(this._s_m_route))
                         {
                             try
@@ -3124,7 +3150,7 @@ namespace SmartDyeing.FADM_Form
                         //先把染固色工艺全部子工艺全部记录
 
                         //string s_sql_Code = "select * from dyeing_code where DyeingCode ='" + s_deyCode.Trim() + "' order by IndexNum;";
-                        //DataTable dt_data_Code = FADM_Object.Communal.FadmSqlserver.GetData(s_sql_Code);
+                        //DataTable dt_data_Code = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_Code);
                         //Dictionary<int, List<recipe>> dic_listCode = new Dictionary<int, List<recipe>>();
                         //foreach (DataRow dr in dt_data_Code.Rows)
                         //{
@@ -3385,7 +3411,7 @@ namespace SmartDyeing.FADM_Form
                         //先把染固色工艺全部子工艺全部记录
 
                         //string s_sql_Code = "select * from dyeing_code where DyeingCode ='" + s_deyCode.Trim() + "' order by IndexNum;";
-                        //DataTable dt_data_Code = FADM_Object.Communal.FadmSqlserver.GetData(s_sql_Code);
+                        //DataTable dt_data_Code = FADM_Object.Communal._fadmSqlserver.GetData(s_sql_Code);
                         //Dictionary<int, List<recipe>> dic_listCode = new Dictionary<int, List<recipe>>();
                         //foreach (DataRow dr in dt_data_Code.Rows)
                         //{
@@ -3777,6 +3803,13 @@ namespace SmartDyeing.FADM_Form
                 double d_anhydrationWR = Lib_Card.Configure.Parameter.Other_Default_AnhydrationWR;
                 //string sOperator = null;
 
+                //记录秤布机读取数据寄存器地址
+                int i_address = 0;
+                //杯号
+                int i_cupNum = 0;
+                //获取布重地址
+                int i_readadress = 0;
+
                 for (; currentIndex < rcp.Length; currentIndex++)
                 {
                     if (rcp[currentIndex].Substring(0, 4) == "500M" && rcp[currentIndex].Length == 86)
@@ -3797,6 +3830,222 @@ namespace SmartDyeing.FADM_Form
                         {
                             versionNum = (Convert.ToInt16(data.Rows[0]["VersionNum"])) + 1;
                         }
+                        //计算第几个滴液区域
+                        //int i_count = 0;
+
+                        if (Communal._b_isUseCloth)
+                        {
+                            //判断是否有秤布系统，有就把第一个布重读取，记录然后删除
+                            if (Lib_Card.Configure.Parameter.Machine_Area1_Type == 2)
+                            {
+                                //i_count++;
+                                int i_sum = Lib_Card.Configure.Parameter.Machine_Area1_CupMax - Lib_Card.Configure.Parameter.Machine_Area1_CupMin + 1;
+                                //获取对应区域看看是否有记录布重
+                                int[] ia_values = new int[i_sum];
+                                //if (i_count == 1)
+                                {
+                                    int state = FADM_Object.Communal.HMIBaClo.Read(21099, i_sum, ref ia_values);
+                                    if (state == -1)
+                                    {
+                                        FADM_Object.Communal.HMIBaClo.ReConnect();
+                                        state = FADM_Object.Communal.HMIBaClo.Read(21099, i_sum, ref ia_values);
+                                    }
+                                    if (state == 0)
+                                    {
+                                        for (int i = 0; i < ia_values.Length; i++)
+                                        {
+                                            //如果已经有可用数据
+                                            if (ia_values[i] == 1)
+                                            {
+                                                i_address = 21099 + i;
+                                                i_cupNum = Lib_Card.Configure.Parameter.Machine_Area1_CupMin + i;
+                                                i_readadress = 20999+2*i;
+                                                goto lab_get;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if (Lib_Card.Configure.Parameter.Machine_Area2_Type == 2)
+                            {
+                                //i_count++;
+                                int i_sum = Lib_Card.Configure.Parameter.Machine_Area2_CupMax - Lib_Card.Configure.Parameter.Machine_Area2_CupMin + 1;
+                                //获取对应区域看看是否有记录布重
+                                int[] ia_values = new int[i_sum];
+                                //if (i_count == 1)
+                                {
+                                    int state = FADM_Object.Communal.HMIBaClo.Read(22099, i_sum, ref ia_values);
+                                    if (state == -1)
+                                    {
+                                        FADM_Object.Communal.HMIBaClo.ReConnect();
+                                        state = FADM_Object.Communal.HMIBaClo.Read(22099, i_sum, ref ia_values);
+                                    }
+                                    if (state == 0)
+                                    {
+                                        for (int i = 0; i < ia_values.Length; i++)
+                                        {
+                                            //如果已经有可用数据
+                                            if (ia_values[i] == 1)
+                                            {
+                                                i_address = 22099 + i;
+                                                i_cupNum = Lib_Card.Configure.Parameter.Machine_Area2_CupMin + i;
+                                                i_readadress = 21999 + 2 * i;
+                                                goto lab_get;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if (Lib_Card.Configure.Parameter.Machine_Area3_Type == 2)
+                            {
+                                //i_count++;
+                                int i_sum = Lib_Card.Configure.Parameter.Machine_Area3_CupMax - Lib_Card.Configure.Parameter.Machine_Area3_CupMin + 1;
+                                //获取对应区域看看是否有记录布重
+                                int[] ia_values = new int[i_sum];
+                                //if (i_count == 1)
+                                {
+                                    int state = FADM_Object.Communal.HMIBaClo.Read(23099, i_sum, ref ia_values);
+                                    if (state == -1)
+                                    {
+                                        FADM_Object.Communal.HMIBaClo.ReConnect();
+                                        state = FADM_Object.Communal.HMIBaClo.Read(23099, i_sum, ref ia_values);
+                                    }
+                                    if (state == 0)
+                                    {
+                                        for (int i = 0; i < ia_values.Length; i++)
+                                        {
+                                            //如果已经有可用数据
+                                            if (ia_values[i] == 1)
+                                            {
+                                                i_address = 23099 + i;
+                                                i_cupNum = Lib_Card.Configure.Parameter.Machine_Area3_CupMin + i;
+                                                i_readadress = 22999 + 2 * i;
+                                                goto lab_get;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if (Lib_Card.Configure.Parameter.Machine_Area4_Type == 2)
+                            {
+                                //i_count++;
+                                int i_sum = Lib_Card.Configure.Parameter.Machine_Area4_CupMax - Lib_Card.Configure.Parameter.Machine_Area4_CupMin + 1;
+                                //获取对应区域看看是否有记录布重
+                                int[] ia_values = new int[i_sum];
+                                //if (i_count == 1)
+                                {
+                                    int state = FADM_Object.Communal.HMIBaClo.Read(24099, i_sum, ref ia_values);
+                                    if (state == -1)
+                                    {
+                                        FADM_Object.Communal.HMIBaClo.ReConnect();
+                                        state = FADM_Object.Communal.HMIBaClo.Read(24099, i_sum, ref ia_values);
+                                    }
+                                    if (state == 0)
+                                    {
+                                        for (int i = 0; i < ia_values.Length; i++)
+                                        {
+                                            //如果已经有可用数据
+                                            if (ia_values[i] == 1)
+                                            {
+                                                i_address = 24099 + i;
+                                                i_cupNum = Lib_Card.Configure.Parameter.Machine_Area4_CupMin + i;
+                                                i_readadress = 23999 + 2 * i;
+                                                goto lab_get;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if (Lib_Card.Configure.Parameter.Machine_Area5_Type == 2)
+                            {
+                                //i_count++;
+                                int i_sum = Lib_Card.Configure.Parameter.Machine_Area5_CupMax - Lib_Card.Configure.Parameter.Machine_Area5_CupMin + 1;
+                                //获取对应区域看看是否有记录布重
+                                int[] ia_values = new int[i_sum];
+                                //if (i_count == 1)
+                                {
+                                    int state = FADM_Object.Communal.HMIBaClo.Read(25099, i_sum, ref ia_values);
+                                    if (state == -1)
+                                    {
+                                        FADM_Object.Communal.HMIBaClo.ReConnect();
+                                        state = FADM_Object.Communal.HMIBaClo.Read(25099, i_sum, ref ia_values);
+                                    }
+                                    if (state == 0)
+                                    {
+                                        for (int i = 0; i < ia_values.Length; i++)
+                                        {
+                                            //如果已经有可用数据
+                                            if (ia_values[i] == 1)
+                                            {
+                                                i_address = 25099 + i;
+                                                i_cupNum = Lib_Card.Configure.Parameter.Machine_Area5_CupMin + i;
+                                                i_readadress = 24999 + 2 * i;
+                                                goto lab_get;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if (Lib_Card.Configure.Parameter.Machine_Area6_Type == 2)
+                            {
+                                //i_count++;
+                                int i_sum = Lib_Card.Configure.Parameter.Machine_Area6_CupMax - Lib_Card.Configure.Parameter.Machine_Area6_CupMin + 1;
+                                //获取对应区域看看是否有记录布重
+                                int[] ia_values = new int[i_sum];
+                                //if (i_count == 1)
+                                {
+                                    int state = FADM_Object.Communal.HMIBaClo.Read(26099, i_sum, ref ia_values);
+                                    if (state == -1)
+                                    {
+                                        FADM_Object.Communal.HMIBaClo.ReConnect();
+                                        state = FADM_Object.Communal.HMIBaClo.Read(26099, i_sum, ref ia_values);
+                                    }
+                                    if (state == 0)
+                                    {
+                                        for (int i = 0; i < ia_values.Length; i++)
+                                        {
+                                            //如果已经有可用数据
+                                            if (ia_values[i] == 1)
+                                            {
+                                                i_address = 26099 + i;
+                                                i_cupNum = Lib_Card.Configure.Parameter.Machine_Area6_CupMin + i;
+                                                i_readadress = 25999 + 2 * i;
+                                                goto lab_get;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        lab_get:
+                            //当判断能获取到可用布重时，读取布重
+                            if (i_cupNum != 0)
+                            {
+                                int[] ia_values1 = new int[2];
+                                int state1 = FADM_Object.Communal.HMIBaClo.Read(i_readadress, 2, ref ia_values1);
+                                if (state1 == -1)
+                                {
+                                    FADM_Object.Communal.HMIBaClo.ReConnect();
+                                    state1 = FADM_Object.Communal.HMIBaClo.Read(i_readadress, 2, ref ia_values1);
+                                }
+                                if (state1 == 0)
+                                {
+                                    double d_value = 0.0;
+                                    int i_a13 = ia_values1[0];
+                                    int i_a14 = ia_values1[1];
+                                    if (i_a13 < 0)
+                                    {
+                                        d_value = (((i_a14 + 1) * 65536 + i_a13));
+                                    }
+                                    else
+                                    {
+                                        d_value = ((i_a14 * 65536 + i_a13));
+                                    }
+                                    //重新计算总浴量
+                                    clothWeight = (double)(d_value) / 1000;
+                                    totalWeight = clothWeight * bathRatio;
+                                }
+                            }
+                        }
                         break;
                     }
                 }
@@ -3805,14 +4054,14 @@ namespace SmartDyeing.FADM_Form
                 List<recipe> list = new List<recipe>();
                 for (; currentIndex < rcp.Length; currentIndex++)
                 {
-                    if (rcp[currentIndex].Substring(0, 4) == "500C" && rcp[currentIndex].Length == 42 &&
+                    if (rcp[currentIndex].Substring(0, 4) == "500C" && rcp[currentIndex].Length == 41 &&
                         rcp[currentIndex].Substring(Communal._i_Detail_FormulaCode - 1, Communal._i_Detail_FormulaCode_Len).Trim() == formulaCode)
                     {
                         if (rcp[currentIndex].Substring(Communal._i_Detail_AssistantCode - 1, Communal._i_Detail_AssistantCode_Len) != "WATER   ")
                         {
                             recipe re = new recipe();
                             re._i_indexNum = Convert.ToInt16(rcp[currentIndex].Substring(Communal._i_Detail_Index - 1, Communal._i_Detail_Index_Len));
-                            re._s_assistantCode = rcp[currentIndex].Substring(Communal._i_Detail_AssistantCode - 1, Communal._i_Detail_AssistantCode_Len);
+                            re._s_assistantCode = rcp[currentIndex].Substring(Communal._i_Detail_AssistantCode - 1, Communal._i_Detail_AssistantCode_Len).Trim();
                             re._s_formulaDosage = Convert.ToDouble(rcp[currentIndex].Substring(Communal._i_Detail_RealConcentration - 1, Communal._i_Detail_RealConcentration_Len));
 
                             DataTable data = FADM_Object.Communal._fadmSqlserver.GetData(
@@ -3895,10 +4144,10 @@ namespace SmartDyeing.FADM_Form
                     " FormulaCode, VersionNum, FormulaName," +
                     " AddWaterChoose,ClothWeight," +
                     " BathRatio,TotalWeight,CreateTime," +
-                    " ObjectAddWaterWeight,Non_AnhydrationWR,AnhydrationWR,Stage,HandleBathRatio) VALUES('" + formulaCode + "'," +
+                    " ObjectAddWaterWeight,Non_AnhydrationWR,AnhydrationWR,Stage,HandleBathRatio,CupNum) VALUES('" + formulaCode + "'," +
                     " '" + versionNum + "', '" + formulaName + "', 1, " +
                     " '" + clothWeight + "', '" + bathRatio + "', '" + totalWeight + "', " +
-                    " '" + DateTime.Now + "', '" + string.Format("{0:F}", (totalWeight - allW)) + "', '" + d_non_AnhydrationWR + "', '" + d_anhydrationWR  + "', '" + "滴液" + "', '" + "0" + "');";
+                    " '" + DateTime.Now + "', '" + string.Format("{0:F}", (totalWeight - allW)) + "', '" + d_non_AnhydrationWR + "', '" + d_anhydrationWR  + "', '" + "滴液" + "', '" + "0" + "',"+i_cupNum+");";
                 FADM_Object.Communal._fadmSqlserver.ReviseData(sql);
 
                 foreach (recipe rc in list)
@@ -3915,6 +4164,19 @@ namespace SmartDyeing.FADM_Form
                           " '" + rc._d_objectDropWeight + "');";
 
                     FADM_Object.Communal._fadmSqlserver.ReviseData(sql);
+                }
+
+                //清空秤布区域
+                if (Communal._b_isUseCloth)
+                {
+                    int[] ia_values2 = new int[1];
+                    ia_values2[0] = 3;
+                    int statte = FADM_Object.Communal.HMIBaClo.Write(i_address, ia_values2);
+                    if (statte == -1)
+                    {
+                        FADM_Object.Communal.HMIBaClo.ReConnect();
+                        statte = FADM_Object.Communal.HMIBaClo.Write(i_address, ia_values2);
+                    }
                 }
 
 

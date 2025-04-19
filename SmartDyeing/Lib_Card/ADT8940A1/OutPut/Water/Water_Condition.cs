@@ -77,7 +77,12 @@ namespace Lib_Card.ADT8940A1.OutPut.Water
                     }
                     else
                     {
-                        string s = CardObject.InsertD("接液盘未伸出，请检查，确定伸出请点是，退出运行请点否", " Water_On");
+                        string s;
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            s = CardObject.InsertD("接液盘未伸出，请检查，确定伸出请点是，退出运行请点否", " Water_On");
+                        else
+                            s = CardObject.InsertD("The liquid plate is not extended, please check to make sure that the extension point is yes, and the exit point is no", " Water_On");
+
                         while (true)
                         {
                             Thread.Sleep(1);
