@@ -134,6 +134,8 @@
             this.btn_Browse_Delete = new System.Windows.Forms.Button();
             this.btn_Browse_Select = new System.Windows.Forms.Button();
             this.rdo_Browse_NoDrop = new System.Windows.Forms.RadioButton();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsm_Delete = new System.Windows.Forms.ToolStripMenuItem();
             this.grp_DropRecord.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_DropRecord)).BeginInit();
             this.grp_FormulaData.SuspendLayout();
@@ -142,6 +144,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_BatchData)).BeginInit();
             this.grp_FormulaBrowse.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_FormulaBrowse)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_FormulaCodeAdd
@@ -561,7 +564,7 @@
             dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgv_FormulaData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
-            this.dgv_FormulaData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dgv_FormulaData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_FormulaData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn10,
             this.dataGridViewTextBoxColumn11,
@@ -618,7 +621,7 @@
             // 
             // dataGridViewTextBoxColumn12
             // 
-            this.dataGridViewTextBoxColumn12.FillWeight = 64.66267F;
+            this.dataGridViewTextBoxColumn12.FillWeight = 64.663F;
             resources.ApplyResources(this.dataGridViewTextBoxColumn12, "dataGridViewTextBoxColumn12");
             this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
             this.dataGridViewTextBoxColumn12.ReadOnly = true;
@@ -828,6 +831,7 @@
             this.dgv_BatchData.RowHeadersVisible = false;
             this.dgv_BatchData.RowTemplate.Height = 23;
             this.dgv_BatchData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgv_BatchData.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgv_BatchData_CellMouseDown);
             this.dgv_BatchData.CurrentCellChanged += new System.EventHandler(this.dgv_BatchData_CurrentCellChanged);
             this.dgv_BatchData.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgv_BatchData_DataBindingComplete);
             this.dgv_BatchData.Enter += new System.EventHandler(this.dgv_BatchData_Enter);
@@ -937,6 +941,19 @@
             this.rdo_Browse_NoDrop.UseVisualStyleBackColor = true;
             this.rdo_Browse_NoDrop.CheckedChanged += new System.EventHandler(this.rdo_Browse_NoDrop_CheckedChanged);
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsm_Delete});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            resources.ApplyResources(this.contextMenuStrip1, "contextMenuStrip1");
+            // 
+            // tsm_Delete
+            // 
+            this.tsm_Delete.Name = "tsm_Delete";
+            resources.ApplyResources(this.tsm_Delete, "tsm_Delete");
+            this.tsm_Delete.Click += new System.EventHandler(this.tsm_Delete_Click);
+            // 
             // P_Formula
             // 
             resources.ApplyResources(this, "$this");
@@ -959,6 +976,7 @@
             this.grp_FormulaBrowse.ResumeLayout(false);
             this.grp_FormulaBrowse.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_FormulaBrowse)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1066,5 +1084,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem tsm_Delete;
     }
 }

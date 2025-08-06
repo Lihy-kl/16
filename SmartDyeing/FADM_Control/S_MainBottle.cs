@@ -33,6 +33,42 @@ namespace SmartDyeing.FADM_Control
 
         int _i_nBottleNum = 0;
 
+        private float scaleX = 1.0f;
+        private float scaleY = 1.0f;
+        private Size originalSize;
+        private Dictionary<Control, Rectangle> originalBounds = new Dictionary<Control, Rectangle>();
+
+        private void InitializeScaling(Panel panel)
+        {
+            originalSize = panel.Size;
+            foreach (Control control in panel.Controls)
+            {
+                originalBounds[control] = control.Bounds;
+            }
+            panel.SizeChanged += Panel_SizeChanged;
+        }
+
+        private void Panel_SizeChanged(object sender, EventArgs e)
+        {
+            Panel panel = sender as Panel;
+            if (panel == null || originalSize.IsEmpty) return;
+
+            scaleX = (float)panel.Width / originalSize.Width;
+            scaleY = (float)panel.Height / originalSize.Height;
+
+            foreach (Control control in panel.Controls)
+            {
+                if (originalBounds.TryGetValue(control, out Rectangle originalRect))
+                {
+                    control.Bounds = new Rectangle(
+                        (int)(originalRect.X * scaleX),
+                        (int)(originalRect.Y * scaleY),
+                        (int)(originalRect.Width * scaleX),
+                        (int)(originalRect.Height * scaleY));
+                }
+            }
+        }
+
         public S_MainBottle()
         {
             InitializeComponent();
@@ -1687,6 +1723,12 @@ namespace SmartDyeing.FADM_Control
 
                 _balance.Location = new Point(1250, 50);
                 this.Controls.Add(_balance);
+
+                //panel1.Location = new Point(1250, 300);
+
+                //InitializeScaling(panel1);
+
+                //panel1.Size = new Size(204, 300);
             }
             catch (Exception ex)
             {
@@ -2938,6 +2980,14 @@ namespace SmartDyeing.FADM_Control
                                         foreach (DataRow dr2 in P_dt_data.Rows)
                                         {
                                             double d_bl_RealErr = Convert.ToDouble(Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", Convert.ToDouble(dr2["ObjectDropWeight"]) + (dr2["Compensation"] is DBNull ? 0.0 : Convert.ToDouble(dr2["Compensation"])) - Convert.ToDouble(dr2["RealDropWeight"])) : string.Format("{0:F3}", Convert.ToDouble(dr2["ObjectDropWeight"]) + (dr2["Compensation"] is DBNull ? 0.0 : Convert.ToDouble(dr2["Compensation"])) - Convert.ToDouble(dr2["RealDropWeight"]))); d_bl_RealErr = d_bl_RealErr > 0 ? d_bl_RealErr : -d_bl_RealErr;
+                                            if (dr2["StandError"] is DBNull)
+                                            {
+                                                d_bl_drop_allow_err = (dr2["UnitOfAccount"].ToString() == "%" ? Lib_Card.Configure.Parameter.Other_AErr_Drip : Lib_Card.Configure.Parameter.Other_AErr_Drip);
+                                            }
+                                            else
+                                            {
+                                                d_bl_drop_allow_err = Convert.ToDouble(dr2["StandError"]);
+                                            }
                                             if (d_bl_RealErr > d_bl_drop_allow_err)
                                             {
                                                 b_err = true;
@@ -3294,7 +3344,7 @@ namespace SmartDyeing.FADM_Control
             else
             {
                 //1.查看是否有空闲杯子
-                string s_sql = "SELECT * FROM abs_cup_details WHERE  Enable = 1 And IsUsing=0 And CupNum = 2 order by CupNum;";
+                string s_sql = "SELECT * FROM abs_cup_details WHERE  Enable = 1 And IsUsing=0 And (CupNum = 2 or CupNum = 4) order by CupNum;";
                 DataTable dt_abs_cup_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
                 if (dt_abs_cup_details.Rows.Count == 0)
                 {

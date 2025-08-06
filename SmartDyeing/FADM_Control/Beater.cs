@@ -1440,8 +1440,26 @@ namespace SmartDyeing.FADM_Control
                         tsm_IsFix.Checked = false;
                     }
                 }
+
+                //判断是否有高温洗杯功能
+                if (!FADM_Object.Communal._b_isHighWash)
+                {
+                    tsm_HighWash.Visible = false;
+                }
             }
             catch { }
+        }
+
+        private void tsm_HighWash_Click(object sender, EventArgs e)
+        {
+            DataTable dt_data = FADM_Object.Communal._fadmSqlserver.GetData(
+                    "SELECT * FROM cup_details WHERE CupNum = " + _cup.NO + ";");
+            string s_status = Convert.ToString(dt_data.Rows[0]["Statues"]);
+            if ("待机" == s_status)
+            {
+                FADM_Object.Communal._lis_HighWashCup.Add(Convert.ToInt16(_cup.NO));
+
+            }
         }
     }
 }

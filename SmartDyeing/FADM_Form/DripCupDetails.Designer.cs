@@ -48,11 +48,11 @@ namespace SmartDyeing.FADM_Form
             // 
             // dgv_CupDetails
             // 
-            resources.ApplyResources(this.dgv_CupDetails, "dgv_CupDetails");
             this.dgv_CupDetails.AllowUserToAddRows = false;
             this.dgv_CupDetails.AllowUserToDeleteRows = false;
             this.dgv_CupDetails.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dgv_CupDetails.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            resources.ApplyResources(this.dgv_CupDetails, "dgv_CupDetails");
             this.dgv_CupDetails.Name = "dgv_CupDetails";
             this.dgv_CupDetails.ReadOnly = true;
             this.dgv_CupDetails.RowHeadersVisible = false;

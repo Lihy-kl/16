@@ -1,26 +1,27 @@
-﻿using Lib_File;
+﻿using EasyModbus;
+using Lib_Card;
+using Lib_File;
+using Microsoft.Win32;
+using SmartDyeing.FADM_Auto;
 using SmartDyeing.FADM_Control;
+using SmartDyeing.FADM_Object;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SmartDyeing.FADM_Object;
-using System.IO;
-using Microsoft.Win32;
 using static Lib_Card.CardObject;
-using EasyModbus;
 using static System.Windows.Forms.AxHost;
-using System.Collections;
-using SmartDyeing.FADM_Auto;
-using System.Net;
 
 namespace SmartDyeing.FADM_Form
 {
@@ -46,6 +47,9 @@ namespace SmartDyeing.FADM_Form
         Thread _thread_check = null;
 
         bool b = false;
+
+        //配置需要播放次数 0是无限播放
+        string s_SpeechCount;
         public Main()
         {
             InitializeComponent();
@@ -82,9 +86,31 @@ namespace SmartDyeing.FADM_Form
             {
                 FADM_Object.Communal._b_isUseABAssistant = true;
             }
+            string s_NeedToDoTime = Lib_File.Ini.GetIni("Setting", "NeedToDoTime", "60", s_path);
+            string s_NeedToDo = Lib_File.Ini.GetIni("Setting", "NeedToDo", "0", s_path);
+            if (s_NeedToDo == "1")
+            {
+                FADM_Object.Communal._b_NeedTodo = true;
+                timerNeedToDo.Interval = Convert.ToInt32(s_NeedToDoTime) * 1000;
+                timerNeedToDo.Enabled = true;
+            }
 
-            string s_ABAssistantCount = Lib_File.Ini.GetIni("Setting", "ABAssistantCount", "2", s_path);
-            FADM_Object.Communal._i_ABAssistantCount = Convert.ToInt32(s_ABAssistantCount);
+            string s_UpdateTime = Lib_File.Ini.GetIni("Setting", "UpdateTime", "60", s_path);
+            string s_Update = Lib_File.Ini.GetIni("Setting", "Update", "0", s_path);
+            if (s_Update == "1")
+            {
+                timer_Update.Interval = Convert.ToInt32(s_UpdateTime) * 1000;
+                timer_Update.Enabled = true;
+            }
+
+            s_SpeechCount = Lib_File.Ini.GetIni("Setting", "SpeechCount", "0", s_path);
+
+            string s_isAloneDripReserve = Lib_File.Ini.GetIni("Setting", "IsAloneDripReserve", "0", s_path);
+            if (s_isAloneDripReserve == "1")
+            {
+                FADM_Object.Communal._b_isAloneDripReserve = true;
+            }
+
 
             countDown();
 
@@ -213,6 +239,29 @@ namespace SmartDyeing.FADM_Form
             {
                 MiFullDrip1.Checked = true;
                 FADM_Object.Communal._b_isFullDrip = true;
+            }
+
+            string s_outAllow = Lib_File.Ini.GetIni("Setting", "IsOutDripAllow", "1", s_path);
+            if (s_outAllow == "0")
+            {
+                MiOutAllowDrip.Checked = false;
+                FADM_Object.Communal._b_isOutDripAllow = false;
+            }
+            else
+            {
+                MiOutAllowDrip.Checked = true;
+                FADM_Object.Communal._b_isOutDripAllow = true;
+            }
+            string s_lowAllow = Lib_File.Ini.GetIni("Setting", "IsLowDripAllow", "1", s_path);
+            if (s_lowAllow == "0")
+            {
+                MiLowAllowDrip.Checked = false;
+                FADM_Object.Communal._b_isLowDripAllow = false;
+            }
+            else
+            {
+                MiLowAllowDrip.Checked = true;
+                FADM_Object.Communal._b_isLowDripAllow = true;
             }
 
             string s_zero = Lib_File.Ini.GetIni("Setting", "IsZero", "0", s_path);
@@ -549,6 +598,12 @@ namespace SmartDyeing.FADM_Form
                 FADM_Object.Communal._b_isUseCloth = true;
             }
 
+            string s_isUseLLJ = Lib_File.Ini.GetIni("Setting", "IsUseLLJ", "0", s_path);
+            if (s_isUseLLJ == "1")
+            {
+                FADM_Object.Communal._b_isUseLLJ = true;
+            }
+
             string s_isNeedConfirm = Lib_File.Ini.GetIni("Setting", "IsNeedConfirm", "0", s_path);
             if (s_isNeedConfirm == "1")
             {
@@ -585,6 +640,51 @@ namespace SmartDyeing.FADM_Form
                 FADM_Object.Communal._b_PowerAB = true;
             }
 
+            string s_isShowBottleStatus = Lib_File.Ini.GetIni("Setting", "IsShowBottleStatus", "0", s_path);
+            if (s_isShowBottleStatus == "1")
+            {
+                FADM_Object.Communal._b_isShowBottleStatus = true;
+            }
+
+            string s_isDripPriority = Lib_File.Ini.GetIni("Setting", "IsDripPriority", "1", s_path);
+            if (s_isDripPriority == "0")
+            {
+                FADM_Object.Communal._b_isDripPriority = false;
+            }
+
+            //string s_isAloneDripReserve = Lib_File.Ini.GetIni("Setting", "IsAloneDripReserve", "0", s_path);
+            //if (s_isAloneDripReserve == "1")
+            //{
+            //    FADM_Object.Communal._b_isAloneDripReserve = true;
+            //}
+
+            string s_isSelf = Lib_File.Ini.GetIni("Setting", "SelfData", "1,0.5,2,5,11,2", s_path);
+
+
+            string[] sa_e1 = s_isSelf.Split(',');
+            FADM_Object.Communal._da_self = new double[sa_e1.Count()];
+            for (int i = 0; i < sa_e1.Length; i++)
+            {
+                FADM_Object.Communal._da_self[i] = Convert.ToDouble(string.Format("{0:F2}", Convert.ToDouble(sa_e1[i])));
+            }
+
+            string s_isDripAddBatch = Lib_File.Ini.GetIni("Setting", "IsDripAddBatch", "0", s_path);
+            if (s_isDripAddBatch == "1")
+            {
+                FADM_Object.Communal._b_isDripAddBatch = true;
+            }
+
+            string s_isUseNewCorrectingWater = Lib_File.Ini.GetIni("Setting", "IsUseNewCorrectingWater", "0", s_path);
+            if (s_isUseNewCorrectingWater == "1")
+            {
+                FADM_Object.Communal._b_isUseNewCorrectingWater = true;
+            }
+
+            string s_isWaterRecheck = Lib_File.Ini.GetIni("Setting", "IsWaterRecheck", "1", s_path);
+            if (s_isWaterRecheck == "0")
+            {
+                FADM_Object.Communal._b_isWaterRecheck = false;
+            }
 
         }
 
@@ -748,20 +848,35 @@ namespace SmartDyeing.FADM_Form
                     {
                         if (Lib_Card.CardObject.keyValuePairs.ContainsKey(key))
                         {
-                            SpeechSynthesizer speech = new SpeechSynthesizer();
-                            speech.Rate = -1; //语速
-                            speech.Volume = 100; //声音
-                            speech.SelectVoice("Microsoft Huihui Desktop");//设置中文
-                            string s_info = Lib_Card.CardObject.keyValuePairs[key].Info;
-                            speech.Speak(s_info);
-                            speech.Dispose();
-                            //播报完后，把播报标志位改为true
-                            if (!Lib_Card.CardObject.keyValuePairs[key].Speech)
+                            if (Lib_Card.CardObject.keyValuePairs[key].SpeechCount < Convert.ToInt32(s_SpeechCount) || Convert.ToInt32(s_SpeechCount) == 0)
                             {
-                                Lib_Card.CardObject.prompt prompt = new Lib_Card.CardObject.prompt();
-                                prompt = Lib_Card.CardObject.keyValuePairs[key];
-                                prompt.Speech = true;
-                                Lib_Card.CardObject.keyValuePairs[key] = prompt;
+                                SpeechSynthesizer speech = new SpeechSynthesizer();
+                                speech.Rate = -1; //语速
+                                speech.Volume = 100; //声音
+                                speech.SelectVoice("Microsoft Huihui Desktop");//设置中文
+                                string s_info = Lib_Card.CardObject.keyValuePairs[key].Info;
+                                speech.Speak(s_info);
+                                speech.Dispose();
+                                //播报完后，把播报标志位改为true
+                                if (!Lib_Card.CardObject.keyValuePairs[key].Speech)
+                                {
+                                    Lib_Card.CardObject.prompt prompt = new Lib_Card.CardObject.prompt();
+                                    prompt = Lib_Card.CardObject.keyValuePairs[key];
+                                    prompt.Speech = true;
+                                    prompt.SpeechCount++;
+                                    Lib_Card.CardObject.keyValuePairs[key] = prompt;
+                                }
+                                else
+                                {
+                                    if (Convert.ToInt32(s_SpeechCount) > 0)
+                                    {
+                                        Lib_Card.CardObject.prompt prompt = new Lib_Card.CardObject.prompt();
+                                        prompt = Lib_Card.CardObject.keyValuePairs[key];
+                                        prompt.Speech = true;
+                                        prompt.SpeechCount++;
+                                        Lib_Card.CardObject.keyValuePairs[key] = prompt;
+                                    }
+                                }
                             }
                             Thread.Sleep(200);
                         }
@@ -1421,7 +1536,13 @@ namespace SmartDyeing.FADM_Form
                     {
                         int _i_nBottleNum = Convert.ToInt32(dt_data.Rows[0]["BottleNum"]);
                         //1.查看是否有空闲杯子
-                        s_sql = "SELECT * FROM abs_cup_details WHERE  Enable = 1 And IsUsing=0  And CupNum = 2 order by CupNum;";
+                        if (_i_nBottleNum == 888)
+                            s_sql = "SELECT * FROM abs_cup_details WHERE  Enable = 1 And IsUsing=0  And CupNum = 2  order by CupNum;";
+                        else if (_i_nBottleNum == 999)
+                            s_sql = "SELECT * FROM abs_cup_details WHERE  Enable = 1 And IsUsing=0  And CupNum = 4  order by CupNum;";
+                        else
+
+                            s_sql = "SELECT * FROM abs_cup_details WHERE  Enable = 1 And IsUsing=0  And (CupNum = 2 Or CupNum = 4) order by CupNum;";
                         DataTable dt_abs_cup_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
                         if (dt_abs_cup_details.Rows.Count == 0)
                         {
@@ -2581,10 +2702,14 @@ namespace SmartDyeing.FADM_Form
                     {
                         Lib_Card.CardObject.bRight = true;
                         if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                            new FADM_Object.MyAlarm("右光幕遮挡", 1);
+                            new FADM_Object.MyAlarm("右光幕遮挡,请离开光幕", 1);
                         else
-                            new FADM_Object.MyAlarm("Right light curtain occlusion", 1);
+                            new FADM_Object.MyAlarm("Right light curtain obstruction,Please step away from the light curtain", 1);
                     }
+                }
+                else
+                {
+                    Lib_Card.CardObject.bRight = false;
                 }
 
                 if (1 == Lib_Card.CardObject.OA1Input.InPutStatus(Lib_Card.ADT8940A1.ADT8940A1_IO.InPut_Sunx_B))
@@ -2593,21 +2718,50 @@ namespace SmartDyeing.FADM_Form
                     {
                         Lib_Card.CardObject.bLeft = true;
                         if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                            new FADM_Object.MyAlarm("左光幕遮挡", 1);
+                            new FADM_Object.MyAlarm("左光幕遮挡,请离开光幕", 1);
                         else
-                            new FADM_Object.MyAlarm("Left light curtain occlusion", 1);
+                            new FADM_Object.MyAlarm("Left light curtain obstruction,Please step away from the light curtain", 1);
                     }
+                }
+                else
+                {
+                    Lib_Card.CardObject.bLeft = false;
                 }
 
                 if (1 == Lib_Card.CardObject.OA1Input.InPutStatus(Lib_Card.ADT8940A1.ADT8940A1_IO.InPut_Stop))
                 {
-                    if (!Lib_Card.CardObject.bFront)
+                    if (Lib_Card.Configure.Parameter.Machine_IsStopOrFront == 0)
                     {
-                        Lib_Card.CardObject.bFront = true;
-                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                            new FADM_Object.MyAlarm("前光幕遮挡", 1);
-                        else
-                            new FADM_Object.MyAlarm("Front light curtain occlusion", 1);
+                        if (!Lib_Card.CardObject.bStopScr)
+                        {
+                            Lib_Card.CardObject.bStopScr = true;
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                new FADM_Object.MyAlarm("急停已按下,请打开急停开关", 1);
+                            else
+                                new FADM_Object.MyAlarm("Emergency stop pressed,Please turn on the emergency stop switch", 1);
+                        }
+                    }
+                    else
+                    {
+                        if (!Lib_Card.CardObject.bFront)
+                        {
+                            Lib_Card.CardObject.bFront = true;
+                            if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                new FADM_Object.MyAlarm("前光幕遮挡,请离开光幕", 1);
+                            else
+                                new FADM_Object.MyAlarm("Front light curtain obstruction,Please step away from the light curtain", 1);
+                        }
+                    }
+                }
+                else
+                {
+                    if (Lib_Card.Configure.Parameter.Machine_IsStopOrFront == 0)
+                    {
+                        Lib_Card.CardObject.bStopScr = false;
+                    }
+                    else
+                    {
+                        Lib_Card.CardObject.bFront = false;
                     }
                 }
             }
@@ -2693,6 +2847,9 @@ namespace SmartDyeing.FADM_Form
                         case 13:
                             LabStatus.Text = "测试坐标";
                             break;
+                        case 14:
+                            LabStatus.Text = "清洗针筒";
+                            break;
                         default:
                             break;
                     }
@@ -2753,6 +2910,9 @@ namespace SmartDyeing.FADM_Form
                             break;
                         case 13:
                             LabStatus.Text = "Test-Coordinate";
+                            break;
+                        case 14:
+                            LabStatus.Text = "Wash";
                             break;
                         default:
                             break;
@@ -5416,6 +5576,158 @@ namespace SmartDyeing.FADM_Form
                 this.PnlMain.Controls.Add(absProcess);
                 absProcess.Focus();
             }
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
+        }
+
+        private void timerNeedToDo_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                bool b_have = false;
+                try
+                {
+
+                    foreach (string i in Lib_Card.CardObject.keyValuePairs.Keys)
+                    {
+                        if (i == null)
+                        {
+                            try
+                            {
+                                Lib_Card.CardObject.keyValuePairs.Remove(i);
+
+                            }
+                            catch
+                            {
+                                Lib_Log.Log.writeLogException("keyValuePairs 空值不能删除：");
+                            }
+                            continue;
+                        }
+
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                        {
+                            if ((!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("放布")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("出布")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("前光幕")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("后光幕")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("左光幕")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("右光幕")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("急停")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("左门")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("右门")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("批次滴液完成")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("针检完成")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("自检完成")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("水校正完成")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("水验证完成")))
+                            {
+                                b_have = true;
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            if ((!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("cloth placement")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("cup discharge")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("door")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("obstruction")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("Emergency stop")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("Needle examination completed")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("Self inspection completed")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("Water correction completed")) && (!Lib_Card.CardObject.keyValuePairs[i].Info.Contains("Water verification completed")))
+                            {
+                                b_have = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Lib_Log.Log.writeLogException("NeedToDo InfoUpdate：" + ex.ToString());
+                }
+                if (b_have)
+                {
+                    if (NeedToDo._b_showRun == false)
+                    {
+
+                        NeedToDo need = new NeedToDo();
+                        need.Owner = this;
+                        need.Show();
+                        need.Focus();
+                        NeedToDo.HANDER = need.Handle.ToInt32();
+                    }
+                    else
+                    {
+                        IntPtr ptr1 = new IntPtr(NeedToDo.HANDER);
+                        SetForegroundWindow(ptr1);
+                        ShowWindow(ptr1, 1);
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
+        }
+
+        private void timer_Update_Tick(object sender, EventArgs e)
+        {
+            SmartDyeing.FADM_Control.P_Formula.P_bl_update = true;
+        }
+
+        private void MiOutAllowDrip_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if ((LabStatus.Text == "待机" || LabStatus.Text == "Standby") && null == FADM_Object.Communal.ReadDyeThread())
+                {
+                    if (MiOutAllowDrip.Checked)
+                    {
+                        MiOutAllowDrip.Checked = false;
+                        string s_path = Environment.CurrentDirectory + "\\Config\\Config.ini";
+                        Lib_File.Ini.WriteIni("Setting", "IsOutDripAllow", "0", s_path);
+                        FADM_Object.Communal._b_isOutDripAllow = false;
+                    }
+                    else
+                    {
+                        MiOutAllowDrip.Checked = true;
+                        string s_path = Environment.CurrentDirectory + "\\Config\\Config.ini";
+                        Lib_File.Ini.WriteIni("Setting", "IsOutDripAllow", "1", s_path);
+                        FADM_Object.Communal._b_isOutDripAllow = true;
+                    }
+                }
+                else
+                {
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+
+                        FADM_Form.CustomMessageBox.Show("待机状态下才能修改", "温馨提示", MessageBoxButtons.OK, false);
+                    else
+                        FADM_Form.CustomMessageBox.Show("Can only be modified in standby mode", "Tips", MessageBoxButtons.OK, false);
+
+                }
+            }
+
+            catch (Exception ex)
+            {
+                FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);
+            }
+        }
+
+        private void MiLowAllowDrip_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if ((LabStatus.Text == "待机" || LabStatus.Text == "Standby") && null == FADM_Object.Communal.ReadDyeThread())
+                {
+                    if (MiLowAllowDrip.Checked)
+                    {
+                        MiLowAllowDrip.Checked = false;
+                        string s_path = Environment.CurrentDirectory + "\\Config\\Config.ini";
+                        Lib_File.Ini.WriteIni("Setting", "IsLowDripAllow", "0", s_path);
+                        FADM_Object.Communal._b_isLowDripAllow = false;
+                    }
+                    else
+                    {
+                        MiLowAllowDrip.Checked = true;
+                        string s_path = Environment.CurrentDirectory + "\\Config\\Config.ini";
+                        Lib_File.Ini.WriteIni("Setting", "IsLowDripAllow", "1", s_path);
+                        FADM_Object.Communal._b_isLowDripAllow = true;
+                    }
+                }
+                else
+                {
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+
+                        FADM_Form.CustomMessageBox.Show("待机状态下才能修改", "温馨提示", MessageBoxButtons.OK, false);
+                    else
+                        FADM_Form.CustomMessageBox.Show("Can only be modified in standby mode", "Tips", MessageBoxButtons.OK, false);
+                }
+            }
+
             catch (Exception ex)
             {
                 FADM_Form.CustomMessageBox.Show(ex.ToString(), "warm", MessageBoxButtons.OK, true);

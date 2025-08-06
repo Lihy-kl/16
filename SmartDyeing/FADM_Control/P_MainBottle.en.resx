@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="groupBox3.Text" xml:space="preserve">
+    <value>Water-Correction/Checking</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="BtnRecheckStart.Location" type="System.Drawing.Point, System.Drawing">
     <value>75, 201</value>
@@ -136,8 +139,8 @@
   <data name="BtnWaterCheckStart.Text" xml:space="preserve">
     <value>CorrectionStart</value>
   </data>
-  <data name="groupBox3.Text" xml:space="preserve">
-    <value>Water-Correction/Checking</value>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>MotherLiquorSelf-checking</value>
   </data>
   <data name="BtnBottleSelfStop.Text" xml:space="preserve">
     <value>Stop</value>
@@ -148,8 +151,8 @@
   <data name="BtnBottleSelfStart.Text" xml:space="preserve">
     <value>Start</value>
   </data>
-  <data name="groupBox2.Text" xml:space="preserve">
-    <value>MotherLiquorSelf-checking</value>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>MotherLiquorCorrection</value>
   </data>
   <data name="BtnBottleCheckStop.Text" xml:space="preserve">
     <value>Stop</value>
@@ -160,16 +163,22 @@
   <data name="BtnBottleCheckStart.Text" xml:space="preserve">
     <value>Start</value>
   </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>MotherLiquorCorrection</value>
-  </data>
-  <data name="tsm_SignUpdate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>119, 22</value>
-  </data>
   <data name="tsm_SignUpdate.Text" xml:space="preserve">
     <value>Update</value>
   </data>
+  <data name="tsm_Stop.Text" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="tsm_Normal.Text" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="tsm_Need.Text" xml:space="preserve">
+    <value>Demand</value>
+  </data>
+  <data name="tsm_PreDrip.Text" xml:space="preserve">
+    <value>PreDrip</value>
+  </data>
   <data name="contextMenuStrip2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 26</value>
+    <value>126, 114</value>
   </data>
 </root>

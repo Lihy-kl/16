@@ -8,6 +8,7 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Threading;
 using System.Windows.Forms;
 using Lib_Card;
+using Newtonsoft.Json.Linq;
 
 namespace SmartDyeing.FADM_Auto
 {
@@ -49,218 +50,316 @@ namespace SmartDyeing.FADM_Auto
 
 
             label4:
-                //Lib_SerialPort.Balance.METTLER.bZeroSign = true;
-
-                //移动到天平位
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找天平位");
-                int i_mRes = MyModbusFun.TargetMove(2, 0, 1);
-                if (-2 == i_mRes)
-                    throw new Exception("收到退出消息");
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达天平位");
-
-                //if (FADM_Object.Communal._b_isZero)
-                //{
-                //    while (true)
-                //    {
-                //        //判断是否成功清零
-                //        if (Lib_SerialPort.Balance.METTLER._s_balanceValue == 0.0)
-                //        {
-                //            break;
-                //        }
-                //        else
-                //        {
-                //            //再次发调零
-                //            Lib_SerialPort.Balance.METTLER.bZeroSign = true;
-                //        }
-                //        Thread.Sleep(1);
-                //    }
-                //}
-
-                //记录初始天平读数
-                double d_blBalanceValue0 = FADM_Object.Communal.SteBalance(); ;
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平读数：" + d_blBalanceValue0);
-
-                //伸出接液盘
-
-                double d_addWaterTime2 = MyModbusFun.GetWaterTime(Lib_Card.Configure.Parameter.Correcting_Water_RWeight);//加水时间 校正加水时间
-                i_mRes = MyModbusFun.AddWater(1); //加水1秒
-                if (-2 == i_mRes)
-                    throw new Exception("收到退出消息");
-
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水完成");
-
-                //读取首秒重量
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数启动");
-                double d_blRRead = FADM_Object.Communal.SteBalance();
-                double d_blWeightF = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", d_blRRead - d_blBalanceValue0)) : Convert.ToDouble(string.Format("{0:F3}", d_blRRead - d_blBalanceValue0));
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数：" + d_blRRead + ",实际重量：" + d_blWeightF);
-                if (d_blWeightF <= 0.0)
+                if (FADM_Object.Communal._b_isUseNewCorrectingWater)
                 {
-                    goto label4;
-                }
+                    //Lib_SerialPort.Balance.METTLER.bZeroSign = true;
 
-                //加水
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水启动(" + Lib_Card.Configure.Parameter.Correcting_Water_Time + "s)");
-
-                double d_addWaterTime = Lib_Card.Configure.Parameter.Correcting_Water_Time;
-                if (d_addWaterTime <= 32)
-                {
-                    i_mRes = MyModbusFun.AddWater(d_addWaterTime);
+                    //移动到天平位
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找天平位");
+                    int i_mRes = MyModbusFun.TargetMove(2, 0, 1);
                     if (-2 == i_mRes)
                         throw new Exception("收到退出消息");
-                }
-                else
-                {
-                    double d = 32;
-                    while (true)
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达天平位");
+
+                    //if (FADM_Object.Communal._b_isZero)
+                    //{
+                    //    while (true)
+                    //    {
+                    //        //判断是否成功清零
+                    //        if (Lib_SerialPort.Balance.METTLER._s_balanceValue == 0.0)
+                    //        {
+                    //            break;
+                    //        }
+                    //        else
+                    //        {
+                    //            //再次发调零
+                    //            Lib_SerialPort.Balance.METTLER.bZeroSign = true;
+                    //        }
+                    //        Thread.Sleep(1);
+                    //    }
+                    //}
+
+
+                    //记录初始天平读数
+                    double d_blBalanceValue0 = FADM_Object.Communal.SteBalance(); ;
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平读数：" + d_blBalanceValue0);
+
+                    //伸出接液盘
+
+                    //加水
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水启动(" + Lib_Card.Configure.Parameter.Correcting_Water_Time + "s)");
+
+                    double d_addWaterTime = Lib_Card.Configure.Parameter.Correcting_Water_Time;
+                    FADM_Object.Communal.AddWater(d_addWaterTime);
+
+
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水完成");
+
+                    //读取校正重量
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数启动");
+                    double d_blRRead = FADM_Object.Communal.SteBalance();
+                    double d_blWeightT = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", d_blRRead - d_blBalanceValue0)) : Convert.ToDouble(string.Format("{0:F3}", d_blRRead - d_blBalanceValue0));
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数：" + d_blRRead + ",实际重量：" + d_blWeightT);
+                    double d_blAdjust = Convert.ToDouble(string.Format("{0:F3}", d_blWeightT / Convert.ToDouble(Lib_Card.Configure.Parameter.Correcting_Water_Time)));
+                    //计算脉冲系数
+                    MyModbusFun.ReadFlow();
+                    double d_blAdjust_Pulse = Convert.ToDouble(string.Format("{0:F3}", d_blWeightT / Communal.i_flowPulse));
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "脉冲：" + Communal.i_flowPulse + ",实际重量：" + d_blWeightT);
+                    if (d_blAdjust <= 0.0)
                     {
-                        if (d_addWaterTime > 32)
-                        {
-                            //每次减32s
-                            i_mRes = MyModbusFun.AddWater(d);
-                            if (-2 == i_mRes)
-                                throw new Exception("收到退出消息");
-                        }
-                        else
-                        {
-                            i_mRes = MyModbusFun.AddWater(d_addWaterTime);
-                            if (-2 == i_mRes)
-                                throw new Exception("收到退出消息");
-                            break;
-                        }
-                        d_addWaterTime -= d;
-                    }
-                }
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水完成");
-
-                //读取校正重量
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数启动");
-                d_blRRead = FADM_Object.Communal.SteBalance();
-                double d_blWeightT = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", d_blRRead - d_blBalanceValue0)) : Convert.ToDouble(string.Format("{0:F3}", d_blRRead - d_blBalanceValue0));
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数：" + d_blRRead + ",实际重量：" + d_blWeightT);
-                double d_blAdjust = Convert.ToDouble(string.Format("{0:F3}", d_blWeightT / Convert.ToDouble(Lib_Card.Configure.Parameter.Correcting_Water_Time)));
-                if(d_blAdjust<=0.0)
-                {
-                    goto label4;
-                }
-
-                d_blBalanceValue0 = d_blRRead;
-
-                //验证
-                double d_blTime = 0;
-                if (0 == FADM_Object.Communal._i_waterWay)
-                {
-                    if (Lib_Card.Configure.Parameter.Correcting_Water_RWeight > d_blWeightF)
-                        d_blTime = (Lib_Card.Configure.Parameter.Correcting_Water_RWeight - d_blWeightF) / d_blAdjust + 1;
-                    else
-                    {
-                        d_blTime = Lib_Card.Configure.Parameter.Correcting_Water_RWeight / d_blAdjust;
-                        if (d_blTime < 0.01)
-                            d_blTime = 0.01;
-                    }
-                }
-                else
-                {
-                    if (Lib_Card.Configure.Parameter.Correcting_Water_RWeight > 13)
-                        d_blTime = (Lib_Card.Configure.Parameter.Correcting_Water_RWeight - d_blWeightF) / d_blAdjust + 1;
-                    else
-                        d_blTime = Lib_Card.Configure.Parameter.Correcting_Water_RWeight / d_blAdjust + Lib_Card.Configure.Parameter.Other_Coefficient_Water;
-                }
-
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水启动(" + string.Format("{0:F3}", d_blTime) + "s)");
-
-                if (d_blTime <= 32)
-                {
-                    i_mRes = MyModbusFun.AddWater(d_blTime);
-                    if (-2 == i_mRes)
-                        throw new Exception("收到退出消息");
-                }
-                else
-                {
-                    double d = 32;
-                    while (true)
-                    {
-                        if (d_blTime > 32)
-                        {
-                            //每次减32s
-                            i_mRes = MyModbusFun.AddWater(d);
-                            if (-2 == i_mRes)
-                                throw new Exception("收到退出消息");
-                        }
-                        else
-                        {
-                            i_mRes = MyModbusFun.AddWater(d_blTime);
-                            if (-2 == i_mRes)
-                                throw new Exception("收到退出消息");
-                            break;
-                        }
-                        d_blTime -= d;
-                    }
-                }
-
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水完成");
-
-                //读取校正重量
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数启动");
-                d_blRRead = FADM_Object.Communal.SteBalance();
-                double d_blWeightC = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", d_blRRead - d_blBalanceValue0)) : Convert.ToDouble(string.Format("{0:F3}", d_blRRead - d_blBalanceValue0));
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数：" + d_blRRead + ",实际重量：" + d_blWeightC);
-                int i_rErr = Convert.ToInt16((d_blWeightC - Lib_Card.Configure.Parameter.Correcting_Water_RWeight) / Lib_Card.Configure.Parameter.Correcting_Water_RWeight * 100);
-                i_rErr = i_rErr < 0 ? -i_rErr : i_rErr;
-
-                if (i_rErr > Lib_Card.Configure.Parameter.Other_AErr_Water)
-                {
-                lable5:
-                    FADM_Object.MyAlarm myAlarm;
-                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                        myAlarm=new FADM_Object.MyAlarm("水校正失败，是否继续?(继续水校正请点是，退出水校正请点否)", "加水校正", true, 1);
-                    else
-                        myAlarm =new FADM_Object.MyAlarm("Water calibration failed, do you want to continue? (To continue with water calibration, please click Yes. To exit water calibration, please click No)", "Water correction", true , 1);
-                    while (true)
-                    {
-                        if (0 != myAlarm._i_alarm_Choose)
-                            break;
-                        Thread.Sleep(1);
-                    }
-
-                    if (1 == myAlarm._i_alarm_Choose)
                         goto label4;
+                    }
 
+                    d_blBalanceValue0 = d_blRRead;
+
+                    //验证
+                    double d_blTime = 0;
+                    d_blTime = Lib_Card.Configure.Parameter.Correcting_Water_RWeight / d_blAdjust;
+
+
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水启动(" + string.Format("{0:F3}", d_blTime) + "s)");
+                    d_addWaterTime = d_blTime;
+                    FADM_Object.Communal.AddWater(d_blTime);
+
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水完成");
+
+                    //读取校正重量
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数启动");
+                    d_blRRead = FADM_Object.Communal.SteBalance();
+                    double d_blWeightC = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", d_blRRead - d_blBalanceValue0)) : Convert.ToDouble(string.Format("{0:F3}", d_blRRead - d_blBalanceValue0));
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数：" + d_blRRead + ",实际重量：" + d_blWeightC);
+
+                    //计算脉冲系数
+                    MyModbusFun.ReadFlow();
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "脉冲：" + Communal.i_flowPulse + ",实际重量：" + d_blWeightC);
+
+                    int i_rErr = Convert.ToInt16((d_blWeightC - Lib_Card.Configure.Parameter.Correcting_Water_RWeight) / Lib_Card.Configure.Parameter.Correcting_Water_RWeight * 100);
+                    i_rErr = i_rErr < 0 ? -i_rErr : i_rErr;
+
+                    if (i_rErr > Lib_Card.Configure.Parameter.Other_AErr_Water)
+                    {
+                    lable5:
+                        FADM_Object.MyAlarm myAlarm;
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            myAlarm = new FADM_Object.MyAlarm("水校正失败，是否继续?(继续水校正请点是，退出水校正请点否)", "加水校正", true, 1);
+                        else
+                            myAlarm = new FADM_Object.MyAlarm("Water calibration failed, do you want to continue? (To continue with water calibration, please click Yes. To exit water calibration, please click No)", "Water correction", true, 1);
+                        while (true)
+                        {
+                            if (0 != myAlarm._i_alarm_Choose)
+                                break;
+                            Thread.Sleep(1);
+                        }
+
+                        if (1 == myAlarm._i_alarm_Choose)
+                            goto label4;
+
+                    }
+                    else
+                    {
+                        //Lib_Card.Configure.Parameter.Correcting_Water_FWeight = Convert.ToDouble(string.Format("{0:F3}", d_blWeightF));
+                        Lib_Card.Configure.Parameter.Correcting_Water_Value = Convert.ToDouble(string.Format("{0:F3}", d_blAdjust));
+                        Lib_Card.Configure.Parameter.Correcting_FlowPulse_Value = Convert.ToDouble(string.Format("{0:F3}", d_blAdjust_Pulse));
+                        //Lib_File.Ini.WriteIni("Correcting", "Correcting_Water_FWeight", string.Format("{0:F3}", d_blWeightF), Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_File.Ini.WriteIni("Correcting", "Correcting_Water_Value", string.Format("{0:F3}", d_blAdjust), Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_File.Ini.WriteIni("Correcting", "Correcting_FlowPulse_Value", string.Format("{0:F3}", d_blAdjust_Pulse), Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    }
+
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找待机位");
+                    FADM_Object.Communal._i_OptCupNum = 0;
+                    FADM_Object.Communal._i_optBottleNum = 0;
+                    i_mRes = MyModbusFun.TargetMove(3, 0, 1);
+                    if (-2 == i_mRes)
+                        throw new Exception("收到退出消息");
+                    //不回待机位，失能关闭
+                    MyModbusFun.Power(2);
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达待机位");
+
+                    //报警动作待定
+                    /*Lib_Card.ADT8940A1.OutPut.Buzzer.Buzzer buzzer = new Lib_Card.ADT8940A1.OutPut.Buzzer.Buzzer_Basic();
+                    if (-1 == buzzer.Buzzer_On())
+                        throw new Exception("驱动异常");
+                    Thread.Sleep(Convert.ToInt32(Lib_Card.Configure.Parameter.Delay_Buzzer_Finish * 1000));
+                    if (-1 == buzzer.Buzzer_Off())
+                        throw new Exception("驱动异常");*/
+
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "水校正完成");
+                    FADM_Object.Communal.WriteMachineStatus(0);
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                        new FADM_Object.MyAlarm("水校正完成", 1);
+                    else
+                        new FADM_Object.MyAlarm("Water correction completed", 1);
+
+                    //Lib_SerialPort.Balance.METTLER.bReSetSign = true;
                 }
                 else
                 {
-                    Lib_Card.Configure.Parameter.Correcting_Water_FWeight = Convert.ToDouble(string.Format("{0:F3}", d_blWeightF));
-                    Lib_Card.Configure.Parameter.Correcting_Water_Value = Convert.ToDouble(string.Format("{0:F3}", d_blAdjust));
-                    Lib_File.Ini.WriteIni("Correcting", "Correcting_Water_FWeight", string.Format("{0:F3}", d_blWeightF), Environment.CurrentDirectory + "\\Config\\parameter.ini");
-                    Lib_File.Ini.WriteIni("Correcting", "Correcting_Water_Value", string.Format("{0:F3}", d_blAdjust), Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    //Lib_SerialPort.Balance.METTLER.bZeroSign = true;
+
+                    //移动到天平位
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找天平位");
+                    int i_mRes = MyModbusFun.TargetMove(2, 0, 1);
+                    if (-2 == i_mRes)
+                        throw new Exception("收到退出消息");
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达天平位");
+
+                    //if (FADM_Object.Communal._b_isZero)
+                    //{
+                    //    while (true)
+                    //    {
+                    //        //判断是否成功清零
+                    //        if (Lib_SerialPort.Balance.METTLER._s_balanceValue == 0.0)
+                    //        {
+                    //            break;
+                    //        }
+                    //        else
+                    //        {
+                    //            //再次发调零
+                    //            Lib_SerialPort.Balance.METTLER.bZeroSign = true;
+                    //        }
+                    //        Thread.Sleep(1);
+                    //    }
+                    //}
+
+
+                    //记录初始天平读数
+                    double d_blBalanceValue0 = FADM_Object.Communal.SteBalance(); ;
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平读数：" + d_blBalanceValue0);
+
+                    //伸出接液盘
+
+                    double d_addWaterTime2 = MyModbusFun.GetWaterTime(Lib_Card.Configure.Parameter.Correcting_Water_RWeight);//加水时间 校正加水时间
+                    i_mRes = MyModbusFun.AddWater(1); //加水1秒
+                    if (-2 == i_mRes)
+                        throw new Exception("收到退出消息");
+
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水完成");
+
+                    //读取首秒重量
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数启动");
+                    double d_blRRead = FADM_Object.Communal.SteBalance();
+                    double d_blWeightF = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", d_blRRead - d_blBalanceValue0)) : Convert.ToDouble(string.Format("{0:F3}", d_blRRead - d_blBalanceValue0));
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数：" + d_blRRead + ",实际重量：" + d_blWeightF);
+
+
+
+                    if (d_blWeightF <= 0.0)
+                    {
+                        goto label4;
+                    }
+
+                    //加水
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水启动(" + Lib_Card.Configure.Parameter.Correcting_Water_Time + "s)");
+
+                    double d_addWaterTime = Lib_Card.Configure.Parameter.Correcting_Water_Time;
+                    FADM_Object.Communal.AddWater(d_addWaterTime);
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水完成");
+
+                    //读取校正重量
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数启动");
+                    d_blRRead = FADM_Object.Communal.SteBalance();
+                    double d_blWeightT = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", d_blRRead - d_blBalanceValue0)) : Convert.ToDouble(string.Format("{0:F3}", d_blRRead - d_blBalanceValue0));
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数：" + d_blRRead + ",实际重量：" + d_blWeightT);
+                    double d_blAdjust = Convert.ToDouble(string.Format("{0:F3}", d_blWeightT / Convert.ToDouble(Lib_Card.Configure.Parameter.Correcting_Water_Time)));
+                    if (d_blAdjust <= 0.0)
+                    {
+                        goto label4;
+                    }
+
+                    d_blBalanceValue0 = d_blRRead;
+
+                    //验证
+                    double d_blTime = 0;
+                    if (0 == FADM_Object.Communal._i_waterWay)
+                    {
+                        if (Lib_Card.Configure.Parameter.Correcting_Water_RWeight > d_blWeightF)
+                            d_blTime = (Lib_Card.Configure.Parameter.Correcting_Water_RWeight - d_blWeightF) / d_blAdjust + 1;
+                        else
+                        {
+                            d_blTime = Lib_Card.Configure.Parameter.Correcting_Water_RWeight / d_blAdjust;
+                            if (d_blTime < 0.01)
+                                d_blTime = 0.01;
+                        }
+                    }
+                    else
+                    {
+                        if (Lib_Card.Configure.Parameter.Correcting_Water_RWeight > 13)
+                            d_blTime = (Lib_Card.Configure.Parameter.Correcting_Water_RWeight - d_blWeightF) / d_blAdjust + 1;
+                        else
+                            d_blTime = Lib_Card.Configure.Parameter.Correcting_Water_RWeight / d_blAdjust + Lib_Card.Configure.Parameter.Other_Coefficient_Water;
+                    }
+
+
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水启动(" + string.Format("{0:F3}", d_blTime) + "s)");
+
+                    FADM_Object.Communal.AddWater(d_blTime);
+
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水完成");
+
+                    //读取校正重量
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数启动");
+                    d_blRRead = FADM_Object.Communal.SteBalance();
+                    double d_blWeightC = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", d_blRRead - d_blBalanceValue0)) : Convert.ToDouble(string.Format("{0:F3}", d_blRRead - d_blBalanceValue0));
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数：" + d_blRRead + ",实际重量：" + d_blWeightC);
+
+                    
+                    int i_rErr = Convert.ToInt16((d_blWeightC - Lib_Card.Configure.Parameter.Correcting_Water_RWeight) / Lib_Card.Configure.Parameter.Correcting_Water_RWeight * 100);
+                    i_rErr = i_rErr < 0 ? -i_rErr : i_rErr;
+
+                    if (i_rErr > Lib_Card.Configure.Parameter.Other_AErr_Water)
+                    {
+                    lable5:
+                        FADM_Object.MyAlarm myAlarm;
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            myAlarm = new FADM_Object.MyAlarm("水校正失败，是否继续?(继续水校正请点是，退出水校正请点否)", "加水校正", true, 1);
+                        else
+                            myAlarm = new FADM_Object.MyAlarm("Water calibration failed, do you want to continue? (To continue with water calibration, please click Yes. To exit water calibration, please click No)", "Water correction", true, 1);
+                        while (true)
+                        {
+                            if (0 != myAlarm._i_alarm_Choose)
+                                break;
+                            Thread.Sleep(1);
+                        }
+
+                        if (1 == myAlarm._i_alarm_Choose)
+                            goto label4;
+
+                    }
+                    else
+                    {
+                        Lib_Card.Configure.Parameter.Correcting_Water_FWeight = Convert.ToDouble(string.Format("{0:F3}", d_blWeightF));
+                        Lib_Card.Configure.Parameter.Correcting_Water_Value = Convert.ToDouble(string.Format("{0:F3}", d_blAdjust));
+                        Lib_File.Ini.WriteIni("Correcting", "Correcting_Water_FWeight", string.Format("{0:F3}", d_blWeightF), Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_File.Ini.WriteIni("Correcting", "Correcting_Water_Value", string.Format("{0:F3}", d_blAdjust), Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                    }
+
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找待机位");
+                    FADM_Object.Communal._i_OptCupNum = 0;
+                    FADM_Object.Communal._i_optBottleNum = 0;
+                    i_mRes = MyModbusFun.TargetMove(3, 0, 1);
+                    if (-2 == i_mRes)
+                        throw new Exception("收到退出消息");
+                    //不回待机位，失能关闭
+                    MyModbusFun.Power(2);
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达待机位");
+
+                    //报警动作待定
+                    /*Lib_Card.ADT8940A1.OutPut.Buzzer.Buzzer buzzer = new Lib_Card.ADT8940A1.OutPut.Buzzer.Buzzer_Basic();
+                    if (-1 == buzzer.Buzzer_On())
+                        throw new Exception("驱动异常");
+                    Thread.Sleep(Convert.ToInt32(Lib_Card.Configure.Parameter.Delay_Buzzer_Finish * 1000));
+                    if (-1 == buzzer.Buzzer_Off())
+                        throw new Exception("驱动异常");*/
+
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "水校正完成");
+                    FADM_Object.Communal.WriteMachineStatus(0);
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                        new FADM_Object.MyAlarm("水校正完成", 1);
+                    else
+                        new FADM_Object.MyAlarm("Water correction completed", 1);
+
+                    //Lib_SerialPort.Balance.METTLER.bReSetSign = true;
                 }
-
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找待机位");
-                FADM_Object.Communal._i_OptCupNum = 0;
-                FADM_Object.Communal._i_optBottleNum = 0;
-                i_mRes = MyModbusFun.TargetMove(3, 0, 1);
-                if (-2 == i_mRes)
-                    throw new Exception("收到退出消息");
-                //不回待机位，失能关闭
-                MyModbusFun.Power(2);
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达待机位");
-
-                //报警动作待定
-                /*Lib_Card.ADT8940A1.OutPut.Buzzer.Buzzer buzzer = new Lib_Card.ADT8940A1.OutPut.Buzzer.Buzzer_Basic();
-                if (-1 == buzzer.Buzzer_On())
-                    throw new Exception("驱动异常");
-                Thread.Sleep(Convert.ToInt32(Lib_Card.Configure.Parameter.Delay_Buzzer_Finish * 1000));
-                if (-1 == buzzer.Buzzer_Off())
-                    throw new Exception("驱动异常");*/
-
-                FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "水校正完成");
-                FADM_Object.Communal.WriteMachineStatus(0);
-                if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                    new FADM_Object.MyAlarm("水校正完成",1);
-                else
-                    new FADM_Object.MyAlarm("Water correction completed", 1);
-
-                //Lib_SerialPort.Balance.METTLER.bReSetSign = true;
             }
             catch (Exception ex)
             {
@@ -391,239 +490,350 @@ namespace SmartDyeing.FADM_Auto
 
 
             label4:
-                //Lib_SerialPort.Balance.METTLER.bZeroSign = true;
-
-                //移动到天平位
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找天平位");
-                int i_mRes = MyModbusFun.TargetMove(2, 0, 1);
-                if (-2 == i_mRes)
-                    throw new Exception("收到退出消息");
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达天平位");
-
-                //if (FADM_Object.Communal._b_isZero)
-                //{
-                //    while (true)
-                //    {
-                //        //判断是否成功清零
-                //        if (Lib_SerialPort.Balance.METTLER._s_balanceValue == 0.0)
-                //        {
-                //            break;
-                //        }
-                //        else
-                //        {
-                //            //再次发调零
-                //            Lib_SerialPort.Balance.METTLER.bZeroSign = true;
-                //        }
-                //        Thread.Sleep(1);
-                //    }
-                //}
-
-                //记录初始天平读数
-                double d_blBalanceValue0 = FADM_Object.Communal.SteBalance(); ;
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平读数：" + d_blBalanceValue0);
-
-                //伸出接液盘
-
-                double d_addWaterTime2 = MyModbusFun.GetWaterTime(Lib_Card.Configure.Parameter.Correcting_Water_RWeight);//加水时间 校正加水时间
-                i_mRes = MyModbusFun.AddWater(1); //加水1秒
-                if (-2 == i_mRes)
-                    throw new Exception("收到退出消息");
-
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水完成");
-
-                //读取首秒重量
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数启动");
-                double d_blRRead = FADM_Object.Communal.SteBalance();
-                double d_blWeightF = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", d_blRRead - d_blBalanceValue0)) : Convert.ToDouble(string.Format("{0:F3}", d_blRRead - d_blBalanceValue0));
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数：" + d_blRRead + ",实际重量：" + d_blWeightF);
-                if (d_blWeightF <= 0.0)
+                if (FADM_Object.Communal._b_isUseNewCorrectingWater)
                 {
-                    goto label4;
-                }
+                    //Lib_SerialPort.Balance.METTLER.bZeroSign = true;
 
-                //加水
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水启动(" + Lib_Card.Configure.Parameter.Correcting_Water_Time + "s)");
-
-                double d_addWaterTime = Lib_Card.Configure.Parameter.Correcting_Water_Time;
-                if (d_addWaterTime <= 32)
-                {
-                    i_mRes = MyModbusFun.AddWater(d_addWaterTime);
+                    //移动到天平位
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找天平位");
+                    int i_mRes = MyModbusFun.TargetMove(2, 0, 1);
                     if (-2 == i_mRes)
                         throw new Exception("收到退出消息");
-                }
-                else
-                {
-                    double d = 32;
-                    while (true)
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达天平位");
+
+                    //if (FADM_Object.Communal._b_isZero)
+                    //{
+                    //    while (true)
+                    //    {
+                    //        //判断是否成功清零
+                    //        if (Lib_SerialPort.Balance.METTLER._s_balanceValue == 0.0)
+                    //        {
+                    //            break;
+                    //        }
+                    //        else
+                    //        {
+                    //            //再次发调零
+                    //            Lib_SerialPort.Balance.METTLER.bZeroSign = true;
+                    //        }
+                    //        Thread.Sleep(1);
+                    //    }
+                    //}
+
+                    //记录初始天平读数
+                    double d_blBalanceValue0 = FADM_Object.Communal.SteBalance(); ;
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平读数：" + d_blBalanceValue0);
+
+                    //伸出接液盘
+
+                    //加水
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水启动(" + Lib_Card.Configure.Parameter.Correcting_Water_Time + "s)");
+
+                    double d_addWaterTime = Lib_Card.Configure.Parameter.Correcting_Water_Time;
+
+                    FADM_Object.Communal.AddWater(d_addWaterTime);
+
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水完成");
+
+                    //读取校正重量
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数启动");
+                    double d_blRRead = FADM_Object.Communal.SteBalance();
+                    double d_blWeightT = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", d_blRRead - d_blBalanceValue0)) : Convert.ToDouble(string.Format("{0:F3}", d_blRRead - d_blBalanceValue0));
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数：" + d_blRRead + ",实际重量：" + d_blWeightT);
+                    double d_blAdjust = Convert.ToDouble(string.Format("{0:F3}", d_blWeightT / Convert.ToDouble(Lib_Card.Configure.Parameter.Correcting_Water_Time)));
+                    //计算脉冲系数
+                    MyModbusFun.ReadFlow();
+                    double d_blAdjust_Pulse = Convert.ToDouble(string.Format("{0:F3}", d_blWeightT / Communal.i_flowPulse));
+                    if (d_blAdjust <= 0.0)
                     {
-                        if (d_addWaterTime > 32)
-                        {
-                            //每次减32s
-                            i_mRes = MyModbusFun.AddWater(d);
-                            if (-2 == i_mRes)
-                                throw new Exception("收到退出消息");
-                        }
-                        else
-                        {
-                            i_mRes = MyModbusFun.AddWater(d_addWaterTime);
-                            if (-2 == i_mRes)
-                                throw new Exception("收到退出消息");
-                            break;
-                        }
-                        d_addWaterTime -= d;
-                    }
-                }
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水完成");
-
-                //读取校正重量
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数启动");
-                d_blRRead = FADM_Object.Communal.SteBalance();
-                double d_blWeightT = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", d_blRRead - d_blBalanceValue0)) : Convert.ToDouble(string.Format("{0:F3}", d_blRRead - d_blBalanceValue0));
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数：" + d_blRRead + ",实际重量：" + d_blWeightT);
-                double d_blAdjust = Convert.ToDouble(string.Format("{0:F3}", d_blWeightT / Convert.ToDouble(Lib_Card.Configure.Parameter.Correcting_Water_Time)));
-                if (d_blAdjust <= 0.0)
-                {
-                    goto label4;
-                }
-
-                d_blBalanceValue0 = d_blRRead;
-
-                //验证
-                double d_blTime = 0;
-                if (0 == FADM_Object.Communal._i_waterWay)
-                {
-                    if (Lib_Card.Configure.Parameter.Correcting_Water_RWeight > d_blWeightF)
-                        d_blTime = (Lib_Card.Configure.Parameter.Correcting_Water_RWeight - d_blWeightF) / d_blAdjust + 1;
-                    else
-                    {
-                        d_blTime = Lib_Card.Configure.Parameter.Correcting_Water_RWeight / d_blAdjust;
-                        if (d_blTime < 0.01)
-                            d_blTime = 0.01;
-                    }
-                }
-                else
-                {
-                    if (Lib_Card.Configure.Parameter.Correcting_Water_RWeight > 13)
-                        d_blTime = (Lib_Card.Configure.Parameter.Correcting_Water_RWeight - d_blWeightF) / d_blAdjust + 1;
-                    else
-                        d_blTime = Lib_Card.Configure.Parameter.Correcting_Water_RWeight / d_blAdjust + Lib_Card.Configure.Parameter.Other_Coefficient_Water;
-                }
-
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水启动(" + string.Format("{0:F3}", d_blTime) + "s)");
-
-                if (d_blTime <= 32)
-                {
-                    i_mRes = MyModbusFun.AddWater(d_blTime);
-                    if (-2 == i_mRes)
-                        throw new Exception("收到退出消息");
-                }
-                else
-                {
-                    double d = 32;
-                    while (true)
-                    {
-                        if (d_blTime > 32)
-                        {
-                            //每次减32s
-                            i_mRes = MyModbusFun.AddWater(d);
-                            if (-2 == i_mRes)
-                                throw new Exception("收到退出消息");
-                        }
-                        else
-                        {
-                            i_mRes = MyModbusFun.AddWater(d_blTime);
-                            if (-2 == i_mRes)
-                                throw new Exception("收到退出消息");
-                            break;
-                        }
-                        d_blTime -= d;
-                    }
-                }
-
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水完成");
-
-                //读取校正重量
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数启动");
-                d_blRRead = FADM_Object.Communal.SteBalance();
-                double d_blWeightC = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", d_blRRead - d_blBalanceValue0)) : Convert.ToDouble(string.Format("{0:F3}", d_blRRead - d_blBalanceValue0));
-                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数：" + d_blRRead + ",实际重量：" + d_blWeightC);
-                int i_rErr = Convert.ToInt16((d_blWeightC - Lib_Card.Configure.Parameter.Correcting_Water_RWeight) / Lib_Card.Configure.Parameter.Correcting_Water_RWeight * 100);
-                i_rErr = i_rErr < 0 ? -i_rErr : i_rErr;
-
-                if (i_rErr > Lib_Card.Configure.Parameter.Other_AErr_Water)
-                {
-                lable5:
-                    FADM_Object.Communal.WriteDripWait(true);
-                    FADM_Object.MyAlarm myAlarm;
-                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                        myAlarm = new FADM_Object.MyAlarm("水校正失败，是否继续?(继续水校正请点是，退出水校正请点否)", "加水校正", true, 1);
-                    else
-                        myAlarm = new FADM_Object.MyAlarm("Water calibration failed, do you want to continue? (To continue with water calibration, please click Yes. To exit water calibration, please click No)", "Water correction", true, 1);
-                    while (true)
-                    {
-                        if (0 != myAlarm._i_alarm_Choose)
-                            break;
-                        Thread.Sleep(1);
+                        goto label4;
                     }
 
-                    //判断染色线程是否需要用机械手
-                    if (null != FADM_Object.Communal.ReadDyeThread())
+                    d_blBalanceValue0 = d_blRRead;
+
+                    //验证
+                    double d_blTime = 0;
+
+                    d_blTime = Lib_Card.Configure.Parameter.Correcting_Water_RWeight / d_blAdjust;
+
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水启动(" + string.Format("{0:F3}", d_blTime) + "s)");
+
+                    FADM_Object.Communal.AddWater(d_blTime);
+
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水完成");
+
+                    //读取校正重量
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数启动");
+                    d_blRRead = FADM_Object.Communal.SteBalance();
+                    double d_blWeightC = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", d_blRRead - d_blBalanceValue0)) : Convert.ToDouble(string.Format("{0:F3}", d_blRRead - d_blBalanceValue0));
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数：" + d_blRRead + ",实际重量：" + d_blWeightC);
+                    int i_rErr = Convert.ToInt16((d_blWeightC - Lib_Card.Configure.Parameter.Correcting_Water_RWeight) / Lib_Card.Configure.Parameter.Correcting_Water_RWeight * 100);
+                    i_rErr = i_rErr < 0 ? -i_rErr : i_rErr;
+
+                    if (i_rErr > Lib_Card.Configure.Parameter.Other_AErr_Water)
                     {
+                    lable5:
                         FADM_Object.Communal.WriteDripWait(true);
-                        Communal._b_isWaitDrip = true;
+                        Communal._b_isAllowDrip = false;
+                        FADM_Object.MyAlarm myAlarm;
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            myAlarm = new FADM_Object.MyAlarm("水校正失败，是否继续?(继续水校正请点是，退出水校正请点否)", "加水校正", true, 1);
+                        else
+                            myAlarm = new FADM_Object.MyAlarm("Water calibration failed, do you want to continue? (To continue with water calibration, please click Yes. To exit water calibration, please click No)", "Water correction", true, 1);
                         while (true)
                         {
-                            if (false == FADM_Object.Communal.ReadDripWait())
+                            if (0 != myAlarm._i_alarm_Choose)
                                 break;
                             Thread.Sleep(1);
                         }
-                        Communal._b_isWaitDrip = false;
+                        Communal._b_isAllowDrip = true;
+                        //判断染色线程是否需要用机械手
+                        if (null != FADM_Object.Communal.ReadDyeThread())
+                        {
+                            FADM_Object.Communal.WriteDripWait(true);
+                            Communal._b_isWaitDrip = true;
+                            Communal._b_isAllowDrip = true;
+                            while (true)
+                            {
+                                if (false == FADM_Object.Communal.ReadDripWait())
+                                    break;
+                                Thread.Sleep(1);
+                            }
+                            Communal._b_isWaitDrip = false;
+                            //Communal._b_isAllowDrip = false;
+                        }
+                        else
+                        {
+                            Communal._b_isWaitDrip = false;
+                            FADM_Object.Communal.WriteDripWait(false);
+                        }
+
+                        if (1 == myAlarm._i_alarm_Choose)
+                            goto label4;
+                        FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "滴液水校正完成");
                     }
                     else
                     {
-                        Communal._b_isWaitDrip = false;
-                        FADM_Object.Communal.WriteDripWait(false);
+                        //Lib_Card.Configure.Parameter.Correcting_Water_FWeight = Convert.ToDouble(string.Format("{0:F3}", d_blWeightF));
+                        Lib_Card.Configure.Parameter.Correcting_Water_Value = Convert.ToDouble(string.Format("{0:F3}", d_blAdjust));
+                        Lib_Card.Configure.Parameter.Correcting_FlowPulse_Value = Convert.ToDouble(string.Format("{0:F3}", d_blAdjust_Pulse));
+                        //Lib_File.Ini.WriteIni("Correcting", "Correcting_Water_FWeight", string.Format("{0:F3}", d_blWeightF), Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_File.Ini.WriteIni("Correcting", "Correcting_Water_Value", string.Format("{0:F3}", d_blAdjust), Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_File.Ini.WriteIni("Correcting", "Correcting_FlowPulse_Value", string.Format("{0:F3}", d_blAdjust_Pulse), Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "滴液水校正完成");
                     }
 
-                    if (1 == myAlarm._i_alarm_Choose)
-                        goto label4;
-                    FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "滴液水校正完成");
+                    //FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找待机位");
+                    //FADM_Object.Communal._i_OptCupNum = 0;
+                    //FADM_Object.Communal._i_optBottleNum = 0;
+                    //i_mRes = MyModbusFun.TargetMove(3, 0, 1);
+                    //if (-2 == i_mRes)
+                    //    throw new Exception("收到退出消息");
+                    ////不回待机位，失能关闭
+                    //MyModbusFun.Power(2);
+                    //FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达待机位");
+
+                    //报警动作待定
+                    /*Lib_Card.ADT8940A1.OutPut.Buzzer.Buzzer buzzer = new Lib_Card.ADT8940A1.OutPut.Buzzer.Buzzer_Basic();
+                    if (-1 == buzzer.Buzzer_On())
+                        throw new Exception("驱动异常");
+                    Thread.Sleep(Convert.ToInt32(Lib_Card.Configure.Parameter.Delay_Buzzer_Finish * 1000));
+                    if (-1 == buzzer.Buzzer_Off())
+                        throw new Exception("驱动异常");*/
+
+                    //FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "滴液水校正完成");
+                    //FADM_Object.Communal.WriteMachineStatus(0);
+                    //if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                    //    new FADM_Object.MyAlarm("水校正完成", 1);
+                    //else
+                    //    new FADM_Object.MyAlarm("Water correction completed", 1);
+
+                    //Lib_SerialPort.Balance.METTLER.bReSetSign = true;
                 }
                 else
                 {
-                    Lib_Card.Configure.Parameter.Correcting_Water_FWeight = Convert.ToDouble(string.Format("{0:F3}", d_blWeightF));
-                    Lib_Card.Configure.Parameter.Correcting_Water_Value = Convert.ToDouble(string.Format("{0:F3}", d_blAdjust));
-                    Lib_File.Ini.WriteIni("Correcting", "Correcting_Water_FWeight", string.Format("{0:F3}", d_blWeightF), Environment.CurrentDirectory + "\\Config\\parameter.ini");
-                    Lib_File.Ini.WriteIni("Correcting", "Correcting_Water_Value", string.Format("{0:F3}", d_blAdjust), Environment.CurrentDirectory + "\\Config\\parameter.ini");
-                    FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "滴液水校正完成");
+                    //Lib_SerialPort.Balance.METTLER.bZeroSign = true;
+
+                    //移动到天平位
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找天平位");
+                    int i_mRes = MyModbusFun.TargetMove(2, 0, 1);
+                    if (-2 == i_mRes)
+                        throw new Exception("收到退出消息");
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达天平位");
+
+                    //if (FADM_Object.Communal._b_isZero)
+                    //{
+                    //    while (true)
+                    //    {
+                    //        //判断是否成功清零
+                    //        if (Lib_SerialPort.Balance.METTLER._s_balanceValue == 0.0)
+                    //        {
+                    //            break;
+                    //        }
+                    //        else
+                    //        {
+                    //            //再次发调零
+                    //            Lib_SerialPort.Balance.METTLER.bZeroSign = true;
+                    //        }
+                    //        Thread.Sleep(1);
+                    //    }
+                    //}
+
+                    //记录初始天平读数
+                    double d_blBalanceValue0 = FADM_Object.Communal.SteBalance(); ;
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平读数：" + d_blBalanceValue0);
+
+                    //伸出接液盘
+
+                    double d_addWaterTime2 = MyModbusFun.GetWaterTime(Lib_Card.Configure.Parameter.Correcting_Water_RWeight);//加水时间 校正加水时间
+                    i_mRes = MyModbusFun.AddWater(1); //加水1秒
+                    if (-2 == i_mRes)
+                        throw new Exception("收到退出消息");
+
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水完成");
+
+                    //读取首秒重量
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数启动");
+                    double d_blRRead = FADM_Object.Communal.SteBalance();
+                    double d_blWeightF = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", d_blRRead - d_blBalanceValue0)) : Convert.ToDouble(string.Format("{0:F3}", d_blRRead - d_blBalanceValue0));
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数：" + d_blRRead + ",实际重量：" + d_blWeightF);
+                    if (d_blWeightF <= 0.0)
+                    {
+                        goto label4;
+                    }
+
+                    //加水
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水启动(" + Lib_Card.Configure.Parameter.Correcting_Water_Time + "s)");
+
+                    double d_addWaterTime = Lib_Card.Configure.Parameter.Correcting_Water_Time;
+                    FADM_Object.Communal.AddWater(d_addWaterTime);
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水完成");
+
+                    //读取校正重量
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数启动");
+                    d_blRRead = FADM_Object.Communal.SteBalance();
+                    double d_blWeightT = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", d_blRRead - d_blBalanceValue0)) : Convert.ToDouble(string.Format("{0:F3}", d_blRRead - d_blBalanceValue0));
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数：" + d_blRRead + ",实际重量：" + d_blWeightT);
+                    double d_blAdjust = Convert.ToDouble(string.Format("{0:F3}", d_blWeightT / Convert.ToDouble(Lib_Card.Configure.Parameter.Correcting_Water_Time)));
+                    if (d_blAdjust <= 0.0)
+                    {
+                        goto label4;
+                    }
+
+                    d_blBalanceValue0 = d_blRRead;
+
+                    //验证
+                    double d_blTime = 0;
+                    if (0 == FADM_Object.Communal._i_waterWay)
+                    {
+                        if (Lib_Card.Configure.Parameter.Correcting_Water_RWeight > d_blWeightF)
+                            d_blTime = (Lib_Card.Configure.Parameter.Correcting_Water_RWeight - d_blWeightF) / d_blAdjust + 1;
+                        else
+                        {
+                            d_blTime = Lib_Card.Configure.Parameter.Correcting_Water_RWeight / d_blAdjust;
+                            if (d_blTime < 0.01)
+                                d_blTime = 0.01;
+                        }
+                    }
+                    else
+                    {
+                        if (Lib_Card.Configure.Parameter.Correcting_Water_RWeight > 13)
+                            d_blTime = (Lib_Card.Configure.Parameter.Correcting_Water_RWeight - d_blWeightF) / d_blAdjust + 1;
+                        else
+                            d_blTime = Lib_Card.Configure.Parameter.Correcting_Water_RWeight / d_blAdjust + Lib_Card.Configure.Parameter.Other_Coefficient_Water;
+                    }
+
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水启动(" + string.Format("{0:F3}", d_blTime) + "s)");
+
+                    FADM_Object.Communal.AddWater(d_blTime);
+
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "加水完成");
+
+                    //读取校正重量
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数启动");
+                    d_blRRead = FADM_Object.Communal.SteBalance();
+                    double d_blWeightC = Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? Convert.ToDouble(string.Format("{0:F2}", d_blRRead - d_blBalanceValue0)) : Convert.ToDouble(string.Format("{0:F3}", d_blRRead - d_blBalanceValue0));
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数：" + d_blRRead + ",实际重量：" + d_blWeightC);
+                    int i_rErr = Convert.ToInt16((d_blWeightC - Lib_Card.Configure.Parameter.Correcting_Water_RWeight) / Lib_Card.Configure.Parameter.Correcting_Water_RWeight * 100);
+                    i_rErr = i_rErr < 0 ? -i_rErr : i_rErr;
+
+                    if (i_rErr > Lib_Card.Configure.Parameter.Other_AErr_Water)
+                    {
+                    lable5:
+                        FADM_Object.Communal.WriteDripWait(true);
+                        Communal._b_isAllowDrip = false;
+                        FADM_Object.MyAlarm myAlarm;
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            myAlarm = new FADM_Object.MyAlarm("水校正失败，是否继续?(继续水校正请点是，退出水校正请点否)", "加水校正", true, 1);
+                        else
+                            myAlarm = new FADM_Object.MyAlarm("Water calibration failed, do you want to continue? (To continue with water calibration, please click Yes. To exit water calibration, please click No)", "Water correction", true, 1);
+                        while (true)
+                        {
+                            if (0 != myAlarm._i_alarm_Choose)
+                                break;
+                            Thread.Sleep(1);
+                        }
+                        Communal._b_isAllowDrip = true;
+                        //判断染色线程是否需要用机械手
+                        if (null != FADM_Object.Communal.ReadDyeThread())
+                        {
+                            FADM_Object.Communal.WriteDripWait(true);
+                            Communal._b_isWaitDrip = true;
+                            Communal._b_isAllowDrip = true;
+                            while (true)
+                            {
+                                if (false == FADM_Object.Communal.ReadDripWait())
+                                    break;
+                                Thread.Sleep(1);
+                            }
+                            Communal._b_isWaitDrip = false;
+                            //Communal._b_isAllowDrip = false;
+                        }
+                        else
+                        {
+                            Communal._b_isWaitDrip = false;
+                            FADM_Object.Communal.WriteDripWait(false);
+                        }
+
+                        if (1 == myAlarm._i_alarm_Choose)
+                            goto label4;
+                        FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "滴液水校正完成");
+                    }
+                    else
+                    {
+                        Lib_Card.Configure.Parameter.Correcting_Water_FWeight = Convert.ToDouble(string.Format("{0:F3}", d_blWeightF));
+                        Lib_Card.Configure.Parameter.Correcting_Water_Value = Convert.ToDouble(string.Format("{0:F3}", d_blAdjust));
+                        Lib_File.Ini.WriteIni("Correcting", "Correcting_Water_FWeight", string.Format("{0:F3}", d_blWeightF), Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        Lib_File.Ini.WriteIni("Correcting", "Correcting_Water_Value", string.Format("{0:F3}", d_blAdjust), Environment.CurrentDirectory + "\\Config\\parameter.ini");
+                        FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "滴液水校正完成");
+                    }
+
+                    //FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找待机位");
+                    //FADM_Object.Communal._i_OptCupNum = 0;
+                    //FADM_Object.Communal._i_optBottleNum = 0;
+                    //i_mRes = MyModbusFun.TargetMove(3, 0, 1);
+                    //if (-2 == i_mRes)
+                    //    throw new Exception("收到退出消息");
+                    ////不回待机位，失能关闭
+                    //MyModbusFun.Power(2);
+                    //FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达待机位");
+
+                    //报警动作待定
+                    /*Lib_Card.ADT8940A1.OutPut.Buzzer.Buzzer buzzer = new Lib_Card.ADT8940A1.OutPut.Buzzer.Buzzer_Basic();
+                    if (-1 == buzzer.Buzzer_On())
+                        throw new Exception("驱动异常");
+                    Thread.Sleep(Convert.ToInt32(Lib_Card.Configure.Parameter.Delay_Buzzer_Finish * 1000));
+                    if (-1 == buzzer.Buzzer_Off())
+                        throw new Exception("驱动异常");*/
+
+                    //FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "滴液水校正完成");
+                    //FADM_Object.Communal.WriteMachineStatus(0);
+                    //if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                    //    new FADM_Object.MyAlarm("水校正完成", 1);
+                    //else
+                    //    new FADM_Object.MyAlarm("Water correction completed", 1);
+
+                    //Lib_SerialPort.Balance.METTLER.bReSetSign = true;
                 }
-
-                //FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找待机位");
-                //FADM_Object.Communal._i_OptCupNum = 0;
-                //FADM_Object.Communal._i_optBottleNum = 0;
-                //i_mRes = MyModbusFun.TargetMove(3, 0, 1);
-                //if (-2 == i_mRes)
-                //    throw new Exception("收到退出消息");
-                ////不回待机位，失能关闭
-                //MyModbusFun.Power(2);
-                //FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达待机位");
-
-                //报警动作待定
-                /*Lib_Card.ADT8940A1.OutPut.Buzzer.Buzzer buzzer = new Lib_Card.ADT8940A1.OutPut.Buzzer.Buzzer_Basic();
-                if (-1 == buzzer.Buzzer_On())
-                    throw new Exception("驱动异常");
-                Thread.Sleep(Convert.ToInt32(Lib_Card.Configure.Parameter.Delay_Buzzer_Finish * 1000));
-                if (-1 == buzzer.Buzzer_Off())
-                    throw new Exception("驱动异常");*/
-
-                //FADM_Object.Communal._fadmSqlserver.InsertRun("Machine", "滴液水校正完成");
-                //FADM_Object.Communal.WriteMachineStatus(0);
-                //if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                //    new FADM_Object.MyAlarm("水校正完成", 1);
-                //else
-                //    new FADM_Object.MyAlarm("Water correction completed", 1);
-
-                //Lib_SerialPort.Balance.METTLER.bReSetSign = true;
             }
             catch (Exception ex)
             {
@@ -784,6 +994,7 @@ namespace SmartDyeing.FADM_Auto
                 //    }
                 //}
 
+
                 //记录初始天平读数
                 double d_blBalanceValue0 = FADM_Object.Communal.SteBalance();
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平读数：" + d_blBalanceValue0);
@@ -792,34 +1003,7 @@ namespace SmartDyeing.FADM_Auto
                 //Add(d_blWeight, "RobotHand");
 
                 double d_addWaterTime = MyModbusFun.GetWaterTime(d_blWeight);//加水时间
-                if (d_addWaterTime <= 32)
-                {
-                    i_mRes = MyModbusFun.AddWater(d_addWaterTime);
-                    if (-2 == i_mRes)
-                        throw new Exception("收到退出消息");
-                }
-                else
-                {
-                    double d = 32;
-                    while (true)
-                    {
-                        if (d_addWaterTime > 32)
-                        {
-                            //每次减32s
-                            i_mRes = MyModbusFun.AddWater(d);
-                            if (-2 == i_mRes)
-                                throw new Exception("收到退出消息");
-                        }
-                        else
-                        {
-                            i_mRes = MyModbusFun.AddWater(d_addWaterTime);
-                            if (-2 == i_mRes)
-                                throw new Exception("收到退出消息");
-                            break;
-                        }
-                        d_addWaterTime -= d;
-                    }
-                }
+                FADM_Object.Communal.AddWater(d_addWaterTime);
 
                 //天平读数
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "天平稳定读数启动");
@@ -831,6 +1015,29 @@ namespace SmartDyeing.FADM_Auto
 
                 //if (-1 == tray.Tray_Off())
                 //    throw new Exception("驱动异常");
+
+                if (Communal._b_isUseLLJ)
+                {
+                    MyModbusFun.ReadFlow();
+                    //计算理论重量
+                    //理论重量 = 脉冲*系数 - 4.6 + power(脉冲，1/4）
+                    double d_ = Communal.i_flowPulse * Lib_Card.Configure.Parameter.Correcting_FlowPulse_Value - 4.6 + Math.Pow(Communal.i_flowPulse, 0.25);
+                    double d_need = Lib_Card.Configure.Parameter.Correcting_Water_Value * d_addWaterTime;
+                    //FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "理论重量：" + string.Format("{0:F3}", d_) + "需加量：" + string.Format("{0:F3}", d_need) + "脉冲值：" + Communal.i_flowPulse);
+
+                    string s_sql = "INSERT INTO LLJ" +
+                                     "(Weight,LLWeight,Pulse,Time,LLC,AddC)" +
+                                     " VALUES( '" +
+                                     string.Format("{0:F3}", d_blRWeight) + "','" +
+                                     string.Format("{0:F3}", d_) + "','" +
+                                     Communal.i_flowPulse.ToString() + "','" +
+                                      DateTime.Now.ToString() + "','" +
+                                      string.Format("{0:F3}", Lib_Card.Configure.Parameter.Correcting_FlowPulse_Value) + "','" +
+                                      string.Format("{0:F3}", Lib_Card.Configure.Parameter.Correcting_Water_Value) + "');";
+                    FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+
+                }
 
                 FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找待机位");
                 FADM_Object.Communal._i_OptCupNum = 0;
@@ -1007,6 +1214,7 @@ namespace SmartDyeing.FADM_Auto
             Lib_Card.ADT8940A1.OutPut.Water.Water water = new Lib_Card.ADT8940A1.OutPut.Water.Water_Condition();
             if (-1 == water.Water_On())
                 throw new Exception("驱动异常");
+
 
             Thread.Sleep(Convert.ToInt32(dblTime * 1000));
 

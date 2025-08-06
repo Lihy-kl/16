@@ -35,6 +35,8 @@ namespace SmartDyeing.FADM_Control
             this.grp_Browse = new System.Windows.Forms.GroupBox();
             this.dgv_Bottle = new System.Windows.Forms.DataGridView();
             this.grp_BottleDetails = new System.Windows.Forms.GroupBox();
+            this.cbo_DripReserveFirst = new System.Windows.Forms.ComboBox();
+            this.lab_DripReserveFirst = new System.Windows.Forms.Label();
             this.cbo_Abs = new System.Windows.Forms.ComboBox();
             this.lab_Abs = new System.Windows.Forms.Label();
             this.cbo_OriginalBottleNum = new System.Windows.Forms.ComboBox();
@@ -113,6 +115,8 @@ namespace SmartDyeing.FADM_Control
             // grp_BottleDetails
             // 
             resources.ApplyResources(this.grp_BottleDetails, "grp_BottleDetails");
+            this.grp_BottleDetails.Controls.Add(this.cbo_DripReserveFirst);
+            this.grp_BottleDetails.Controls.Add(this.lab_DripReserveFirst);
             this.grp_BottleDetails.Controls.Add(this.cbo_Abs);
             this.grp_BottleDetails.Controls.Add(this.lab_Abs);
             this.grp_BottleDetails.Controls.Add(this.cbo_OriginalBottleNum);
@@ -141,12 +145,29 @@ namespace SmartDyeing.FADM_Control
             this.grp_BottleDetails.Name = "grp_BottleDetails";
             this.grp_BottleDetails.TabStop = false;
             // 
+            // cbo_DripReserveFirst
+            // 
+            resources.ApplyResources(this.cbo_DripReserveFirst, "cbo_DripReserveFirst");
+            this.cbo_DripReserveFirst.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbo_DripReserveFirst.FormattingEnabled = true;
+            this.cbo_DripReserveFirst.Items.AddRange(new object[] {
+            resources.GetString("cbo_DripReserveFirst.Items"),
+            resources.GetString("cbo_DripReserveFirst.Items1")});
+            this.cbo_DripReserveFirst.Name = "cbo_DripReserveFirst";
+            this.cbo_DripReserveFirst.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cbo_DripReserveFirst_KeyDown);
+            // 
+            // lab_DripReserveFirst
+            // 
+            resources.ApplyResources(this.lab_DripReserveFirst, "lab_DripReserveFirst");
+            this.lab_DripReserveFirst.Name = "lab_DripReserveFirst";
+            // 
             // cbo_Abs
             // 
             resources.ApplyResources(this.cbo_Abs, "cbo_Abs");
             this.cbo_Abs.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbo_Abs.FormattingEnabled = true;
             this.cbo_Abs.Name = "cbo_Abs";
+            this.cbo_Abs.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cbo_Abs_KeyDown);
             // 
             // lab_Abs
             // 
@@ -227,6 +248,7 @@ namespace SmartDyeing.FADM_Control
             // 
             resources.ApplyResources(this.txt_AllowMaxWeight, "txt_AllowMaxWeight");
             this.txt_AllowMaxWeight.Name = "txt_AllowMaxWeight";
+            this.txt_AllowMaxWeight.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_AllowMaxWeight_KeyDown);
             // 
             // txt_BottleNum
             // 
@@ -501,5 +523,7 @@ namespace SmartDyeing.FADM_Control
         private System.Windows.Forms.RadioButton rdo_4;
         private ComboBox cbo_Abs;
         private Label lab_Abs;
+        private ComboBox cbo_DripReserveFirst;
+        private Label lab_DripReserveFirst;
     }
 }

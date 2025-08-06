@@ -3044,6 +3044,14 @@ namespace SmartDyeing.FADM_Control
                                         {
                                             double d_bl_RealErr = Convert.ToDouble(Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}", Convert.ToDouble(dr2["ObjectDropWeight"])+ (dr2["Compensation"] is DBNull?0.0: Convert.ToDouble(dr2["Compensation"])) - Convert.ToDouble(dr2["RealDropWeight"])) : string.Format("{0:F3}", Convert.ToDouble(dr2["ObjectDropWeight"]) + (dr2["Compensation"] is DBNull ? 0.0 : Convert.ToDouble(dr2["Compensation"])) - Convert.ToDouble(dr2["RealDropWeight"])));
                                             d_bl_RealErr = d_bl_RealErr > 0 ? d_bl_RealErr : -d_bl_RealErr;
+                                            if (dr2["StandError"] is DBNull)
+                                            {
+                                                d_bl_drop_allow_err = (dr2["UnitOfAccount"].ToString() == "%" ? Lib_Card.Configure.Parameter.Other_AErr_Drip : Lib_Card.Configure.Parameter.Other_AErr_Drip);
+                                            }
+                                            else
+                                            {
+                                                d_bl_drop_allow_err = Convert.ToDouble(dr2["StandError"]);
+                                            }
                                             if (d_bl_RealErr > d_bl_drop_allow_err)
                                             {
                                                 b_err = true;
@@ -3492,7 +3500,7 @@ namespace SmartDyeing.FADM_Control
             else
             {
                 //1.查看是否有空闲杯子
-                string s_sql = "SELECT * FROM abs_cup_details WHERE  Enable = 1 And IsUsing=0 And CupNum = 2 order by CupNum;";
+                string s_sql = "SELECT * FROM abs_cup_details WHERE  Enable = 1 And IsUsing=0 And (CupNum = 2 or CupNum = 4)  order by CupNum;";
                 DataTable dt_abs_cup_details = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
                 if (dt_abs_cup_details.Rows.Count == 0)
                 {

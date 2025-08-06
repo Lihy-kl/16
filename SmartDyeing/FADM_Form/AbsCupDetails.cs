@@ -17,7 +17,7 @@ namespace SmartDyeing.FADM_Form
         {
             InitializeComponent();
             this.iCupNo = iCupNo;
-            txt_CupNum.Text = iCupNo.ToString();
+            
         }
 
         private void DripCupDetails_Load(object sender, EventArgs e)
@@ -82,6 +82,20 @@ namespace SmartDyeing.FADM_Form
             //_dt_data = FADM_Object.Communal._fadmSqlserver.GetData(P_str_sql);
             int i_maxcup = Lib_Card.Configure.Parameter.Machine_Cup_Total;
             int i_maxbottle = Lib_Card.Configure.Parameter.Machine_Bottle_Total;
+
+            string s_sql1 = "SELECT * FROM abs_cup_details WHERE" +
+                        " CupNum = '" + this.iCupNo +
+                        "'  ;";
+
+            DataTable dt_data12 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql1);
+            if (dt_data12.Rows.Count > 0)
+            {
+                txt_CupNum.Text = dt_data12.Rows[0]["BottleNum"].ToString();
+                textBox1.Text = dt_data12.Rows[0]["SampleDosage"].ToString();
+                textBox2.Text = dt_data12.Rows[0]["RealSampleDosage"].ToString();
+                textBox4.Text = dt_data12.Rows[0]["AdditivesDosage"].ToString();
+                textBox3.Text = dt_data12.Rows[0]["RealAdditivesDosage"].ToString();
+            }
 
             //获取当前批次当前杯号信息
             string s_sql = "SELECT * FROM Abs_details WHERE" +

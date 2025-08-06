@@ -238,7 +238,28 @@ namespace SmartDyeing.FADM_Object
         /// </summary>
         public static int InPut_Cylinder_Block { get; set; }
 
-        
+
+
+        #endregion
+
+        #region 撑盖
+        public static int InPut_SupportCover { get; set; }
+
+        #endregion
+
+        #region 抓手泄压
+
+        /// <summary>
+        /// 抓手A泄压
+        /// </summary>
+        public static int InPut_Tongs_A_Decompression { get; set; }
+
+        /// <summary>
+        /// 抓手B泄压
+        /// </summary>
+        public static int InPut_Tongs_B_Decompression { get; set; }
+
+
 
         #endregion
 
@@ -415,6 +436,34 @@ namespace SmartDyeing.FADM_Object
         /// 气缸慢下阀
         /// </summary>
         public static int OutPut_Slow_Cylinder { get; set; }
+
+        #endregion
+
+        #region 洗针
+        /// <summary>
+        /// 洗针进水阀
+        /// </summary>
+        public static int OutPut_Wash_In { get; set; }
+
+        /// <summary>
+        /// 洗针排水阀
+        /// </summary>
+        public static int OutPut_Wash_Out { get; set; }
+
+        /// <summary>
+        /// 洗针吹气阀
+        /// </summary>
+        public static int OutPut_Wash_Blow { get; set; }
+
+        #endregion
+
+        #region 抓手泄压
+
+        /// <summary>
+        /// 抓手泄压阀
+        /// </summary>
+        public static int OutPut_Tongs_Decompression { get; set; }
+
 
         #endregion
 

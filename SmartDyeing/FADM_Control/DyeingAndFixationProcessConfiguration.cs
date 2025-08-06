@@ -1,4 +1,5 @@
 ﻿using SmartDyeing.FADM_Form;
+using SmartDyeing.FADM_Object;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -123,7 +124,7 @@ namespace SmartDyeing.FADM_Control
                 dgv_Combination.Rows.Clear();
 
                 //获取染固色流程代码
-                string s_sql = "SELECT Code  FROM dyeing_code where DyeingCode = '" + s_dyeingCode + "' order by IndexNum;";
+                string s_sql = "SELECT Code,IsUse  FROM dyeing_code where DyeingCode = '" + s_dyeingCode + "' order by IndexNum;";
                 DataTable dt_dyeingcode = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
 
                 //////捆绑
@@ -150,6 +151,17 @@ namespace SmartDyeing.FADM_Control
 
                 //设置行高
                 dgv_Combination.RowTemplate.Height = 30;
+                if(dt_dyeingcode.Rows.Count>0)
+                {
+                    if(dt_dyeingcode.Rows[0][1].ToString()=="0")
+                    {
+                        checkBox1.Checked = false;
+                    }
+                    else
+                    {
+                        checkBox1.Checked = true;
+                    }
+                }
 
                 for (int i = 0; i < dt_dyeingcode.Rows.Count; i++)
                 {
@@ -376,9 +388,24 @@ namespace SmartDyeing.FADM_Control
 
         private void btn_DyeingCodeAdd_Click(object sender, EventArgs e)
         {
+            List<string> list = new List<string>();
+            string s_sql = "SELECT Code  FROM dyeing_process group by Code;";
+            DataTable dt_dyeingcode = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+            for (int i = 0; i < dt_dyeingcode.Rows.Count; i++)
+            {
+                list.Add(dt_dyeingcode.Rows[i][0].ToString());
+            }
+            for(int i = 0;i <list.Count;i++)
+                if(i>130)
+            if (list[i] == "鞋材  130*30 ")
+            {
+                MessageBox.Show("123");
+                    break;
+            }
             txt_DyeingCode.Text = null;
             txt_DyeingCode.Enabled = true;
             txt_DyeingCode.Focus();
+            checkBox1.Checked = true;
         }
 
         private void btn_DyeingCodeDelete_Click(object sender, EventArgs e)
@@ -749,7 +776,7 @@ namespace SmartDyeing.FADM_Control
                     }
                     
                     s_sql = "INSERT INTO dyeing_code (DyeingCode, Type," +
-                                               " Step, Code,IndexNum) VALUES('" + txt_DyeingCode.Text + "',"+ s_type+"," + s_step + ",'" + dgv_Combination.Rows[i].Cells[0].Value.ToString() +"',"+(i+1).ToString() + ");";
+                                               " Step, Code,IndexNum,IsUse) VALUES('" + txt_DyeingCode.Text + "',"+ s_type+"," + s_step + ",'" + dgv_Combination.Rows[i].Cells[0].Value.ToString() +"',"+(i+1).ToString() +",'"+ (checkBox1.Checked?"1":"0")+ "');";
                     FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
                 }
 
@@ -974,6 +1001,18 @@ namespace SmartDyeing.FADM_Control
             {
                 DataGridViewComboBoxCell dd = (DataGridViewComboBoxCell)dgv_Combination[0, dgv_Combination.Rows.Count - 1];
                 dd.DataSource = _lis_code;
+            }
+        }
+
+        private void checkBox1_Click(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked) 
+            {
+                Communal._fadmSqlserver.ReviseData("Update dyeing_code Set IsUse=1 where DyeingCode = '"+ txt_DyeingCode.Text+"';");
+            }
+            else
+            {
+                Communal._fadmSqlserver.ReviseData("Update dyeing_code Set IsUse=0 where DyeingCode = '" + txt_DyeingCode.Text + "';");
             }
         }
     }

@@ -54,6 +54,8 @@ namespace SmartDyeing.FADM_Form
             this.MiLow1 = new System.Windows.Forms.ToolStripMenuItem();
             this.MiFullDrip1 = new System.Windows.Forms.ToolStripMenuItem();
             this.MiDye = new System.Windows.Forms.ToolStripMenuItem();
+            this.MiOutAllowDrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.MiLowAllowDrip = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSplitButton2 = new System.Windows.Forms.ToolStripSplitButton();
             this.MiDebug = new System.Windows.Forms.ToolStripMenuItem();
@@ -90,6 +92,8 @@ namespace SmartDyeing.FADM_Form
             this.TmrFGY = new System.Windows.Forms.Timer(this.components);
             this.timerReg = new System.Windows.Forms.Timer(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.timerNeedToDo = new System.Windows.Forms.Timer(this.components);
+            this.timer_Update = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -236,7 +240,9 @@ namespace SmartDyeing.FADM_Form
             this.MiOut1,
             this.MiLow1,
             this.MiFullDrip1,
-            this.MiDye});
+            this.MiDye,
+            this.MiOutAllowDrip,
+            this.MiLowAllowDrip});
             resources.ApplyResources(this.p, "p");
             this.p.Name = "p";
             // 
@@ -263,6 +269,18 @@ namespace SmartDyeing.FADM_Form
             this.MiDye.Name = "MiDye";
             resources.ApplyResources(this.MiDye, "MiDye");
             this.MiDye.Click += new System.EventHandler(this.MiDye_Click);
+            // 
+            // MiOutAllowDrip
+            // 
+            this.MiOutAllowDrip.Name = "MiOutAllowDrip";
+            resources.ApplyResources(this.MiOutAllowDrip, "MiOutAllowDrip");
+            this.MiOutAllowDrip.Click += new System.EventHandler(this.MiOutAllowDrip_Click);
+            // 
+            // MiLowAllowDrip
+            // 
+            this.MiLowAllowDrip.Name = "MiLowAllowDrip";
+            resources.ApplyResources(this.MiLowAllowDrip, "MiLowAllowDrip");
+            this.MiLowAllowDrip.Click += new System.EventHandler(this.MiLowAllowDrip_Click);
             // 
             // toolStripSeparator2
             // 
@@ -493,6 +511,16 @@ namespace SmartDyeing.FADM_Form
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // timerNeedToDo
+            // 
+            this.timerNeedToDo.Interval = 60000;
+            this.timerNeedToDo.Tick += new System.EventHandler(this.timerNeedToDo_Tick);
+            // 
+            // timer_Update
+            // 
+            this.timer_Update.Interval = 1000;
+            this.timer_Update.Tick += new System.EventHandler(this.timer_Update_Tick);
+            // 
             // Main
             // 
             resources.ApplyResources(this, "$this");
@@ -570,5 +598,9 @@ namespace SmartDyeing.FADM_Form
         private ToolStripButton toolStripButton1;
         private ToolStripMenuItem MiDye;
         private ToolStripMenuItem MiABSProcess;
+        private Timer timerNeedToDo;
+        private Timer timer_Update;
+        private ToolStripMenuItem MiOutAllowDrip;
+        private ToolStripMenuItem MiLowAllowDrip;
     }
 }

@@ -1076,6 +1076,16 @@
         public static int Coordinate_Syringes_Y { get; set; }
 
         /// <summary>
+        /// 清洗针筒X轴坐标
+        /// </summary>
+        public static int Coordinate_Wash_X { get; set; }
+
+        /// <summary>
+        /// 清洗针筒Y轴坐标
+        /// </summary>
+        public static int Coordinate_Wash_Y { get; set; }
+
+        /// <summary>
         /// 吸光度1号杯X轴坐标
         /// </summary>
         public static int Coordinate_Abs1_X { get; set; }
@@ -1094,6 +1104,26 @@
         /// 吸光度2号杯Y轴坐标
         /// </summary>
         public static int Coordinate_Abs2_Y { get; set; }
+
+        /// <summary>
+        /// 吸光度3号杯X轴坐标
+        /// </summary>
+        public static int Coordinate_Abs3_X { get; set; }
+
+        /// <summary>
+        /// 吸光度3号杯Y轴坐标
+        /// </summary>
+        public static int Coordinate_Abs3_Y { get; set; }
+
+        /// <summary>
+        /// 吸光度4号杯X轴坐标
+        /// </summary>
+        public static int Coordinate_Abs4_X { get; set; }
+
+        /// <summary>
+        /// 吸光度4号杯Y轴坐标
+        /// </summary>
+        public static int Coordinate_Abs4_Y { get; set; }
 
 
 
@@ -2261,6 +2291,11 @@
         public static double Correcting_Water_Value { get; set; }
 
         /// <summary>
+        /// 流量计校正值
+        /// </summary>
+        public static double Correcting_FlowPulse_Value { get; set; }
+
+        /// <summary>
         /// 加水首秒重量
         /// </summary>
         public static double Correcting_Water_FWeight { get; set; }
@@ -2343,6 +2378,11 @@
         /// 滴液允许误差
         /// </summary>
         public static double Other_AErr_Drip { get; set; }
+
+        /// <summary>
+        /// 助剂滴液允许误差
+        /// </summary>
+        public static double Other_AssAErr_Drip { get; set; }
 
         /// <summary>
         /// 加水允许误差
@@ -2586,6 +2626,43 @@
         /// 染杯口下探开夹脉冲
         /// </summary>
         public static int Other_CupDownPulse { get; set; }
+
+        /// <summary>
+        /// 加水放大倍数 0放大1000倍 1是放大100倍
+        /// </summary>
+        public static int Other_WaterMagnification{ get; set; }
+
+        /// <summary>
+        /// 出布时气缸位置 0阻挡位 1慢速中
+        /// </summary>
+        public static int Other_OutClothPosition{ get; set; }
+
+        /// <summary>
+        /// 洗针次数
+        /// </summary>
+        public static int Other_WashTime { get; set; }
+
+
+        /// <summary>
+        /// 是否配置抓手撑盖选项
+        /// </summary>
+        public static int Other_Tongs_Decompression { get; set; }
+
+        /// <summary>
+        /// 撑盖Y轴位置偏移
+        /// </summary>
+        public static int Other_SupportCoverY { get; set; }
+
+        /// <summary>
+        /// 是否启用阀岛
+        /// </summary>
+        public static int Other_ValveTerminal { get; set; }
+
+        /// <summary>
+        /// 开盖是否要伸出接液盘
+        /// </summary>
+        public static int Other_CoverTray { get; set; }
+
 
     }
 }

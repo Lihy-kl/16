@@ -107,7 +107,7 @@ namespace SmartDyeing.FADM_Control
                 //if (Lib_Card.Configure.Parameter.Other_Language == 0)
                 //{
                     //设置标题栏名称
-                    string[] sa_lineName = { "步号", "操作类型", "搅拌速度", "搅拌时间", "排液时间", "排比色皿时间", "抽液时间", "开始波长", "结束波长", "波长间隔", "加药量" };
+                    string[] sa_lineName = { "步号", "操作类型", "搅拌速度", "搅拌时间(s)", "排液时间(s)", "排比色皿时间(s)", "抽液时间(s)", "开始波长", "结束波长", "波长间隔", "加药量(g)" };
                     for (int i = 0; i < 11; i++)
                     {
                         dgv_Child_DyeData.Columns[i].HeaderCell.Value = sa_lineName[i];

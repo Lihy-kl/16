@@ -38,6 +38,8 @@ namespace Lib_Card
             public int Choose;
             public bool Speech;
             public int Count;
+            //播放次数
+            public int SpeechCount;
         }
         //提示信息
         public static Dictionary<string, prompt> keyValuePairs = new Dictionary<string, prompt>();
@@ -101,6 +103,7 @@ namespace Lib_Card
                     prompt.Info = Text;
                     prompt.Choose = 0;
                     prompt.Count = 0;
+                    prompt.SpeechCount = 0;
                     keyValuePairs.Add(time, prompt);
                     return time;
                 }
@@ -181,6 +184,7 @@ namespace Lib_Card
                     prompt.Info = Text;
                     prompt.Choose = 0;
                     prompt.Count = 0;
+                    prompt.SpeechCount = 0;
                     prompt.Speech = false;
                     keyValuePairs.Add(time, prompt);
                     return time;

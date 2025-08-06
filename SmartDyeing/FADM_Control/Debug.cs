@@ -445,12 +445,15 @@ namespace SmartDyeing.FADM_Control
                                 }
                             }
                             //其他输入点信息
-                            s_str2 = Convert.ToString(a23, 2).PadLeft(4, '0');
+                            s_str2 = Convert.ToString(a23, 2).PadLeft(6, '0');
                             ca_cc = s_str2.ToArray();//
                             ChkInPut_Block_Out.Checked = ca_cc[ca_cc.Length - 1].Equals('1') ? true : false; //阻挡出限位
                             ChkInPut_Block_In.Checked = ca_cc[ca_cc.Length - 2].Equals('1') ? true : false; //阻挡回限位
                             ChkInPut_Slow_Mid.Checked = ca_cc[ca_cc.Length - 3].Equals('1') ? true : false; //气缸慢速中限位
                             ChkInPut_Block.Checked = ca_cc[ca_cc.Length - 4].Equals('1') ? true : false; //气缸阻挡限位
+                            ChkInPut_SupportCover.Checked = ca_cc[ca_cc.Length - 5].Equals('1') ? true : false; //撑盖开到位
+                            //ChkInPut_Block.Checked = ca_cc[ca_cc.Length - 5].Equals('1') ? true : false; //抓手A泄压信号
+                            //ChkInPut_Block.Checked = ca_cc[ca_cc.Length - 6].Equals('1') ? true : false; //抓手B泄压信号
 
 
                             s_str = Convert.ToString(a6, 2).PadLeft(12, '0');
@@ -488,6 +491,16 @@ namespace SmartDyeing.FADM_Control
                                 this.BtnOutPut_Cylinder_Down.ForeColor = ca_cc[ca_cc.Length - 11].Equals('1') ? Color.Red : Color.Black; //气缸下
                                 this.BtnOutPut_Decompression.ForeColor = ca_cc[ca_cc.Length - 14].Equals('1') ? Color.Red : Color.Black; //泄压下
                                 this.BtnOutPut_Block.ForeColor = ca_cc[ca_cc.Length - 15].Equals('1') ? Color.Red : Color.Black; //阻挡出
+
+                            }
+
+                            s_str = Convert.ToString(a25, 2).PadLeft(5, '0');
+                            if (!s_str.Equals("0"))
+                            {
+                                ca_cc = s_str.ToArray();
+                                this.BtnOutPut_Wash_In.ForeColor = ca_cc[ca_cc.Length - 2].Equals('1') ? Color.Red : Color.Black; //洗针进水
+                                this.BtnOutPut_Wash_Out.ForeColor = ca_cc[ca_cc.Length - 3].Equals('1') ? Color.Red : Color.Black; //洗针出水
+                                this.BtnOutPut_Wash_Blow.ForeColor = ca_cc[ca_cc.Length - 4].Equals('1') ? Color.Red : Color.Black; //洗针吹气
 
                             }
 
@@ -1408,6 +1421,22 @@ namespace SmartDyeing.FADM_Control
                     Thread thread = new Thread(WetClampMove);
                     thread.Start();
                 }
+                else if (RdoWash.Checked)
+                {
+                    if (string.IsNullOrEmpty(TxtNum.Text))
+                    {
+                        if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                            FADM_Form.CustomMessageBox.Show("请输入瓶号！", "温馨提示", MessageBoxButtons.OK, false);
+                        else
+                            FADM_Form.CustomMessageBox.Show("Please enter the bottle number！", "Tips", MessageBoxButtons.OK, false);
+                        FADM_Object.Communal.WriteDripWait(false);
+                        return;
+                    }
+                    FADM_Object.Communal.WriteMachineStatus(14);
+                    Thread thread = new Thread(Wash);
+                    thread.Start();
+
+                }
                 else
                 {
                     if (Lib_Card.Configure.Parameter.Other_Language == 0)
@@ -1536,6 +1565,182 @@ namespace SmartDyeing.FADM_Control
                         FADM_Form.CustomMessageBox.Show(ex.Message, "定点移动", MessageBoxButtons.OK, true);
                     else
                         FADM_Form.CustomMessageBox.Show(ex.Message, "Fixed-point movement", MessageBoxButtons.OK, true);
+                }
+            }
+        }
+
+        private void Wash()
+        {
+            try
+            {
+
+                if (0 >= Convert.ToInt32(TxtNum.Text) || Convert.ToInt32(TxtNum.Text) > Lib_Card.Configure.Parameter.Machine_Bottle_Total)
+                {
+                    if (FADM_Object.Communal._b_isUseABAssistant)
+                    {
+                        if (Convert.ToInt32(TxtNum.Text) > Lib_Card.Configure.Parameter.Machine_Bottle_Total - FADM_Object.Communal._i_ABAssistantCount)
+                        {
+                            MessageBox.Show("瓶号输入错误");
+                            FADM_Object.Communal.WriteDripWait(false);
+                            FADM_Object.Communal.WriteMachineStatus(0);
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("瓶号输入错误");
+                        FADM_Object.Communal.WriteDripWait(false);
+                        FADM_Object.Communal.WriteMachineStatus(0);
+                        return;
+                    }
+                }
+                int i_xStart = 0, i_yStart = 0;
+                int i_mRes = -1;
+                if (Communal._b_isGetWetClamp)
+                {
+                    //3.放夹子
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "放夹子启动");
+                    //int i_xStart = 0, i_yStart = 0;
+                    //计算湿布布夹子位置
+                    MyModbusFun.CalTarget(9, 0, ref i_xStart, ref i_yStart);
+                    int i_mRes2 = MyModbusFun.PutClamp(i_xStart, i_yStart);
+                    if (-2 == i_mRes2)
+                        throw new Exception("收到退出消息");
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "放夹子完成");
+                }
+
+                if (Communal._b_isGetDryClamp)
+                {
+                    //3.放夹子
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "放夹子启动");
+                    //int i_xStart = 0, i_yStart = 0;
+                    //计算干布夹子位置
+                    MyModbusFun.CalTarget(8, 0, ref i_xStart, ref i_yStart);
+                    int iMRes1 = MyModbusFun.PutClamp(i_xStart, i_yStart);
+                    if (-2 == iMRes1)
+                        throw new Exception("收到退出消息");
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "放夹子完成");
+                }
+
+                if (Communal._b_isGetSyringes)
+                {
+                    //3.
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找放针母液瓶");
+                    i_mRes = MyModbusFun.TargetMove(11, 0, 0);
+                    if (-2 == i_mRes)
+                        throw new Exception("收到退出消息");
+
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达放针母液瓶");
+
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "放抽液针筒启动");
+                    //int i_xStart = 0, i_yStart = 0;
+
+                    int iMRes1 = MyModbusFun.Put(0);
+                    if (-2 == iMRes1)
+                        throw new Exception("收到退出消息");
+                    FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "放抽液针筒完成");
+                }
+
+                FADM_Object.Communal._i_optBottleNum = Convert.ToInt32(TxtNum.Text);
+                FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "拿针筒启动");
+                //计算针筒位置
+                MyModbusFun.CalTarget(0, FADM_Object.Communal._i_optBottleNum, ref i_xStart, ref i_yStart);
+                int i_mRes3 = MyModbusFun.GetSyringesWash(i_xStart, i_yStart);
+                if (-2 == i_mRes3)
+                    throw new Exception("收到退出消息");
+                FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "拿针筒完成");
+
+                //移动到洗针位置
+                
+                i_mRes = MyModbusFun.TargetMove(12, 0, 0);
+                //执行洗针动作
+                MyModbusFun.WashSyringes();
+                //放回到母液瓶
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找"+ TxtNum.Text+"号母液瓶");
+                i_mRes = MyModbusFun.TargetMove(0, FADM_Object.Communal._i_optBottleNum, 0);
+                if (-2 == i_mRes)
+                    throw new Exception("收到退出消息");
+
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达"+ TxtNum.Text+"号母液瓶");
+
+                FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "放针启动");
+                //int i_xStart = 0, i_yStart = 0;
+
+                int iMRes_1 = MyModbusFun.Put(0);
+                if (-2 == iMRes_1)
+                    throw new Exception("收到退出消息");
+                FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "放针完成");
+
+                FADM_Object.Communal.WriteMachineStatus(0);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Equals("-2"))
+                {
+                    FADM_Object.Communal.WriteMachineStatus(8);
+                    int[] ia_errArray = new int[100];
+                    MyModbusFun.GetErrMsgNew(ref ia_errArray);
+                    List<string> lis_err = new List<string>();
+                    for (int i = 0; i < ia_errArray.Length; i++)
+                    {
+                        if (ia_errArray[i] != 0)
+                        {
+                            if (SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew.ContainsKey(ia_errArray[i]))
+                            {
+                                string s_err = SmartDyeing.FADM_Object.Communal._dic_errModbusNoNew[ia_errArray[i]];
+                                string s_sql = "INSERT INTO alarm_table" +
+                                 "(MyDate,MyTime,AlarmHead,AlarmDetails)" +
+                                 " VALUES( '" +
+                                 String.Format("{0:d}", DateTime.Now) + "','" +
+                                 String.Format("{0:T}", DateTime.Now) + "','" +
+                                 "Debug" + "','" +
+                                 s_err + "(Test)');";
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                                string s_insert = CardObject.InsertD(s_err, " myMachineReset");
+                                if (!lis_err.Contains(s_insert))
+                                    lis_err.Add(s_insert);
+                                //while (true)
+                                //{
+                                //    Thread.Sleep(1);
+                                //    if (Lib_Card.CardObject.keyValuePairs[s_insert].Choose != 0)
+                                //        break;
+
+                                //}
+
+                                //int _i_alarm_Choose = Lib_Card.CardObject.keyValuePairs[s_insert].Choose;
+                                //CardObject.DeleteD(s_insert);
+
+                            }
+
+                        }
+                    }
+
+                    while (true)
+                    {
+                        for (int p = lis_err.Count - 1; p >= 0; p--)
+                        {
+                            if (Lib_Card.CardObject.keyValuePairs[lis_err[p]].Choose != 0)
+                            {
+                                CardObject.DeleteD(lis_err[p]);
+                                lis_err.Remove(lis_err[p]);
+                            }
+                        }
+                        if (lis_err.Count == 0)
+                        {
+                            break;
+                        }
+                        Thread.Sleep(1);
+                    }
+
+                }
+                else
+                {
+                    FADM_Object.Communal.WriteMachineStatus(8);
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                        FADM_Form.CustomMessageBox.Show(ex.Message, "清洗针筒", MessageBoxButtons.OK, true);
+                    else
+                        FADM_Form.CustomMessageBox.Show(ex.Message, "Wash", MessageBoxButtons.OK, true);
                 }
             }
         }
@@ -5534,6 +5739,90 @@ namespace SmartDyeing.FADM_Control
                     break;
                 default:
                     break;
+            }
+        }
+
+        private void BtnOutPut_Wash_In_Click(object sender, EventArgs e)
+        {
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
+            { }
+            else
+            {
+                try
+                {
+                    _b_istrue = true;
+                    if (this.BtnOutPut_Wash_In.ForeColor == Color.Red)
+                    {
+                        _ia_array[0] = 45;
+                    }
+                    else
+                    {
+                        _ia_array[0] = 44;
+                    }
+                    int i_state = FADM_Object.Communal._tcpModBus.Write(811, _ia_array);
+
+                }
+                catch { }
+                finally
+                {
+                    _b_istrue = false;
+                }
+            }
+        }
+
+        private void BtnOutPut_Wash_Out_Click(object sender, EventArgs e)
+        {
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
+            { }
+            else
+            {
+                try
+                {
+                    _b_istrue = true;
+                    if (this.BtnOutPut_Wash_Out.ForeColor == Color.Red)
+                    {
+                        _ia_array[0] = 47;
+                    }
+                    else
+                    {
+                        _ia_array[0] = 46;
+                    }
+                    int i_state = FADM_Object.Communal._tcpModBus.Write(811, _ia_array);
+
+                }
+                catch { }
+                finally
+                {
+                    _b_istrue = false;
+                }
+            }
+        }
+
+        private void BtnOutPut_Wash_Blow_Click(object sender, EventArgs e)
+        {
+            if (Lib_Card.Configure.Parameter.Machine_Type == 0)
+            { }
+            else
+            {
+                try
+                {
+                    _b_istrue = true;
+                    if (this.BtnOutPut_Wash_Blow.ForeColor == Color.Red)
+                    {
+                        _ia_array[0] = 49;
+                    }
+                    else
+                    {
+                        _ia_array[0] = 48;
+                    }
+                    int i_state = FADM_Object.Communal._tcpModBus.Write(811, _ia_array);
+
+                }
+                catch { }
+                finally
+                {
+                    _b_istrue = false;
+                }
             }
         }
     }

@@ -54,6 +54,10 @@ namespace SmartDyeing.FADM_Control
             this.TxtCheckBottleNo = new System.Windows.Forms.TextBox();
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsm_SignUpdate = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsm_Stop = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsm_Normal = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsm_Need = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsm_PreDrip = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -194,14 +198,43 @@ namespace SmartDyeing.FADM_Control
             // 
             resources.ApplyResources(this.contextMenuStrip2, "contextMenuStrip2");
             this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsm_SignUpdate});
+            this.tsm_SignUpdate,
+            this.tsm_Stop,
+            this.tsm_Normal,
+            this.tsm_Need,
+            this.tsm_PreDrip});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
+            this.contextMenuStrip2.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip2_Opening);
             // 
             // tsm_SignUpdate
             // 
             resources.ApplyResources(this.tsm_SignUpdate, "tsm_SignUpdate");
             this.tsm_SignUpdate.Name = "tsm_SignUpdate";
             this.tsm_SignUpdate.Click += new System.EventHandler(this.tsm_SignUpdate_Click);
+            // 
+            // tsm_Stop
+            // 
+            resources.ApplyResources(this.tsm_Stop, "tsm_Stop");
+            this.tsm_Stop.Name = "tsm_Stop";
+            this.tsm_Stop.Click += new System.EventHandler(this.tsm_Stop_Click);
+            // 
+            // tsm_Normal
+            // 
+            resources.ApplyResources(this.tsm_Normal, "tsm_Normal");
+            this.tsm_Normal.Name = "tsm_Normal";
+            this.tsm_Normal.Click += new System.EventHandler(this.tsm_Normal_Click);
+            // 
+            // tsm_Need
+            // 
+            resources.ApplyResources(this.tsm_Need, "tsm_Need");
+            this.tsm_Need.Name = "tsm_Need";
+            this.tsm_Need.Click += new System.EventHandler(this.tsm_Need_Click);
+            // 
+            // tsm_PreDrip
+            // 
+            resources.ApplyResources(this.tsm_PreDrip, "tsm_PreDrip");
+            this.tsm_PreDrip.Name = "tsm_PreDrip";
+            this.tsm_PreDrip.Click += new System.EventHandler(this.tsm_PreDrip_Click);
             // 
             // P_MainBottle
             // 
@@ -253,5 +286,9 @@ namespace SmartDyeing.FADM_Control
         private TextBox TxtCheckBottleNo;
         private ContextMenuStrip contextMenuStrip2;
         private ToolStripMenuItem tsm_SignUpdate;
+        private ToolStripMenuItem tsm_Stop;
+        private ToolStripMenuItem tsm_Normal;
+        private ToolStripMenuItem tsm_Need;
+        private ToolStripMenuItem tsm_PreDrip;
     }
 }

@@ -358,6 +358,12 @@
   <data name="MiBottle.Text" xml:space="preserve">
     <value>BasicInformationOfMotherLiquorBottle</value>
   </data>
+  <data name="MiABSProcess.Size" type="System.Drawing.Size, System.Drawing">
+    <value>262, 22</value>
+  </data>
+  <data name="MiABSProcess.Text" xml:space="preserve">
+    <value>ABSConfigurationProcess</value>
+  </data>
   <data name="MiCup.Size" type="System.Drawing.Size, System.Drawing">
     <value>262, 22</value>
   </data>
@@ -382,50 +388,56 @@
   <data name="MiOperator.Text" xml:space="preserve">
     <value>OperatorInformation</value>
   </data>
-  <data name="MiABSProcess.Size" type="System.Drawing.Size, System.Drawing">
-    <value>262, 22</value>
-  </data>
-  <data name="MiABSProcess.Text" xml:space="preserve">
-    <value>ABSConfigurationProcess</value>
-  </data>
   <data name="MiOut1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 22</value>
+    <value>254, 22</value>
   </data>
   <data name="MiOut1.Text" xml:space="preserve">
     <value>LifeCheck</value>
   </data>
   <data name="MiLow1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 22</value>
+    <value>254, 22</value>
   </data>
   <data name="MiLow1.Text" xml:space="preserve">
     <value>StockCheck</value>
   </data>
   <data name="MiFullDrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 22</value>
+    <value>254, 22</value>
   </data>
   <data name="MiFullDrip1.Text" xml:space="preserve">
     <value>FullDrip</value>
   </data>
   <data name="MiDye.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 22</value>
+    <value>254, 22</value>
   </data>
   <data name="MiDye.Text" xml:space="preserve">
     <value>ParameterofDye</value>
   </data>
+  <data name="MiOutAllowDrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 22</value>
+  </data>
+  <data name="MiOutAllowDrip.Text" xml:space="preserve">
+    <value>Expired dripping is allowed</value>
+  </data>
+  <data name="MiLowAllowDrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 22</value>
+  </data>
+  <data name="MiLowAllowDrip.Text" xml:space="preserve">
+    <value>Low liquid volume allows for dripping</value>
+  </data>
   <data name="MiDebug.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="MiDebug.Text" xml:space="preserve">
     <value>TheDebugPage</value>
   </data>
   <data name="MiRun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="MiRun.Text" xml:space="preserve">
     <value>TheRunPage</value>
   </data>
   <data name="MiAlarm.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>180, 22</value>
   </data>
   <data name="MiAlarm.Text" xml:space="preserve">
     <value>TheAlarmPage</value>

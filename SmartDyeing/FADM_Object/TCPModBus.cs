@@ -33,10 +33,12 @@ namespace SmartDyeing.FADM_Object
             {
                 _modbusClient = new ModbusClient(_s_IP, _i_port);  // IP地址和端口
                 _modbusClient.Connect(); // 连接到服务器
+                _b_Connect = true;
                 return 0;
             }
             catch
             {
+                _b_Connect = false;
                 return -1;
             }
         }
@@ -57,10 +59,12 @@ namespace SmartDyeing.FADM_Object
                 _modbusClient.Disconnect(); // 断开连接
                 _modbusClient.Connect(); // 连接到服务器
                 Lib_Card.CardObject.bPLCStatus = true;
+                _b_Connect = true;
                 return 0;
             }
             catch 
             {
+                _b_Connect = false;
                 return -1; 
             }
         }
@@ -75,6 +79,11 @@ namespace SmartDyeing.FADM_Object
             {
                 try
                 {
+                    
+                    if(!_modbusClient.Connected)
+                    {
+                        return -1;
+                    }
                     //_modbusClient.Connect(); // 连接到服务器
                     values = _modbusClient.ReadHoldingRegisters(startingAddress, num);
                     //_modbusClient.Disconnect(); // 断开连接
@@ -97,14 +106,22 @@ namespace SmartDyeing.FADM_Object
             labRewrite:
                 try
                 {
-                    //_modbusClient.Connect(); // 连接到服务器
-                    _modbusClient.WriteMultipleRegisters(startingAddress, values);
-                    // _modbusClient.Disconnect(); // 断开连接
-                    return 0;
+                    if (_modbusClient.Connected)
+                    {
+                        //_modbusClient.Connect(); // 连接到服务器
+                        _modbusClient.WriteMultipleRegisters(startingAddress, values);
+                        // _modbusClient.Disconnect(); // 断开连接
+                        return 0;
+                    }
+                    else
+                    {
+                        throw new Exception("重新连接");
+                    }
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine("写寄存器数据异常" + ex.Message);
+                    Lib_Log.Log.writeLogException("写寄存器数据异常" + ex.Message);
                     ReConnect();
                     goto labRewrite;
                     return -1;

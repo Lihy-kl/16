@@ -121,20 +121,24 @@
   <data name="txt_DyeingCode.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
   </data>
+  <data name="&gt;&gt;checkBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="dataGridViewTextBoxColumn1.HeaderText" xml:space="preserve">
     <value>步号</value>
   </data>
-  <data name="groupBox3.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 10.5pt</value>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="checkBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
   </data>
-  <data name="&gt;&gt;dgv_details.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;dgv_Handle_Set.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="groupBox3.Location" type="System.Drawing.Point, System.Drawing">
     <value>396, 300</value>
-  </data>
-  <data name="dataGridViewTextBoxColumn3.HeaderText" xml:space="preserve">
-    <value>速度</value>
   </data>
   <data name="&gt;&gt;dataGridViewTextBoxColumn3.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -146,11 +150,7 @@
     <value>dgv_Handle_Set</value>
   </data>
   <data name="btn_DyeingCodeDelete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>746, 17</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="dgv_details.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>706, 17</value>
   </data>
   <data name="&gt;&gt;grp_BrewingProcess.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -180,8 +180,8 @@
   <data name="btn_Save.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
   </data>
-  <data name="txt_DyeingCode.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="checkBox1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="txt_DyeingCode.Location" type="System.Drawing.Point, System.Drawing">
     <value>190, 24</value>
@@ -198,20 +198,20 @@
   <data name="&gt;&gt;dgv_Handle_Set.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 12</value>
-  </data>
   <data name="btn_DyeingCodeAdd.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="dgv_Combination.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
+  <data name="&gt;&gt;checkBox1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="&gt;&gt;btn_Save.Parent" xml:space="preserve">
     <value>grp_BrewingProcess</value>
   </data>
-  <data name="dgv_Combination.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 68</value>
+  <data name="&gt;&gt;checkBox1.Name" xml:space="preserve">
+    <value>checkBox1</value>
   </data>
   <data name="dgv_Combination.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
     <value>Vertical</value>
@@ -228,9 +228,6 @@
   <data name="&gt;&gt;groupBox2.Name" xml:space="preserve">
     <value>groupBox2</value>
   </data>
-  <data name="dgv_Dye_Set.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 19</value>
-  </data>
   <data name="lab_BrewProcessCode.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
@@ -240,68 +237,59 @@
   <data name="dgv_DyeingCode.Size" type="System.Drawing.Size, System.Drawing">
     <value>381, 955</value>
   </data>
-  <data name="btn_DyeingCodeAdd.Text" xml:space="preserve">
-    <value>新增</value>
+  <data name="&gt;&gt;dgv_details.Parent" xml:space="preserve">
+    <value>groupBox3</value>
   </data>
   <data name="&gt;&gt;btn_DyeingCodeDelete.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;dgv_details.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="&gt;&gt;btn_DyeingCodeDelete.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;dgv_details.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="btn_Save.Location" type="System.Drawing.Point, System.Drawing">
-    <value>852, 17</value>
+    <value>812, 17</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>DyeingAndFixationProcessConfiguration</value>
   </data>
-  <data name="&gt;&gt;dgv_Handle_Set.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="dataGridViewTextBoxColumn5.Width" type="System.Int32, mscorlib">
+    <value>150</value>
   </data>
   <data name="grp_BrewingProcess.Location" type="System.Drawing.Point, System.Drawing">
     <value>396, 2</value>
   </data>
-  <data name="&gt;&gt;Column1.Name" xml:space="preserve">
-    <value>Column1</value>
-  </data>
-  <data name="grp_Dyeing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>387, 977</value>
-  </data>
   <data name="btn_Save.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="dgv_Combination.Size" type="System.Drawing.Size, System.Drawing">
-    <value>947, 218</value>
-  </data>
-  <data name="dataGridViewTextBoxColumn5.Width" type="System.Int32, mscorlib">
-    <value>150</value>
+  <data name="grp_BrewingProcess.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 10.5pt</value>
   </data>
   <data name="&gt;&gt;lab_BrewProcessCode.Parent" xml:space="preserve">
     <value>grp_BrewingProcess</value>
   </data>
-  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>267, 977</value>
+  <data name="grp_Dyeing.Text" xml:space="preserve">
+    <value>浏览</value>
   </data>
   <data name="dgv_details.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
     <value>Vertical</value>
-  </data>
-  <data name="&gt;&gt;grp_Dyeing.Name" xml:space="preserve">
-    <value>grp_Dyeing</value>
   </data>
   <data name="dgv_DyeingCode.RowHeadersWidth" type="System.Int32, mscorlib">
     <value>62</value>
   </data>
   <data name="&gt;&gt;txt_DyeingCode.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="dataGridViewTextBoxColumn2.HeaderText" xml:space="preserve">
     <value>操作类型</value>
   </data>
-  <data name="dgv_Dye_Set.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="&gt;&gt;dataGridViewTextBoxColumn4.Name" xml:space="preserve">
+    <value>dataGridViewTextBoxColumn4</value>
   </data>
   <data name="Column2.Width" type="System.Int32, mscorlib">
     <value>150</value>
@@ -321,6 +309,9 @@
   <data name="groupBox1.Text" xml:space="preserve">
     <value>后处理工艺代码浏览</value>
   </data>
+  <data name="btn_DyeingCodeDelete.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 42</value>
+  </data>
   <data name="dgv_details.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -330,14 +321,14 @@
   <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;Column1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewComboBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;btn_DyeingCodeDelete.Parent" xml:space="preserve">
+    <value>grp_BrewingProcess</value>
   </data>
   <data name="&gt;&gt;dgv_DyeingCode.Name" xml:space="preserve">
     <value>dgv_DyeingCode</value>
   </data>
-  <data name="&gt;&gt;btn_DyeingCodeDelete.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;grp_Dyeing.Name" xml:space="preserve">
+    <value>grp_Dyeing</value>
   </data>
   <data name="&gt;&gt;btn_DyeingCodeAdd.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -345,8 +336,14 @@
   <data name="&gt;&gt;btn_Save.Name" xml:space="preserve">
     <value>btn_Save</value>
   </data>
+  <data name="&gt;&gt;checkBox1.Parent" xml:space="preserve">
+    <value>grp_BrewingProcess</value>
+  </data>
+  <data name="&gt;&gt;grp_BrewingProcess.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
   <data name="&gt;&gt;btn_DyeingCodeAdd.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="groupBox2.Text" xml:space="preserve">
     <value>染色工艺代码浏览</value>
@@ -354,8 +351,8 @@
   <data name="&gt;&gt;txt_DyeingCode.Name" xml:space="preserve">
     <value>txt_DyeingCode</value>
   </data>
-  <data name="btn_DyeingCodeDelete.Text" xml:space="preserve">
-    <value>删除</value>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 12</value>
   </data>
   <data name="&gt;&gt;dgv_DyeingCode.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -366,11 +363,8 @@
   <data name="&gt;&gt;groupBox3.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="dataGridViewTextBoxColumn4.Width" type="System.Int32, mscorlib">
-    <value>200</value>
-  </data>
-  <data name="txt_DyeingCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>387, 29</value>
+  <data name="dgv_details.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
   </data>
   <data name="Column2.HeaderText" xml:space="preserve">
     <value>温度</value>
@@ -381,6 +375,12 @@
   <data name="lab_BrewProcessCode.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
   </data>
+  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="dgv_Combination.Size" type="System.Drawing.Size, System.Drawing">
+    <value>947, 218</value>
+  </data>
   <data name="&gt;&gt;Column2.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -388,7 +388,7 @@
     <value>1634, 2</value>
   </data>
   <data name="btn_DyeingCodeAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>635, 17</value>
+    <value>595, 17</value>
   </data>
   <data name="dgv_Dye_Set.RowHeadersWidth" type="System.Int32, mscorlib">
     <value>62</value>
@@ -399,8 +399,8 @@
   <data name="&gt;&gt;Column2.Name" xml:space="preserve">
     <value>Column2</value>
   </data>
-  <data name="grp_BrewingProcess.Size" type="System.Drawing.Size, System.Drawing">
-    <value>959, 292</value>
+  <data name="dataGridViewTextBoxColumn1.Width" type="System.Int32, mscorlib">
+    <value>150</value>
   </data>
   <data name="dataGridViewTextBoxColumn2.Width" type="System.Int32, mscorlib">
     <value>150</value>
@@ -423,20 +423,26 @@
   <data name="dgv_Handle_Set.Size" type="System.Drawing.Size, System.Drawing">
     <value>261, 955</value>
   </data>
-  <data name="&gt;&gt;dataGridViewTextBoxColumn4.Name" xml:space="preserve">
-    <value>dataGridViewTextBoxColumn4</value>
+  <data name="btn_Save.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 42</value>
   </data>
   <data name="btn_DyeingCodeAdd.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="btn_DyeingCodeDelete.Size" type="System.Drawing.Size, System.Drawing">
-    <value>83, 42</value>
+  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>267, 977</value>
+  </data>
+  <data name="Column1.HeaderText" xml:space="preserve">
+    <value>流程代码</value>
   </data>
   <data name="btn_DyeingCodeAdd.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
   </data>
-  <data name="dataGridViewTextBoxColumn1.Width" type="System.Int32, mscorlib">
-    <value>150</value>
+  <data name="txt_DyeingCode.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="checkBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>54, 18</value>
   </data>
   <data name="&gt;&gt;dgv_Dye_Set.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -452,9 +458,6 @@
   </data>
   <data name="btn_Save.Text" xml:space="preserve">
     <value>保存</value>
-  </data>
-  <data name="grp_BrewingProcess.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 10.5pt</value>
   </data>
   <data name="&gt;&gt;grp_BrewingProcess.Name" xml:space="preserve">
     <value>grp_BrewingProcess</value>
@@ -483,8 +486,8 @@
   <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
-  <data name="dgv_Handle_Set.RowHeadersWidth" type="System.Int32, mscorlib">
-    <value>62</value>
+  <data name="&gt;&gt;dgv_DyeingCode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dgv_details.RowHeadersWidth" type="System.Int32, mscorlib">
     <value>62</value>
@@ -504,14 +507,23 @@
   <data name="btn_DyeingCodeDelete.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
   </data>
+  <data name="&gt;&gt;dgv_details.Name" xml:space="preserve">
+    <value>dgv_details</value>
+  </data>
   <data name="&gt;&gt;groupBox2.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;dgv_DyeingCode.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="dgv_Handle_Set.RowHeadersWidth" type="System.Int32, mscorlib">
+    <value>62</value>
+  </data>
+  <data name="dgv_Combination.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 68</value>
   </data>
   <data name="&gt;&gt;dgv_Dye_Set.Parent" xml:space="preserve">
     <value>groupBox2</value>
+  </data>
+  <data name="lab_BrewProcessCode.Text" xml:space="preserve">
+    <value>染固色工艺代码:</value>
   </data>
   <data name="&gt;&gt;dgv_Combination.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -531,17 +543,26 @@
   <data name="&gt;&gt;dgv_Combination.Name" xml:space="preserve">
     <value>dgv_Combination</value>
   </data>
+  <data name="&gt;&gt;btn_DyeingCodeAdd.Parent" xml:space="preserve">
+    <value>grp_BrewingProcess</value>
+  </data>
   <data name="dgv_Handle_Set.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 19</value>
   </data>
-  <data name="lab_BrewProcessCode.Text" xml:space="preserve">
-    <value>染固色工艺代码:</value>
+  <data name="checkBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>898, 31</value>
+  </data>
+  <data name="checkBox1.Text" xml:space="preserve">
+    <value>可用</value>
+  </data>
+  <data name="dataGridViewTextBoxColumn4.Width" type="System.Int32, mscorlib">
+    <value>200</value>
   </data>
   <data name="&gt;&gt;dataGridViewTextBoxColumn2.Name" xml:space="preserve">
     <value>dataGridViewTextBoxColumn2</value>
   </data>
-  <data name="grp_Dyeing.Text" xml:space="preserve">
-    <value>浏览</value>
+  <data name="&gt;&gt;Column1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewComboBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;grp_Dyeing.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -552,14 +573,14 @@
   <data name="&gt;&gt;groupBox3.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;btn_DyeingCodeDelete.Parent" xml:space="preserve">
-    <value>grp_BrewingProcess</value>
+  <data name="txt_DyeingCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>387, 29</value>
   </data>
   <data name="&gt;&gt;dgv_Combination.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
-  <data name="&gt;&gt;dgv_details.Name" xml:space="preserve">
-    <value>dgv_details</value>
+  <data name="groupBox3.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 10.5pt</value>
   </data>
   <data name="grp_BrewingProcess.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -573,8 +594,8 @@
   <data name="lab_BrewProcessCode.Size" type="System.Drawing.Size, System.Drawing">
     <value>152, 19</value>
   </data>
-  <data name="&gt;&gt;btn_DyeingCodeAdd.Parent" xml:space="preserve">
-    <value>grp_BrewingProcess</value>
+  <data name="dgv_Dye_Set.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 19</value>
   </data>
   <data name="dgv_details.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 19</value>
@@ -594,17 +615,17 @@
   <data name="&gt;&gt;btn_DyeingCodeDelete.Name" xml:space="preserve">
     <value>btn_DyeingCodeDelete</value>
   </data>
-  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
-    <value>groupBox1</value>
+  <data name="dgv_Dye_Set.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="grp_Dyeing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>387, 977</value>
   </data>
   <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
     <value>267, 977</value>
   </data>
   <data name="&gt;&gt;btn_Save.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;dgv_Dye_Set.Name" xml:space="preserve">
     <value>dgv_Dye_Set</value>
@@ -624,20 +645,23 @@
   <data name="&gt;&gt;dataGridViewTextBoxColumn2.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="btn_DyeingCodeAdd.Text" xml:space="preserve">
+    <value>新增</value>
+  </data>
   <data name="dgv_Handle_Set.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="btn_Save.Size" type="System.Drawing.Size, System.Drawing">
-    <value>83, 42</value>
+  <data name="&gt;&gt;Column1.Name" xml:space="preserve">
+    <value>Column1</value>
   </data>
-  <data name="Column1.HeaderText" xml:space="preserve">
-    <value>流程代码</value>
+  <data name="dataGridViewTextBoxColumn3.HeaderText" xml:space="preserve">
+    <value>速度</value>
   </data>
   <data name="grp_Dyeing.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="&gt;&gt;grp_BrewingProcess.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="btn_DyeingCodeDelete.Text" xml:space="preserve">
+    <value>删除</value>
   </data>
   <data name="&gt;&gt;groupBox2.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -646,7 +670,10 @@
     <value>3</value>
   </data>
   <data name="&gt;&gt;lab_BrewProcessCode.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
+  </data>
+  <data name="grp_BrewingProcess.Size" type="System.Drawing.Size, System.Drawing">
+    <value>959, 292</value>
   </data>
   <metadata name="dataGridViewTextBoxColumn1.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

@@ -112,7 +112,7 @@ namespace SmartDyeing.FADM_Form
                     else
                     {
                         string s_sql = "UPDATE Abs_process SET TechnologyName = '" + cbo_TechnologyName.Text + "'," +
-                                           " StirringRate = '" + txt_StirringRate.Text + "', Dosage = '" + txt_Dosage.Text + "', StartingWavelength = '" + txt_StartingWavelength.Text + "', EndWavelength = '" + txt_EndWavelength.Text + "', WavelengthInterval = '" + txt_WavelengthInterval.Text + "' WHERE StepNum = '" + txt_StepNum.Text + "'" +
+                                           " StirringRate = '" + txt_StirringRate.Text + "', Dosage = '" + txt_Dosage.Text + "', StartingWavelength = '" + txt_StartingWavelength.Text + "', EndWavelength = '" + txt_EndWavelength.Text + "', WavelengthInterval = '" + txt_WavelengthInterval.Text + "' ,PumpingTime=NULL,StirringTime=NULL,DrainTime=NULL,ParallelizingDishTime=NULL  WHERE StepNum = '" + txt_StepNum.Text + "'" +
                                            " AND Code = '" + _s_code + "';";
                         FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
                     }
@@ -146,7 +146,7 @@ namespace SmartDyeing.FADM_Form
                     else
                     {
                         string s_sql = "UPDATE Abs_process SET TechnologyName = '" + cbo_TechnologyName.Text + "'," +
-                                           " StirringRate = '" + txt_StirringRate.Text  + "' WHERE StepNum = '" + txt_StepNum.Text + "'" +
+                                           " StirringRate = '" + txt_StirringRate.Text  + "' ,PumpingTime=NULL,StirringTime=NULL,DrainTime=NULL,ParallelizingDishTime=NULL,StartingWavelength=NULL,EndWavelength=NULL,WavelengthInterval=NULL,Dosage=NULL WHERE StepNum = '" + txt_StepNum.Text + "'" +
                                            " AND Code = '" + _s_code + "';";
                         FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
                     }
@@ -180,7 +180,7 @@ namespace SmartDyeing.FADM_Form
                     }
                     else
                     {
-                        string s_sql = "UPDATE Abs_process SET TechnologyName = '" + cbo_TechnologyName.Text  + "' WHERE StepNum = '" + txt_StepNum.Text + "'" +
+                        string s_sql = "UPDATE Abs_process SET TechnologyName = '" + cbo_TechnologyName.Text  + "',PumpingTime=NULL,StirringTime=NULL,DrainTime=NULL,ParallelizingDishTime=NULL,StartingWavelength=NULL,EndWavelength=NULL,WavelengthInterval=NULL,Dosage=NULL,StirringRate=NULL WHERE StepNum = '" + txt_StepNum.Text + "'" +
                                            " AND Code = '" + _s_code + "';";
                         FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
                     }
@@ -217,7 +217,7 @@ namespace SmartDyeing.FADM_Form
                     else
                     {
                         string s_sql = "UPDATE Abs_process SET TechnologyName = '" + cbo_TechnologyName.Text + "'," +
-                                           " StirringRate = '" + txt_StirringRate.Text + "', StirringTime = '" + txt_StirringTime.Text + "' WHERE StepNum = '" + txt_StepNum.Text + "'" +
+                                           " StirringRate = '" + txt_StirringRate.Text + "', StirringTime = '" + txt_StirringTime.Text + "',PumpingTime=NULL,DrainTime=NULL,ParallelizingDishTime=NULL,StartingWavelength=NULL,EndWavelength=NULL,WavelengthInterval=NULL,Dosage=NULL WHERE StepNum = '" + txt_StepNum.Text + "'" +
                                            " AND Code = '" + _s_code + "';";
                         FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
                     }
@@ -238,14 +238,15 @@ namespace SmartDyeing.FADM_Form
                 if (txt_StepNum.Text != "" && txt_StepNum.Text != null && cbo_TechnologyName.Text != "" &&
                     cbo_TechnologyName.Text != null && txt_StirringRate.Text != "" && txt_StirringRate.Text != null &&
                     txt_DrainTime.Text != "" && txt_DrainTime.Text != null &&
+                    txt_PumpingTime.Text != "" && txt_PumpingTime.Text != null &&
                     txt_ParallelizingDishTime.Text != "" && txt_ParallelizingDishTime.Text != null)
                 {
                     if (_b_insertOrUpdate)
                     {
                         string s_sql = null;
                         s_sql = "INSERT INTO Abs_process (StepNum, TechnologyName," +
-                                           " Code,StirringRate,DrainTime,ParallelizingDishTime) VALUES('" + txt_StepNum.Text + "'," +
-                                           "'" + cbo_TechnologyName.Text + "','" + _s_code + "','" + txt_StirringRate.Text + "','" + txt_DrainTime.Text + "','" + txt_ParallelizingDishTime.Text + "');";
+                                           " Code,StirringRate,DrainTime,ParallelizingDishTime,PumpingTime) VALUES('" + txt_StepNum.Text + "'," +
+                                           "'" + cbo_TechnologyName.Text + "','" + _s_code + "','" + txt_StirringRate.Text + "','" + txt_DrainTime.Text + "','" + txt_ParallelizingDishTime.Text + "','" + txt_PumpingTime.Text + "');";
                         FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
 
                         //删除新增为空的数据
@@ -255,7 +256,7 @@ namespace SmartDyeing.FADM_Form
                     else
                     {
                         string s_sql = "UPDATE Abs_process SET TechnologyName = '" + cbo_TechnologyName.Text + "'," +
-                                           " StirringRate = '" + txt_StirringRate.Text + "', DrainTime = '" + txt_DrainTime.Text + "', ParallelizingDishTime = '" + txt_ParallelizingDishTime.Text + "' WHERE StepNum = '" + txt_StepNum.Text + "'" +
+                                           " StirringRate = '" + txt_StirringRate.Text + "', DrainTime = '" + txt_DrainTime.Text + "', ParallelizingDishTime = '" + txt_ParallelizingDishTime.Text + "',PumpingTime='"+ txt_PumpingTime.Text+"',StirringTime=NULL,StartingWavelength=NULL,EndWavelength=NULL,WavelengthInterval=NULL,Dosage=NULL WHERE StepNum = '" + txt_StepNum.Text + "'" +
                                            " AND Code = '" + _s_code + "';";
                         FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
                     }
@@ -294,7 +295,7 @@ namespace SmartDyeing.FADM_Form
                     else
                     {
                         string s_sql = "UPDATE Abs_process SET TechnologyName = '" + cbo_TechnologyName.Text + "'," +
-                                           " PumpingTime = '" + txt_PumpingTime.Text + "', StartingWavelength = '" + txt_StartingWavelength.Text + "', EndWavelength = '" + txt_EndWavelength.Text + "', WavelengthInterval = '" + txt_WavelengthInterval.Text + "' WHERE StepNum = '" + txt_StepNum.Text + "'" +
+                                           " PumpingTime = '" + txt_PumpingTime.Text + "', StartingWavelength = '" + txt_StartingWavelength.Text + "', EndWavelength = '" + txt_EndWavelength.Text + "', WavelengthInterval = '" + txt_WavelengthInterval.Text + "',StirringTime=NULL,DrainTime=NULL,ParallelizingDishTime=NULL,Dosage=NULL,StirringRate=NULL WHERE StepNum = '" + txt_StepNum.Text + "'" +
                                            " AND Code = '" + _s_code + "';";
                         FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
                     }
@@ -467,7 +468,7 @@ namespace SmartDyeing.FADM_Form
                 txt_StirringTime.Enabled = false;
                 txt_DrainTime.Enabled = true;
                 txt_ParallelizingDishTime.Enabled = true;
-                txt_PumpingTime.Enabled = false;
+                txt_PumpingTime.Enabled = true;
                 txt_StartingWavelength.Enabled = false;
                 txt_EndWavelength.Enabled = false;
                 txt_WavelengthInterval.Enabled = false;

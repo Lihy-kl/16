@@ -828,8 +828,14 @@
   <data name="tsm_HighWash.Text" xml:space="preserve">
     <value>高温洗杯</value>
   </data>
+  <data name="tsm_ReSend.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
+  </data>
+  <data name="tsm_ReSend.Text" xml:space="preserve">
+    <value>重发测试</value>
+  </data>
   <data name="contextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 136</value>
+    <value>181, 158</value>
   </data>
   <data name="&gt;&gt;contextMenuStrip1.Name" xml:space="preserve">
     <value>contextMenuStrip1</value>
@@ -889,6 +895,12 @@
     <value>tsm_HighWash</value>
   </data>
   <data name="&gt;&gt;tsm_HighWash.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsm_ReSend.Name" xml:space="preserve">
+    <value>tsm_ReSend</value>
+  </data>
+  <data name="&gt;&gt;tsm_ReSend.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

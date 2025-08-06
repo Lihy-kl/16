@@ -84,7 +84,7 @@ namespace SmartDyeing.FADM_Form
             //_dt_data = FADM_Object.Communal._fadmSqlserver.GetData(P_str_sql);
             int i_maxcup = Lib_Card.Configure.Parameter.Machine_Cup_Total;
             int i_maxbottle = Lib_Card.Configure.Parameter.Machine_Bottle_Total;
-
+            List<int> ints = new List<int>();
             //获取当前批次当前杯号信息
             //获取当前批次当前杯号信息
             string s_sql = "SELECT * FROM drop_details WHERE" +
@@ -93,7 +93,7 @@ namespace SmartDyeing.FADM_Form
                         " ) Or BottleNum = 200 Or BottleNum =201) ORDER BY BottleNum;";
 
             DataTable dt_data1 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-
+            
             int i_line = dt_data1.Rows.Count;
             if (Lib_Card.Configure.Parameter.Other_Language == 0)
             {
@@ -106,6 +106,41 @@ namespace SmartDyeing.FADM_Form
                     dr[3] = dt_data1.Rows[i - 1]["ObjectDropWeight"];
                     dr[4] = dt_data1.Rows[i - 1]["RealDropWeight"];
                     dt_data.Rows.Add(dr);
+
+                    //判断是否合格
+                    if (dt_data1.Rows[i - 1]["Finish"].ToString() == "1")
+                    {
+                        if (dt_data1.Rows[i - 1]["ObjectDropWeight"] is DBNull || dt_data1.Rows[i - 1]["RealDropWeight"] is DBNull)
+                        {
+                            //dgv_FormulaData.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                            ints.Add(0);
+                        }
+                        else
+                        {
+                            double d_error = Lib_Card.Configure.Parameter.Other_AErr_Drip;
+                            if (!(dt_data1.Rows[i - 1]["StandError"] is DBNull))
+                            {
+                                d_error = Convert.ToDouble(dt_data1.Rows[i - 1]["StandError"]);
+                            }
+                            else
+                            {
+                                d_error = (dt_data1.Rows[i - 1]["UnitOfAccount"].ToString() == "%" ? Lib_Card.Configure.Parameter.Other_AErr_Drip : Lib_Card.Configure.Parameter.Other_AssAErr_Drip);
+                            }
+                            if ((int)(Math.Abs(Convert.ToDouble(dt_data1.Rows[i - 1]["ObjectDropWeight"]) - Convert.ToDouble(dt_data1.Rows[i - 1]["RealDropWeight"])) * 1000) > (int)(d_error * 1000))
+                            {
+                                //dgv_FormulaData.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                                ints.Add(0);
+                            }
+                            else
+                            {
+                                ints.Add(1);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        ints.Add(1);
+                    }
                 }
             }
             else
@@ -119,6 +154,41 @@ namespace SmartDyeing.FADM_Form
                     dr[3] = dt_data1.Rows[i - 1]["ObjectDropWeight"];
                     dr[4] = dt_data1.Rows[i - 1]["RealDropWeight"];
                     dt_data.Rows.Add(dr);
+
+                    //判断是否合格
+                    if (dt_data1.Rows[i - 1]["Finish"].ToString() == "1")
+                    {
+                        if (dt_data1.Rows[i - 1]["ObjectDropWeight"] is DBNull || dt_data1.Rows[i - 1]["RealDropWeight"] is DBNull)
+                        {
+                            //dgv_FormulaData.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                            ints.Add(0);
+                        }
+                        else
+                        {
+                            double d_error = Lib_Card.Configure.Parameter.Other_AErr_Drip;
+                            if (!(dt_data1.Rows[i - 1]["StandError"] is DBNull))
+                            {
+                                d_error = Convert.ToDouble(dt_data1.Rows[i - 1]["StandError"]);
+                            }
+                            else
+                            {
+                                d_error = (dt_data1.Rows[i - 1]["UnitOfAccount"].ToString() == "%" ? Lib_Card.Configure.Parameter.Other_AErr_Drip : Lib_Card.Configure.Parameter.Other_AssAErr_Drip);
+                            }
+                            if ((int)(Math.Abs(Convert.ToDouble(dt_data1.Rows[i - 1]["ObjectDropWeight"]) - Convert.ToDouble(dt_data1.Rows[i - 1]["RealDropWeight"])) * 1000) > (int)(d_error * 1000))
+                            {
+                                //dgv_FormulaData.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                                ints.Add(0);
+                            }
+                            else
+                            {
+                                ints.Add(1);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        ints.Add(1);
+                    }
                 }
             }
 
@@ -141,6 +211,7 @@ namespace SmartDyeing.FADM_Form
             //    dr[4] = _dt_data.Rows[i - 1]["RealDropWeight"];
             //    dt.Rows.Add(dr);
             //}
+
 
             //捆绑
             dgv_CupDetails.DataSource = new DataView(dt_data);
@@ -181,7 +252,37 @@ namespace SmartDyeing.FADM_Form
 
                 //_dt_data = FADM_Object.Communal._fadmSqlserver.GetData(P_str_sql);
 
+                if (Convert.ToDouble(dt_data1.Rows[0][dt_data1.Columns["ObjectAddWaterWeight"]]) > 0)
+                {
+                    if (dt_data1.Rows[0]["AddWaterFinish"].ToString() == "1")
+                    {
+                        double d_error = Lib_Card.Configure.Parameter.Other_AErr_DripWater;
+                        if (!(dt_data1.Rows[0]["WaterStandError"] is DBNull))
+                        {
+                            d_error = Convert.ToDouble(dt_data1.Rows[0]["WaterStandError"]);
+                        }
+                        double d_totalWeight = Convert.ToDouble(dt_data1.Rows[0]["TotalWeight"]);
+                        double d_allDif = Convert.ToDouble(Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}",
+                                    d_totalWeight * Convert.ToDouble(d_error / 100.00)) : string.Format("{0:F3}",
+                                    d_totalWeight * Convert.ToDouble(d_error / 100.00)));
+
+                        if (d_allDif < Math.Abs(Convert.ToDouble(dt_data1.Rows[0][dt_data1.Columns["RealAddWaterWeight"]]) - Convert.ToDouble(dt_data1.Rows[0][dt_data1.Columns["ObjectAddWaterWeight"]])))
+                        {
+                            txt_realWater.BackColor = Color.Red;
+                        }
+                    }
+
+                }
+
             }
+
+            for (int i = 0; i < ints.Count; i++)
+            {
+                if (ints[i] == 0)
+                    dgv_CupDetails.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+            }
+
+
         }
     }
 }

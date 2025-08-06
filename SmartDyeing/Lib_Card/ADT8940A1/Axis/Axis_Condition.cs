@@ -779,17 +779,17 @@ namespace Lib_Card.ADT8940A1.Axis
                 int iZCorotation = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Z_Corotation);
                 if (-1 == iZCorotation)
                     return -1;
-                else if (1 == iZCorotation && iPulse >= 0)
+                else if (1 == iZCorotation && iPulse < 0)
                 {
                     if (-1 == CardObject.OA1.SuddnStop(ADT8940A1_IO.Axis_Z))
                         return -1;
                     throw new Exception("Z轴反限位已通");
                 }
-                else if (1 == iZCorotation)
-                {
-                    //第二次抓针筒时不报警
-                    return 0;
-                }
+                //else if (1 == iZCorotation)
+                //{
+                //    //第二次抓针筒时不报警
+                //    return 0;
+                //}
 
                 int iPositionNowY = 0;
                 int iPositionRes = CardObject.OA1.ReadAxisCommandPosition(ADT8940A1_IO.Axis_Y, ref iPositionNowY);
@@ -2005,17 +2005,17 @@ namespace Lib_Card.ADT8940A1.Axis
                 int iZCorotation = CardObject.OA1Input.InPutStatus(ADT8940A1_IO.InPut_Z_Corotation);
                 if (-1 == iZCorotation)
                     return -1;
-                else if (1 == iZCorotation && iPulse >= 0)
+                else if (1 == iZCorotation && iPulse < 0)
                 {
                     if (-1 == CardObject.OA1.SuddnStop(ADT8940A1_IO.Axis_Z))
                         return -1;
                     throw new Exception("Z轴反限位已通");
                 }
-                else if (1 == iZCorotation)
-                {
-                    //第二次抓针筒时不报警
-                    return 0;
-                }
+                //else if (1 == iZCorotation)
+                //{
+                //    //第二次抓针筒时不报警
+                //    return 0;
+                //}
 
                 int iPositionNowY = 0;
                 iPositionRes = CardObject.OA1.ReadAxisCommandPosition(ADT8940A1_IO.Axis_Y, ref iPositionNowY);

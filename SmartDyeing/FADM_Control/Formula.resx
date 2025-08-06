@@ -117,30 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="dgv_BatchData.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="dgv_BatchData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 24</value>
-  </data>
-  <data name="dgv_BatchData.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="dgv_BatchData.RowHeadersWidth" type="System.Int32, mscorlib">
-    <value>62</value>
-  </data>
-  <data name="dgv_BatchData.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
-    <value>Vertical</value>
-  </data>
-  <data name="dgv_BatchData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>298, 895</value>
-  </data>
-  <data name="dgv_BatchData.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
   <data name="&gt;&gt;dgv_BatchData.Name" xml:space="preserve">
     <value>dgv_BatchData</value>
   </data>
@@ -153,12 +129,14 @@
   <data name="&gt;&gt;dgv_BatchData.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="grp_BatchData.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 10.5pt</value>
   </data>
   <data name="grp_BatchData.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 4</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="grp_BatchData.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
@@ -168,6 +146,7 @@
   <data name="grp_BatchData.Size" type="System.Drawing.Size, System.Drawing">
     <value>306, 923</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="grp_BatchData.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
@@ -185,6 +164,39 @@
   </data>
   <data name="&gt;&gt;grp_BatchData.ZOrder" xml:space="preserve">
     <value>12</value>
+  </data>
+  <data name="dgv_BatchData.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="dgv_BatchData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 20</value>
+  </data>
+  <data name="dgv_BatchData.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="dgv_BatchData.RowHeadersWidth" type="System.Int32, mscorlib">
+    <value>62</value>
+  </data>
+  <data name="dgv_BatchData.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
+  </data>
+  <data name="dgv_BatchData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>298, 899</value>
+  </data>
+  <data name="dgv_BatchData.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;dgv_BatchData.Name" xml:space="preserve">
+    <value>dgv_BatchData</value>
+  </data>
+  <data name="&gt;&gt;dgv_BatchData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dgv_BatchData.Parent" xml:space="preserve">
+    <value>grp_BatchData</value>
+  </data>
+  <data name="&gt;&gt;dgv_BatchData.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="btn_FormulaCodeAdd.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -390,20 +402,20 @@
   <metadata name="contextMenuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>89, 17</value>
   </metadata>
-  <data name="tsm_Delete.Size" type="System.Drawing.Size, System.Drawing">
-    <value>108, 24</value>
-  </data>
-  <data name="tsm_Delete.Text" xml:space="preserve">
-    <value>删除</value>
-  </data>
   <data name="contextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>109, 28</value>
+    <value>101, 26</value>
   </data>
   <data name="&gt;&gt;contextMenuStrip1.Name" xml:space="preserve">
     <value>contextMenuStrip1</value>
   </data>
   <data name="&gt;&gt;contextMenuStrip1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tsm_Delete.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 22</value>
+  </data>
+  <data name="tsm_Delete.Text" xml:space="preserve">
+    <value>删除</value>
   </data>
   <data name="btn_NotDrip.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -438,6 +450,201 @@
   <data name="&gt;&gt;btn_NotDrip.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="&gt;&gt;txt_Browse_Operator.Name" xml:space="preserve">
+    <value>txt_Browse_Operator</value>
+  </data>
+  <data name="&gt;&gt;txt_Browse_Operator.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txt_Browse_Operator.Parent" xml:space="preserve">
+    <value>grp_FormulaBrowse</value>
+  </data>
+  <data name="&gt;&gt;txt_Browse_Operator.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;rdo_Browse_condition.Name" xml:space="preserve">
+    <value>rdo_Browse_condition</value>
+  </data>
+  <data name="&gt;&gt;rdo_Browse_condition.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rdo_Browse_condition.Parent" xml:space="preserve">
+    <value>grp_FormulaBrowse</value>
+  </data>
+  <data name="&gt;&gt;rdo_Browse_condition.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;dgv_FormulaBrowse.Name" xml:space="preserve">
+    <value>dgv_FormulaBrowse</value>
+  </data>
+  <data name="&gt;&gt;dgv_FormulaBrowse.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dgv_FormulaBrowse.Parent" xml:space="preserve">
+    <value>grp_FormulaBrowse</value>
+  </data>
+  <data name="&gt;&gt;dgv_FormulaBrowse.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;dt_Browse_End.Name" xml:space="preserve">
+    <value>dt_Browse_End</value>
+  </data>
+  <data name="&gt;&gt;dt_Browse_End.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dt_Browse_End.Parent" xml:space="preserve">
+    <value>grp_FormulaBrowse</value>
+  </data>
+  <data name="&gt;&gt;dt_Browse_End.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;dt_Browse_Start.Name" xml:space="preserve">
+    <value>dt_Browse_Start</value>
+  </data>
+  <data name="&gt;&gt;dt_Browse_Start.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dt_Browse_Start.Parent" xml:space="preserve">
+    <value>grp_FormulaBrowse</value>
+  </data>
+  <data name="&gt;&gt;dt_Browse_Start.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;txt_Browse_Code.Name" xml:space="preserve">
+    <value>txt_Browse_Code</value>
+  </data>
+  <data name="&gt;&gt;txt_Browse_Code.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txt_Browse_Code.Parent" xml:space="preserve">
+    <value>grp_FormulaBrowse</value>
+  </data>
+  <data name="&gt;&gt;txt_Browse_Code.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;btn_Browse_Delete.Name" xml:space="preserve">
+    <value>btn_Browse_Delete</value>
+  </data>
+  <data name="&gt;&gt;btn_Browse_Delete.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btn_Browse_Delete.Parent" xml:space="preserve">
+    <value>grp_FormulaBrowse</value>
+  </data>
+  <data name="&gt;&gt;btn_Browse_Delete.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;btn_Browse_Select.Name" xml:space="preserve">
+    <value>btn_Browse_Select</value>
+  </data>
+  <data name="&gt;&gt;btn_Browse_Select.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btn_Browse_Select.Parent" xml:space="preserve">
+    <value>grp_FormulaBrowse</value>
+  </data>
+  <data name="&gt;&gt;btn_Browse_Select.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;rdo_Browse_NoDrop.Name" xml:space="preserve">
+    <value>rdo_Browse_NoDrop</value>
+  </data>
+  <data name="&gt;&gt;rdo_Browse_NoDrop.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rdo_Browse_NoDrop.Parent" xml:space="preserve">
+    <value>grp_FormulaBrowse</value>
+  </data>
+  <data name="&gt;&gt;rdo_Browse_NoDrop.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;rdo_Browse_All.Name" xml:space="preserve">
+    <value>rdo_Browse_All</value>
+  </data>
+  <data name="&gt;&gt;rdo_Browse_All.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rdo_Browse_All.Parent" xml:space="preserve">
+    <value>grp_FormulaBrowse</value>
+  </data>
+  <data name="&gt;&gt;rdo_Browse_All.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;label14.Name" xml:space="preserve">
+    <value>label14</value>
+  </data>
+  <data name="&gt;&gt;label14.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label14.Parent" xml:space="preserve">
+    <value>grp_FormulaBrowse</value>
+  </data>
+  <data name="&gt;&gt;label14.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;label13.Name" xml:space="preserve">
+    <value>label13</value>
+  </data>
+  <data name="&gt;&gt;label13.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label13.Parent" xml:space="preserve">
+    <value>grp_FormulaBrowse</value>
+  </data>
+  <data name="&gt;&gt;label13.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;label12.Name" xml:space="preserve">
+    <value>label12</value>
+  </data>
+  <data name="&gt;&gt;label12.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label12.Parent" xml:space="preserve">
+    <value>grp_FormulaBrowse</value>
+  </data>
+  <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;label11.Name" xml:space="preserve">
+    <value>label11</value>
+  </data>
+  <data name="&gt;&gt;label11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label11.Parent" xml:space="preserve">
+    <value>grp_FormulaBrowse</value>
+  </data>
+  <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="grp_FormulaBrowse.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 10.5pt</value>
+  </data>
+  <data name="grp_FormulaBrowse.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1622, 7</value>
+  </data>
+  <data name="grp_FormulaBrowse.Size" type="System.Drawing.Size, System.Drawing">
+    <value>273, 966</value>
+  </data>
+  <data name="grp_FormulaBrowse.TabIndex" type="System.Int32, mscorlib">
+    <value>44</value>
+  </data>
+  <data name="grp_FormulaBrowse.Text" xml:space="preserve">
+    <value>配方浏览</value>
+  </data>
+  <data name="&gt;&gt;grp_FormulaBrowse.Name" xml:space="preserve">
+    <value>grp_FormulaBrowse</value>
+  </data>
+  <data name="&gt;&gt;grp_FormulaBrowse.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;grp_FormulaBrowse.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;grp_FormulaBrowse.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
   <data name="txt_Browse_Operator.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -448,7 +655,7 @@
     <value>131, 93</value>
   </data>
   <data name="txt_Browse_Operator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 32</value>
+    <value>130, 27</value>
   </data>
   <data name="txt_Browse_Operator.TabIndex" type="System.Int32, mscorlib">
     <value>35</value>
@@ -478,7 +685,7 @@
     <value>11, 54</value>
   </data>
   <data name="rdo_Browse_condition.Size" type="System.Drawing.Size, System.Drawing">
-    <value>127, 28</value>
+    <value>103, 23</value>
   </data>
   <data name="rdo_Browse_condition.TabIndex" type="System.Int32, mscorlib">
     <value>34</value>
@@ -541,7 +748,7 @@
     <value>131, 211</value>
   </data>
   <data name="dt_Browse_End.Size" type="System.Drawing.Size, System.Drawing">
-    <value>132, 35</value>
+    <value>132, 29</value>
   </data>
   <data name="dt_Browse_End.TabIndex" type="System.Int32, mscorlib">
     <value>32</value>
@@ -574,7 +781,7 @@
     <value>131, 171</value>
   </data>
   <data name="dt_Browse_Start.Size" type="System.Drawing.Size, System.Drawing">
-    <value>132, 35</value>
+    <value>132, 29</value>
   </data>
   <data name="dt_Browse_Start.TabIndex" type="System.Int32, mscorlib">
     <value>31</value>
@@ -601,7 +808,7 @@
     <value>131, 131</value>
   </data>
   <data name="txt_Browse_Code.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 35</value>
+    <value>130, 29</value>
   </data>
   <data name="txt_Browse_Code.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -694,7 +901,7 @@
     <value>137, 22</value>
   </data>
   <data name="rdo_Browse_NoDrop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>127, 28</value>
+    <value>103, 23</value>
   </data>
   <data name="rdo_Browse_NoDrop.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -727,7 +934,7 @@
     <value>6, 22</value>
   </data>
   <data name="rdo_Browse_All.Size" type="System.Drawing.Size, System.Drawing">
-    <value>127, 28</value>
+    <value>103, 23</value>
   </data>
   <data name="rdo_Browse_All.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -879,32 +1086,38 @@
   <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
     <value>13</value>
   </data>
-  <data name="grp_FormulaBrowse.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 10.5pt</value>
+  <data name="chk_Auto.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="grp_FormulaBrowse.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1622, 7</value>
+  <data name="chk_Auto.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
   </data>
-  <data name="grp_FormulaBrowse.Size" type="System.Drawing.Size, System.Drawing">
-    <value>273, 966</value>
+  <data name="chk_Auto.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="grp_FormulaBrowse.TabIndex" type="System.Int32, mscorlib">
-    <value>44</value>
+  <data name="chk_Auto.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1229, 105</value>
   </data>
-  <data name="grp_FormulaBrowse.Text" xml:space="preserve">
-    <value>配方浏览</value>
+  <data name="chk_Auto.Size" type="System.Drawing.Size, System.Drawing">
+    <value>66, 23</value>
   </data>
-  <data name="&gt;&gt;grp_FormulaBrowse.Name" xml:space="preserve">
-    <value>grp_FormulaBrowse</value>
+  <data name="chk_Auto.TabIndex" type="System.Int32, mscorlib">
+    <value>53</value>
   </data>
-  <data name="&gt;&gt;grp_FormulaBrowse.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="chk_Auto.Text" xml:space="preserve">
+    <value>自动</value>
   </data>
-  <data name="&gt;&gt;grp_FormulaBrowse.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;chk_Auto.Name" xml:space="preserve">
+    <value>chk_Auto</value>
   </data>
-  <data name="&gt;&gt;grp_FormulaBrowse.ZOrder" xml:space="preserve">
-    <value>9</value>
+  <data name="&gt;&gt;chk_Auto.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chk_Auto.Parent" xml:space="preserve">
+    <value>grp_FormulaData</value>
+  </data>
+  <data name="&gt;&gt;chk_Auto.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="txt_FormulaName.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -919,7 +1132,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_FormulaName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>115, 35</value>
+    <value>115, 29</value>
   </data>
   <data name="txt_FormulaName.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -937,7 +1150,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_FormulaName.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="txt_ClothNum.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -952,7 +1165,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_ClothNum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>86, 35</value>
+    <value>86, 29</value>
   </data>
   <data name="txt_ClothNum.TabIndex" type="System.Int32, mscorlib">
     <value>52</value>
@@ -970,7 +1183,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_ClothNum.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="lab_FormulaName.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -988,7 +1201,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_FormulaName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 24</value>
+    <value>95, 19</value>
   </data>
   <data name="lab_FormulaName.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1009,7 +1222,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_FormulaName.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1027,7 +1240,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>94, 24</value>
+    <value>76, 19</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>51</value>
@@ -1048,7 +1261,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="lab_CupNum.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1066,7 +1279,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_CupNum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 24</value>
+    <value>57, 19</value>
   </data>
   <data name="lab_CupNum.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -1087,7 +1300,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_CupNum.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="txt_CupNum.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1102,7 +1315,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_CupNum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>114, 35</value>
+    <value>114, 29</value>
   </data>
   <data name="txt_CupNum.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
@@ -1120,7 +1333,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_CupNum.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="txt_DyeingCode.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1129,13 +1342,13 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_DyeingCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>585, 102</value>
+    <value>552, 102</value>
   </data>
   <data name="txt_DyeingCode.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_DyeingCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>304, 32</value>
+    <value>304, 27</value>
   </data>
   <data name="txt_DyeingCode.TabIndex" type="System.Int32, mscorlib">
     <value>38</value>
@@ -1150,7 +1363,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_DyeingCode.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="lab_DyeingCode.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1168,7 +1381,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_DyeingCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 24</value>
+    <value>152, 19</value>
   </data>
   <data name="lab_DyeingCode.TabIndex" type="System.Int32, mscorlib">
     <value>49</value>
@@ -1189,7 +1402,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_DyeingCode.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="txt_Operator.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1204,7 +1417,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_Operator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 35</value>
+    <value>95, 29</value>
   </data>
   <data name="txt_Operator.TabIndex" type="System.Int32, mscorlib">
     <value>48</value>
@@ -1222,7 +1435,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_Operator.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="txt_FormulaGroup.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1237,7 +1450,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_FormulaGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>108, 32</value>
+    <value>108, 27</value>
   </data>
   <data name="txt_FormulaGroup.TabIndex" type="System.Int32, mscorlib">
     <value>47</value>
@@ -1252,7 +1465,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_FormulaGroup.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="lab_FormulaGroup.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1270,7 +1483,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_FormulaGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 24</value>
+    <value>95, 19</value>
   </data>
   <data name="lab_FormulaGroup.TabIndex" type="System.Int32, mscorlib">
     <value>46</value>
@@ -1291,7 +1504,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_FormulaGroup.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="txt_AnhydrationWR.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1306,7 +1519,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_AnhydrationWR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>85, 35</value>
+    <value>85, 29</value>
   </data>
   <data name="txt_AnhydrationWR.TabIndex" type="System.Int32, mscorlib">
     <value>45</value>
@@ -1324,7 +1537,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_AnhydrationWR.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="lab_AnhydrationWR.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1342,7 +1555,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_AnhydrationWR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 24</value>
+    <value>95, 19</value>
   </data>
   <data name="lab_AnhydrationWR.TabIndex" type="System.Int32, mscorlib">
     <value>44</value>
@@ -1363,7 +1576,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_AnhydrationWR.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="txt_Non_AnhydrationWR.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1378,7 +1591,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_Non_AnhydrationWR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>115, 35</value>
+    <value>115, 29</value>
   </data>
   <data name="txt_Non_AnhydrationWR.TabIndex" type="System.Int32, mscorlib">
     <value>43</value>
@@ -1396,7 +1609,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_Non_AnhydrationWR.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="lab_Non_AnhydrationWR.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1414,7 +1627,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_Non_AnhydrationWR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 24</value>
+    <value>114, 19</value>
   </data>
   <data name="lab_Non_AnhydrationWR.TabIndex" type="System.Int32, mscorlib">
     <value>42</value>
@@ -1435,7 +1648,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_Non_AnhydrationWR.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>15</value>
   </data>
   <data name="Index.HeaderText" xml:space="preserve">
     <value>序号/名称</value>
@@ -1534,7 +1747,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;dgv_FormulaData.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>16</value>
   </data>
   <data name="txt_ClothType.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1549,7 +1762,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_ClothType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 35</value>
+    <value>90, 29</value>
   </data>
   <data name="txt_ClothType.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
@@ -1567,7 +1780,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_ClothType.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>17</value>
   </data>
   <data name="txt_CreateTime.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1576,13 +1789,13 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_CreateTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1020, 102</value>
+    <value>955, 102</value>
   </data>
   <data name="txt_CreateTime.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_CreateTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>266, 35</value>
+    <value>266, 29</value>
   </data>
   <data name="txt_CreateTime.TabIndex" type="System.Int32, mscorlib">
     <value>22</value>
@@ -1600,7 +1813,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_CreateTime.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>18</value>
   </data>
   <data name="txt_TotalWeight.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1615,7 +1828,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_TotalWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 35</value>
+    <value>98, 29</value>
   </data>
   <data name="txt_TotalWeight.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -1633,7 +1846,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_TotalWeight.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>19</value>
   </data>
   <data name="txt_BathRatio.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1648,7 +1861,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_BathRatio.Size" type="System.Drawing.Size, System.Drawing">
-    <value>49, 35</value>
+    <value>49, 29</value>
   </data>
   <data name="txt_BathRatio.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -1666,7 +1879,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_BathRatio.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>20</value>
   </data>
   <data name="txt_ClothWeight.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1681,7 +1894,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_ClothWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 35</value>
+    <value>112, 29</value>
   </data>
   <data name="txt_ClothWeight.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -1699,7 +1912,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_ClothWeight.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>21</value>
   </data>
   <data name="chk_AddWaterChoose.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1720,7 +1933,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="chk_AddWaterChoose.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 28</value>
+    <value>66, 23</value>
   </data>
   <data name="chk_AddWaterChoose.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -1738,7 +1951,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;chk_AddWaterChoose.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>22</value>
   </data>
   <data name="txt_Customer.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1753,7 +1966,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_Customer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 35</value>
+    <value>181, 29</value>
   </data>
   <data name="txt_Customer.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -1771,7 +1984,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_Customer.ZOrder" xml:space="preserve">
-    <value>22</value>
+    <value>23</value>
   </data>
   <data name="txt_State.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1786,7 +1999,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_State.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 35</value>
+    <value>167, 29</value>
   </data>
   <data name="txt_State.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -1804,7 +2017,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_State.ZOrder" xml:space="preserve">
-    <value>23</value>
+    <value>24</value>
   </data>
   <data name="txt_VersionNum.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1819,7 +2032,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="txt_VersionNum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>35, 35</value>
+    <value>35, 29</value>
   </data>
   <data name="txt_VersionNum.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -1837,7 +2050,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_VersionNum.ZOrder" xml:space="preserve">
-    <value>24</value>
+    <value>25</value>
   </data>
   <data name="txt_FormulaCode.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1855,7 +2068,7 @@
     <value>16</value>
   </data>
   <data name="txt_FormulaCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>171, 35</value>
+    <value>171, 29</value>
   </data>
   <data name="txt_FormulaCode.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1873,7 +2086,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;txt_FormulaCode.ZOrder" xml:space="preserve">
-    <value>25</value>
+    <value>26</value>
   </data>
   <data name="lab_CreateTime.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1885,13 +2098,13 @@
     <value>NoControl</value>
   </data>
   <data name="lab_CreateTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>908, 107</value>
+    <value>862, 107</value>
   </data>
   <data name="lab_CreateTime.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_CreateTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 24</value>
+    <value>95, 19</value>
   </data>
   <data name="lab_CreateTime.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -1912,7 +2125,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_CreateTime.ZOrder" xml:space="preserve">
-    <value>26</value>
+    <value>27</value>
   </data>
   <data name="lab_Operator.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1930,7 +2143,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_Operator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>94, 24</value>
+    <value>76, 19</value>
   </data>
   <data name="lab_Operator.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -1951,7 +2164,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_Operator.ZOrder" xml:space="preserve">
-    <value>27</value>
+    <value>28</value>
   </data>
   <data name="lab_TotalWeight.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1969,7 +2182,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_TotalWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>94, 24</value>
+    <value>76, 19</value>
   </data>
   <data name="lab_TotalWeight.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -1990,7 +2203,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_TotalWeight.ZOrder" xml:space="preserve">
-    <value>28</value>
+    <value>29</value>
   </data>
   <data name="lab_BathRatio.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2008,7 +2221,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_BathRatio.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 24</value>
+    <value>57, 19</value>
   </data>
   <data name="lab_BathRatio.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -2029,7 +2242,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_BathRatio.ZOrder" xml:space="preserve">
-    <value>29</value>
+    <value>30</value>
   </data>
   <data name="lab_ClothWeight.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2047,7 +2260,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_ClothWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 24</value>
+    <value>57, 19</value>
   </data>
   <data name="lab_ClothWeight.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -2068,7 +2281,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_ClothWeight.ZOrder" xml:space="preserve">
-    <value>30</value>
+    <value>31</value>
   </data>
   <data name="lab_Customer.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2086,7 +2299,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_Customer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 24</value>
+    <value>57, 19</value>
   </data>
   <data name="lab_Customer.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -2107,7 +2320,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_Customer.ZOrder" xml:space="preserve">
-    <value>31</value>
+    <value>32</value>
   </data>
   <data name="lab_ClothType.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2125,7 +2338,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_ClothType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 24</value>
+    <value>105, 19</value>
   </data>
   <data name="lab_ClothType.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -2146,7 +2359,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_ClothType.ZOrder" xml:space="preserve">
-    <value>32</value>
+    <value>33</value>
   </data>
   <data name="lab_FormulaCode.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2164,7 +2377,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lab_FormulaCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 24</value>
+    <value>95, 19</value>
   </data>
   <data name="lab_FormulaCode.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -2185,7 +2398,7 @@
     <value>grp_FormulaData</value>
   </data>
   <data name="&gt;&gt;lab_FormulaCode.ZOrder" xml:space="preserve">
-    <value>33</value>
+    <value>34</value>
   </data>
   <data name="grp_FormulaData.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 10.5pt</value>
@@ -2342,6 +2555,9 @@
   </metadata>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>1882, 924</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>

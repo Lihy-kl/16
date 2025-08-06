@@ -163,6 +163,8 @@ namespace SmartDyeing.FADM_Object
             {
                 try
                 {
+                    if (!_modbusClient.Connected)
+                        return -1;
                     //_modbusClient.Connect(); // 连接到服务器
                     ia_values = _modbusClient.ReadHoldingRegisters(i_startingAddress, i_num);
                     //_modbusClient.Disconnect(); // 断开连接
@@ -185,6 +187,8 @@ namespace SmartDyeing.FADM_Object
             labRewrite:
                 try
                 {
+                    if (!_modbusClient.Connected)
+                        throw new Exception("重新连接");
                     //_modbusClient.Connect(); // 连接到服务器
                     _modbusClient.WriteMultipleRegisters(i_startingAddress, ia_values);
                     string s = null;
@@ -283,6 +287,7 @@ namespace SmartDyeing.FADM_Object
                                     d._s_secondopenInplace = (ia_values[22]).ToString();
                                     d._s_secondrealTem = (ia_values[44]).ToString();
                                     d._s_putcloth = (ia_values_ask[i]).ToString();
+                                    d._s_reStart = (ia_values[63]).ToString();
                                     //int[] ia_values1 = new int[1];
                                     lis_l.Add(d);
                                     _b_Connect = true;
@@ -693,6 +698,11 @@ namespace SmartDyeing.FADM_Object
         /// 请求保存数据
         /// </summary>
         public string _s_reqSave;
+
+        /// <summary>
+        /// 重启记录
+        /// </summary>
+        public string _s_reStart;
     }
 
     /// <summary>

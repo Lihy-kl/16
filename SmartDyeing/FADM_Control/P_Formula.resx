@@ -207,7 +207,7 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_ClothType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1169, 30</value>
+    <value>115, 87</value>
   </data>
   <data name="txt_ClothType.Size" type="System.Drawing.Size, System.Drawing">
     <value>73, 29</value>
@@ -238,7 +238,7 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_CreateTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>967, 146</value>
+    <value>906, 146</value>
   </data>
   <data name="txt_CreateTime.Size" type="System.Drawing.Size, System.Drawing">
     <value>275, 29</value>
@@ -511,7 +511,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;grp_DropRecord.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="btn_Record_Select.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -568,7 +568,7 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="btn_Stop.Location" type="System.Drawing.Point, System.Drawing">
-    <value>168, 671</value>
+    <value>226, 671</value>
   </data>
   <data name="btn_Stop.Size" type="System.Drawing.Size, System.Drawing">
     <value>145, 35</value>
@@ -589,13 +589,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btn_Stop.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="btn_Start.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
   </data>
   <data name="btn_Start.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 671</value>
+    <value>13, 671</value>
   </data>
   <data name="btn_Start.Size" type="System.Drawing.Size, System.Drawing">
     <value>145, 35</value>
@@ -616,16 +616,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btn_Start.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="group.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14pt</value>
   </data>
   <data name="group.Location" type="System.Drawing.Point, System.Drawing">
-    <value>557, 30</value>
+    <value>771, 30</value>
   </data>
   <data name="group.Size" type="System.Drawing.Size, System.Drawing">
-    <value>267, 27</value>
+    <value>211, 27</value>
   </data>
   <data name="group.TabIndex" type="System.Int32, mscorlib">
     <value>43</value>
@@ -646,10 +646,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="label16.Location" type="System.Drawing.Point, System.Drawing">
-    <value>438, 30</value>
+    <value>670, 30</value>
   </data>
   <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 25</value>
+    <value>97, 25</value>
   </data>
   <data name="label16.TabIndex" type="System.Int32, mscorlib">
     <value>41</value>
@@ -679,10 +679,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_Operator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>129, 146</value>
+    <value>272, 146</value>
   </data>
   <data name="txt_Operator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>305, 29</value>
+    <value>231, 29</value>
   </data>
   <data name="txt_Operator.TabIndex" type="System.Int32, mscorlib">
     <value>40</value>
@@ -709,7 +709,7 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_Non_AnhydrationWR.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1169, 86</value>
+    <value>115, 146</value>
   </data>
   <data name="txt_Non_AnhydrationWR.Size" type="System.Drawing.Size, System.Drawing">
     <value>73, 29</value>
@@ -736,10 +736,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_Non_AnhydrationWR.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1057, 88</value>
+    <value>8, 148</value>
   </data>
   <data name="lab_Non_AnhydrationWR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 25</value>
+    <value>101, 25</value>
   </data>
   <data name="lab_Non_AnhydrationWR.TabIndex" type="System.Int32, mscorlib">
     <value>35</value>
@@ -907,10 +907,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_CupCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>549, 148</value>
+    <value>681, 148</value>
   </data>
   <data name="txt_CupCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>275, 29</value>
+    <value>100, 29</value>
   </data>
   <data name="txt_CupCode.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
@@ -967,7 +967,7 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_TotalWeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>965, 87</value>
+    <value>1099, 87</value>
   </data>
   <data name="txt_TotalWeight.Size" type="System.Drawing.Size, System.Drawing">
     <value>86, 29</value>
@@ -997,7 +997,7 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_BathRatio.Location" type="System.Drawing.Point, System.Drawing">
-    <value>724, 87</value>
+    <value>858, 87</value>
   </data>
   <data name="txt_BathRatio.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 29</value>
@@ -1027,7 +1027,7 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_ClothWeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>549, 87</value>
+    <value>683, 87</value>
   </data>
   <data name="txt_ClothWeight.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 29</value>
@@ -1060,7 +1060,7 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="chk_AddWaterChoose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>368, 90</value>
+    <value>509, 90</value>
   </data>
   <data name="chk_AddWaterChoose.Size" type="System.Drawing.Size, System.Drawing">
     <value>66, 23</value>
@@ -1090,7 +1090,7 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_Customer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>131, 87</value>
+    <value>272, 87</value>
   </data>
   <data name="txt_Customer.Size" type="System.Drawing.Size, System.Drawing">
     <value>231, 29</value>
@@ -1120,7 +1120,7 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_FormulaName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>965, 30</value>
+    <value>1098, 30</value>
   </data>
   <data name="txt_FormulaName.Size" type="System.Drawing.Size, System.Drawing">
     <value>86, 29</value>
@@ -1150,7 +1150,7 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_State.Location" type="System.Drawing.Point, System.Drawing">
-    <value>323, 28</value>
+    <value>553, 28</value>
   </data>
   <data name="txt_State.Size" type="System.Drawing.Size, System.Drawing">
     <value>111, 29</value>
@@ -1180,7 +1180,7 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_VersionNum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>286, 28</value>
+    <value>520, 28</value>
   </data>
   <data name="txt_VersionNum.Size" type="System.Drawing.Size, System.Drawing">
     <value>31, 29</value>
@@ -1210,13 +1210,13 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_FormulaCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>134, 28</value>
+    <value>123, 28</value>
   </data>
   <data name="txt_FormulaCode.MaxLength" type="System.Int32, mscorlib">
-    <value>16</value>
+    <value>30</value>
   </data>
   <data name="txt_FormulaCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 29</value>
+    <value>393, 29</value>
   </data>
   <data name="txt_FormulaCode.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -1240,7 +1240,7 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_CreateTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>839, 148</value>
+    <value>778, 148</value>
   </data>
   <data name="lab_CreateTime.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 25</value>
@@ -1270,7 +1270,7 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_CupCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>421, 148</value>
+    <value>553, 148</value>
   </data>
   <data name="lab_CupCode.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 25</value>
@@ -1300,10 +1300,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_Operator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 148</value>
+    <value>183, 148</value>
   </data>
   <data name="lab_Operator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 25</value>
+    <value>86, 25</value>
   </data>
   <data name="lab_Operator.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -1330,7 +1330,7 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_TotalWeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>839, 89</value>
+    <value>973, 89</value>
   </data>
   <data name="lab_TotalWeight.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 25</value>
@@ -1360,10 +1360,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_BathRatio.Location" type="System.Drawing.Point, System.Drawing">
-    <value>609, 89</value>
+    <value>789, 89</value>
   </data>
   <data name="lab_BathRatio.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 25</value>
+    <value>67, 25</value>
   </data>
   <data name="lab_BathRatio.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1390,7 +1390,7 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_ClothWeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>421, 89</value>
+    <value>555, 89</value>
   </data>
   <data name="lab_ClothWeight.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 25</value>
@@ -1420,10 +1420,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_Customer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 89</value>
+    <value>187, 89</value>
   </data>
   <data name="lab_Customer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 25</value>
+    <value>82, 25</value>
   </data>
   <data name="lab_Customer.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1450,10 +1450,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_ClothType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1050, 30</value>
+    <value>4, 87</value>
   </data>
   <data name="lab_ClothType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 25</value>
+    <value>105, 25</value>
   </data>
   <data name="lab_ClothType.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1516,10 +1516,10 @@
     <value>宋体, 10.5pt</value>
   </data>
   <data name="grp_FormulaData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>330, 2</value>
+    <value>402, 2</value>
   </data>
   <data name="grp_FormulaData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1250, 713</value>
+    <value>1186, 713</value>
   </data>
   <data name="grp_FormulaData.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -1537,7 +1537,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;grp_FormulaData.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="dataGridViewTextBoxColumn10.HeaderText" xml:space="preserve">
     <value>序号</value>
@@ -1555,7 +1555,7 @@
     <value>染助剂名称</value>
   </data>
   <data name="dataGridViewTextBoxColumn12.Width" type="System.Int32, mscorlib">
-    <value>150</value>
+    <value>180</value>
   </data>
   <data name="dataGridViewTextBoxColumn13.HeaderText" xml:space="preserve">
     <value>配方用量</value>
@@ -1633,7 +1633,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="dgv_FormulaData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1243, 437</value>
+    <value>1173, 437</value>
   </data>
   <data name="dgv_FormulaData.TabIndex" type="System.Int32, mscorlib">
     <value>44</value>
@@ -1654,10 +1654,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_FormulaName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>839, 30</value>
+    <value>988, 30</value>
   </data>
   <data name="lab_FormulaName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 25</value>
+    <value>97, 25</value>
   </data>
   <data name="lab_FormulaName.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1684,10 +1684,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_FormulaCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 30</value>
+    <value>4, 30</value>
   </data>
   <data name="lab_FormulaCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 25</value>
+    <value>104, 25</value>
   </data>
   <data name="lab_FormulaCode.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1788,6 +1788,21 @@
   <data name="Column5.Width" type="System.Int32, mscorlib">
     <value>170</value>
   </data>
+  <data name="dgv_BatchData.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="dgv_BatchData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 19</value>
+  </data>
+  <data name="dgv_BatchData.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
+  </data>
+  <data name="dgv_BatchData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>390, 630</value>
+  </data>
+  <data name="dgv_BatchData.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
   <data name="&gt;&gt;dgv_BatchData.Name" xml:space="preserve">
     <value>dgv_BatchData</value>
   </data>
@@ -1807,7 +1822,7 @@
     <value>0, 2</value>
   </data>
   <data name="grp_BatchData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>316, 652</value>
+    <value>396, 652</value>
   </data>
   <data name="grp_BatchData.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -1825,34 +1840,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;grp_BatchData.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="dgv_BatchData.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="dgv_BatchData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 19</value>
-  </data>
-  <data name="dgv_BatchData.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
-    <value>Vertical</value>
-  </data>
-  <data name="dgv_BatchData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>310, 630</value>
-  </data>
-  <data name="dgv_BatchData.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;dgv_BatchData.Name" xml:space="preserve">
-    <value>dgv_BatchData</value>
-  </data>
-  <data name="&gt;&gt;dgv_BatchData.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;dgv_BatchData.Parent" xml:space="preserve">
-    <value>grp_BatchData</value>
-  </data>
-  <data name="&gt;&gt;dgv_BatchData.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>5</value>
   </data>
   <data name="rdo_Browse_All.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2020,7 +2008,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;grp_FormulaBrowse.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="txt_Browse_Operator.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -2283,9 +2271,24 @@
   <data name="&gt;&gt;rdo_Browse_NoDrop.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>en</value>
+  <metadata name="contextMenuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>406, 17</value>
   </metadata>
+  <data name="tsm_Delete.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
+  </data>
+  <data name="tsm_Delete.Text" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="contextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>101, 26</value>
+  </data>
+  <data name="&gt;&gt;contextMenuStrip1.Name" xml:space="preserve">
+    <value>contextMenuStrip1</value>
+  </data>
+  <data name="&gt;&gt;contextMenuStrip1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -2534,6 +2537,12 @@
   </data>
   <data name="&gt;&gt;tmr.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsm_Delete.Name" xml:space="preserve">
+    <value>tsm_Delete</value>
+  </data>
+  <data name="&gt;&gt;tsm_Delete.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>P_Formula</value>

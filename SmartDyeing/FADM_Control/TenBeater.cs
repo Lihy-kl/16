@@ -704,7 +704,7 @@ namespace SmartDyeing.FADM_Control
                 }
                 else
                 {
-                    if (SmartDyeing.FADM_Object.Communal._dic_dyeType[Convert.ToInt32( _cup.NO)] != 5)
+                    if (SmartDyeing.FADM_Object.Communal._dic_dyeType[Convert.ToInt32(_cup.NO)] != 5)
                     {
                         tsm_HighWash.Visible = false;
                     }

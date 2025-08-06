@@ -25,6 +25,12 @@ namespace SmartDyeing.FADM_Control
 
             cup2.MouseDown += Cup_MouseDown;
             cup2.ContextMenuStrip = this.contextMenuStrip1;
+
+            cup3.MouseDown += Cup_MouseDown;
+            cup3.ContextMenuStrip = this.contextMenuStrip1;
+
+            cup4.MouseDown += Cup_MouseDown;
+            cup4.ContextMenuStrip = this.contextMenuStrip1;
         }
 
         void Cup_MouseDown(object sender, MouseEventArgs e)
@@ -66,8 +72,12 @@ namespace SmartDyeing.FADM_Control
                 values1[0] = 2;
                 if (Convert.ToInt32(_cup.NO) == 1)
                     FADM_Object.Communal._tcpModBusAbs.Write(800, values1);
-                else
+                else if (Convert.ToInt32(_cup.NO) == 2)
                     FADM_Object.Communal._tcpModBusAbs.Write(810, values1);
+                else if (Convert.ToInt32(_cup.NO) == 3)
+                    FADM_Object.Communal._tcpModBusAbs.Write(820, values1);
+                else if (Convert.ToInt32(_cup.NO) == 4)
+                    FADM_Object.Communal._tcpModBusAbs.Write(830, values1);
 
                 //判断待机后再发洗杯
                 while (true)

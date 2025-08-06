@@ -68,9 +68,9 @@
             this.lab_Rev.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.lab_Rev.Location = new System.Drawing.Point(24, 223);
             this.lab_Rev.Name = "lab_Rev";
-            this.lab_Rev.Size = new System.Drawing.Size(133, 19);
+            this.lab_Rev.Size = new System.Drawing.Size(163, 19);
             this.lab_Rev.TabIndex = 45;
-            this.lab_Rev.Text = "排比色皿时间:";
+            this.lab_Rev.Text = "排比色皿时间(s):";
             this.lab_Rev.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txt_StirringTime
@@ -88,9 +88,9 @@
             this.lab_Rate.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.lab_Rate.Location = new System.Drawing.Point(24, 143);
             this.lab_Rate.Name = "lab_Rate";
-            this.lab_Rate.Size = new System.Drawing.Size(95, 19);
+            this.lab_Rate.Size = new System.Drawing.Size(125, 19);
             this.lab_Rate.TabIndex = 42;
-            this.lab_Rate.Text = "搅拌时间:";
+            this.lab_Rate.Text = "搅拌时间(s):";
             this.lab_Rate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txt_StirringRate
@@ -167,9 +167,9 @@
             this.lab_ProportionOrTime.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.lab_ProportionOrTime.Location = new System.Drawing.Point(24, 183);
             this.lab_ProportionOrTime.Name = "lab_ProportionOrTime";
-            this.lab_ProportionOrTime.Size = new System.Drawing.Size(95, 19);
+            this.lab_ProportionOrTime.Size = new System.Drawing.Size(125, 19);
             this.lab_ProportionOrTime.TabIndex = 37;
-            this.lab_ProportionOrTime.Text = "排液时间:";
+            this.lab_ProportionOrTime.Text = "排液时间(s):";
             this.lab_ProportionOrTime.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lab_TechnologyName
@@ -211,9 +211,9 @@
             this.label1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.label1.Location = new System.Drawing.Point(24, 263);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(95, 19);
+            this.label1.Size = new System.Drawing.Size(125, 19);
             this.label1.TabIndex = 48;
-            this.label1.Text = "抽液时间:";
+            this.label1.Text = "抽液时间(s):";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txt_StartingWavelength
@@ -291,9 +291,9 @@
             this.label5.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.label5.Location = new System.Drawing.Point(23, 425);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(76, 19);
+            this.label5.Size = new System.Drawing.Size(106, 19);
             this.label5.TabIndex = 56;
-            this.label5.Text = "加药量:";
+            this.label5.Text = "加药量(g):";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // ABSStep

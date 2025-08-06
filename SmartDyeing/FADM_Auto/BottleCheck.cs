@@ -325,6 +325,7 @@ namespace SmartDyeing.FADM_Auto
         private int MyABSDripCheckProcess(int i_bottleNo, bool b_drip, int i_lowSrart)
         {
             int i_xStart = 0, i_yStart = 0;
+            int i_mRes = -1;
             if (Communal._b_isGetWetClamp)
             {
                 //3.放夹子
@@ -376,18 +377,30 @@ namespace SmartDyeing.FADM_Auto
             //}
 
             //移动到母液瓶
-            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找1号(吸光度杯)");
-            FADM_Object.Communal._i_optBottleNum = i_bottleNo;
-            int i_mRes = MyModbusFun.TargetMove(10, 1, 0);
-            if (-2 == i_mRes)
-                throw new Exception("收到退出消息");
-            FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达1号(吸光度杯)");
+            if (i_bottleNo == 888)
+            {
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找1号(吸光度杯)");
+                FADM_Object.Communal._i_optBottleNum = i_bottleNo;
+                 i_mRes = MyModbusFun.TargetMove(10, 1, 0);
+                if (-2 == i_mRes)
+                    throw new Exception("收到退出消息");
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达1号(吸光度杯)");
+            }
+            else
+            {
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "寻找3号(吸光度杯)");
+                FADM_Object.Communal._i_optBottleNum = i_bottleNo;
+                 i_mRes = MyModbusFun.TargetMove(10, 3, 0);
+                if (-2 == i_mRes)
+                    throw new Exception("收到退出消息");
+                FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", "抵达3号(吸光度杯)");
+            }
 
             //抽液
             DataTable dt_bottle_details = FADM_Object.Communal._fadmSqlserver.GetData(
                 "SELECT SyringeType FROM bottle_details WHERE BottleNum = '" + i_bottleNo + "';");
 
-
+            
 
             if ("小针筒" == Convert.ToString(dt_bottle_details.Rows[0][0]) || "Little Syringe" == Convert.ToString(dt_bottle_details.Rows[0][0]))
             {
@@ -1106,7 +1119,7 @@ namespace SmartDyeing.FADM_Auto
         {
             FADM_Object.Communal._fadmSqlserver.InsertRun("RobotHand", i_bottleNo + "号母液瓶针检启动");
             int iRes;
-            if (i_bottleNo == 999)
+            if (i_bottleNo == 999 || i_bottleNo == 888)
             {
                 iRes = MyABSDripCheckProcess(i_bottleNo, b_drip, i_lowSrart);
             }

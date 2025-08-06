@@ -497,6 +497,12 @@ namespace SmartDyeing.FADM_Control
                     {
                         s_str = (" AssistantCode = '" + txt_Record_CupNum.Text + "' AND");
                     }
+
+                    if (txt_RecordBottleNum.Text != null && txt_RecordBottleNum.Text != "")
+                    {
+                        s_str = (" BottleNum = '" + txt_RecordBottleNum.Text + "' AND");
+                    }
+
                     if (dt_Record_Start.Text != null && dt_Record_Start.Text != "")
                     {
                         s_str += (" FinishTime >= '" + dt_Record_Start.Text + "' AND");
@@ -505,6 +511,8 @@ namespace SmartDyeing.FADM_Control
                     {
                         return;
                     }
+
+
 
                     if (dt_Record_End.Text != null && dt_Record_End.Text != "")
                     {
@@ -561,6 +569,7 @@ namespace SmartDyeing.FADM_Control
                 txt_Record_CupNum.Enabled = false;
                 dt_Record_Start.Enabled = false;
                 dt_Record_End.Enabled = false;
+                txt_RecordBottleNum.Enabled = false;
                 //btn_Record_Delete.Visible = false;
             }
         }
@@ -572,6 +581,7 @@ namespace SmartDyeing.FADM_Control
                 txt_Record_CupNum.Enabled = true;
                 dt_Record_Start.Enabled = true;
                 dt_Record_End.Enabled = true;
+                txt_RecordBottleNum.Enabled = true;
 
                 if (FADM_Object.Communal._s_operator == "管理用户" || FADM_Object.Communal._s_operator == "工程师")
                 {
@@ -587,6 +597,7 @@ namespace SmartDyeing.FADM_Control
                 txt_Record_CupNum.Enabled = false;
                 dt_Record_Start.Enabled = false;
                 dt_Record_End.Enabled = false;
+                txt_RecordBottleNum.Enabled = false;
                 //btn_Record_Delete.Visible = false;
             }
         }
@@ -614,6 +625,7 @@ namespace SmartDyeing.FADM_Control
                 label16.Text = "";
                 textBox4.Text = "";
                 txt_BaseData.Text = "";
+                textBox1.Text = "";
 
                 if (chart.Series.Count > 0)
                 {
@@ -638,11 +650,17 @@ namespace SmartDyeing.FADM_Control
                     i_end = Convert.ToInt32(dt_history_abs.Rows[0]["EndWave"]);
                     i_int = Convert.ToInt32(dt_history_abs.Rows[0]["IntWave"]);
 
-                    string s_result = dt_history_abs.Rows[0]["Result"] is DBNull ? "" : dt_history_abs.Rows[0]["Result"].ToString();
-                    if (s_result.Length > 4)
-                        textBox1.Text = s_result.Substring(0, 4);
-                    else
-                        textBox1.Text = s_result;
+                    //string s_result = dt_history_abs.Rows[0]["Result"] is DBNull ? "" : dt_history_abs.Rows[0]["Result"].ToString();
+                    //if (s_result.Length > 4)
+                    //    textBox1.Text = s_result.Substring(0, 4);
+                    //else
+                    //    textBox1.Text = s_result;
+                    if (!(dt_history_abs.Rows[0]["TotalTime"] is DBNull))
+                    {
+                        string s_temp = Convert.ToInt32(dt_history_abs.Rows[0]["TotalTime"]) / 60 / 60 + ":" + Convert.ToInt32(dt_history_abs.Rows[0]["TotalTime"]) % (60 * 60) / 60 + ":" + Convert.ToInt32(dt_history_abs.Rows[0]["TotalTime"]) % (60 * 60) % 60;
+                        textBox1.Text = s_temp;
+                    }
+
                     textBox3.Text = dt_history_abs.Rows[0]["RealSampleDosage"].ToString();
                     textBox2.Text = dt_history_abs.Rows[0]["RealAdditivesDosage"].ToString();
 
@@ -690,61 +708,132 @@ namespace SmartDyeing.FADM_Control
                                 textBox4.Text = dt_assistant_details.Rows[0]["AssistantName"].ToString();
                             }
 
-                            string s_data1 = dt_assistant_details.Rows[0]["Abs"] is DBNull ? "" : dt_assistant_details.Rows[0]["Abs"].ToString();
+                            string s_data1;
+                            if (dt_history_abs.Rows[0]["CupNum"].ToString() == "2")
+                            {
+                                s_data1 = dt_assistant_details.Rows[0]["Abs"] is DBNull ? "" : dt_assistant_details.Rows[0]["Abs"].ToString();
+                            }
+                            else
+                            {
+                                s_data1 = dt_assistant_details.Rows[0]["Abs2"] is DBNull ? "" : dt_assistant_details.Rows[0]["Abs2"].ToString();
+                            }
                             if (s_data1 != "")
                             {
                                 string s_L = dt_history_abs.Rows[0]["L"] is DBNull ? "" : dt_history_abs.Rows[0]["L"].ToString();
-                                if (!(dt_history_abs.Rows[0]["L"] is DBNull) && !(dt_assistant_details.Rows[0]["L"] is DBNull))
+                                if (dt_history_abs.Rows[0]["CupNum"].ToString() == "2")
                                 {
-                                    double db_dL = Convert.ToDouble(dt_history_abs.Rows[0]["L"].ToString()) - Convert.ToDouble(dt_assistant_details.Rows[0]["L"].ToString());
-                                    txt_dL.Text = db_dL.ToString("f2");
-                                    if(Math.Abs(db_dL) >0.3)
+                                    if (!(dt_history_abs.Rows[0]["L"] is DBNull) && !(dt_assistant_details.Rows[0]["L"] is DBNull))
                                     {
-                                        label15.Text = "不合格";
-                                        label15.BackColor = Color.Red;
+                                        double db_dL = Convert.ToDouble(dt_history_abs.Rows[0]["L"].ToString()) - Convert.ToDouble(dt_assistant_details.Rows[0]["L"].ToString());
+                                        txt_dL.Text = db_dL.ToString("f2");
+                                        //if(Math.Abs(db_dL) >0.3)
+                                        //{
+                                        //    label15.Text = "不合格";
+                                        //    label15.BackColor = Color.Red;
+
+                                        //}
+                                        //else
+                                        //{
+                                        //    label15.Text = "合格";
+                                        //    label15.BackColor = Color.Lime;
+                                        //}
 
                                     }
-                                    else
-                                    {
-                                        label15.Text = "合格";
-                                        label15.BackColor = Color.Lime;
-                                    }
-                                    
                                 }
-
-                                string s_A = dt_history_abs.Rows[0]["A"] is DBNull ? "" : dt_history_abs.Rows[0]["A"].ToString();
-                                if (!(dt_history_abs.Rows[0]["A"] is DBNull) && !(dt_assistant_details.Rows[0]["A"] is DBNull))
-                                    txt_dA.Text = (Convert.ToDouble(dt_history_abs.Rows[0]["A"].ToString()) - Convert.ToDouble(dt_assistant_details.Rows[0]["A"].ToString())).ToString("f2");
-                                string s_B = dt_history_abs.Rows[0]["B"] is DBNull ? "" : dt_history_abs.Rows[0]["B"].ToString();
-                                if (!(dt_history_abs.Rows[0]["B"] is DBNull) && !(dt_assistant_details.Rows[0]["B"] is DBNull))
-                                    txt_dB.Text = (Convert.ToDouble(dt_history_abs.Rows[0]["B"].ToString()) - Convert.ToDouble(dt_assistant_details.Rows[0]["B"].ToString())).ToString("f2");
-                                if (!(dt_history_abs.Rows[0]["L"] is DBNull) && !(dt_assistant_details.Rows[0]["L"] is DBNull)
-                                    && !(dt_history_abs.Rows[0]["A"] is DBNull) && !(dt_assistant_details.Rows[0]["A"] is DBNull)
-                                    && !(dt_history_abs.Rows[0]["B"] is DBNull) && !(dt_assistant_details.Rows[0]["B"] is DBNull))
+                                else
                                 {
-                                    double d_cmc = MyAbsorbance.CalculateCMC(Convert.ToDouble(dt_assistant_details.Rows[0]["L"].ToString()), Convert.ToDouble(dt_assistant_details.Rows[0]["A"].ToString()), Convert.ToDouble(dt_assistant_details.Rows[0]["B"].ToString()), Convert.ToDouble(dt_history_abs.Rows[0]["L"].ToString()), Convert.ToDouble(dt_history_abs.Rows[0]["A"].ToString()), Convert.ToDouble(dt_history_abs.Rows[0]["B"].ToString()), 2, 1);
-                                    txt_dE.Text = d_cmc.ToString("f2");
-                                    if (Math.Abs(d_cmc) > 0.3)
+                                    if (!(dt_history_abs.Rows[0]["L"] is DBNull) && !(dt_assistant_details.Rows[0]["L2"] is DBNull))
                                     {
-                                        label16.Text = "不合格";
-                                        label16.BackColor = Color.Red;
+                                        double db_dL = Convert.ToDouble(dt_history_abs.Rows[0]["L"].ToString()) - Convert.ToDouble(dt_assistant_details.Rows[0]["L2"].ToString());
+                                        txt_dL.Text = db_dL.ToString("f2");
+                                        //if(Math.Abs(db_dL) >0.3)
+                                        //{
+                                        //    label15.Text = "不合格";
+                                        //    label15.BackColor = Color.Red;
+
+                                        //}
+                                        //else
+                                        //{
+                                        //    label15.Text = "合格";
+                                        //    label15.BackColor = Color.Lime;
+                                        //}
 
                                     }
-                                    else
+                                }
+                                if (dt_history_abs.Rows[0]["CupNum"].ToString() == "2")
+                                {
+                                    string s_A = dt_history_abs.Rows[0]["A"] is DBNull ? "" : dt_history_abs.Rows[0]["A"].ToString();
+                                    if (!(dt_history_abs.Rows[0]["A"] is DBNull) && !(dt_assistant_details.Rows[0]["A"] is DBNull))
+                                        txt_dA.Text = (Convert.ToDouble(dt_history_abs.Rows[0]["A"].ToString()) - Convert.ToDouble(dt_assistant_details.Rows[0]["A"].ToString())).ToString("f2");
+                                    string s_B = dt_history_abs.Rows[0]["B"] is DBNull ? "" : dt_history_abs.Rows[0]["B"].ToString();
+                                    if (!(dt_history_abs.Rows[0]["B"] is DBNull) && !(dt_assistant_details.Rows[0]["B"] is DBNull))
+                                        txt_dB.Text = (Convert.ToDouble(dt_history_abs.Rows[0]["B"].ToString()) - Convert.ToDouble(dt_assistant_details.Rows[0]["B"].ToString())).ToString("f2");
+                                    if (!(dt_history_abs.Rows[0]["L"] is DBNull) && !(dt_assistant_details.Rows[0]["L"] is DBNull)
+                                        && !(dt_history_abs.Rows[0]["A"] is DBNull) && !(dt_assistant_details.Rows[0]["A"] is DBNull)
+                                        && !(dt_history_abs.Rows[0]["B"] is DBNull) && !(dt_assistant_details.Rows[0]["B"] is DBNull))
                                     {
-                                        label16.Text = "合格";
-                                        label16.BackColor = Color.Lime;
+                                        double d_cmc = MyAbsorbance.CalculateCMC(Convert.ToDouble(dt_assistant_details.Rows[0]["L"].ToString()), Convert.ToDouble(dt_assistant_details.Rows[0]["A"].ToString()), Convert.ToDouble(dt_assistant_details.Rows[0]["B"].ToString()), Convert.ToDouble(dt_history_abs.Rows[0]["L"].ToString()), Convert.ToDouble(dt_history_abs.Rows[0]["A"].ToString()), Convert.ToDouble(dt_history_abs.Rows[0]["B"].ToString()), 2, 1);
+                                        txt_dE.Text = d_cmc.ToString("f2");
+                                        //if (Math.Abs(d_cmc) > 0.3)
+                                        //{
+                                        //    label16.Text = "不合格";
+                                        //    label16.BackColor = Color.Red;
+
+                                        //}
+                                        //else
+                                        //{
+                                        //    label16.Text = "合格";
+                                        //    label16.BackColor = Color.Lime;
+                                        //}
+                                    }
+                                }
+                                else
+                                {
+                                    string s_A = dt_history_abs.Rows[0]["A"] is DBNull ? "" : dt_history_abs.Rows[0]["A"].ToString();
+                                    if (!(dt_history_abs.Rows[0]["A"] is DBNull) && !(dt_assistant_details.Rows[0]["A2"] is DBNull))
+                                        txt_dA.Text = (Convert.ToDouble(dt_history_abs.Rows[0]["A"].ToString()) - Convert.ToDouble(dt_assistant_details.Rows[0]["A2"].ToString())).ToString("f2");
+                                    string s_B = dt_history_abs.Rows[0]["B"] is DBNull ? "" : dt_history_abs.Rows[0]["B"].ToString();
+                                    if (!(dt_history_abs.Rows[0]["B"] is DBNull) && !(dt_assistant_details.Rows[0]["B2"] is DBNull))
+                                        txt_dB.Text = (Convert.ToDouble(dt_history_abs.Rows[0]["B"].ToString()) - Convert.ToDouble(dt_assistant_details.Rows[0]["B2"].ToString())).ToString("f2");
+                                    if (!(dt_history_abs.Rows[0]["L"] is DBNull) && !(dt_assistant_details.Rows[0]["L2"] is DBNull)
+                                        && !(dt_history_abs.Rows[0]["A"] is DBNull) && !(dt_assistant_details.Rows[0]["A2"] is DBNull)
+                                        && !(dt_history_abs.Rows[0]["B"] is DBNull) && !(dt_assistant_details.Rows[0]["B2"] is DBNull))
+                                    {
+                                        double d_cmc = MyAbsorbance.CalculateCMC(Convert.ToDouble(dt_assistant_details.Rows[0]["L2"].ToString()), Convert.ToDouble(dt_assistant_details.Rows[0]["A2"].ToString()), Convert.ToDouble(dt_assistant_details.Rows[0]["B2"].ToString()), Convert.ToDouble(dt_history_abs.Rows[0]["L"].ToString()), Convert.ToDouble(dt_history_abs.Rows[0]["A"].ToString()), Convert.ToDouble(dt_history_abs.Rows[0]["B"].ToString()), 2, 1);
+                                        txt_dE.Text = d_cmc.ToString("f2");
+                                        //if (Math.Abs(d_cmc) > 0.3)
+                                        //{
+                                        //    label16.Text = "不合格";
+                                        //    label16.BackColor = Color.Red;
+
+                                        //}
+                                        //else
+                                        //{
+                                        //    label16.Text = "合格";
+                                        //    label16.BackColor = Color.Lime;
+                                        //}
                                     }
                                 }
 
                                 s_data1 = s_data1.Substring(0, s_data1.Length - 2);
-
-                               if(!(dt_assistant_details.Rows[0]["L"] is DBNull))
-                                txt_SL.Text = Convert.ToDouble(dt_assistant_details.Rows[0]["L"].ToString()).ToString("f2");
-                                if (!(dt_assistant_details.Rows[0]["A"] is DBNull))
-                                    txt_SA.Text = Convert.ToDouble(dt_assistant_details.Rows[0]["A"].ToString()).ToString("f2");
-                                if (!(dt_assistant_details.Rows[0]["B"] is DBNull))
-                                    txt_SB.Text = Convert.ToDouble(dt_assistant_details.Rows[0]["B"].ToString()).ToString("f2");
+                                if (dt_history_abs.Rows[0]["CupNum"].ToString() == "2")
+                                {
+                                    if (!(dt_assistant_details.Rows[0]["L"] is DBNull))
+                                        txt_SL.Text = Convert.ToDouble(dt_assistant_details.Rows[0]["L"].ToString()).ToString("f2");
+                                    if (!(dt_assistant_details.Rows[0]["A"] is DBNull))
+                                        txt_SA.Text = Convert.ToDouble(dt_assistant_details.Rows[0]["A"].ToString()).ToString("f2");
+                                    if (!(dt_assistant_details.Rows[0]["B"] is DBNull))
+                                        txt_SB.Text = Convert.ToDouble(dt_assistant_details.Rows[0]["B"].ToString()).ToString("f2");
+                                }
+                                else
+                                {
+                                    if (!(dt_assistant_details.Rows[0]["L"] is DBNull))
+                                        txt_SL.Text = Convert.ToDouble(dt_assistant_details.Rows[0]["L2"].ToString()).ToString("f2");
+                                    if (!(dt_assistant_details.Rows[0]["A"] is DBNull))
+                                        txt_SA.Text = Convert.ToDouble(dt_assistant_details.Rows[0]["A2"].ToString()).ToString("f2");
+                                    if (!(dt_assistant_details.Rows[0]["B"] is DBNull))
+                                        txt_SB.Text = Convert.ToDouble(dt_assistant_details.Rows[0]["B2"].ToString()).ToString("f2");
+                                }
                             }
                             string[] sa_arr1 = s_data1.Split('/');
 
@@ -775,9 +864,11 @@ namespace SmartDyeing.FADM_Control
                                     return;
                                 }
                             }
+                            if (dt_history_abs.Rows[0]["CupNum"].ToString() == "2")
+                                s_stand = dt_assistant_details.Rows[0]["Abs"] is DBNull ? "" : dt_assistant_details.Rows[0]["Abs"].ToString();
+                            else
+                                s_stand = dt_assistant_details.Rows[0]["Abs2"] is DBNull ? "" : dt_assistant_details.Rows[0]["Abs2"].ToString();
 
-                            s_stand = dt_assistant_details.Rows[0]["Abs"] is DBNull ? "" : dt_assistant_details.Rows[0]["Abs"].ToString();
-                            
                             int i_index = 0;
                             for (int i = 0; i < sa_arr.Count(); i++)
                             {
@@ -1169,11 +1260,18 @@ namespace SmartDyeing.FADM_Control
                                     DataTable dt_history_abs = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
                                     if (dt_history_abs.Rows.Count > 0)
                                     {
+                                        if (dt_history_abs.Rows[0]["CupNum"].ToString() == "2")
+                                        {
 
-                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Update assistant_details Set Abs = '" + dt_history_abs.Rows[0]["Abs"].ToString() + "',L=" + dt_history_abs.Rows[0]["L"].ToString() + ",A=" + dt_history_abs.Rows[0]["A"].ToString() + ",B=" + dt_history_abs.Rows[0]["B"].ToString() + " where AssistantCode = '" + dt_bottle.Rows[0]["AssistantCode"].ToString() + "';");
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData("Update assistant_details Set Abs = '" + dt_history_abs.Rows[0]["Abs"].ToString() + "',L=" + dt_history_abs.Rows[0]["L"].ToString() + ",A=" + dt_history_abs.Rows[0]["A"].ToString() + ",B=" + dt_history_abs.Rows[0]["B"].ToString() + " where AssistantCode = '" + dt_bottle.Rows[0]["AssistantCode"].ToString() + "';");
+                                        }
+                                        else
+                                        {
+                                            FADM_Object.Communal._fadmSqlserver.ReviseData("Update assistant_details Set Abs2 = '" + dt_history_abs.Rows[0]["Abs"].ToString() + "',L2=" + dt_history_abs.Rows[0]["L"].ToString() + ",A2=" + dt_history_abs.Rows[0]["A"].ToString() + ",B2=" + dt_history_abs.Rows[0]["B"].ToString() + " where AssistantCode = '" + dt_bottle.Rows[0]["AssistantCode"].ToString() + "';");
+                                        }
 
                                         //删除原来的标样
-                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Update history_abs Set Stand = 0  where AssistantCode = '" + s_Ass + "';");
+                                        FADM_Object.Communal._fadmSqlserver.ReviseData("Update history_abs Set Stand = 0  where AssistantCode = '" + s_Ass + "' And CupNum ="+ s_cupNum+";");
 
                                         //标记为标样
                                         FADM_Object.Communal._fadmSqlserver.ReviseData("Update history_abs Set Stand = 1  WHERE FinishTime = '" + s_finishTime + "' And CupNum = " + s_cupNum + " And BottleNum =" + s_bottleNum + ";");

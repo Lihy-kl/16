@@ -1,22 +1,24 @@
-﻿using System;
+﻿using com.google.zxing;
+using Lib_File;
+using Newtonsoft.Json.Linq;
+using SmartDyeing.FADM_Auto;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Runtime.InteropServices;
+using System.Speech.Synthesis;
 using System.Text;
 using System.Threading;
-using System.Windows.Forms;
-using System.Runtime.InteropServices;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.Speech.Synthesis;
-using static System.Net.Mime.MediaTypeNames;
-using SmartDyeing.FADM_Auto;
 using System.Threading.Tasks;
-using System.IO;
-using System.Net;
+using System.Windows.Forms;
 using System.Xml.Linq;
-using Newtonsoft.Json.Linq;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
-using com.google.zxing;
-using System.Data;
 
 namespace SmartDyeing.FADM_Object
 {
@@ -336,7 +338,7 @@ namespace SmartDyeing.FADM_Object
                                 _i_alarm_Repeat = 1;
                                 return;
                             }
-                            else if (i_type == 22)
+                            else if (i_type == 22|| i_type == 77)
                             {
                                 //什么都不需要做，只是提示
                             }
@@ -460,6 +462,23 @@ namespace SmartDyeing.FADM_Object
                                 else if (i_type == 22)
                                 {
                                     //什么都不需要做，只是提示
+                                }
+                                else if (i_type == 77)
+                                {
+                                    Dye._cup_Temps[i_cupNum-1]._i_CurrentCount = 0;
+                                    Dye._cup_Temps[i_cupNum-1]._i_OverlimitCount = 0;
+                                    Dye._cup_Temps[i_cupNum-1]._i_LockSignalsCount = 0;
+                                    if (Communal._dic_first_second[i_cupNum] > 0)
+                                    {
+                                        Dye._cup_Temps[Communal._dic_first_second[i_cupNum] - 1]._i_CurrentCount = 0;
+                                        Dye._cup_Temps[Communal._dic_first_second[i_cupNum] - 1]._i_OverlimitCount = 0;
+                                        Dye._cup_Temps[Communal._dic_first_second[i_cupNum] - 1]._i_LockSignalsCount = 0;
+                                    }
+                                    //重新下发继续
+                                    if (!FADM_Object.Communal._lis_ReSendCup.Contains(i_cupNum))
+                                    {
+                                        FADM_Object.Communal._lis_ReSendCup.Add(i_cupNum);
+                                    }
                                 }
                                 else
                                 {
@@ -585,6 +604,16 @@ namespace SmartDyeing.FADM_Object
                                 {
                                     //什么都不需要做，只是提示
                                 }
+                                else if (i_type == 77)
+                                {
+                                    //直接把数据库数据清除
+                                    Finish(i_cupNum);
+                                    if(Communal._dic_first_second[i_cupNum]>0)
+                                    {
+                                        Finish(Communal._dic_first_second[i_cupNum]);
+                                    }
+
+                                }
                                 //7滴液过程加水在外边处理
 
                             }
@@ -622,6 +651,101 @@ namespace SmartDyeing.FADM_Object
                     goto label1;
                 }
             }
+        }
+
+        private void Finish(int obj_cupNo)
+        {
+
+
+            DataTable dt_drop_head = FADM_Object.Communal._fadmSqlserver.GetData("SELECT * FROM drop_head WHERE CupNum = " + obj_cupNo + ";");
+            if (dt_drop_head.Rows.Count > 0)
+            {
+                if (dt_drop_head.Rows[0]["BatchName"] != System.DBNull.Value)
+                {
+                    FADM_Object.Communal._b_finshRun = false;
+                    //染色正常结束
+                    //复位当前杯使用状态
+                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                        FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", obj_cupNo + "号配液杯染固色完成");
+                    else
+                        FADM_Object.Communal._fadmSqlserver.InsertRun("Dail", "Dyeing and fixation of solution cup " + obj_cupNo + " completed");
+
+                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                      " UPDATE dye_details SET FinishTime = '" + DateTime.Now + "', Finish = 1  WHERE CupNum = " +
+                      obj_cupNo + "  and StepNum = (select MAX(StepNum) from dye_details where CupNum = " + obj_cupNo + ");");
+
+                    //拷贝到历史表
+                    DataTable dt_Temp = FADM_Object.Communal._fadmSqlserver.GetData(
+                         "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'dye_details';");
+                    string s_columnDetails = null;
+                    foreach (DataRow row in dt_Temp.Rows)
+                    {
+                        if (Convert.ToString(row[0]) != "Cooperate" && Convert.ToString(row[0]) != "NeedPulse" && Convert.ToString(row[0]) != "Choose"
+                            && Convert.ToString(row[0]) != "WaterFinish")
+                            s_columnDetails += Convert.ToString(row[0]) + ", ";
+                    }
+                    s_columnDetails = s_columnDetails.Remove(s_columnDetails.Length - 2);
+
+                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                        "INSERT INTO history_dye (" + s_columnDetails + ") (SELECT " + s_columnDetails + " FROM dye_details " +
+                        "WHERE CupNum =" + obj_cupNo + " AND BatchName != '0') ;");
+                    DataTable dt_drop_head2 = FADM_Object.Communal._fadmSqlserver.GetData(
+                          "SELECT * FROM drop_head WHERE CupNum =" + obj_cupNo + ";");
+                    if (dt_drop_head2.Rows.Count > 0)
+                    {
+
+                        string s_temp = Txt.ReadTXT(Convert.ToInt32(obj_cupNo));
+                        if (!string.IsNullOrEmpty(s_temp))
+                            FADM_Object.Communal._fadmSqlserver.SetImage(s_temp, Convert.ToInt32(obj_cupNo), Convert.ToString(dt_drop_head2.Rows[0]["BatchName"]));
+
+                    }
+
+
+                    string s_txt = Txt.ReadMarkTXT(Convert.ToInt32(obj_cupNo));
+
+                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                        "UPDATE history_head SET MarkStep = '" + s_txt + "' WHERE CupNum = " + obj_cupNo + " AND BatchName = '" + dt_drop_head2.Rows[0]["BatchName"].ToString() + "';");
+                }
+
+                //清空表
+                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                     "DELETE FROM drop_head WHERE CupNum =" + obj_cupNo + " AND BatchName != '0' ;");
+                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                    "DELETE FROM drop_details WHERE CupNum =" + obj_cupNo + " AND BatchName != '0';");
+                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                    "DELETE FROM dye_details WHERE CupNum =" + obj_cupNo + " AND BatchName != '0';");
+
+
+                Txt.DeleteTXT(Convert.ToInt32(obj_cupNo));
+                Txt.DeleteMarkTXT(Convert.ToInt32(obj_cupNo));
+
+
+
+                FADM_Control.Formula.P_bl_update = true;
+                //FADM_Object.Communal._fadmSqlserver.InsertSpeechInfo(i_cupNo + "号配液杯染固色完成");
+
+                //FADM_Object.Communal._fadmSqlserver.DeleteSpeechInfo(i_cupNo + "号配液杯染固色完成");
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                {
+                    string s_insert = Lib_Card.CardObject.InsertD(obj_cupNo + "号配液杯染固色完成", "Dye");
+                    Lib_Card.CardObject.DeleteD(s_insert);
+                }
+                else
+                {
+                    string s_insert = Lib_Card.CardObject.InsertD(obj_cupNo + " The dyeing and fixing of the solution cup have been completed", "Dye");
+                    Lib_Card.CardObject.DeleteD(s_insert);
+                }
+                FADM_Object.Communal._b_finshRun = true;
+
+            }
+            //复位当前杯使用状态
+            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                "UPDATE cup_details SET FormulaCode = null, " +
+                "DyeingCode = null, IsUsing = 0, Statues = '待机', " +
+                "StartTime = null, SetTemp = null, StepNum = null, TotalWeight = null, " +
+                "TotalStep = null, TechnologyName = null, StepStartTime = null, SetTime = null,RecordIndex = 0, Cooperate = 0 WHERE CupNum = " + obj_cupNo + " AND Statues != '下线';");
+            Dye._cup_Temps[Convert.ToInt32(obj_cupNo) - 1]._b_finish = false;
+
         }
 
         private void kill()
@@ -876,12 +1000,105 @@ namespace SmartDyeing.FADM_Object
                         }
                         else
                         {
-                            //忽略过期等，直接操作
-                            FADM_Object.Communal._fadmSqlserver.ReviseData(
+                            if (!FADM_Object.Communal._b_isOutDripAllow)
+                            {
+                                //判断是否允许滴液,重新查询，看看是否过期
+                                //判断当前母液瓶液量是否足够
+                                string s_sql = "SELECT bottle_details.*,assistant_details.AllowMinColoringConcentration,assistant_details.AllowMaxColoringConcentration," +
+                                    "assistant_details.TermOfValidity  " +
+                                              "FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE bottle_details.BottleNum = " + i_bottleNo + ";";
+                                DataTable dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                int i_adjust = Convert.ToInt32(dt_temp.Rows[0]["AdjustValue"]);
+                                bool b_checkSuccess = (Convert.ToString(dt_temp.Rows[0]["AdjustSuccess"]) == "1");
+                                string s_syringeType = Convert.ToString(dt_temp.Rows[0]["SyringeType"]);
+
+                                double d_blCurrentWeight = Convert.ToDouble(dt_temp.Rows[0]["CurrentWeight"]);
+
+                                double d_blCompCoefficient = Convert.ToDouble(dt_temp.Rows[0]["AllowMinColoringConcentration"]);
+                                double d_blCompConstant = Convert.ToDouble(dt_temp.Rows[0]["AllowMaxColoringConcentration"]);
+                                string s_termOfValidity = dt_temp.Rows[0]["TermOfValidity"].ToString();
+
+                                DateTime timeA = Convert.ToDateTime(dt_temp.Rows[0]["BrewingData"].ToString());
+                                DateTime timeB = DateTime.Now; //获取当前时间
+                                TimeSpan ts = timeB - timeA; //计算时间差
+                                string s_time = ts.TotalHours.ToString(); //将时间差转换为小时
+                                string s_time2 = ts.TotalMinutes.ToString();
+
+
+
+                                if (Convert.ToDouble(s_time) > Convert.ToDouble(s_termOfValidity) && FADM_Object.Communal._b_isOutDrip)
+                                {
+                                    //还过期，就当选择是，重新报警
+                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                               "UPDATE dye_details SET  Cooperate = 1 WHERE  Cooperate = " + i_oldSign + " AND BottleNum = " + i_bottleNo + " ;");
+
+                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                           "UPDATE dye_details SET  Choose = 0 WHERE  Choose = 2 AND BottleNum = " + i_bottleNo + " ;");
+                                }
+                                else
+                                {
+                                    //忽略过期等，直接操作
+                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                   "UPDATE dye_details SET  Cooperate = 1,Choose = 1 WHERE  Cooperate = " + i_oldSign + " AND BottleNum = " + i_bottleNo + " ;");
+
+                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                           "UPDATE dye_details SET  Choose = 1 WHERE  Choose = 2 AND BottleNum = " + i_bottleNo + " ;");
+                                }
+
+                                
+
+
+                            }
+                            else if (!FADM_Object.Communal._b_isLowDripAllow)
+                            {
+
+                                //判断是否允许滴液,重新查询，看看是否过期
+                                //判断当前母液瓶液量是否足够
+                                string s_sql = "SELECT bottle_details.*,assistant_details.AllowMinColoringConcentration,assistant_details.AllowMaxColoringConcentration," +
+                                    "assistant_details.TermOfValidity  " +
+                                              "FROM bottle_details left join assistant_details on bottle_details.AssistantCode = assistant_details.AssistantCode WHERE bottle_details.BottleNum = " + i_bottleNo + ";";
+                                DataTable dt_temp = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                int i_adjust = Convert.ToInt32(dt_temp.Rows[0]["AdjustValue"]);
+                                bool b_checkSuccess = (Convert.ToString(dt_temp.Rows[0]["AdjustSuccess"]) == "1");
+                                string s_syringeType = Convert.ToString(dt_temp.Rows[0]["SyringeType"]);
+
+                                double d_blCurrentWeight = Convert.ToDouble(dt_temp.Rows[0]["CurrentWeight"]);
+
+                                double d_blCompCoefficient = Convert.ToDouble(dt_temp.Rows[0]["AllowMinColoringConcentration"]);
+                                double d_blCompConstant = Convert.ToDouble(dt_temp.Rows[0]["AllowMaxColoringConcentration"]);
+                                string s_termOfValidity = dt_temp.Rows[0]["TermOfValidity"].ToString();
+
+
+
+
+                                if (d_blCurrentWeight <= Lib_Card.Configure.Parameter.Other_Bottle_MinWeight && FADM_Object.Communal._b_isLowDrip)
+                                {
+                                    //还过期，就当选择是，重新报警
+                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                               "UPDATE dye_details SET  Cooperate = 1 WHERE  Cooperate = " + i_oldSign + " AND BottleNum = " + i_bottleNo + " ;");
+
+                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                           "UPDATE dye_details SET  Choose = 0 WHERE  Choose = 2 AND BottleNum = " + i_bottleNo + " ;");
+                                }
+                                else
+                                {
+                                    //忽略过期等，直接操作
+                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                   "UPDATE dye_details SET  Cooperate = 1,Choose = 1 WHERE  Cooperate = " + i_oldSign + " AND BottleNum = " + i_bottleNo + " ;");
+
+                                    FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                           "UPDATE dye_details SET  Choose = 1 WHERE  Choose = 2 AND BottleNum = " + i_bottleNo + " ;");
+                                }
+                            }
+                            else
+                            {
+                                //忽略过期等，直接操作
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(
                                "UPDATE dye_details SET  Cooperate = 1,Choose = 1 WHERE  Cooperate = " + i_oldSign + " AND BottleNum = " + i_bottleNo + " ;");
 
-                            FADM_Object.Communal._fadmSqlserver.ReviseData(
-                                   "UPDATE dye_details SET  Choose = 1 WHERE  Choose = 2 AND BottleNum = " + i_bottleNo + " ;");
+                                FADM_Object.Communal._fadmSqlserver.ReviseData(
+                                       "UPDATE dye_details SET  Choose = 1 WHERE  Choose = 2 AND BottleNum = " + i_bottleNo + " ;");
+                            }
                         }
                         lock (Communal._dic_cup_bottle)
                         {

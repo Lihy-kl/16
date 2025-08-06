@@ -74,8 +74,12 @@ namespace SmartDyeing.FADM_Object
                 lis_head.Add(dt_formula_head.Rows[0]["Handle_Rev5"].ToString());
                 lis_head.Add(dt_formula_head.Rows[0]["Stage"].ToString());
                 lis_head.Add(dt_formula_head.Rows[0]["HandleBRList"].ToString());
-                if (Communal._b_isUseCloth)
+                //if (Communal._b_isUseCloth)
+                if (dt_formula_head.Rows[0]["ClothNum"] is DBNull)
+                    lis_head.Add("0");
+                else
                     lis_head.Add(dt_formula_head.Rows[0]["ClothNum"].ToString());
+                lis_head.Add(dt_formula_head.Rows[0]["IsAutoIn"].ToString());
                 string s_li = dt_formula_head.Rows[0]["HandleBRList"] is DBNull ? "" : dt_formula_head.Rows[0]["HandleBRList"].ToString();
                 if (s_li != "")
                 {
@@ -100,32 +104,32 @@ namespace SmartDyeing.FADM_Object
                 FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
 
                 {
-                    if (Communal._b_isUseCloth)
+                    //if (Communal._b_isUseCloth)
                         // 添加进批次表头
                         s_sql = "INSERT INTO drop_head (" +
                                 " CupNum, FormulaCode, VersionNum, State ,FormulaName, ClothType," +
                                 " Customer, AddWaterChoose, CompoundBoardChoose, ClothWeight, BathRatio, TotalWeight," +
-                                " Operator, CupCode, CreateTime, ObjectAddWaterWeight, TestTubeObjectAddWaterWeight,DyeingCode,Non_AnhydrationWR,AnhydrationWR,HandleBathRatio,Handle_Rev1,Handle_Rev2,Handle_Rev3,Handle_Rev4,Handle_Rev5,Stage,HandleBRList,ClothNum) VALUES(" +
+                                " Operator, CupCode, CreateTime, ObjectAddWaterWeight, TestTubeObjectAddWaterWeight,DyeingCode,Non_AnhydrationWR,AnhydrationWR,HandleBathRatio,Handle_Rev1,Handle_Rev2,Handle_Rev3,Handle_Rev4,Handle_Rev5,Stage,HandleBRList,ClothNum,IsAutoIn) VALUES(" +
                                 " '" + lis_head[0] + "', '" + lis_head[1] + "', '" + lis_head[2] + "'," +
                                 " '" + lis_head[3] + "', '" + lis_head[4] + "', '" + lis_head[5] + "'," +
                                 " '" + lis_head[6] + "', '" + lis_head[7] + "', '" + lis_head[8] + "'," +
                                 " '" + lis_head[9] + "', '" + lis_head[10] + "', '" + lis_head[11] + "'," +
                                " '" + lis_head[12] + "', '" + lis_head[13] + "', '" + lis_head[14] + "'," +
                                 " '" + lis_head[15] + "','" + lis_head[16] + "','" + lis_head[17] + "', '" + lis_head[18] + "', '" + lis_head[19]
-                                         + "', '" + lis_head[20] + "', '" + lis_head[21] + "', '" + lis_head[22] + "', '" + lis_head[23] + "', '" + lis_head[24] + "', '" + lis_head[25] + "', '" + lis_head[26] + "', '" + lis_head[27] + "', '" + lis_head[28] + "');";
-                    else
-                        // 添加进批次表头
-                        s_sql = "INSERT INTO drop_head (" +
-                                " CupNum, FormulaCode, VersionNum, State ,FormulaName, ClothType," +
-                                " Customer, AddWaterChoose, CompoundBoardChoose, ClothWeight, BathRatio, TotalWeight," +
-                                " Operator, CupCode, CreateTime, ObjectAddWaterWeight, TestTubeObjectAddWaterWeight,DyeingCode,Non_AnhydrationWR,AnhydrationWR,HandleBathRatio,Handle_Rev1,Handle_Rev2,Handle_Rev3,Handle_Rev4,Handle_Rev5,Stage,HandleBRList) VALUES(" +
-                                " '" + lis_head[0] + "', '" + lis_head[1] + "', '" + lis_head[2] + "'," +
-                                " '" + lis_head[3] + "', '" + lis_head[4] + "', '" + lis_head[5] + "'," +
-                                " '" + lis_head[6] + "', '" + lis_head[7] + "', '" + lis_head[8] + "'," +
-                                " '" + lis_head[9] + "', '" + lis_head[10] + "', '" + lis_head[11] + "'," +
-                               " '" + lis_head[12] + "', '" + lis_head[13] + "', '" + lis_head[14] + "'," +
-                                " '" + lis_head[15] + "','" + lis_head[16] + "','" + lis_head[17] + "', '" + lis_head[18] + "', '" + lis_head[19]
-                                         + "', '" + lis_head[20] + "', '" + lis_head[21] + "', '" + lis_head[22] + "', '" + lis_head[23] + "', '" + lis_head[24] + "', '" + lis_head[25] + "', '" + lis_head[26] + "', '" + lis_head[27]  + "');";
+                                         + "', '" + lis_head[20] + "', '" + lis_head[21] + "', '" + lis_head[22] + "', '" + lis_head[23] + "', '" + lis_head[24] + "', '" + lis_head[25] + "', '" + lis_head[26] + "', '" + lis_head[27] + "', '" + lis_head[28] + "', '" + lis_head[29] + "');";
+                    //else
+                    //    // 添加进批次表头
+                    //    s_sql = "INSERT INTO drop_head (" +
+                    //            " CupNum, FormulaCode, VersionNum, State ,FormulaName, ClothType," +
+                    //            " Customer, AddWaterChoose, CompoundBoardChoose, ClothWeight, BathRatio, TotalWeight," +
+                    //            " Operator, CupCode, CreateTime, ObjectAddWaterWeight, TestTubeObjectAddWaterWeight,DyeingCode,Non_AnhydrationWR,AnhydrationWR,HandleBathRatio,Handle_Rev1,Handle_Rev2,Handle_Rev3,Handle_Rev4,Handle_Rev5,Stage,HandleBRList) VALUES(" +
+                    //            " '" + lis_head[0] + "', '" + lis_head[1] + "', '" + lis_head[2] + "'," +
+                    //            " '" + lis_head[3] + "', '" + lis_head[4] + "', '" + lis_head[5] + "'," +
+                    //            " '" + lis_head[6] + "', '" + lis_head[7] + "', '" + lis_head[8] + "'," +
+                    //            " '" + lis_head[9] + "', '" + lis_head[10] + "', '" + lis_head[11] + "'," +
+                    //           " '" + lis_head[12] + "', '" + lis_head[13] + "', '" + lis_head[14] + "'," +
+                    //            " '" + lis_head[15] + "','" + lis_head[16] + "','" + lis_head[17] + "', '" + lis_head[18] + "', '" + lis_head[19]
+                    //                     + "', '" + lis_head[20] + "', '" + lis_head[21] + "', '" + lis_head[22] + "', '" + lis_head[23] + "', '" + lis_head[24] + "', '" + lis_head[25] + "', '" + lis_head[26] + "', '" + lis_head[27]  + "');";
                     FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
                 }
 

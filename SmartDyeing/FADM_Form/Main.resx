@@ -136,78 +136,6 @@
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 28</value>
   </data>
-  <data name="MiBrewingProcess.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 26</value>
-  </data>
-  <data name="MiBrewingProcess.Text" xml:space="preserve">
-    <value>染助剂泡制流程</value>
-  </data>
-  <data name="DyeingProcessConfiguration.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 26</value>
-  </data>
-  <data name="DyeingProcessConfiguration.Text" xml:space="preserve">
-    <value>染色工艺配置</value>
-  </data>
-  <data name="PostTreatmentProcessConfiguration.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 26</value>
-  </data>
-  <data name="PostTreatmentProcessConfiguration.Text" xml:space="preserve">
-    <value>后处理工艺配置</value>
-  </data>
-  <data name="DyeingAndFixationProcessConfiguration.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 26</value>
-  </data>
-  <data name="DyeingAndFixationProcessConfiguration.Text" xml:space="preserve">
-    <value>染固色工艺配置</value>
-  </data>
-  <data name="MiDyeingProcess.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 26</value>
-  </data>
-  <data name="MiDyeingProcess.Text" xml:space="preserve">
-    <value>染固色配置流程</value>
-  </data>
-  <data name="MiAssistant.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 26</value>
-  </data>
-  <data name="MiAssistant.Text" xml:space="preserve">
-    <value>染助剂基本资料</value>
-  </data>
-  <data name="MiBottle.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 26</value>
-  </data>
-  <data name="MiBottle.Text" xml:space="preserve">
-    <value>母液瓶基本资料</value>
-  </data>
-  <data name="MiABSProcess.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 26</value>
-  </data>
-  <data name="MiABSProcess.Text" xml:space="preserve">
-    <value>ABS流程</value>
-  </data>
-  <data name="MiCup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 26</value>
-  </data>
-  <data name="MiCup.Text" xml:space="preserve">
-    <value>配液杯基本资料</value>
-  </data>
-  <data name="MiLimitSet.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 26</value>
-  </data>
-  <data name="MiLimitSet.Text" xml:space="preserve">
-    <value>助剂限值基本资料</value>
-  </data>
-  <data name="MiFormulaGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 26</value>
-  </data>
-  <data name="MiFormulaGroup.Text" xml:space="preserve">
-    <value>配方组合基本资料</value>
-  </data>
-  <data name="MiOperator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 26</value>
-  </data>
-  <data name="MiOperator.Text" xml:space="preserve">
-    <value>操作人员基本资料</value>
-  </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="toolStripSplitButton1.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -225,28 +153,40 @@
     <value>基本资料管理</value>
   </data>
   <data name="MiOut1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 26</value>
+    <value>224, 26</value>
   </data>
   <data name="MiOut1.Text" xml:space="preserve">
-    <value>生命周期检查</value>
+    <value>母液过期检查</value>
   </data>
   <data name="MiLow1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 26</value>
+    <value>224, 26</value>
   </data>
   <data name="MiLow1.Text" xml:space="preserve">
-    <value>安全存量检查</value>
+    <value>母液液量低检查</value>
   </data>
   <data name="MiFullDrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 26</value>
+    <value>224, 26</value>
   </data>
   <data name="MiFullDrip1.Text" xml:space="preserve">
     <value>满量程滴液</value>
   </data>
   <data name="MiDye.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 26</value>
+    <value>224, 26</value>
   </data>
   <data name="MiDye.Text" xml:space="preserve">
     <value>打板机参数</value>
+  </data>
+  <data name="MiOutAllowDrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>224, 26</value>
+  </data>
+  <data name="MiOutAllowDrip.Text" xml:space="preserve">
+    <value>母液过期允许滴液</value>
+  </data>
+  <data name="MiLowAllowDrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>224, 26</value>
+  </data>
+  <data name="MiLowAllowDrip.Text" xml:space="preserve">
+    <value>母液液量低允许滴液</value>
   </data>
   <data name="p.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -262,24 +202,6 @@
   </data>
   <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 28</value>
-  </data>
-  <data name="MiDebug.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 26</value>
-  </data>
-  <data name="MiDebug.Text" xml:space="preserve">
-    <value>调试页面</value>
-  </data>
-  <data name="MiRun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 26</value>
-  </data>
-  <data name="MiRun.Text" xml:space="preserve">
-    <value>运行页面</value>
-  </data>
-  <data name="MiAlarm.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 26</value>
-  </data>
-  <data name="MiAlarm.Text" xml:space="preserve">
-    <value>报警页面</value>
   </data>
   <data name="toolStripSplitButton2.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -374,30 +296,6 @@
   <data name="toolStripSeparator8.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 28</value>
   </data>
-  <data name="MiHistoryPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 26</value>
-  </data>
-  <data name="MiHistoryPage.Text" xml:space="preserve">
-    <value>历史记录页面</value>
-  </data>
-  <data name="MiFormulaPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 26</value>
-  </data>
-  <data name="MiFormulaPage.Text" xml:space="preserve">
-    <value>配方记录页面</value>
-  </data>
-  <data name="MiBrewPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 26</value>
-  </data>
-  <data name="MiBrewPage.Text" xml:space="preserve">
-    <value>开料记录页面</value>
-  </data>
-  <data name="MiAbsPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 26</value>
-  </data>
-  <data name="MiAbsPage.Text" xml:space="preserve">
-    <value>吸光度记录页面</value>
-  </data>
   <data name="toolStripSplitButton4.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft YaHei UI, 12pt</value>
   </data>
@@ -442,18 +340,6 @@
   </data>
   <data name="toolStripSeparator7.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 28</value>
-  </data>
-  <data name="MiAbort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 26</value>
-  </data>
-  <data name="MiAbort.Text" xml:space="preserve">
-    <value>关于</value>
-  </data>
-  <data name="MiRegister.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 26</value>
-  </data>
-  <data name="MiRegister.Text" xml:space="preserve">
-    <value>注册</value>
   </data>
   <data name="toolStripSplitButton3.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft YaHei UI, 12pt</value>
@@ -537,6 +423,132 @@
   <data name="&gt;&gt;toolStrip1.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="MiBrewingProcess.Size" type="System.Drawing.Size, System.Drawing">
+    <value>208, 26</value>
+  </data>
+  <data name="MiBrewingProcess.Text" xml:space="preserve">
+    <value>染助剂泡制流程</value>
+  </data>
+  <data name="MiDyeingProcess.Size" type="System.Drawing.Size, System.Drawing">
+    <value>208, 26</value>
+  </data>
+  <data name="MiDyeingProcess.Text" xml:space="preserve">
+    <value>染固色配置流程</value>
+  </data>
+  <data name="DyeingProcessConfiguration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 26</value>
+  </data>
+  <data name="DyeingProcessConfiguration.Text" xml:space="preserve">
+    <value>染色工艺配置</value>
+  </data>
+  <data name="PostTreatmentProcessConfiguration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 26</value>
+  </data>
+  <data name="PostTreatmentProcessConfiguration.Text" xml:space="preserve">
+    <value>后处理工艺配置</value>
+  </data>
+  <data name="DyeingAndFixationProcessConfiguration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 26</value>
+  </data>
+  <data name="DyeingAndFixationProcessConfiguration.Text" xml:space="preserve">
+    <value>染固色工艺配置</value>
+  </data>
+  <data name="MiAssistant.Size" type="System.Drawing.Size, System.Drawing">
+    <value>208, 26</value>
+  </data>
+  <data name="MiAssistant.Text" xml:space="preserve">
+    <value>染助剂基本资料</value>
+  </data>
+  <data name="MiBottle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>208, 26</value>
+  </data>
+  <data name="MiBottle.Text" xml:space="preserve">
+    <value>母液瓶基本资料</value>
+  </data>
+  <data name="MiABSProcess.Size" type="System.Drawing.Size, System.Drawing">
+    <value>208, 26</value>
+  </data>
+  <data name="MiABSProcess.Text" xml:space="preserve">
+    <value>ABS流程</value>
+  </data>
+  <data name="MiCup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>208, 26</value>
+  </data>
+  <data name="MiCup.Text" xml:space="preserve">
+    <value>配液杯基本资料</value>
+  </data>
+  <data name="MiLimitSet.Size" type="System.Drawing.Size, System.Drawing">
+    <value>208, 26</value>
+  </data>
+  <data name="MiLimitSet.Text" xml:space="preserve">
+    <value>助剂限值基本资料</value>
+  </data>
+  <data name="MiFormulaGroup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>208, 26</value>
+  </data>
+  <data name="MiFormulaGroup.Text" xml:space="preserve">
+    <value>配方组合基本资料</value>
+  </data>
+  <data name="MiOperator.Size" type="System.Drawing.Size, System.Drawing">
+    <value>208, 26</value>
+  </data>
+  <data name="MiOperator.Text" xml:space="preserve">
+    <value>操作人员基本资料</value>
+  </data>
+  <data name="MiDebug.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 26</value>
+  </data>
+  <data name="MiDebug.Text" xml:space="preserve">
+    <value>调试页面</value>
+  </data>
+  <data name="MiRun.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 26</value>
+  </data>
+  <data name="MiRun.Text" xml:space="preserve">
+    <value>运行页面</value>
+  </data>
+  <data name="MiAlarm.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 26</value>
+  </data>
+  <data name="MiAlarm.Text" xml:space="preserve">
+    <value>报警页面</value>
+  </data>
+  <data name="MiHistoryPage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 26</value>
+  </data>
+  <data name="MiHistoryPage.Text" xml:space="preserve">
+    <value>历史记录页面</value>
+  </data>
+  <data name="MiFormulaPage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 26</value>
+  </data>
+  <data name="MiFormulaPage.Text" xml:space="preserve">
+    <value>配方记录页面</value>
+  </data>
+  <data name="MiBrewPage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 26</value>
+  </data>
+  <data name="MiBrewPage.Text" xml:space="preserve">
+    <value>开料记录页面</value>
+  </data>
+  <data name="MiAbsPage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 26</value>
+  </data>
+  <data name="MiAbsPage.Text" xml:space="preserve">
+    <value>吸光度记录页面</value>
+  </data>
+  <data name="MiAbort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>112, 26</value>
+  </data>
+  <data name="MiAbort.Text" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="MiRegister.Size" type="System.Drawing.Size, System.Drawing">
+    <value>112, 26</value>
+  </data>
+  <data name="MiRegister.Text" xml:space="preserve">
+    <value>注册</value>
+  </data>
   <data name="PnlMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -578,6 +590,12 @@
   </metadata>
   <metadata name="timer1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>612, 17</value>
+  </metadata>
+  <metadata name="timerNeedToDo.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>704, 17</value>
+  </metadata>
+  <metadata name="timer_Update.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>853, 17</value>
   </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -793,6 +811,18 @@
   <data name="&gt;&gt;MiDye.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;MiOutAllowDrip.Name" xml:space="preserve">
+    <value>MiOutAllowDrip</value>
+  </data>
+  <data name="&gt;&gt;MiOutAllowDrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;MiLowAllowDrip.Name" xml:space="preserve">
+    <value>MiLowAllowDrip</value>
+  </data>
+  <data name="&gt;&gt;MiLowAllowDrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;toolStripSeparator2.Name" xml:space="preserve">
     <value>toolStripSeparator2</value>
   </data>
@@ -1001,6 +1031,18 @@
     <value>timer1</value>
   </data>
   <data name="&gt;&gt;timer1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;timerNeedToDo.Name" xml:space="preserve">
+    <value>timerNeedToDo</value>
+  </data>
+  <data name="&gt;&gt;timerNeedToDo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;timer_Update.Name" xml:space="preserve">
+    <value>timer_Update</value>
+  </data>
+  <data name="&gt;&gt;timer_Update.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

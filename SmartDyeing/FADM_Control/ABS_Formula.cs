@@ -974,7 +974,7 @@ namespace SmartDyeing.FADM_Control
                     break;
                 case Keys.Insert:
 
-                    dgv_BatchData_RowsAdded();
+                    //dgv_BatchData_RowsAdded();
                     break;
                 default:
 
@@ -996,7 +996,7 @@ namespace SmartDyeing.FADM_Control
 
                 //获取批次的批次表头
                 s_sql = "SELECT CupNum, FormulaCode, VersionNum, BatchName" +
-                            " FROM abs_drop_head Order BY CupNum ;";
+                            " FROM abs_drop_head where CupNum = 1 Or CupNum = 3 Order BY CupNum ;";
 
                 DataTable dt_formulahead = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
 
@@ -2830,16 +2830,65 @@ namespace SmartDyeing.FADM_Control
                         string s_maxCupNum = "0";
                         s_sql = "SELECT CupNum FROM abs_drop_head Order BY CupNum DESC ;";
                         DataTable dt_cupnum = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-                        if (dt_cupnum.Rows.Count > 0)
+                        if (dt_cupnum.Rows.Count > 1)
                         {
                             //只能添加一个配方滴液
                             if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                FADM_Form.CustomMessageBox.Show("只能添加一个滴液配方", "操作异常", MessageBoxButtons.OK, false);
+                                FADM_Form.CustomMessageBox.Show("只能添加两个滴液配方", "操作异常", MessageBoxButtons.OK, false);
                             else
-                                FADM_Form.CustomMessageBox.Show("Only one drop formula can be added", "Abnormal operation", MessageBoxButtons.OK, false);
+                                FADM_Form.CustomMessageBox.Show("Only Two drop formula can be added", "Abnormal operation", MessageBoxButtons.OK, false);
                             return;
                             s_maxCupNum = dt_cupnum.Rows[0][0].ToString();
                         }
+                        else if(dt_cupnum.Rows.Count > 0)
+                        {
+                            if (Convert.ToInt32(dt_cupnum.Rows[0][0].ToString()) == 1)
+                            {
+                                s_maxCupNum = "3";
+                            }
+                            else
+                            {
+                                s_maxCupNum = "1";
+                            }
+                            s_sql = "SELECT * FROM abs_cup_details where  Statues = '下线' And CupNum = " + s_maxCupNum + ";";
+                            DataTable dt_cupnum1 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                            if (dt_cupnum1.Rows.Count > 0)
+                            {
+                                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                    FADM_Form.CustomMessageBox.Show("无空闲工位", "操作异常", MessageBoxButtons.OK, false);
+                                else
+                                    FADM_Form.CustomMessageBox.Show("No vacant workstations", "Abnormal operation", MessageBoxButtons.OK, false);
+                                return;
+                            }
+
+                        }
+                        else
+                        {
+                            s_sql = "SELECT * FROM abs_cup_details where  Statues = '下线' And CupNum = 1;";
+                            DataTable dt_cupnum1 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                            if (dt_cupnum1.Rows.Count > 0)
+                            {
+                                s_sql = "SELECT * FROM abs_cup_details where  Statues = '下线' And CupNum = 3;";
+                                DataTable dt_cupnum2 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                if (dt_cupnum2.Rows.Count > 0)
+                                {
+                                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                        FADM_Form.CustomMessageBox.Show("无空闲工位", "操作异常", MessageBoxButtons.OK, false);
+                                    else
+                                        FADM_Form.CustomMessageBox.Show("No vacant workstations", "Abnormal operation", MessageBoxButtons.OK, false);
+                                    return;
+                                }
+                                else
+                                {
+                                    s_maxCupNum = "3";
+                                }
+                            }
+                            else
+                            {
+                                s_maxCupNum = "1";
+                            }
+                        }
+
 
                         DataTable dt_head = new DataTable();
                         DataTable dt_details = new DataTable();
@@ -2877,7 +2926,7 @@ namespace SmartDyeing.FADM_Control
                         List<string> lis_head = new List<string>();
                         if (dt_newcup.Rows.Count == 0)
                         {
-                            lis_head.Add((Convert.ToInt16(s_maxCupNum) + 1).ToString());
+                            lis_head.Add((Convert.ToInt16(s_maxCupNum)).ToString());
                         }
                         else
                         {
@@ -2928,7 +2977,7 @@ namespace SmartDyeing.FADM_Control
                             List<string> lis_detail = new List<string>();
                             if (dt_newcup.Rows.Count == 0)
                             {
-                                lis_detail.Add((Convert.ToInt16(s_maxCupNum) + 1).ToString());
+                                lis_detail.Add((Convert.ToInt16(s_maxCupNum)).ToString());
                             }
                             else
                             {
@@ -2983,7 +3032,7 @@ namespace SmartDyeing.FADM_Control
                         }
 
                         //更新批次表
-                        BatchHeadShow((Convert.ToInt16(s_maxCupNum) + 1).ToString());
+                        BatchHeadShow((Convert.ToInt16(s_maxCupNum)).ToString());
 
                         if (this._b_newAdd)
                         {
@@ -3007,15 +3056,63 @@ namespace SmartDyeing.FADM_Control
                         string s_maxCupNum = "0";
                         s_sql = "SELECT CupNum FROM abs_drop_head Order BY CupNum DESC ;";
                         DataTable dt_cupnum = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
-                        if (dt_cupnum.Rows.Count > 0)
+                        if (dt_cupnum.Rows.Count > 1)
                         {
                             //只能添加一个配方滴液
                             if (Lib_Card.Configure.Parameter.Other_Language == 0)
-                                FADM_Form.CustomMessageBox.Show("只能添加一个滴液配方", "操作异常", MessageBoxButtons.OK, false);
+                                FADM_Form.CustomMessageBox.Show("只能添加两个滴液配方", "操作异常", MessageBoxButtons.OK, false);
                             else
-                                FADM_Form.CustomMessageBox.Show("Only one drop formula can be added", "Abnormal operation", MessageBoxButtons.OK, false);
+                                FADM_Form.CustomMessageBox.Show("Only Two drop formula can be added", "Abnormal operation", MessageBoxButtons.OK, false);
                             return;
                             s_maxCupNum = dt_cupnum.Rows[0][0].ToString();
+                        }
+                        else if (dt_cupnum.Rows.Count > 0)
+                        {
+                            if (Convert.ToInt32(dt_cupnum.Rows[0][0].ToString()) == 1)
+                            {
+                                s_maxCupNum = "3";
+                            }
+                            else
+                            {
+                                s_maxCupNum = "1";
+                            }
+                            s_sql = "SELECT * FROM abs_cup_details where  Statues = '下线' And CupNum = " + s_maxCupNum + ";";
+                            DataTable dt_cupnum1 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                            if (dt_cupnum1.Rows.Count > 0)
+                            {
+                                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                    FADM_Form.CustomMessageBox.Show("无空闲工位", "操作异常", MessageBoxButtons.OK, false);
+                                else
+                                    FADM_Form.CustomMessageBox.Show("No vacant workstations", "Abnormal operation", MessageBoxButtons.OK, false);
+                                return;
+                            }
+
+                        }
+                        else
+                        {
+                            s_sql = "SELECT * FROM abs_cup_details where  Statues = '下线' And CupNum = 1;";
+                            DataTable dt_cupnum1 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                            if (dt_cupnum1.Rows.Count > 0)
+                            {
+                                s_sql = "SELECT * FROM abs_cup_details where  Statues = '下线' And CupNum = 3;";
+                                DataTable dt_cupnum2 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                                if (dt_cupnum2.Rows.Count > 0)
+                                {
+                                    if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                                        FADM_Form.CustomMessageBox.Show("无空闲工位", "操作异常", MessageBoxButtons.OK, false);
+                                    else
+                                        FADM_Form.CustomMessageBox.Show("No vacant workstations", "Abnormal operation", MessageBoxButtons.OK, false);
+                                    return;
+                                }
+                                else
+                                {
+                                    s_maxCupNum = "3";
+                                }
+                            }
+                            else
+                            {
+                                s_maxCupNum = "1";
+                            }
                         }
                         DataTable dt_head = new DataTable();
                         DataTable dt_details = new DataTable();
@@ -3060,7 +3157,7 @@ namespace SmartDyeing.FADM_Control
                         List<string> lis_head = new List<string>();
                         if (dt_newcup.Rows.Count == 0)
                         {
-                            lis_head.Add((Convert.ToInt16(s_maxCupNum) + 1).ToString());
+                            lis_head.Add((Convert.ToInt16(s_maxCupNum)).ToString());
                         }
                         else
                         {
@@ -3111,7 +3208,7 @@ namespace SmartDyeing.FADM_Control
                             List<string> lis_detail = new List<string>();
                             if (dt_newcup.Rows.Count == 0)
                             {
-                                lis_detail.Add((Convert.ToInt16(s_maxCupNum) + 1).ToString());
+                                lis_detail.Add((Convert.ToInt16(s_maxCupNum)).ToString());
                             }
                             else
                             {
@@ -3167,7 +3264,7 @@ namespace SmartDyeing.FADM_Control
                         }
 
                         //更新批次表
-                        BatchHeadShow((Convert.ToInt16(s_maxCupNum) + 1).ToString());
+                        BatchHeadShow((Convert.ToInt16(s_maxCupNum)).ToString());
 
                         if (this._b_newAdd)
                         {

@@ -126,18 +126,15 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_CupNum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>157, 154</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="txt_CupNum.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>118, 123</value>
   </data>
   <data name="txt_CupNum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 35</value>
+    <value>94, 29</value>
   </data>
   <data name="txt_CupNum.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="txt_CupNum.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
     <value>Center</value>
   </data>
@@ -160,13 +157,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_ClothType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1259, 28</value>
-  </data>
-  <data name="txt_ClothType.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>1207, 22</value>
   </data>
   <data name="txt_ClothType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>521, 35</value>
+    <value>139, 29</value>
   </data>
   <data name="txt_ClothType.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
@@ -193,13 +187,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_Record_Operator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>140, 72</value>
-  </data>
-  <data name="txt_Record_Operator.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>105, 58</value>
   </data>
   <data name="txt_Record_Operator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 32</value>
+    <value>157, 27</value>
   </data>
   <data name="txt_Record_Operator.TabIndex" type="System.Int32, mscorlib">
     <value>46</value>
@@ -216,255 +207,6 @@
   <data name="&gt;&gt;txt_Record_Operator.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;btn_Record_Print.Name" xml:space="preserve">
-    <value>btn_Record_Print</value>
-  </data>
-  <data name="&gt;&gt;btn_Record_Print.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btn_Record_Print.Parent" xml:space="preserve">
-    <value>grp_DropRecord</value>
-  </data>
-  <data name="&gt;&gt;btn_Record_Print.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;txt_Record_CupNum.Name" xml:space="preserve">
-    <value>txt_Record_CupNum</value>
-  </data>
-  <data name="&gt;&gt;txt_Record_CupNum.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txt_Record_CupNum.Parent" xml:space="preserve">
-    <value>grp_DropRecord</value>
-  </data>
-  <data name="&gt;&gt;txt_Record_CupNum.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;label10.Name" xml:space="preserve">
-    <value>label10</value>
-  </data>
-  <data name="&gt;&gt;label10.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
-    <value>grp_DropRecord</value>
-  </data>
-  <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;Btn_Derive.Name" xml:space="preserve">
-    <value>Btn_Derive</value>
-  </data>
-  <data name="&gt;&gt;Btn_Derive.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Btn_Derive.Parent" xml:space="preserve">
-    <value>grp_DropRecord</value>
-  </data>
-  <data name="&gt;&gt;Btn_Derive.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;txt_R.Name" xml:space="preserve">
-    <value>txt_R</value>
-  </data>
-  <data name="&gt;&gt;txt_R.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txt_R.Parent" xml:space="preserve">
-    <value>grp_DropRecord</value>
-  </data>
-  <data name="&gt;&gt;txt_R.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;rdo_Record_condition.Name" xml:space="preserve">
-    <value>rdo_Record_condition</value>
-  </data>
-  <data name="&gt;&gt;rdo_Record_condition.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rdo_Record_condition.Parent" xml:space="preserve">
-    <value>grp_DropRecord</value>
-  </data>
-  <data name="&gt;&gt;rdo_Record_condition.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;dt_Record_End.Name" xml:space="preserve">
-    <value>dt_Record_End</value>
-  </data>
-  <data name="&gt;&gt;dt_Record_End.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;dt_Record_End.Parent" xml:space="preserve">
-    <value>grp_DropRecord</value>
-  </data>
-  <data name="&gt;&gt;dt_Record_End.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;dt_Record_Start.Name" xml:space="preserve">
-    <value>dt_Record_Start</value>
-  </data>
-  <data name="&gt;&gt;dt_Record_Start.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;dt_Record_Start.Parent" xml:space="preserve">
-    <value>grp_DropRecord</value>
-  </data>
-  <data name="&gt;&gt;dt_Record_Start.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;txt_Record_Code.Name" xml:space="preserve">
-    <value>txt_Record_Code</value>
-  </data>
-  <data name="&gt;&gt;txt_Record_Code.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txt_Record_Code.Parent" xml:space="preserve">
-    <value>grp_DropRecord</value>
-  </data>
-  <data name="&gt;&gt;txt_Record_Code.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;btn_Record_Delete.Name" xml:space="preserve">
-    <value>btn_Record_Delete</value>
-  </data>
-  <data name="&gt;&gt;btn_Record_Delete.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btn_Record_Delete.Parent" xml:space="preserve">
-    <value>grp_DropRecord</value>
-  </data>
-  <data name="&gt;&gt;btn_Record_Delete.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;btn_Record_Select.Name" xml:space="preserve">
-    <value>btn_Record_Select</value>
-  </data>
-  <data name="&gt;&gt;btn_Record_Select.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btn_Record_Select.Parent" xml:space="preserve">
-    <value>grp_DropRecord</value>
-  </data>
-  <data name="&gt;&gt;btn_Record_Select.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="&gt;&gt;rdo_Record_All.Name" xml:space="preserve">
-    <value>rdo_Record_All</value>
-  </data>
-  <data name="&gt;&gt;rdo_Record_All.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rdo_Record_All.Parent" xml:space="preserve">
-    <value>grp_DropRecord</value>
-  </data>
-  <data name="&gt;&gt;rdo_Record_All.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="&gt;&gt;rdo_Record_Now.Name" xml:space="preserve">
-    <value>rdo_Record_Now</value>
-  </data>
-  <data name="&gt;&gt;rdo_Record_Now.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rdo_Record_Now.Parent" xml:space="preserve">
-    <value>grp_DropRecord</value>
-  </data>
-  <data name="&gt;&gt;rdo_Record_Now.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="&gt;&gt;label2.Name" xml:space="preserve">
-    <value>label2</value>
-  </data>
-  <data name="&gt;&gt;label2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
-    <value>grp_DropRecord</value>
-  </data>
-  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="&gt;&gt;label3.Name" xml:space="preserve">
-    <value>label3</value>
-  </data>
-  <data name="&gt;&gt;label3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
-    <value>grp_DropRecord</value>
-  </data>
-  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="&gt;&gt;label4.Name" xml:space="preserve">
-    <value>label4</value>
-  </data>
-  <data name="&gt;&gt;label4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
-    <value>grp_DropRecord</value>
-  </data>
-  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
-  <data name="&gt;&gt;label5.Name" xml:space="preserve">
-    <value>label5</value>
-  </data>
-  <data name="&gt;&gt;label5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
-    <value>grp_DropRecord</value>
-  </data>
-  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
-  <data name="&gt;&gt;dgv_DropRecord.Name" xml:space="preserve">
-    <value>dgv_DropRecord</value>
-  </data>
-  <data name="&gt;&gt;dgv_DropRecord.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;dgv_DropRecord.Parent" xml:space="preserve">
-    <value>grp_DropRecord</value>
-  </data>
-  <data name="&gt;&gt;dgv_DropRecord.ZOrder" xml:space="preserve">
-    <value>18</value>
-  </data>
-  <data name="grp_DropRecord.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 10.5pt</value>
-  </data>
-  <data name="grp_DropRecord.Location" type="System.Drawing.Point, System.Drawing">
-    <value>21, 5</value>
-  </data>
-  <data name="grp_DropRecord.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="grp_DropRecord.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="grp_DropRecord.Size" type="System.Drawing.Size, System.Drawing">
-    <value>749, 1236</value>
-  </data>
-  <data name="grp_DropRecord.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="grp_DropRecord.Text" xml:space="preserve">
-    <value>滴液记录</value>
-  </data>
-  <data name="&gt;&gt;grp_DropRecord.Name" xml:space="preserve">
-    <value>grp_DropRecord</value>
-  </data>
-  <data name="&gt;&gt;grp_DropRecord.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;grp_DropRecord.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;grp_DropRecord.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="btn_Record_Print.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
   </data>
@@ -472,13 +214,10 @@
     <value>NoControl</value>
   </data>
   <data name="btn_Record_Print.Location" type="System.Drawing.Point, System.Drawing">
-    <value>461, 151</value>
-  </data>
-  <data name="btn_Record_Print.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>346, 121</value>
   </data>
   <data name="btn_Record_Print.Size" type="System.Drawing.Size, System.Drawing">
-    <value>277, 36</value>
+    <value>208, 29</value>
   </data>
   <data name="btn_Record_Print.TabIndex" type="System.Int32, mscorlib">
     <value>51</value>
@@ -499,13 +238,10 @@
     <value>0</value>
   </data>
   <data name="txt_Record_CupNum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>140, 122</value>
-  </data>
-  <data name="txt_Record_CupNum.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>105, 98</value>
   </data>
   <data name="txt_Record_CupNum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 27</value>
+    <value>157, 23</value>
   </data>
   <data name="txt_Record_CupNum.TabIndex" type="System.Int32, mscorlib">
     <value>50</value>
@@ -529,13 +265,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 125</value>
-  </data>
-  <data name="label10.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>6, 100</value>
   </data>
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 24</value>
+    <value>57, 19</value>
   </data>
   <data name="label10.TabIndex" type="System.Int32, mscorlib">
     <value>49</value>
@@ -556,13 +289,10 @@
     <value>2</value>
   </data>
   <data name="Btn_Derive.Location" type="System.Drawing.Point, System.Drawing">
-    <value>461, 224</value>
-  </data>
-  <data name="Btn_Derive.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>346, 179</value>
   </data>
   <data name="Btn_Derive.Size" type="System.Drawing.Size, System.Drawing">
-    <value>277, 36</value>
+    <value>208, 29</value>
   </data>
   <data name="Btn_Derive.TabIndex" type="System.Int32, mscorlib">
     <value>48</value>
@@ -589,16 +319,13 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_R.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 265</value>
-  </data>
-  <data name="txt_R.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>6, 212</value>
   </data>
   <data name="txt_R.MaxLength" type="System.Int32, mscorlib">
     <value>16</value>
   </data>
   <data name="txt_R.Size" type="System.Drawing.Size, System.Drawing">
-    <value>729, 35</value>
+    <value>548, 29</value>
   </data>
   <data name="txt_R.TabIndex" type="System.Int32, mscorlib">
     <value>47</value>
@@ -625,13 +352,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="rdo_Record_condition.Location" type="System.Drawing.Point, System.Drawing">
-    <value>571, 28</value>
-  </data>
-  <data name="rdo_Record_condition.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>428, 22</value>
   </data>
   <data name="rdo_Record_condition.Size" type="System.Drawing.Size, System.Drawing">
-    <value>127, 28</value>
+    <value>103, 23</value>
   </data>
   <data name="rdo_Record_condition.TabIndex" type="System.Int32, mscorlib">
     <value>45</value>
@@ -664,13 +388,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="dt_Record_End.Location" type="System.Drawing.Point, System.Drawing">
-    <value>140, 220</value>
-  </data>
-  <data name="dt_Record_End.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>105, 176</value>
   </data>
   <data name="dt_Record_End.Size" type="System.Drawing.Size, System.Drawing">
-    <value>289, 35</value>
+    <value>218, 29</value>
   </data>
   <data name="dt_Record_End.TabIndex" type="System.Int32, mscorlib">
     <value>44</value>
@@ -700,13 +421,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="dt_Record_Start.Location" type="System.Drawing.Point, System.Drawing">
-    <value>140, 168</value>
-  </data>
-  <data name="dt_Record_Start.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>105, 134</value>
   </data>
   <data name="dt_Record_Start.Size" type="System.Drawing.Size, System.Drawing">
-    <value>291, 35</value>
+    <value>219, 29</value>
   </data>
   <data name="dt_Record_Start.TabIndex" type="System.Int32, mscorlib">
     <value>43</value>
@@ -730,13 +448,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_Record_Code.Location" type="System.Drawing.Point, System.Drawing">
-    <value>495, 71</value>
-  </data>
-  <data name="txt_Record_Code.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>371, 57</value>
   </data>
   <data name="txt_Record_Code.Size" type="System.Drawing.Size, System.Drawing">
-    <value>243, 35</value>
+    <value>183, 29</value>
   </data>
   <data name="txt_Record_Code.TabIndex" type="System.Int32, mscorlib">
     <value>42</value>
@@ -760,13 +475,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="btn_Record_Delete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>461, 188</value>
-  </data>
-  <data name="btn_Record_Delete.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>346, 150</value>
   </data>
   <data name="btn_Record_Delete.Size" type="System.Drawing.Size, System.Drawing">
-    <value>277, 36</value>
+    <value>208, 29</value>
   </data>
   <data name="btn_Record_Delete.TabIndex" type="System.Int32, mscorlib">
     <value>40</value>
@@ -793,13 +505,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="btn_Record_Select.Location" type="System.Drawing.Point, System.Drawing">
-    <value>461, 115</value>
-  </data>
-  <data name="btn_Record_Select.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>346, 92</value>
   </data>
   <data name="btn_Record_Select.Size" type="System.Drawing.Size, System.Drawing">
-    <value>277, 36</value>
+    <value>208, 29</value>
   </data>
   <data name="btn_Record_Select.TabIndex" type="System.Int32, mscorlib">
     <value>39</value>
@@ -826,13 +535,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="rdo_Record_All.Location" type="System.Drawing.Point, System.Drawing">
-    <value>289, 28</value>
-  </data>
-  <data name="rdo_Record_All.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>217, 22</value>
   </data>
   <data name="rdo_Record_All.Size" type="System.Drawing.Size, System.Drawing">
-    <value>127, 28</value>
+    <value>103, 23</value>
   </data>
   <data name="rdo_Record_All.TabIndex" type="System.Int32, mscorlib">
     <value>38</value>
@@ -859,13 +565,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="rdo_Record_Now.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 28</value>
-  </data>
-  <data name="rdo_Record_Now.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>6, 22</value>
   </data>
   <data name="rdo_Record_Now.Size" type="System.Drawing.Size, System.Drawing">
-    <value>127, 28</value>
+    <value>103, 23</value>
   </data>
   <data name="rdo_Record_Now.TabIndex" type="System.Int32, mscorlib">
     <value>37</value>
@@ -892,13 +595,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 226</value>
-  </data>
-  <data name="label2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>6, 181</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 24</value>
+    <value>95, 19</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>36</value>
@@ -928,13 +628,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 174</value>
-  </data>
-  <data name="label3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>6, 139</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 24</value>
+    <value>95, 19</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>35</value>
@@ -964,13 +661,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>360, 78</value>
-  </data>
-  <data name="label4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>270, 62</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 24</value>
+    <value>95, 19</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>34</value>
@@ -1000,13 +694,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 78</value>
-  </data>
-  <data name="label5.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>6, 62</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>94, 24</value>
+    <value>76, 19</value>
   </data>
   <data name="label5.TabIndex" type="System.Int32, mscorlib">
     <value>33</value>
@@ -1030,10 +721,7 @@
     <value>17</value>
   </data>
   <data name="dgv_DropRecord.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 308</value>
-  </data>
-  <data name="dgv_DropRecord.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>3, 246</value>
   </data>
   <data name="dgv_DropRecord.RowHeadersWidth" type="System.Int32, mscorlib">
     <value>72</value>
@@ -1042,7 +730,7 @@
     <value>Vertical</value>
   </data>
   <data name="dgv_DropRecord.Size" type="System.Drawing.Size, System.Drawing">
-    <value>735, 912</value>
+    <value>551, 730</value>
   </data>
   <data name="dgv_DropRecord.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1059,6 +747,33 @@
   <data name="&gt;&gt;dgv_DropRecord.ZOrder" xml:space="preserve">
     <value>18</value>
   </data>
+  <data name="grp_DropRecord.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 10.5pt</value>
+  </data>
+  <data name="grp_DropRecord.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 4</value>
+  </data>
+  <data name="grp_DropRecord.Size" type="System.Drawing.Size, System.Drawing">
+    <value>562, 989</value>
+  </data>
+  <data name="grp_DropRecord.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="grp_DropRecord.Text" xml:space="preserve">
+    <value>滴液记录</value>
+  </data>
+  <data name="&gt;&gt;grp_DropRecord.Name" xml:space="preserve">
+    <value>grp_DropRecord</value>
+  </data>
+  <data name="&gt;&gt;grp_DropRecord.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;grp_DropRecord.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;grp_DropRecord.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="txt_Operator.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -1066,13 +781,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_Operator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>396, 154</value>
-  </data>
-  <data name="txt_Operator.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>297, 123</value>
   </data>
   <data name="txt_Operator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>169, 35</value>
+    <value>128, 29</value>
   </data>
   <data name="txt_Operator.TabIndex" type="System.Int32, mscorlib">
     <value>36</value>
@@ -1099,13 +811,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_TotalWeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>887, 92</value>
-  </data>
-  <data name="txt_TotalWeight.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>665, 74</value>
   </data>
   <data name="txt_TotalWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 35</value>
+    <value>80, 29</value>
   </data>
   <data name="txt_TotalWeight.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -1132,13 +841,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_BathRatio.Location" type="System.Drawing.Point, System.Drawing">
-    <value>685, 92</value>
-  </data>
-  <data name="txt_BathRatio.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>514, 74</value>
   </data>
   <data name="txt_BathRatio.Size" type="System.Drawing.Size, System.Drawing">
-    <value>93, 35</value>
+    <value>71, 29</value>
   </data>
   <data name="txt_BathRatio.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -1165,13 +871,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_ClothWeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>480, 92</value>
-  </data>
-  <data name="txt_ClothWeight.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>360, 74</value>
   </data>
   <data name="txt_ClothWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>85, 35</value>
+    <value>65, 29</value>
   </data>
   <data name="txt_ClothWeight.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -1201,13 +904,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="chk_AddWaterChoose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1001, 96</value>
-  </data>
-  <data name="chk_AddWaterChoose.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>751, 77</value>
   </data>
   <data name="chk_AddWaterChoose.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 28</value>
+    <value>66, 23</value>
   </data>
   <data name="chk_AddWaterChoose.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -1234,13 +934,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_Customer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>157, 92</value>
-  </data>
-  <data name="txt_Customer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>118, 74</value>
   </data>
   <data name="txt_Customer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>233, 35</value>
+    <value>176, 29</value>
   </data>
   <data name="txt_Customer.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -1267,13 +964,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_FormulaName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>724, 31</value>
-  </data>
-  <data name="txt_FormulaName.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>806, 25</value>
   </data>
   <data name="txt_FormulaName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>364, 35</value>
+    <value>274, 29</value>
   </data>
   <data name="txt_FormulaName.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -1300,13 +994,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_State.Location" type="System.Drawing.Point, System.Drawing">
-    <value>396, 31</value>
-  </data>
-  <data name="txt_State.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>560, 25</value>
   </data>
   <data name="txt_State.Size" type="System.Drawing.Size, System.Drawing">
-    <value>169, 35</value>
+    <value>128, 29</value>
   </data>
   <data name="txt_State.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -1333,13 +1024,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_VersionNum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>344, 31</value>
-  </data>
-  <data name="txt_VersionNum.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>521, 25</value>
   </data>
   <data name="txt_VersionNum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>45, 35</value>
+    <value>35, 29</value>
   </data>
   <data name="txt_VersionNum.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -1366,16 +1054,13 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_FormulaCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>157, 31</value>
-  </data>
-  <data name="txt_FormulaCode.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>118, 25</value>
   </data>
   <data name="txt_FormulaCode.MaxLength" type="System.Int32, mscorlib">
     <value>16</value>
   </data>
   <data name="txt_FormulaCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 35</value>
+    <value>397, 29</value>
   </data>
   <data name="txt_FormulaCode.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -1402,13 +1087,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_FormulaCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 38</value>
-  </data>
-  <data name="lab_FormulaCode.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>9, 30</value>
   </data>
   <data name="lab_FormulaCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 24</value>
+    <value>95, 19</value>
   </data>
   <data name="lab_FormulaCode.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1438,13 +1120,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_FormulaName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>604, 38</value>
-  </data>
-  <data name="lab_FormulaName.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>716, 30</value>
   </data>
   <data name="lab_FormulaName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 24</value>
+    <value>95, 19</value>
   </data>
   <data name="lab_FormulaName.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1474,13 +1153,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_CupCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 160</value>
-  </data>
-  <data name="lab_CupCode.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>9, 128</value>
   </data>
   <data name="lab_CupCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 24</value>
+    <value>57, 19</value>
   </data>
   <data name="lab_CupCode.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -1510,13 +1186,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_ClothType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1115, 38</value>
-  </data>
-  <data name="lab_ClothType.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>1099, 30</value>
   </data>
   <data name="lab_ClothType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 24</value>
+    <value>105, 19</value>
   </data>
   <data name="lab_ClothType.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1546,13 +1219,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_Operator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>291, 160</value>
-  </data>
-  <data name="lab_Operator.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>218, 128</value>
   </data>
   <data name="lab_Operator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>94, 24</value>
+    <value>76, 19</value>
   </data>
   <data name="lab_Operator.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -1582,13 +1252,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_Customer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 99</value>
-  </data>
-  <data name="lab_Customer.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>9, 79</value>
   </data>
   <data name="lab_Customer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 24</value>
+    <value>57, 19</value>
   </data>
   <data name="lab_Customer.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1618,13 +1285,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_TotalWeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>787, 99</value>
-  </data>
-  <data name="lab_TotalWeight.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>590, 79</value>
   </data>
   <data name="lab_TotalWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>94, 24</value>
+    <value>76, 19</value>
   </data>
   <data name="lab_TotalWeight.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -1654,13 +1318,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_ClothWeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>407, 99</value>
-  </data>
-  <data name="lab_ClothWeight.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>305, 79</value>
   </data>
   <data name="lab_ClothWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 24</value>
+    <value>57, 19</value>
   </data>
   <data name="lab_ClothWeight.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1690,13 +1351,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_BathRatio.Location" type="System.Drawing.Point, System.Drawing">
-    <value>604, 99</value>
-  </data>
-  <data name="lab_BathRatio.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>453, 79</value>
   </data>
   <data name="lab_BathRatio.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 24</value>
+    <value>57, 19</value>
   </data>
   <data name="lab_BathRatio.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1719,291 +1377,6 @@
   <data name="&gt;&gt;lab_BathRatio.ZOrder" xml:space="preserve">
     <value>23</value>
   </data>
-  <data name="&gt;&gt;txt_CreateTime.Name" xml:space="preserve">
-    <value>txt_CreateTime</value>
-  </data>
-  <data name="&gt;&gt;txt_CreateTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txt_CreateTime.Parent" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;txt_CreateTime.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;lab_CreateTime.Name" xml:space="preserve">
-    <value>lab_CreateTime</value>
-  </data>
-  <data name="&gt;&gt;lab_CreateTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lab_CreateTime.Parent" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;lab_CreateTime.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;txt_Start.Name" xml:space="preserve">
-    <value>txt_Start</value>
-  </data>
-  <data name="&gt;&gt;txt_Start.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txt_Start.Parent" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;txt_Start.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;label9.Name" xml:space="preserve">
-    <value>label9</value>
-  </data>
-  <data name="&gt;&gt;label9.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label9.Parent" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;label9.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;btn_save.Name" xml:space="preserve">
-    <value>btn_save</value>
-  </data>
-  <data name="&gt;&gt;btn_save.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btn_save.Parent" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;btn_save.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;panel1.Name" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;label8.Name" xml:space="preserve">
-    <value>label8</value>
-  </data>
-  <data name="&gt;&gt;label8.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label8.Parent" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;txt_TotalTime.Name" xml:space="preserve">
-    <value>txt_TotalTime</value>
-  </data>
-  <data name="&gt;&gt;txt_TotalTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txt_TotalTime.Parent" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;txt_TotalTime.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;txt_RealAddWaterWeight.Name" xml:space="preserve">
-    <value>txt_RealAddWaterWeight</value>
-  </data>
-  <data name="&gt;&gt;txt_RealAddWaterWeight.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txt_RealAddWaterWeight.Parent" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;txt_RealAddWaterWeight.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;label7.Name" xml:space="preserve">
-    <value>label7</value>
-  </data>
-  <data name="&gt;&gt;label7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;txt_ObjectAddWaterWeight.Name" xml:space="preserve">
-    <value>txt_ObjectAddWaterWeight</value>
-  </data>
-  <data name="&gt;&gt;txt_ObjectAddWaterWeight.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txt_ObjectAddWaterWeight.Parent" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;txt_ObjectAddWaterWeight.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;label1.Name" xml:space="preserve">
-    <value>label1</value>
-  </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="&gt;&gt;dgv_Details.Name" xml:space="preserve">
-    <value>dgv_Details</value>
-  </data>
-  <data name="&gt;&gt;dgv_Details.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;dgv_Details.Parent" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;dgv_Details.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="&gt;&gt;txt_DyeingCode.Name" xml:space="preserve">
-    <value>txt_DyeingCode</value>
-  </data>
-  <data name="&gt;&gt;txt_DyeingCode.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txt_DyeingCode.Parent" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;txt_DyeingCode.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="&gt;&gt;label6.Name" xml:space="preserve">
-    <value>label6</value>
-  </data>
-  <data name="&gt;&gt;label6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="&gt;&gt;txt_AnhydrationWR.Name" xml:space="preserve">
-    <value>txt_AnhydrationWR</value>
-  </data>
-  <data name="&gt;&gt;txt_AnhydrationWR.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txt_AnhydrationWR.Parent" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;txt_AnhydrationWR.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="&gt;&gt;lab_AnhydrationWR.Name" xml:space="preserve">
-    <value>lab_AnhydrationWR</value>
-  </data>
-  <data name="&gt;&gt;lab_AnhydrationWR.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lab_AnhydrationWR.Parent" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;lab_AnhydrationWR.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
-  <data name="&gt;&gt;txt_Non_AnhydrationWR.Name" xml:space="preserve">
-    <value>txt_Non_AnhydrationWR</value>
-  </data>
-  <data name="&gt;&gt;txt_Non_AnhydrationWR.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txt_Non_AnhydrationWR.Parent" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;txt_Non_AnhydrationWR.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
-  <data name="&gt;&gt;lab_txt_Non_AnhydrationWR.Name" xml:space="preserve">
-    <value>lab_txt_Non_AnhydrationWR</value>
-  </data>
-  <data name="&gt;&gt;lab_txt_Non_AnhydrationWR.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lab_txt_Non_AnhydrationWR.Parent" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;lab_txt_Non_AnhydrationWR.ZOrder" xml:space="preserve">
-    <value>18</value>
-  </data>
-  <data name="&gt;&gt;txt_HandleBathRatio.Name" xml:space="preserve">
-    <value>txt_HandleBathRatio</value>
-  </data>
-  <data name="&gt;&gt;txt_HandleBathRatio.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txt_HandleBathRatio.Parent" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;txt_HandleBathRatio.ZOrder" xml:space="preserve">
-    <value>19</value>
-  </data>
-  <data name="&gt;&gt;lab_HandleBathRatio.Name" xml:space="preserve">
-    <value>lab_HandleBathRatio</value>
-  </data>
-  <data name="&gt;&gt;lab_HandleBathRatio.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lab_HandleBathRatio.Parent" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;lab_HandleBathRatio.ZOrder" xml:space="preserve">
-    <value>20</value>
-  </data>
-  <data name="grp_FormulaData.Font" type="System.Drawing.Font, System.Drawing">
-    <value>宋体, 10.5pt</value>
-  </data>
-  <data name="grp_FormulaData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>771, 9</value>
-  </data>
-  <data name="grp_FormulaData.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="grp_FormulaData.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="grp_FormulaData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1820, 1232</value>
-  </data>
-  <data name="grp_FormulaData.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="grp_FormulaData.Text" xml:space="preserve">
-    <value>配方资料</value>
-  </data>
-  <data name="&gt;&gt;grp_FormulaData.Name" xml:space="preserve">
-    <value>grp_FormulaData</value>
-  </data>
-  <data name="&gt;&gt;grp_FormulaData.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;grp_FormulaData.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;grp_FormulaData.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="txt_CreateTime.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -2011,13 +1384,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_CreateTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>745, 215</value>
-  </data>
-  <data name="txt_CreateTime.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>559, 172</value>
   </data>
   <data name="txt_CreateTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>343, 35</value>
+    <value>258, 29</value>
   </data>
   <data name="txt_CreateTime.TabIndex" type="System.Int32, mscorlib">
     <value>66</value>
@@ -2044,13 +1414,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_CreateTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>604, 221</value>
-  </data>
-  <data name="lab_CreateTime.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>453, 177</value>
   </data>
   <data name="lab_CreateTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 24</value>
+    <value>95, 19</value>
   </data>
   <data name="lab_CreateTime.TabIndex" type="System.Int32, mscorlib">
     <value>65</value>
@@ -2080,13 +1447,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_Start.Location" type="System.Drawing.Point, System.Drawing">
-    <value>396, 215</value>
-  </data>
-  <data name="txt_Start.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>297, 172</value>
   </data>
   <data name="txt_Start.Size" type="System.Drawing.Size, System.Drawing">
-    <value>169, 35</value>
+    <value>128, 29</value>
   </data>
   <data name="txt_Start.TabIndex" type="System.Int32, mscorlib">
     <value>64</value>
@@ -2113,13 +1477,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
-    <value>261, 221</value>
-  </data>
-  <data name="label9.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>196, 177</value>
   </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 24</value>
+    <value>95, 19</value>
   </data>
   <data name="label9.TabIndex" type="System.Int32, mscorlib">
     <value>63</value>
@@ -2143,13 +1504,13 @@
     <value>3</value>
   </data>
   <data name="btn_save.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1617, 214</value>
+    <value>1213, 171</value>
   </data>
   <data name="btn_save.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 2, 4, 2</value>
+    <value>3, 2, 3, 2</value>
   </data>
   <data name="btn_save.Size" type="System.Drawing.Size, System.Drawing">
-    <value>164, 39</value>
+    <value>123, 31</value>
   </data>
   <data name="btn_save.TabIndex" type="System.Int32, mscorlib">
     <value>62</value>
@@ -2173,13 +1534,13 @@
     <value>4</value>
   </data>
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 736</value>
+    <value>6, 589</value>
   </data>
   <data name="panel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 2, 4, 2</value>
+    <value>3, 2, 3, 2</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1777, 480</value>
+    <value>1333, 384</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>61</value>
@@ -2203,13 +1564,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1115, 221</value>
-  </data>
-  <data name="label8.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>836, 177</value>
   </data>
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>94, 24</value>
+    <value>76, 19</value>
   </data>
   <data name="label8.TabIndex" type="System.Int32, mscorlib">
     <value>60</value>
@@ -2239,13 +1597,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_TotalTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1259, 215</value>
-  </data>
-  <data name="txt_TotalTime.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>944, 172</value>
   </data>
   <data name="txt_TotalTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>349, 35</value>
+    <value>263, 29</value>
   </data>
   <data name="txt_TotalTime.TabIndex" type="System.Int32, mscorlib">
     <value>59</value>
@@ -2272,13 +1627,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_RealAddWaterWeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1607, 154</value>
-  </data>
-  <data name="txt_RealAddWaterWeight.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>1205, 123</value>
   </data>
   <data name="txt_RealAddWaterWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>173, 35</value>
+    <value>131, 29</value>
   </data>
   <data name="txt_RealAddWaterWeight.TabIndex" type="System.Int32, mscorlib">
     <value>58</value>
@@ -2305,13 +1657,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1463, 160</value>
-  </data>
-  <data name="label7.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>1097, 128</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 24</value>
+    <value>114, 19</value>
   </data>
   <data name="label7.TabIndex" type="System.Int32, mscorlib">
     <value>57</value>
@@ -2341,13 +1690,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_ObjectAddWaterWeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1259, 154</value>
-  </data>
-  <data name="txt_ObjectAddWaterWeight.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>944, 123</value>
   </data>
   <data name="txt_ObjectAddWaterWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 35</value>
+    <value>139, 29</value>
   </data>
   <data name="txt_ObjectAddWaterWeight.TabIndex" type="System.Int32, mscorlib">
     <value>56</value>
@@ -2374,13 +1720,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1115, 160</value>
-  </data>
-  <data name="label1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>836, 128</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 24</value>
+    <value>114, 19</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>55</value>
@@ -2404,16 +1747,13 @@
     <value>11</value>
   </data>
   <data name="dgv_Details.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 259</value>
-  </data>
-  <data name="dgv_Details.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>6, 207</value>
   </data>
   <data name="dgv_Details.RowHeadersWidth" type="System.Int32, mscorlib">
     <value>72</value>
   </data>
   <data name="dgv_Details.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1787, 469</value>
+    <value>1340, 375</value>
   </data>
   <data name="dgv_Details.TabIndex" type="System.Int32, mscorlib">
     <value>54</value>
@@ -2437,13 +1777,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_DyeingCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>809, 154</value>
-  </data>
-  <data name="txt_DyeingCode.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>607, 123</value>
   </data>
   <data name="txt_DyeingCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>279, 35</value>
+    <value>210, 29</value>
   </data>
   <data name="txt_DyeingCode.TabIndex" type="System.Int32, mscorlib">
     <value>53</value>
@@ -2470,13 +1807,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>604, 160</value>
-  </data>
-  <data name="label6.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>453, 128</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 24</value>
+    <value>152, 19</value>
   </data>
   <data name="label6.TabIndex" type="System.Int32, mscorlib">
     <value>52</value>
@@ -2506,13 +1840,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_AnhydrationWR.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1259, 92</value>
-  </data>
-  <data name="txt_AnhydrationWR.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>944, 74</value>
   </data>
   <data name="txt_AnhydrationWR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 35</value>
+    <value>139, 29</value>
   </data>
   <data name="txt_AnhydrationWR.TabIndex" type="System.Int32, mscorlib">
     <value>49</value>
@@ -2539,13 +1870,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_AnhydrationWR.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1115, 99</value>
-  </data>
-  <data name="lab_AnhydrationWR.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>836, 79</value>
   </data>
   <data name="lab_AnhydrationWR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 24</value>
+    <value>95, 19</value>
   </data>
   <data name="lab_AnhydrationWR.TabIndex" type="System.Int32, mscorlib">
     <value>48</value>
@@ -2575,13 +1903,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_Non_AnhydrationWR.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1607, 92</value>
-  </data>
-  <data name="txt_Non_AnhydrationWR.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>1205, 74</value>
   </data>
   <data name="txt_Non_AnhydrationWR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>173, 35</value>
+    <value>131, 29</value>
   </data>
   <data name="txt_Non_AnhydrationWR.TabIndex" type="System.Int32, mscorlib">
     <value>47</value>
@@ -2608,13 +1933,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_txt_Non_AnhydrationWR.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1463, 99</value>
-  </data>
-  <data name="lab_txt_Non_AnhydrationWR.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>1097, 79</value>
   </data>
   <data name="lab_txt_Non_AnhydrationWR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 24</value>
+    <value>114, 19</value>
   </data>
   <data name="lab_txt_Non_AnhydrationWR.TabIndex" type="System.Int32, mscorlib">
     <value>46</value>
@@ -2644,13 +1966,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="txt_HandleBathRatio.Location" type="System.Drawing.Point, System.Drawing">
-    <value>157, 214</value>
-  </data>
-  <data name="txt_HandleBathRatio.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>118, 171</value>
   </data>
   <data name="txt_HandleBathRatio.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 35</value>
+    <value>74, 29</value>
   </data>
   <data name="txt_HandleBathRatio.TabIndex" type="System.Int32, mscorlib">
     <value>51</value>
@@ -2677,13 +1996,10 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="lab_HandleBathRatio.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 221</value>
-  </data>
-  <data name="lab_HandleBathRatio.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>9, 177</value>
   </data>
   <data name="lab_HandleBathRatio.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 24</value>
+    <value>114, 19</value>
   </data>
   <data name="lab_HandleBathRatio.TabIndex" type="System.Int32, mscorlib">
     <value>50</value>
@@ -2706,6 +2022,33 @@
   <data name="&gt;&gt;lab_HandleBathRatio.ZOrder" xml:space="preserve">
     <value>20</value>
   </data>
+  <data name="grp_FormulaData.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 10.5pt</value>
+  </data>
+  <data name="grp_FormulaData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>578, 7</value>
+  </data>
+  <data name="grp_FormulaData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1365, 986</value>
+  </data>
+  <data name="grp_FormulaData.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="grp_FormulaData.Text" xml:space="preserve">
+    <value>配方资料</value>
+  </data>
+  <data name="&gt;&gt;grp_FormulaData.Name" xml:space="preserve">
+    <value>grp_FormulaData</value>
+  </data>
+  <data name="&gt;&gt;grp_FormulaData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;grp_FormulaData.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;grp_FormulaData.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
@@ -2719,13 +2062,10 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>8, 15</value>
-  </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+    <value>6, 12</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>2556, 1225</value>
+    <value>1917, 980</value>
   </data>
   <data name="&gt;&gt;toolTip1.Name" xml:space="preserve">
     <value>toolTip1</value>

@@ -118,19 +118,52 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="contextMenuStrip2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>129, 48</value>
+  </data>
+  <data name="tsm_AllOnline.Size" type="System.Drawing.Size, System.Drawing">
+    <value>128, 22</value>
+  </data>
+  <data name="tsm_AllOnline.Text" xml:space="preserve">
+    <value>AllOnline</value>
+  </data>
+  <data name="tsm_AllOffline.Size" type="System.Drawing.Size, System.Drawing">
+    <value>128, 22</value>
+  </data>
+  <data name="tsm_AllOffline.Text" xml:space="preserve">
+    <value>AllOffline</value>
+  </data>
+  <data name="contextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 114</value>
+  </data>
   <data name="tsm_Online.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 22</value>
+    <value>139, 22</value>
+  </data>
+  <data name="tsm_Online.Text" xml:space="preserve">
+    <value>Online</value>
   </data>
   <data name="tsm_Offline.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 22</value>
+    <value>139, 22</value>
+  </data>
+  <data name="tsm_Offline.Text" xml:space="preserve">
+    <value>Offline</value>
   </data>
   <data name="tsm_Stop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 22</value>
+    <value>139, 22</value>
+  </data>
+  <data name="tsm_Stop.Text" xml:space="preserve">
+    <value>Stop</value>
   </data>
   <data name="tsm_IsFix.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 22</value>
+    <value>139, 22</value>
+  </data>
+  <data name="tsm_IsFix.Text" xml:space="preserve">
+    <value>IsFixed</value>
   </data>
   <data name="tsm_HighWash.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 22</value>
+    <value>139, 22</value>
+  </data>
+  <data name="tsm_HighWash.Text" xml:space="preserve">
+    <value>High Wash</value>
   </data>
 </root>

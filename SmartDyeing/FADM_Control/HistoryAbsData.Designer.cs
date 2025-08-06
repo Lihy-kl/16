@@ -69,6 +69,8 @@ namespace SmartDyeing.FADM_Control
             this.label18 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.label27 = new System.Windows.Forms.Label();
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.label25 = new System.Windows.Forms.Label();
             this.textBox5 = new System.Windows.Forms.TextBox();
@@ -99,8 +101,8 @@ namespace SmartDyeing.FADM_Control
             this.label8 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.label27 = new System.Windows.Forms.Label();
+            this.txt_RecordBottleNum = new System.Windows.Forms.TextBox();
+            this.label28 = new System.Windows.Forms.Label();
             this.grp_DropRecord.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_DropRecord)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Details)).BeginInit();
@@ -112,6 +114,8 @@ namespace SmartDyeing.FADM_Control
             // 
             // grp_DropRecord
             // 
+            this.grp_DropRecord.Controls.Add(this.txt_RecordBottleNum);
+            this.grp_DropRecord.Controls.Add(this.label28);
             this.grp_DropRecord.Controls.Add(this.Btn_SetStand);
             this.grp_DropRecord.Controls.Add(this.txt_Record_CupNum);
             this.grp_DropRecord.Controls.Add(this.label10);
@@ -372,6 +376,16 @@ namespace SmartDyeing.FADM_Control
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.TabStop = false;
             // 
+            // textBox7
+            // 
+            resources.ApplyResources(this.textBox7, "textBox7");
+            this.textBox7.Name = "textBox7";
+            // 
+            // label27
+            // 
+            resources.ApplyResources(this.label27, "label27");
+            this.label27.Name = "label27";
+            // 
             // textBox6
             // 
             resources.ApplyResources(this.textBox6, "textBox6");
@@ -536,15 +550,15 @@ namespace SmartDyeing.FADM_Control
             resources.ApplyResources(this.textBox1, "textBox1");
             this.textBox1.Name = "textBox1";
             // 
-            // textBox7
+            // txt_RecordBottleNum
             // 
-            resources.ApplyResources(this.textBox7, "textBox7");
-            this.textBox7.Name = "textBox7";
+            resources.ApplyResources(this.txt_RecordBottleNum, "txt_RecordBottleNum");
+            this.txt_RecordBottleNum.Name = "txt_RecordBottleNum";
             // 
-            // label27
+            // label28
             // 
-            resources.ApplyResources(this.label27, "label27");
-            this.label27.Name = "label27";
+            resources.ApplyResources(this.label28, "label28");
+            this.label28.Name = "label28";
             // 
             // HistoryAbsData
             // 
@@ -637,5 +651,7 @@ namespace SmartDyeing.FADM_Control
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.TextBox textBox7;
         private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.TextBox txt_RecordBottleNum;
+        private System.Windows.Forms.Label label28;
     }
 }

@@ -51,87 +51,75 @@ namespace SmartDyeing.FADM_Form
             // 
             // dgv_CupDetails
             // 
-            resources.ApplyResources(this.dgv_CupDetails, "dgv_CupDetails");
             this.dgv_CupDetails.AllowUserToAddRows = false;
             this.dgv_CupDetails.AllowUserToDeleteRows = false;
             this.dgv_CupDetails.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dgv_CupDetails.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            resources.ApplyResources(this.dgv_CupDetails, "dgv_CupDetails");
             this.dgv_CupDetails.Name = "dgv_CupDetails";
             this.dgv_CupDetails.ReadOnly = true;
             this.dgv_CupDetails.RowHeadersVisible = false;
             this.dgv_CupDetails.RowTemplate.Height = 23;
-            this.toolTip1.SetToolTip(this.dgv_CupDetails, resources.GetString("dgv_CupDetails.ToolTip"));
             // 
             // panel1
             // 
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
-            this.toolTip1.SetToolTip(this.panel1, resources.GetString("panel1.ToolTip"));
             // 
             // txt_CupNum
             // 
             resources.ApplyResources(this.txt_CupNum, "txt_CupNum");
             this.txt_CupNum.Name = "txt_CupNum";
             this.txt_CupNum.ReadOnly = true;
-            this.toolTip1.SetToolTip(this.txt_CupNum, resources.GetString("txt_CupNum.ToolTip"));
             // 
             // label5
             // 
             resources.ApplyResources(this.label5, "label5");
             this.label5.Name = "label5";
-            this.toolTip1.SetToolTip(this.label5, resources.GetString("label5.ToolTip"));
             // 
             // txt_realWater
             // 
             resources.ApplyResources(this.txt_realWater, "txt_realWater");
             this.txt_realWater.Name = "txt_realWater";
             this.txt_realWater.ReadOnly = true;
-            this.toolTip1.SetToolTip(this.txt_realWater, resources.GetString("txt_realWater.ToolTip"));
             // 
             // txt_objectWater
             // 
             resources.ApplyResources(this.txt_objectWater, "txt_objectWater");
             this.txt_objectWater.Name = "txt_objectWater";
             this.txt_objectWater.ReadOnly = true;
-            this.toolTip1.SetToolTip(this.txt_objectWater, resources.GetString("txt_objectWater.ToolTip"));
             // 
             // txt_VersionNum
             // 
             resources.ApplyResources(this.txt_VersionNum, "txt_VersionNum");
             this.txt_VersionNum.Name = "txt_VersionNum";
             this.txt_VersionNum.ReadOnly = true;
-            this.toolTip1.SetToolTip(this.txt_VersionNum, resources.GetString("txt_VersionNum.ToolTip"));
             // 
             // txt_FormulaCode
             // 
             resources.ApplyResources(this.txt_FormulaCode, "txt_FormulaCode");
             this.txt_FormulaCode.Name = "txt_FormulaCode";
             this.txt_FormulaCode.ReadOnly = true;
-            this.toolTip1.SetToolTip(this.txt_FormulaCode, resources.GetString("txt_FormulaCode.ToolTip"));
             // 
             // label4
             // 
             resources.ApplyResources(this.label4, "label4");
             this.label4.Name = "label4";
-            this.toolTip1.SetToolTip(this.label4, resources.GetString("label4.ToolTip"));
             // 
             // label3
             // 
             resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
-            this.toolTip1.SetToolTip(this.label3, resources.GetString("label3.ToolTip"));
             // 
             // label2
             // 
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
-            this.toolTip1.SetToolTip(this.label2, resources.GetString("label2.ToolTip"));
             // 
             // label1
             // 
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            this.toolTip1.SetToolTip(this.label1, resources.GetString("label1.ToolTip"));
             // 
             // CupDetails
             // 
@@ -154,7 +142,6 @@ namespace SmartDyeing.FADM_Form
             this.MinimizeBox = false;
             this.Name = "CupDetails";
             this.ShowIcon = false;
-            this.toolTip1.SetToolTip(this, resources.GetString("$this.ToolTip"));
             this.Load += new System.EventHandler(this.CupDetails_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_CupDetails)).EndInit();
             this.ResumeLayout(false);

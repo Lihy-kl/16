@@ -67,6 +67,7 @@ namespace SmartDyeing.FADM_Control
             this.tsm_Stop = new System.Windows.Forms.ToolStripMenuItem();
             this.tsm_IsFix = new System.Windows.Forms.ToolStripMenuItem();
             this.tsm_HighWash = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsm_ReSend = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -442,7 +443,8 @@ namespace SmartDyeing.FADM_Control
             this.tsm_Offline,
             this.tsm_Stop,
             this.tsm_IsFix,
-            this.tsm_HighWash});
+            this.tsm_HighWash,
+            this.tsm_ReSend});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             resources.ApplyResources(this.contextMenuStrip1, "contextMenuStrip1");
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
@@ -476,6 +478,12 @@ namespace SmartDyeing.FADM_Control
             this.tsm_HighWash.Name = "tsm_HighWash";
             resources.ApplyResources(this.tsm_HighWash, "tsm_HighWash");
             this.tsm_HighWash.Click += new System.EventHandler(this.tsm_HighWash_Click);
+            // 
+            // tsm_ReSend
+            // 
+            this.tsm_ReSend.Name = "tsm_ReSend";
+            resources.ApplyResources(this.tsm_ReSend, "tsm_ReSend");
+            this.tsm_ReSend.Click += new System.EventHandler(this.tsm_ReSend_Click_1);
             // 
             // TwelveBeater
             // 
@@ -526,5 +534,6 @@ namespace SmartDyeing.FADM_Control
         private Label label11;
         private Cup cup11;
         private ToolStripMenuItem tsm_HighWash;
+        private ToolStripMenuItem tsm_ReSend;
     }
 }

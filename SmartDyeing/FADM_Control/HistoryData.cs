@@ -506,7 +506,7 @@ namespace SmartDyeing.FADM_Control
                 //设置标题字体
                 dgv_DropRecord.ColumnHeadersDefaultCellStyle.Font = new Font("宋体", 14.25F);
                 //设置内容字体
-                dgv_DropRecord.RowsDefaultCellStyle.Font = new Font("宋体", 14.25F);
+                dgv_DropRecord.RowsDefaultCellStyle.Font = new Font("宋体", 12.5F);
             }
             else
             {
@@ -523,9 +523,9 @@ namespace SmartDyeing.FADM_Control
 
 
             //设置标题宽度
-            dgv_DropRecord.Columns[0].Width = 100;
+            dgv_DropRecord.Columns[0].Width = 240;
             dgv_DropRecord.Columns[1].Width = 53;
-            dgv_DropRecord.Columns[2].Width = 200;
+            dgv_DropRecord.Columns[2].Width = 190;
             dgv_DropRecord.Columns[3].Width = 53;
             //if (dgv_FormulaData.Rows.Count > 5)
             //{
@@ -752,6 +752,8 @@ namespace SmartDyeing.FADM_Control
         {
             try
             {
+                txt_RealAddWaterWeight.BackColor = TextBox.DefaultBackColor;
+
                 dgv_Details.Rows.Clear();
 
                 if (chart.Series.Count > 0)
@@ -806,23 +808,48 @@ namespace SmartDyeing.FADM_Control
                 string s_finishTime = "";
                 string s_totalFinishTime = "";
 
-                //显示表头
-                foreach (DataColumn mDc in dt_formulahead.Columns)
+                if (dt_formulahead.Rows.Count > 0)
                 {
-                    string s_name = "txt_" + mDc.Caption.ToString();
-                    foreach (Control c in this.grp_FormulaData.Controls)
+                    //显示表头
+                    foreach (DataColumn mDc in dt_formulahead.Columns)
                     {
-                        if ((c is TextBox || c is ComboBox) && c.Name == s_name)
+                        string s_name = "txt_" + mDc.Caption.ToString();
+                        foreach (Control c in this.grp_FormulaData.Controls)
                         {
-                            c.Text = dt_formulahead.Rows[0][mDc].ToString();
-                            break;
+                            if ((c is TextBox || c is ComboBox) && c.Name == s_name)
+                            {
+                                c.Text = dt_formulahead.Rows[0][mDc].ToString();
+                                break;
+                            }
+                        }
+                        if (s_name == "txt_AddWaterChoose")
+                        {
+                            chk_AddWaterChoose.Checked = (dt_formulahead.Rows[0][mDc].ToString() == "False" || dt_formulahead.Rows[0][mDc].ToString() == "0" ? false : true);
                         }
                     }
-                    if (s_name == "txt_AddWaterChoose")
+                    if (Convert.ToDouble(dt_formulahead.Rows[0][dt_formulahead.Columns["ObjectAddWaterWeight"]]) > 0)
                     {
-                        chk_AddWaterChoose.Checked = (dt_formulahead.Rows[0][mDc].ToString() == "False" || dt_formulahead.Rows[0][mDc].ToString() == "0" ? false : true);
+
+                        double d_error = Lib_Card.Configure.Parameter.Other_AErr_DripWater;
+                        if (!(dt_formulahead.Rows[0]["WaterStandError"] is DBNull))
+                        {
+                            d_error = Convert.ToDouble(dt_formulahead.Rows[0]["WaterStandError"]);
+                        }
+                        double d_totalWeight = Convert.ToDouble(dt_formulahead.Rows[0]["TotalWeight"]);
+                        double d_allDif = Convert.ToDouble(Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}",
+                                    d_totalWeight * Convert.ToDouble(d_error / 100.00)) : string.Format("{0:F3}",
+                                    d_totalWeight * Convert.ToDouble(d_error / 100.00)));
+
+                        if ((int)(d_allDif*1000) < (int)(Math.Abs(Convert.ToDouble(dt_formulahead.Rows[0][dt_formulahead.Columns["RealAddWaterWeight"]]) - Convert.ToDouble(dt_formulahead.Rows[0][dt_formulahead.Columns["ObjectAddWaterWeight"]]))*1000))
+                        {
+                            txt_RealAddWaterWeight.BackColor = Color.Red;
+                        }
+
+
                     }
                 }
+
+                
 
                 if (Lib_Card.Configure.Parameter.Other_Language != 0)
                 {
@@ -863,6 +890,22 @@ namespace SmartDyeing.FADM_Control
                         "",
                         ""
                         );
+                        if(dt_formuladetail.Rows[i]["ObjectDropWeight"] is DBNull || dt_formuladetail.Rows[i]["RealDropWeight"] is DBNull)
+                        {
+                            dgv_Details.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                        }
+                        else
+                        {
+                            double d_error = Lib_Card.Configure.Parameter.Other_AErr_Drip;
+                            if (!(dt_formuladetail.Rows[i]["StandError"] is DBNull))
+                            {
+                                d_error = Convert.ToDouble(dt_formuladetail.Rows[i]["StandError"]);
+                            }
+                            if((int)(Math.Abs(Convert.ToDouble(dt_formuladetail.Rows[i]["ObjectDropWeight"])- Convert.ToDouble(dt_formuladetail.Rows[i]["RealDropWeight"]))*1000)> (int)(d_error*1000))
+                            {
+                                dgv_Details.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                            }
+                        }
                     }
                     else
                     {
@@ -884,6 +927,22 @@ namespace SmartDyeing.FADM_Control
                         "",
                         ""
                         );
+                        if (dt_formuladetail.Rows[i]["ObjectDropWeight"] is DBNull || dt_formuladetail.Rows[i]["RealDropWeight"] is DBNull)
+                        {
+                            dgv_Details.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                        }
+                        else
+                        {
+                            double d_error = Lib_Card.Configure.Parameter.Other_AErr_Drip;
+                            if (!(dt_formuladetail.Rows[i]["StandError"] is DBNull))
+                            {
+                                d_error = Convert.ToDouble(dt_formuladetail.Rows[i]["StandError"]);
+                            }
+                            if ((int)(Math.Abs(Convert.ToDouble(dt_formuladetail.Rows[i]["ObjectDropWeight"]) - Convert.ToDouble(dt_formuladetail.Rows[i]["RealDropWeight"])) * 1000) > (int)(d_error * 1000))
+                            {
+                                dgv_Details.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                            }
+                        }
                     }
                 }
                 for (int i = 0; i < dt_dye_details.Rows.Count; i++)
@@ -1031,6 +1090,25 @@ namespace SmartDyeing.FADM_Control
                        dt_dye_details.Rows[i]["StartTime"] is DBNull ? "" : Convert.ToDateTime(dt_dye_details.Rows[i]["StartTime"].ToString()).ToString("T"),
                        s_ti
                       );
+                        if (dt_dye_details.Rows[i]["Finish"].ToString() == "1")
+                        {
+                            if (dt_dye_details.Rows[i]["ObjectDropWeight"] is DBNull || dt_dye_details.Rows[i]["RealDropWeight"] is DBNull)
+                            {
+                                dgv_Details.Rows[i + dt_formuladetail.Rows.Count].DefaultCellStyle.BackColor = Color.Red;
+                            }
+                            else
+                            {
+                                double d_error = Lib_Card.Configure.Parameter.Other_AErr_Drip;
+                                if (!(dt_dye_details.Rows[i]["StandError"] is DBNull))
+                                {
+                                    d_error = Convert.ToDouble(dt_dye_details.Rows[i]["StandError"]);
+                                }
+                                if ((int)(Math.Abs(Convert.ToDouble(dt_dye_details.Rows[i]["ObjectDropWeight"]) - Convert.ToDouble(dt_dye_details.Rows[i]["RealDropWeight"]))*1000) > (int)(d_error*1000))
+                                {
+                                    dgv_Details.Rows[i + dt_formuladetail.Rows.Count].DefaultCellStyle.BackColor = Color.Red;
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -1316,6 +1394,15 @@ namespace SmartDyeing.FADM_Control
                     case "加C":
                     case "加D":
                     case "加E":
+                    case "加F":
+                    case "加G":
+                    case "加H":
+                    case "加I":
+                    case "加J":
+                    case "加K":
+                    case "加L":
+                    case "加M":
+                    case "加N":
                         // 固定时间设定为0.5分钟
                         fixedDuration = step.Duration ?? 0.5;
                         for (int i = 0; i < fixedDuration * 2; i++) // 每分钟记录两个温度值

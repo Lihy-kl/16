@@ -217,15 +217,68 @@ namespace SmartDyeing.FADM_Form
                     string temperature = chartData.temperature;
                     string craft = chartData.craft;
 
+
+
                     string[] sa_arr = temperature.Split('@');
-                    _times = new DateTime[sa_arr.Count()];
-                    for (int i = 0; i < sa_arr.Count(); i++)
-                    {
-                        _times[i] = DateTime.Now.AddSeconds((i - sa_arr.Count()) * 30);
-                    }
+                    //_times = new DateTime[sa_arr.Count()];
+                    //for (int i = 0; i < sa_arr.Count(); i++)
+                    //{
+                    //    _times[i] = DateTime.Now.AddSeconds((i - sa_arr.Count()) * 30);
+                    //}
 
 
                     AddSeries("理论", Color.Blue);
+                    List<ProcessStep> list_need = new List<ProcessStep>();
+                    //计算剩余工艺需要时间
+                    s_sql = "SELECT FormulaCode,VersionNum,StepNum,TechnologyName,Temp,TempSpeed,Time,RotorSpeed,Code, DyeType,AssistantCode,FormulaDosage,UnitOfAccount,BottleNum,SettingConcentration,RealConcentration,AssistantName,ObjectDropWeight,RealDropWeight,BottleSelection FROM dye_details where CupNum = '" + CupNo + "' and Finish = '0' order by StepNum ;";
+                    DataTable dt_data_Need = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
+                    foreach (DataRow dr in dt_data_Need.Rows)
+                    {
+                        string DyeType = dr["DyeType"].ToString();
+                        string Code = dr["Code"].ToString();
+
+                        ProcessStep processSte = new ProcessStep();
+                        processSte.StepName = dr["TechnologyName"].ToString();
+
+                        if (dr["TechnologyName"].ToString().Trim().Equals("加A") || dr["TechnologyName"].ToString().Trim().Equals("加B") || dr["TechnologyName"].ToString().Trim().Equals("加C") || dr["TechnologyName"].ToString().Trim().Equals("加D") || dr["TechnologyName"].ToString().Trim().Equals("加E") || dr["TechnologyName"].ToString().Trim().Equals("加F") || dr["TechnologyName"].ToString().Trim().Equals("加G") || dr["TechnologyName"].ToString().Trim().Equals("加H") || dr["TechnologyName"].ToString().Trim().Equals("加I") || dr["TechnologyName"].ToString().Trim().Equals("加J") || dr["TechnologyName"].ToString().Trim().Equals("加K") || dr["TechnologyName"].ToString().Trim().Equals("加L") || dr["TechnologyName"].ToString().Trim().Equals("加M") || dr["TechnologyName"].ToString().Trim().Equals("加N"))
+                        {
+
+
+                            //processSte.Duration = 5;
+                            list_need.Add(processSte);
+                            continue;
+                        }
+                        if (dr["TechnologyName"].ToString().Trim().Equals("加水"))
+                        {
+                            list_need.Add(processSte);
+                            continue;
+                        }
+
+                        if (dr["Temp"].ToString() != null && dr["Temp"].ToString().Length > 0)
+                        {
+                            processSte.TargetTemperature = Convert.ToDouble(dr["Temp"].ToString());
+                        }
+                        if (dr["TempSpeed"].ToString() != null && dr["TempSpeed"].ToString().Length > 0)
+                        {
+                            processSte.HeatingRate = Convert.ToDouble(dr["TempSpeed"].ToString());
+                        }
+                        if (dr["Time"].ToString() != null && dr["Time"].ToString().Length > 0)
+                        {
+                            processSte.Duration = Convert.ToDouble(dr["Time"].ToString());
+                        }
+                        list_need.Add(processSte);
+                    }
+
+                    ProcessStep[] processSteps_need = list_need.ToArray();
+                    // 生成chartData
+                    CurveControl.chartData chartData_need = GenerateChartData(processSteps_need);
+                    string temperature_need = chartData_need.temperature;
+                    string craft_need = chartData_need.craft;
+
+
+
+                    string[] sa_arr_need = temperature_need.Split('@');
+
 
                     Series series = chart.Series[1];
 
@@ -240,7 +293,7 @@ namespace SmartDyeing.FADM_Form
                     double time = totalTimeInSeconds - newtotalTimeInSeconds;
                     // 获取当前时间
                     DateTime now = DateTime.Now;
-                    TimeSpan duration = TimeSpan.FromSeconds(time);
+                    TimeSpan duration = TimeSpan.FromSeconds(sa_arr_need.Length*30);
                     DateTime futureTime = now + duration;
                     string cc = futureTime.ToString("HH:mm:ss");
 
@@ -362,6 +415,15 @@ namespace SmartDyeing.FADM_Form
                     case "加C":
                     case "加D":
                     case "加E":
+                    case "加F":
+                    case "加G":
+                    case "加H":
+                    case "加I":
+                    case "加J":
+                    case "加K":
+                    case "加L":
+                    case "加M":
+                    case "加N":
                         // 固定时间设定为0.5分钟
                         fixedDuration = step.Duration ?? 0.5;
                         for (int i = 0; i < fixedDuration * 2; i++) // 每分钟记录两个温度值
@@ -524,6 +586,7 @@ namespace SmartDyeing.FADM_Form
                 //_dt_data = FADM_Object.Communal._fadmSqlserver.GetData(P_str_sql);
                 int i_maxcup = Lib_Card.Configure.Parameter.Machine_Cup_Total;
                 int i_maxbottle = Lib_Card.Configure.Parameter.Machine_Bottle_Total;
+                List<int> ints = new List<int>();
 
                 //获取当前批次当前杯号信息
                 string s_sql = "SELECT * FROM drop_details WHERE" +
@@ -545,6 +608,8 @@ namespace SmartDyeing.FADM_Form
                         dr[3] = dt_data1.Rows[i - 1]["ObjectDropWeight"];
                         dr[4] = dt_data1.Rows[i - 1]["RealDropWeight"];
                         dt_data.Rows.Add(dr);
+
+                        
                     }
                     else
                     {
@@ -555,6 +620,40 @@ namespace SmartDyeing.FADM_Form
                         dr[3] = dt_data1.Rows[i - 1]["ObjectDropWeight"];
                         dr[4] = dt_data1.Rows[i - 1]["RealDropWeight"];
                         dt_data.Rows.Add(dr);
+                    }
+                    //判断是否合格
+                    if (dt_data1.Rows[i-1]["Finish"].ToString() == "1")
+                    {
+                        if (dt_data1.Rows[i - 1]["ObjectDropWeight"] is DBNull || dt_data1.Rows[i - 1]["RealDropWeight"] is DBNull)
+                        {
+                            //dgv_FormulaData.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                            ints.Add(0);
+                        }
+                        else
+                        {
+                            double d_error = Lib_Card.Configure.Parameter.Other_AErr_Drip;
+                            if (!(dt_data1.Rows[i - 1]["StandError"] is DBNull))
+                            {
+                                d_error = Convert.ToDouble(dt_data1.Rows[i - 1]["StandError"]);
+                            }
+                            else
+                            {
+                                d_error = (dt_data1.Rows[i - 1]["UnitOfAccount"].ToString() == "%" ? Lib_Card.Configure.Parameter.Other_AErr_Drip : Lib_Card.Configure.Parameter.Other_AssAErr_Drip);
+                            }
+                            if ((int)(Math.Abs(Convert.ToDouble(dt_data1.Rows[i - 1]["ObjectDropWeight"]) - Convert.ToDouble(dt_data1.Rows[i - 1]["RealDropWeight"])) * 1000) > (int)(d_error * 1000))
+                            {
+                                //dgv_FormulaData.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                                ints.Add(0);
+                            }
+                            else
+                            {
+                                ints.Add(1);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        ints.Add(1);
                     }
                 }
 
@@ -584,6 +683,41 @@ namespace SmartDyeing.FADM_Form
                     dr[3] = (Convert.ToDouble(dt_data1.Rows[i - 1]["ObjectDropWeight"].ToString()) + d).ToString("F2");
                     dr[4] = dt_data1.Rows[i - 1]["RealDropWeight"];
                     dt_data.Rows.Add(dr);
+
+                    //判断是否合格
+                    if (dt_data1.Rows[i - 1]["Finish"].ToString() == "1")
+                    {
+                        if (dt_data1.Rows[i - 1]["ObjectDropWeight"] is DBNull || dt_data1.Rows[i - 1]["RealDropWeight"] is DBNull)
+                        {
+                            //dgv_FormulaData.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                            ints.Add(0);
+                        }
+                        else
+                        {
+                            double d_error = Lib_Card.Configure.Parameter.Other_AErr_Drip;
+                            if (!(dt_data1.Rows[i - 1]["StandError"] is DBNull))
+                            {
+                                d_error = Convert.ToDouble(dt_data1.Rows[i - 1]["StandError"]);
+                            }
+                            else
+                            {
+                                d_error = (dt_data1.Rows[i - 1]["UnitOfAccount"].ToString() == "%" ? Lib_Card.Configure.Parameter.Other_AErr_Drip : Lib_Card.Configure.Parameter.Other_AErr_Drip);
+                            }
+                            if ((int)(Math.Abs(Convert.ToDouble(dt_data1.Rows[i - 1]["ObjectDropWeight"]) - Convert.ToDouble(dt_data1.Rows[i - 1]["RealDropWeight"])) * 1000) > (int)(d_error * 1000))
+                            {
+                                //dgv_FormulaData.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                                ints.Add(0);
+                            }
+                            else
+                            {
+                                ints.Add(1);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        ints.Add(1);
+                    }
                 }
 
                 //捆绑
@@ -618,6 +752,28 @@ namespace SmartDyeing.FADM_Form
 
                     txt_realWater.Text = Convert.ToString(dt_data1.Rows[0][dt_data1.Columns["RealAddWaterWeight"]]);
 
+                    if(Convert.ToDouble(dt_data1.Rows[0][dt_data1.Columns["ObjectAddWaterWeight"]]) >0)
+                    {
+                        if (dt_data1.Rows[0]["AddWaterFinish"].ToString() == "1")
+                        {
+                            double d_error = Lib_Card.Configure.Parameter.Other_AErr_DripWater;
+                            if (!(dt_data1.Rows[0]["WaterStandError"] is DBNull))
+                            {
+                                d_error = Convert.ToDouble(dt_data1.Rows[0]["WaterStandError"]);
+                            }
+                            double d_totalWeight = Convert.ToDouble(dt_data1.Rows[0]["TotalWeight"]);
+                            double d_allDif = Convert.ToDouble(Lib_Card.Configure.Parameter.Machine_IsThousandsBalance == 0 ? string.Format("{0:F}",
+                                        d_totalWeight * Convert.ToDouble(d_error / 100.00)) : string.Format("{0:F3}",
+                                        d_totalWeight * Convert.ToDouble(d_error / 100.00)));
+
+                            if (d_allDif < Math.Abs(Convert.ToDouble(dt_data1.Rows[0][dt_data1.Columns["RealAddWaterWeight"]])- Convert.ToDouble(dt_data1.Rows[0][dt_data1.Columns["ObjectAddWaterWeight"]])))
+                            {
+                                txt_realWater.BackColor = Color.Red;
+                            }
+                        }
+
+                    }
+
 
                     s_sql = "SELECT SUM(CAST(ISNULL(ObjectDropWeight,0.00) as numeric(18,2))) FROM drop_details WHERE" +
                                 " CupNum = '" + this._i_cupNo +
@@ -625,6 +781,12 @@ namespace SmartDyeing.FADM_Form
 
                     dt_data1 = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
 
+                }
+
+                for (int i = 0; i < ints.Count; i++)
+                {
+                    if (ints[i] == 0)
+                        dgv_CupDetails.Rows[i].DefaultCellStyle.BackColor = Color.Red;
                 }
 
                 //string s = Lib_File.Txt.ReadTXT(this.iCupNo);

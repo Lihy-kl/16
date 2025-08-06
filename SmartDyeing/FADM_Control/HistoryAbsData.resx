@@ -117,14 +117,72 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="txt_RecordBottleNum.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="txt_RecordBottleNum.Location" type="System.Drawing.Point, System.Drawing">
+    <value>105, 91</value>
+  </data>
+  <data name="txt_RecordBottleNum.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 23</value>
+  </data>
+  <data name="txt_RecordBottleNum.TabIndex" type="System.Int32, mscorlib">
+    <value>53</value>
+  </data>
+  <data name="&gt;&gt;txt_RecordBottleNum.Name" xml:space="preserve">
+    <value>txt_RecordBottleNum</value>
+  </data>
+  <data name="&gt;&gt;txt_RecordBottleNum.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txt_RecordBottleNum.Parent" xml:space="preserve">
+    <value>grp_DropRecord</value>
+  </data>
+  <data name="&gt;&gt;txt_RecordBottleNum.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label28.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label28.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 14.25pt</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="label28.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label28.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 93</value>
+  </data>
+  <data name="label28.Size" type="System.Drawing.Size, System.Drawing">
+    <value>57, 19</value>
+  </data>
+  <data name="label28.TabIndex" type="System.Int32, mscorlib">
+    <value>52</value>
+  </data>
+  <data name="label28.Text" xml:space="preserve">
+    <value>瓶号:</value>
+  </data>
+  <data name="&gt;&gt;label28.Name" xml:space="preserve">
+    <value>label28</value>
+  </data>
+  <data name="&gt;&gt;label28.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label28.Parent" xml:space="preserve">
+    <value>grp_DropRecord</value>
+  </data>
+  <data name="&gt;&gt;label28.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="Btn_SetStand.Location" type="System.Drawing.Point, System.Drawing">
     <value>346, 59</value>
   </data>
   <data name="Btn_SetStand.Size" type="System.Drawing.Size, System.Drawing">
     <value>208, 29</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Btn_SetStand.TabIndex" type="System.Int32, mscorlib">
     <value>51</value>
   </data>
@@ -141,7 +199,7 @@
     <value>grp_DropRecord</value>
   </data>
   <data name="&gt;&gt;Btn_SetStand.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="txt_Record_CupNum.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -165,7 +223,7 @@
     <value>grp_DropRecord</value>
   </data>
   <data name="&gt;&gt;txt_Record_CupNum.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="label10.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -195,7 +253,7 @@
     <value>grp_DropRecord</value>
   </data>
   <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="rdo_Record_condition.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -225,7 +283,7 @@
     <value>grp_DropRecord</value>
   </data>
   <data name="&gt;&gt;rdo_Record_condition.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="dt_Record_End.CalendarFont" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -240,7 +298,7 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="dt_Record_End.Location" type="System.Drawing.Point, System.Drawing">
-    <value>105, 137</value>
+    <value>105, 165</value>
   </data>
   <data name="dt_Record_End.Size" type="System.Drawing.Size, System.Drawing">
     <value>218, 29</value>
@@ -258,7 +316,7 @@
     <value>grp_DropRecord</value>
   </data>
   <data name="&gt;&gt;dt_Record_End.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="dt_Record_Start.CalendarFont" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -273,7 +331,7 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="dt_Record_Start.Location" type="System.Drawing.Point, System.Drawing">
-    <value>105, 95</value>
+    <value>105, 123</value>
   </data>
   <data name="dt_Record_Start.Size" type="System.Drawing.Size, System.Drawing">
     <value>219, 29</value>
@@ -291,7 +349,7 @@
     <value>grp_DropRecord</value>
   </data>
   <data name="&gt;&gt;dt_Record_Start.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="btn_Record_Delete.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -318,7 +376,7 @@
     <value>grp_DropRecord</value>
   </data>
   <data name="&gt;&gt;btn_Record_Delete.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="btn_Record_Select.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 14.25pt</value>
@@ -345,7 +403,7 @@
     <value>grp_DropRecord</value>
   </data>
   <data name="&gt;&gt;btn_Record_Select.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="rdo_Record_All.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -375,7 +433,7 @@
     <value>grp_DropRecord</value>
   </data>
   <data name="&gt;&gt;rdo_Record_All.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="rdo_Record_Now.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -405,7 +463,7 @@
     <value>grp_DropRecord</value>
   </data>
   <data name="&gt;&gt;rdo_Record_Now.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -414,7 +472,7 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 142</value>
+    <value>6, 170</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 19</value>
@@ -438,7 +496,7 @@
     <value>grp_DropRecord</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>12</value>
   </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -447,7 +505,7 @@
     <value>宋体, 14.25pt</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 100</value>
+    <value>6, 128</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 19</value>
@@ -471,20 +529,19 @@
     <value>grp_DropRecord</value>
   </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>13</value>
   </data>
   <data name="dgv_DropRecord.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 172</value>
+    <value>3, 202</value>
   </data>
   <data name="dgv_DropRecord.RowHeadersWidth" type="System.Int32, mscorlib">
     <value>72</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="dgv_DropRecord.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
     <value>Vertical</value>
   </data>
   <data name="dgv_DropRecord.Size" type="System.Drawing.Size, System.Drawing">
-    <value>551, 804</value>
+    <value>551, 774</value>
   </data>
   <data name="dgv_DropRecord.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -499,7 +556,7 @@
     <value>grp_DropRecord</value>
   </data>
   <data name="&gt;&gt;dgv_DropRecord.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>14</value>
   </data>
   <data name="grp_DropRecord.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 10.5pt</value>
@@ -2017,13 +2074,13 @@
     <value>20, 28</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>115, 21</value>
+    <value>94, 21</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>63</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>测试结果：</value>
+    <value>总用时：</value>
   </data>
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>

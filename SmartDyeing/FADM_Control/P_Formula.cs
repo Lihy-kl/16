@@ -12,6 +12,7 @@ using System.IO;
 using SmartDyeing.FADM_Form;
 using System.Runtime.InteropServices;
 using static System.Windows.Forms.AxHost;
+using SmartDyeing.FADM_Object;
 
 namespace SmartDyeing.FADM_Control
 {
@@ -598,7 +599,7 @@ namespace SmartDyeing.FADM_Control
                     //设置标题字体
                     dgv_BatchData.ColumnHeadersDefaultCellStyle.Font = new Font("宋体", 14.25F);
                     //设置内容字体
-                    dgv_BatchData.RowsDefaultCellStyle.Font = new Font("宋体", 14.25F);
+                    dgv_BatchData.RowsDefaultCellStyle.Font = new Font("宋体", 12.5F);
                 }
                 else
                 {
@@ -614,8 +615,8 @@ namespace SmartDyeing.FADM_Control
                 }
 
                 //设置标题宽度
-                dgv_BatchData.Columns[0].Width = 80;
-                dgv_BatchData.Columns[1].Width = 150;
+                dgv_BatchData.Columns[0].Width = 70;
+                dgv_BatchData.Columns[1].Width = 240;
                 if (dgv_BatchData.Rows.Count > 19)
                 {
                     dgv_BatchData.Columns[2].Width = 57;
@@ -805,7 +806,7 @@ namespace SmartDyeing.FADM_Control
                         string s_sql = "SELECT * FROM drop_head Where CupNum = '" + s_cupNum + "';";
                         DataTable P_dt_formulahead = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
 
-                        s_sql = "SELECT * FROM drop_details Where CupNum = '" + s_cupNum + "';";
+                        s_sql = "SELECT * FROM drop_details Where CupNum = '" + s_cupNum + "' order by IndexNum;";
                         DataTable dt_formuladetail = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
 
                         //显示表头
@@ -897,6 +898,26 @@ namespace SmartDyeing.FADM_Control
                                     FADM_Form.CustomMessageBox.Show((dt_formuladetail.Rows[i]["BottleNum"]).ToString() +
                                                 " Mother liquor bottle number does not exist", "Batch table current row change event", MessageBoxButtons.OK, false);
 
+                            }
+
+                            if (dt_formuladetail.Rows[i]["Finish"].ToString() == "1")
+                            {
+                                if (dt_formuladetail.Rows[i]["ObjectDropWeight"] is DBNull || dt_formuladetail.Rows[i]["RealDropWeight"] is DBNull)
+                                {
+                                    dgv_FormulaData.Rows[i ].DefaultCellStyle.BackColor = Color.Red;
+                                }
+                                else
+                                {
+                                    double d_error = Lib_Card.Configure.Parameter.Other_AErr_Drip;
+                                    if (!(dt_formuladetail.Rows[i]["StandError"] is DBNull))
+                                    {
+                                        d_error = Convert.ToDouble(dt_formuladetail.Rows[i]["StandError"]);
+                                    }
+                                    if (Math.Abs(Convert.ToDouble(dt_formuladetail.Rows[i]["ObjectDropWeight"]) - Convert.ToDouble(dt_formuladetail.Rows[i]["RealDropWeight"])) > d_error)
+                                    {
+                                        dgv_FormulaData.Rows[i ].DefaultCellStyle.BackColor = Color.Red;
+                                    }
+                                }
                             }
 
 
@@ -1195,7 +1216,7 @@ namespace SmartDyeing.FADM_Control
                     dgv_FormulaBrowse.ColumnHeadersDefaultCellStyle.Font = new Font("宋体", 14.25F);
 
                     //设置内容字体
-                    dgv_FormulaBrowse.RowsDefaultCellStyle.Font = new Font("宋体", 14.25F);
+                    dgv_FormulaBrowse.RowsDefaultCellStyle.Font = new Font("宋体", 12.5F);
                 }
                 else
                 {
@@ -1210,14 +1231,14 @@ namespace SmartDyeing.FADM_Control
 
 
                 //设置标题宽度
-                dgv_FormulaBrowse.Columns[0].Width = 200;
+                dgv_FormulaBrowse.Columns[0].Width = 240;
                 if (dgv_FormulaBrowse.Rows.Count > 21)
                 {
-                    dgv_FormulaBrowse.Columns[1].Width = 98;
+                    dgv_FormulaBrowse.Columns[1].Width = 68;
                 }
                 else
                 {
-                    dgv_FormulaBrowse.Columns[1].Width = 118;
+                    dgv_FormulaBrowse.Columns[1].Width = 88;
                 }
 
                 //关闭自动排序功能
@@ -1566,7 +1587,7 @@ namespace SmartDyeing.FADM_Control
                     //设置标题字体
                     dgv_DropRecord.ColumnHeadersDefaultCellStyle.Font = new Font("宋体", 14.25F);
                     //设置内容字体
-                    dgv_DropRecord.RowsDefaultCellStyle.Font = new Font("宋体", 14.25F);
+                    dgv_DropRecord.RowsDefaultCellStyle.Font = new Font("宋体", 12.5F);
                 }
                 else
                 {
@@ -1584,10 +1605,10 @@ namespace SmartDyeing.FADM_Control
 
 
                 //设置标题宽度
-                dgv_DropRecord.Columns[0].Width = 200;
-                dgv_DropRecord.Columns[1].Width = 100;
+                dgv_DropRecord.Columns[0].Width = 250;
+                dgv_DropRecord.Columns[1].Width = 80;
                 dgv_DropRecord.Columns[2].Width = 300;
-                dgv_DropRecord.Columns[3].Width = 100;
+                dgv_DropRecord.Columns[3].Width = 80;
                 if (dgv_FormulaData.Rows.Count > 5)
                 {
                     dgv_DropRecord.Columns[4].Width = 625;
@@ -1694,7 +1715,7 @@ namespace SmartDyeing.FADM_Control
                             " AND VersionNum = '" + s_versionNum + "'" +
                             " AND BatchName = '" + (dt_formulahead.Rows[0]
                             [dt_formulahead.Columns["BatchName"]]).ToString() + "'" +
-                            " AND CupNum = " + s_cup + ";";
+                            " AND CupNum = " + s_cup + " order by IndexNum;";
                 DataTable dt_formuladetail = FADM_Object.Communal._fadmSqlserver.GetData(s_sql);
 
 
@@ -1794,6 +1815,26 @@ namespace SmartDyeing.FADM_Control
 
                     DataGridViewTextBoxCell tx = (DataGridViewTextBoxCell)dgv_FormulaData[12, i];
                     tx.Value = dt_formuladetail.Rows[i]["BrewingData"].ToString();
+
+                    //if (dt_formuladetail.Rows[i]["Finish"].ToString() == "1")
+                    {
+                        if (dt_formuladetail.Rows[i]["ObjectDropWeight"] is DBNull || dt_formuladetail.Rows[i]["RealDropWeight"] is DBNull)
+                        {
+                            dgv_FormulaData.Rows[i ].DefaultCellStyle.BackColor = Color.Red;
+                        }
+                        else
+                        {
+                            double d_error = Lib_Card.Configure.Parameter.Other_AErr_Drip;
+                            if (!(dt_formuladetail.Rows[i]["StandError"] is DBNull))
+                            {
+                                d_error = Convert.ToDouble(dt_formuladetail.Rows[i]["StandError"]);
+                            }
+                            if (Math.Abs(Convert.ToDouble(dt_formuladetail.Rows[i]["ObjectDropWeight"]) - Convert.ToDouble(dt_formuladetail.Rows[i]["RealDropWeight"])) > d_error)
+                            {
+                                dgv_FormulaData.Rows[i ].DefaultCellStyle.BackColor = Color.Red;
+                            }
+                        }
+                    }
                 }
                 dgv_FormulaData.ClearSelection();
 
@@ -2241,6 +2282,10 @@ namespace SmartDyeing.FADM_Control
         {
             if (FADM_Object.Communal._s_operator == "工程师" || FADM_Object.Communal._s_operator.Equals("主管") || FADM_Object.Communal._s_operator.Equals("管理用户"))
             {
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                    FADM_Form.CustomMessageBox.Show("当前账号不能保存！", "温馨提示", MessageBoxButtons.OK, false);
+                else
+                    FADM_Form.CustomMessageBox.Show("The current account cannot be saved！", "Tips", MessageBoxButtons.OK, false);
                 return;
             }
 
@@ -4712,7 +4757,7 @@ namespace SmartDyeing.FADM_Control
             ReSet_txt_FormulaGroup();
 
 
-
+            
 
         }
 
@@ -4822,6 +4867,104 @@ namespace SmartDyeing.FADM_Control
         private void btn_Browse_Delete_Click_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void tsm_Delete_Click(object sender, EventArgs e)
+        {
+            //待机状态下才能删除
+            if (0 == FADM_Object.Communal.ReadMachineStatus())
+            {
+                try
+                {
+                    if (FADM_Object.Communal._b_isDripping)
+                    {
+                        return;
+                    }
+                    FADM_Object.Communal._b_isDripping = true;
+
+                    //P_int_delect_index = Convert.ToInt16(dgv_BatchData.CurrentRow.Index);
+                    string s_sql = null;
+                    foreach (DataGridViewRow dr in dgv_BatchData.SelectedRows)
+                    {
+                        string s_cup = dr.Cells[0].Value.ToString();
+
+                        //当前删除是滴液配方时直接删除
+                        if (SmartDyeing.FADM_Object.Communal._lis_dripCupNum.Contains(Convert.ToInt16(s_cup)))
+                        {
+
+                            //删除批次浏览表头资料
+                            s_sql = "DELETE FROM drop_head WHERE CupNum = '" + s_cup + "';";
+                            FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                            //删除批次浏览表详细资料
+                            s_sql = "DELETE FROM drop_details WHERE CupNum = '" + s_cup + "';";
+                            FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                            ////删除批次浏览表详细资料
+                            //s_sql = "DELETE FROM dye_details WHERE CupNum = '" + s_temp + "';";
+                            //FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                            ////删除批次浏览表详细资料
+                            //s_sql = "DELETE FROM dye_details WHERE CupNum = '" + s_temp + "';";
+                            //FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+
+                            //更新杯号使用情况
+                            s_sql = "Update cup_details set IsUsing = 0 where CupNum = '" + s_cup + "';";
+                            FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
+                        }
+                    }
+
+
+                    FADM_Object.Communal._b_isDripping = false;
+
+                    P_bl_update = true;
+                }
+                catch
+                {
+                    FADM_Object.Communal._b_isDripping = false;
+                }
+            }
+            else
+            {
+                //提示待机状态下才能删除
+                if (Lib_Card.Configure.Parameter.Other_Language == 0)
+                {
+                    if (DialogResult.OK == FADM_Form.CustomMessageBox.Show("待机状态下才能删除", "温馨提示", MessageBoxButtons.OK, false))
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    if (DialogResult.OK == FADM_Form.CustomMessageBox.Show("Can only be deleted in standby mode", "Tips", MessageBoxButtons.OK, false))
+                    {
+                        return;
+                    }
+                }
+            }
+        }
+
+        private void dgv_BatchData_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (FADM_Object.Communal._s_operator != "管理用户" && FADM_Object.Communal._s_operator != "工程师")
+            {
+                return;
+            }
+            if (e.Button != MouseButtons.Right)
+            {
+                return;
+            }
+            if (e.RowIndex < 0)
+            {
+                return;
+            }
+            if (dgv_BatchData.Rows[e.RowIndex].Selected == false)
+            {
+                dgv_BatchData.ClearSelection();
+                dgv_BatchData.Rows[e.RowIndex].Selected = true;
+
+            }
+            contextMenuStrip1.Show(MousePosition.X, MousePosition.Y);
         }
     }
 }

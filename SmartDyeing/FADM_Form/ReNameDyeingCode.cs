@@ -91,7 +91,7 @@ namespace SmartDyeing.FADM_Form
                             }
 
                             s_sql = "INSERT INTO dyeing_code (DyeingCode, Type," +
-                                                       " Step, Code,IndexNum) VALUES('" + txt_Name.Text.Trim() + "'," + s_type + "," + s_step + ",'" + mySelect.dy_nodelist_comboBox2.Text.Trim() + "'," + (i + 1).ToString() + ");";
+                                                       " Step, Code,IndexNum,IsUse) VALUES('" + txt_Name.Text.Trim() + "'," + s_type + "," + s_step + ",'" + mySelect.dy_nodelist_comboBox2.Text.Trim() + "'," + (i + 1).ToString() + ",1);";
                             FADM_Object.Communal._fadmSqlserver.ReviseData(s_sql);
                         }
                     }

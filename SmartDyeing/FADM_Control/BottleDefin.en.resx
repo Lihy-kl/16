@@ -127,8 +127,29 @@
   <data name="grp_BottleDetails.Text" xml:space="preserve">
     <value>MotherLiquorInformation</value>
   </data>
+  <data name="cbo_DripReserveFirst.Items" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="cbo_DripReserveFirst.Items1" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="cbo_DripReserveFirst.Location" type="System.Drawing.Point, System.Drawing">
+    <value>290, 801</value>
+  </data>
+  <data name="cbo_DripReserveFirst.Size" type="System.Drawing.Size, System.Drawing">
+    <value>303, 27</value>
+  </data>
+  <data name="lab_DripReserveFirst.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 23</value>
+  </data>
+  <data name="lab_DripReserveFirst.Text" xml:space="preserve">
+    <value>PreDrip:</value>
+  </data>
   <data name="cbo_Abs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>283, 855</value>
+    <value>290, 855</value>
+  </data>
+  <data name="cbo_Abs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>303, 27</value>
   </data>
   <data name="lab_Abs.Text" xml:space="preserve">
     <value>AbsType:</value>
@@ -143,7 +164,7 @@
     <value>303, 27</value>
   </data>
   <data name="dtp_BrewingData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>290, 795</value>
+    <value>290, 751</value>
   </data>
   <data name="dtp_BrewingData.Size" type="System.Drawing.Size, System.Drawing">
     <value>303, 29</value>
@@ -210,7 +231,7 @@
     <value>303, 29</value>
   </data>
   <data name="txt_AllowMaxWeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>290, 720</value>
+    <value>290, 696</value>
   </data>
   <data name="txt_AllowMaxWeight.Size" type="System.Drawing.Size, System.Drawing">
     <value>303, 29</value>
@@ -252,7 +273,7 @@
     <value>True</value>
   </data>
   <data name="lab_AllowMaxWeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 725</value>
+    <value>4, 701</value>
   </data>
   <data name="lab_AllowMaxWeight.Size" type="System.Drawing.Size, System.Drawing">
     <value>229, 19</value>
@@ -264,7 +285,7 @@
     <value>True</value>
   </data>
   <data name="lab_BrewingData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 800</value>
+    <value>4, 756</value>
   </data>
   <data name="lab_BrewingData.Size" type="System.Drawing.Size, System.Drawing">
     <value>119, 19</value>

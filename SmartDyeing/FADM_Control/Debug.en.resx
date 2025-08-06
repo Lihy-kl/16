@@ -211,11 +211,14 @@
   <data name="grp_move.Text" xml:space="preserve">
     <value>ExerciseMonitoring</value>
   </data>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>BalanceMonitoring</value>
+  </data>
   <data name="btn_reset_a.Text" xml:space="preserve">
     <value>Zero</value>
   </data>
-  <data name="groupBox2.Text" xml:space="preserve">
-    <value>BalanceMonitoring</value>
+  <data name="grp_in.Text" xml:space="preserve">
+    <value>InputMonitor</value>
   </data>
   <data name="ChkInPut_Back.Font" type="System.Drawing.Font, System.Drawing">
     <value>宋体, 9pt</value>
@@ -496,8 +499,8 @@
   <data name="ChkInPut_X_Corotation.Text" xml:space="preserve">
     <value>X-axisPositive</value>
   </data>
-  <data name="grp_in.Text" xml:space="preserve">
-    <value>InputMonitor</value>
+  <data name="grp_out.Text" xml:space="preserve">
+    <value>OutputMonitor</value>
   </data>
   <data name="BtnOutPut_Block_Cylinder.Size" type="System.Drawing.Size, System.Drawing">
     <value>219, 64</value>
@@ -625,8 +628,17 @@
   <data name="BtnOutPut_X_Power.Text" xml:space="preserve">
     <value>XVectorEnergy</value>
   </data>
-  <data name="grp_out.Text" xml:space="preserve">
-    <value>OutputMonitor</value>
+  <data name="groupBox5.Text" xml:space="preserve">
+    <value>FixedPointMove</value>
+  </data>
+  <data name="RdoWash.Location" type="System.Drawing.Point, System.Drawing">
+    <value>281, 197</value>
+  </data>
+  <data name="RdoWash.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 23</value>
+  </data>
+  <data name="RdoWash.Text" xml:space="preserve">
+    <value>Wash</value>
   </data>
   <data name="button4.Text" xml:space="preserve">
     <value>Generate-Coordinate</value>
@@ -736,7 +748,24 @@
   <data name="label12.Text" xml:space="preserve">
     <value>Bottle/CupNum:</value>
   </data>
-  <data name="groupBox5.Text" xml:space="preserve">
-    <value>FixedPointMove</value>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ChkInPut_Liquid.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ChkInPut_Liquid.Font" type="System.Drawing.Font, System.Drawing">
+    <value>宋体, 9pt</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ChkInPut_Liquid.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="ChkInPut_Liquid.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="ChkInPut_Liquid.Size" type="System.Drawing.Size, System.Drawing">
+    <value>60, 16</value>
+  </data>
+  <data name="ChkInPut_Liquid.Text" xml:space="preserve">
+    <value>Liquid</value>
   </data>
 </root>
